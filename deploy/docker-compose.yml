@@ -1,0 +1,342 @@
+# Kootenai Platform - Production Deployment
+#
+# This docker-compose runs the complete Kootenai stack in a single VM.
+# Designed to be portable across hypervisors: Proxmox, Hyper-V, VMware, WSL2, etc.
+#
+# Quick Start:
+#   1. Copy .env.example to .env and configure
+#   2. Run: docker compose up -d
+#   3. Access web UI at http://<vm-ip>:3000
+#   4. API available at http://<vm-ip>:8080
+#
+# Architecture:
+#   This "infra VM" connects to external Proxmox/CloudStack clusters to
+#   orchestrate lab pods. The VM itself only runs the control plane.
+
+services:
+  # ============================================================================
+  # PostgreSQL Database
+  # ============================================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: kootenai-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-labadmin}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?DATABASE_PASSWORD is required}
+      POSTGRES_DB: ${DATABASE_NAME:-virtuallab}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER:-labadmin} -d ${DATABASE_NAME:-virtuallab}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+    networks:
+      - internal
+
+  # ============================================================================
+  # NATS with JetStream (Message Queue & Event Streaming)
+  # ============================================================================
+  nats:
+    image: nats:2.10-alpine
+    container_name: kootenai-nats
+    restart: unless-stopped
+    command: ["--config", "/etc/nats/nats.conf"]
+    environment:
+      NATS_USER: ${NATS_USER:-nats}
+      NATS_PASSWORD: ${NATS_PASSWORD:?NATS_PASSWORD is required}
+    volumes:
+      - nats_data:/data
+      - ./nats/nats.conf:/etc/nats/nats.conf:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8222/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+    networks:
+      - internal
+
+  # ============================================================================
+  # Redis (Caching & Pub/Sub)
+  # ============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: kootenai-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru", "--requirepass", "${REDIS_PASSWORD:?REDIS_PASSWORD is required}"]
+    environment:
+      REDISCLI_AUTH: ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+    networks:
+      - internal
+
+  # ============================================================================
+  # Kootenai API Server
+  # ============================================================================
+  api:
+    build:
+      context: ../api
+      dockerfile: Dockerfile
+    image: kootenai-api:latest
+    container_name: kootenai-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      # Database
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${DATABASE_USER:-labadmin}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:?DATABASE_PASSWORD is required}
+      DATABASE_NAME: ${DATABASE_NAME:-virtuallab}
+      DATABASE_SSL_MODE: ${DATABASE_SSL_MODE:-require}
+
+      # NATS
+      NATS_URL: nats://${NATS_USER:-nats}:${NATS_PASSWORD}@nats:4222
+
+      # Redis
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+
+      # Proxmox (external cluster)
+      PROXMOX_HOST: ${PROXMOX_HOST:?PROXMOX_HOST is required}
+      PROXMOX_TOKEN_ID: ${PROXMOX_TOKEN_ID:?PROXMOX_TOKEN_ID is required}
+      PROXMOX_TOKEN: ${PROXMOX_TOKEN:?PROXMOX_TOKEN is required}
+      PROXMOX_NODE: ${PROXMOX_NODE:-pve}
+      PROXMOX_INSECURE: ${PROXMOX_INSECURE:-false}
+
+      # CloudStack (optional)
+      CLOUDSTACK_URL: ${CLOUDSTACK_URL:-}
+      CLOUDSTACK_API_KEY: ${CLOUDSTACK_API_KEY:-}
+      CLOUDSTACK_SECRET_KEY: ${CLOUDSTACK_SECRET_KEY:-}
+
+      # Observability. Leave METRICS_TOKEN unset and /metrics is open to
+      # anything that can reach the port; set it and scrapers must send
+      # `Authorization: Bearer <token>`.
+      METRICS_TOKEN: ${METRICS_TOKEN:-}
+
+      # Authentication
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-24h}
+      AUTH_DEMO_MODE: ${AUTH_DEMO_MODE:-false}
+      AUTH_DEMO_MODE_CONFIRM: ${AUTH_DEMO_MODE_CONFIRM:-}
+      AUTH_DEMO_ROLE: ${AUTH_DEMO_ROLE:-student}
+      AUTH_COOKIE_MODE: ${AUTH_COOKIE_MODE:-true}
+
+      # CORS Configuration
+      # Specify allowed origins (comma-separated) or set CORS_ALLOW_WILDCARD=true for development
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      CORS_ALLOW_WILDCARD: ${CORS_ALLOW_WILDCARD:-false}
+
+      # Wazuh (optional)
+      WAZUH_MANAGER_URL: ${WAZUH_MANAGER_URL:-}
+      WAZUH_API_USER: ${WAZUH_API_USER:-}
+      WAZUH_API_PASSWORD: ${WAZUH_API_PASSWORD:-}
+
+      # Template Configuration
+      TEMPLATE_VMIDS: ${TEMPLATE_VMIDS:-}
+
+      # Canvas LTI Configuration
+      CANVAS_URL: ${CANVAS_URL:-}
+      CANVAS_CLIENT_ID: ${CANVAS_CLIENT_ID:-}
+      CANVAS_DEPLOYMENT_ID: ${CANVAS_DEPLOYMENT_ID:-}
+      CANVAS_AUTHORIZATION_URL: ${CANVAS_AUTHORIZATION_URL:-}
+      CANVAS_TOKEN_URL: ${CANVAS_TOKEN_URL:-}
+      CANVAS_JWKS_URL: ${CANVAS_JWKS_URL:-}
+      LTI_TOOL_ISSUER: ${LTI_TOOL_ISSUER:-}
+      LTI_PRIVATE_KEY_PATH: ${LTI_PRIVATE_KEY_PATH:-}
+      LTI_PUBLIC_KEY_PATH: ${LTI_PUBLIC_KEY_PATH:-}
+      CANVAS_API_ACCESS_TOKEN: ${CANVAS_API_ACCESS_TOKEN:-}
+
+      # Redis
+      REDIS_ENABLED: ${REDIS_ENABLED:-true}
+      REDIS_HOST: redis
+      REDIS_PORT: ${REDIS_PORT:-6379}
+
+      # Logging
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      LOG_FORMAT: ${LOG_FORMAT:-json}
+
+      # Development
+      DEV_MODE: ${DEV_MODE:-false}
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+    ports:
+      - "127.0.0.1:${API_PORT:-8080}:8080"
+    volumes:
+      - ../templates:/app/templates:ro
+      - ../config/config.yaml:/app/config.yaml:ro
+      - ../config/lti:/app/config/lti:ro
+    networks:
+      - internal
+      - external
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ============================================================================
+  # Web Frontend (Vue.js)
+  # ============================================================================
+  web:
+    build:
+      context: ../web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${API_URL:-http://localhost:8080}
+    image: kootenai-web:latest
+    container_name: kootenai-web
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${WEB_PORT:-3000}:8080"
+      - "127.0.0.1:${WEB_PORT_HTTPS:-3443}:8443"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+    volumes:
+      - ./ssl:/etc/nginx/ssl:ro
+    networks:
+      - external
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "--no-check-certificate", "https://127.0.0.1:8443"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ============================================================================
+  # Prometheus Monitoring
+  # ============================================================================
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: kootenai-prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "127.0.0.1:${PROMETHEUS_PORT:-9090}:9090"
+    networks:
+      - internal
+      - external
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ============================================================================
+  # Grafana Dashboards
+  # ============================================================================
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: kootenai-grafana
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?Set GRAFANA_ADMIN_PASSWORD in .env}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_SERVER_ROOT_URL: ${GRAFANA_ROOT_URL:-http://localhost:3001}
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "127.0.0.1:${GRAFANA_PORT:-3001}:3000"
+    networks:
+      - internal
+      - external
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ============================================================================
+  # Nginx Reverse Proxy (optional - for SSL termination)
+  # ============================================================================
+  # Uncomment to enable HTTPS with Let's Encrypt or custom certificates
+  #
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: kootenai-nginx
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - api
+  #     - web
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./nginx/certs:/etc/nginx/certs:ro
+  #   networks:
+  #     - external
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  postgres_data:
+    name: kootenai-postgres-data
+  nats_data:
+    name: kootenai-nats-data
+  redis_data:
+    name: kootenai-redis-data
+  prometheus_data:
+    name: kootenai-prometheus-data
+  grafana_data:
+    name: kootenai-grafana-data
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  internal:
+    name: kootenai-internal
+    internal: true
+  external:
+    name: kootenai-external

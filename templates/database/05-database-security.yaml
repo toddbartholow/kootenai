@@ -1,0 +1,419 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Database Security
+  description: |
+    Learn to secure databases against common attacks. This lab covers authentication
+    hardening, privilege management, SQL injection prevention, encryption at rest
+    and in transit, auditing, and backup security.
+  duration: 90m
+  difficulty: intermediate
+  tags:
+    - database
+    - security
+    - hardening
+    - encryption
+    - audit
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Databases are high-value targets — a breach can expose entire organizations. This lab
+      covers the essential security controls: authentication hardening, least-privilege access,
+      SQL injection defense, TLS encryption, audit logging, and secure backup practices.
+      You'll work with PostgreSQL to implement each control hands-on.
+    learning_objectives:
+      - Harden PostgreSQL authentication configuration
+      - Implement least-privilege access with roles and grants
+      - Identify and prevent SQL injection vulnerabilities
+      - Configure TLS/SSL for encrypted connections
+      - Enable and review audit logging
+      - Secure database backups with encryption
+    prerequisites:
+      - Completion of SQL Fundamentals
+      - Completion of PostgreSQL Administration
+      - Basic understanding of security concepts
+    steps:
+      - id: harden-auth
+        title: Harden Authentication
+        content: |
+          Secure the PostgreSQL authentication configuration.
+
+          ```bash
+          # Review current pg_hba.conf
+          sudo cat /etc/postgresql/16/main/pg_hba.conf
+
+          # Change 'trust' entries to 'scram-sha-256'
+          sudo sed -i 's/trust$/scram-sha-256/' \
+            /etc/postgresql/16/main/pg_hba.conf
+
+          # Set strong password for postgres user
+          sudo -u postgres psql -c \
+            "ALTER USER postgres WITH PASSWORD 'Str0ng!P@ss#2024';"
+
+          # Restrict listening to specific interfaces
+          sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost,192.168.124.10'/" \
+            /etc/postgresql/16/main/postgresql.conf
+
+          # Reload configuration
+          sudo systemctl reload postgresql
+
+          # Verify — should require password now
+          psql -U postgres -h localhost -c "SELECT 1;"
+          ```
+      - id: least-privilege
+        title: Implement Least-Privilege Access
+        content: |
+          Create roles with minimal necessary permissions.
+
+          ```sql
+          -- Connect as postgres superuser
+          sudo -u postgres psql
+
+          -- Create the application database
+          CREATE DATABASE securitylab;
+          \c securitylab
+
+          -- Create sample tables
+          CREATE TABLE customers (
+              id SERIAL PRIMARY KEY,
+              name VARCHAR(100),
+              email VARCHAR(100),
+              ssn VARCHAR(11)
+          );
+
+          CREATE TABLE orders (
+              id SERIAL PRIMARY KEY,
+              customer_id INT REFERENCES customers(id),
+              total DECIMAL(10,2),
+              created_at TIMESTAMP DEFAULT NOW()
+          );
+
+          -- Create role hierarchy
+          CREATE ROLE app_readonly;
+          GRANT CONNECT ON DATABASE securitylab TO app_readonly;
+          GRANT USAGE ON SCHEMA public TO app_readonly;
+          GRANT SELECT ON customers, orders TO app_readonly;
+
+          -- App role: read + write orders, read customers (no SSN)
+          CREATE ROLE app_writer;
+          GRANT app_readonly TO app_writer;
+          GRANT INSERT, UPDATE ON orders TO app_writer;
+          GRANT USAGE ON SEQUENCE orders_id_seq TO app_writer;
+
+          -- Revoke direct access to sensitive columns
+          REVOKE ALL ON customers FROM app_writer;
+          GRANT SELECT (id, name, email) ON customers TO app_writer;
+
+          -- Create login users assigned to roles
+          CREATE USER web_app WITH PASSWORD 'WebApp!Secure1' LOGIN;
+          GRANT app_writer TO web_app;
+
+          CREATE USER report_user WITH PASSWORD 'Report!Read1' LOGIN;
+          GRANT app_readonly TO report_user;
+
+          -- Verify permissions
+          \du
+          \dp customers
+          ```
+      - id: sql-injection
+        title: Identify and Prevent SQL Injection
+        content: |
+          Understand SQL injection and test defenses.
+
+          ```bash
+          # Create a vulnerable script (DO NOT use in production)
+          cat > ~/lab/vulnerable.py << 'PYEOF'
+          import psycopg2
+          import sys
+
+          conn = psycopg2.connect(dbname="securitylab", user="web_app",
+                                  password="WebApp!Secure1", host="localhost")
+          cur = conn.cursor()
+
+          # VULNERABLE: string concatenation
+          user_input = sys.argv[1] if len(sys.argv) > 1 else "1"
+          query = f"SELECT * FROM customers WHERE id = {user_input}"
+          print(f"Query: {query}")
+          try:
+              cur.execute(query)
+              print(cur.fetchall())
+          except Exception as e:
+              print(f"Error: {e}")
+          conn.close()
+          PYEOF
+
+          # Create the safe version
+          cat > ~/lab/safe_query.py << 'PYEOF'
+          import psycopg2
+          import sys
+
+          conn = psycopg2.connect(dbname="securitylab", user="web_app",
+                                  password="WebApp!Secure1", host="localhost")
+          cur = conn.cursor()
+
+          # SAFE: parameterized query
+          user_input = sys.argv[1] if len(sys.argv) > 1 else "1"
+          query = "SELECT id, name, email FROM customers WHERE id = %s"
+          print(f"Query: {query} with param: {user_input}")
+          try:
+              cur.execute(query, (user_input,))
+              print(cur.fetchall())
+          except Exception as e:
+              print(f"Error: {e}")
+          conn.close()
+          PYEOF
+
+          # Insert test data
+          sudo -u postgres psql securitylab -c \
+            "INSERT INTO customers (name, email, ssn) VALUES
+             ('Alice', 'alice@example.com', '123-45-6789'),
+             ('Bob', 'bob@example.com', '987-65-4321');"
+
+          # Test vulnerable version
+          python3 ~/lab/vulnerable.py "1 OR 1=1"
+
+          # Test safe version
+          python3 ~/lab/safe_query.py "1 OR 1=1"
+          ```
+
+          The vulnerable version returns all rows; the safe version treats the
+          input as a literal value and returns nothing or raises an error.
+      - id: configure-tls
+        title: Configure TLS Encryption
+        content: |
+          Enable encrypted connections to PostgreSQL.
+
+          ```bash
+          # Generate a self-signed certificate for the lab
+          sudo mkdir -p /etc/postgresql/16/main/certs
+          sudo openssl req -new -x509 -days 365 -nodes \
+            -out /etc/postgresql/16/main/certs/server.crt \
+            -keyout /etc/postgresql/16/main/certs/server.key \
+            -subj "/CN=db-workstation"
+
+          # Set permissions
+          sudo chown postgres:postgres /etc/postgresql/16/main/certs/*
+          sudo chmod 600 /etc/postgresql/16/main/certs/server.key
+
+          # Configure PostgreSQL for TLS
+          sudo tee -a /etc/postgresql/16/main/postgresql.conf > /dev/null << 'EOF'
+          ssl = on
+          ssl_cert_file = '/etc/postgresql/16/main/certs/server.crt'
+          ssl_key_file = '/etc/postgresql/16/main/certs/server.key'
+          EOF
+
+          # Require TLS for remote connections in pg_hba.conf
+          echo "hostssl all all 192.168.124.0/24 scram-sha-256" | \
+            sudo tee -a /etc/postgresql/16/main/pg_hba.conf
+
+          # Restart PostgreSQL
+          sudo systemctl restart postgresql
+
+          # Verify TLS is active
+          psql "host=localhost dbname=securitylab user=web_app \
+            password=WebApp\!Secure1 sslmode=require" \
+            -c "SELECT ssl_is_used();"
+          ```
+      - id: audit-logging
+        title: Enable Audit Logging
+        content: |
+          Configure logging to track database activity.
+
+          ```bash
+          # Configure PostgreSQL logging
+          sudo tee -a /etc/postgresql/16/main/postgresql.conf > /dev/null << 'EOF'
+          log_connections = on
+          log_disconnections = on
+          log_statement = 'ddl'
+          log_line_prefix = '%t [%p] %u@%d '
+          log_min_duration_statement = 1000
+          EOF
+
+          # Restart to apply
+          sudo systemctl restart postgresql
+
+          # Generate some activity
+          psql -U web_app -h localhost -d securitylab -c \
+            "SELECT * FROM orders;"
+
+          # Review logs
+          sudo tail -20 /var/log/postgresql/postgresql-16-main.log
+
+          # Create an audit summary
+          cat > ~/lab/audit_config.txt << 'EOF'
+          Audit Configuration Summary
+          ===========================
+          log_connections: on (track who connects)
+          log_disconnections: on (track session duration)
+          log_statement: ddl (log schema changes)
+          log_min_duration_statement: 1000ms (log slow queries)
+          Log location: /var/log/postgresql/postgresql-16-main.log
+          EOF
+          ```
+      - id: secure-backups
+        title: Secure Database Backups
+        content: |
+          Create encrypted backups and verify restore.
+
+          ```bash
+          mkdir -p ~/lab/backups
+
+          # Create an encrypted backup using gpg
+          pg_dump -U postgres securitylab | \
+            gpg --symmetric --cipher-algo AES256 \
+            --passphrase "BackupKey!2024" --batch \
+            > ~/lab/backups/securitylab.sql.gpg
+
+          # Verify the encrypted file exists
+          ls -la ~/lab/backups/securitylab.sql.gpg
+          file ~/lab/backups/securitylab.sql.gpg
+
+          # Test restore from encrypted backup
+          gpg --decrypt --passphrase "BackupKey!2024" --batch \
+            ~/lab/backups/securitylab.sql.gpg | head -20
+
+          # Create a backup security checklist
+          cat > ~/lab/backup_security.txt << 'EOF'
+          Backup Security Checklist
+          =========================
+          [x] Backups encrypted with AES-256
+          [x] Encryption key stored separately from backup
+          [x] Backup file permissions restricted (600)
+          [x] Restore process tested and verified
+          [ ] Offsite copy stored (production requirement)
+          [ ] Retention policy defined (production requirement)
+          EOF
+
+          # Restrict backup file permissions
+          chmod 600 ~/lab/backups/securitylab.sql.gpg
+          ```
+    summary: |
+      You've secured a PostgreSQL database: hardened authentication, implemented least-privilege
+      roles, defended against SQL injection, enabled TLS encryption, configured audit logging,
+      and created encrypted backups.
+    tips:
+      - Never use 'trust' authentication in production
+      - Always use parameterized queries — never concatenate user input into SQL
+      - Rotate database passwords and TLS certificates regularly
+      - Test backup restores regularly — an untested backup is not a backup
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: db-network
+        vlan: 124
+        subnet: 192.168.124.0/24
+        gateway: 192.168.124.1
+        dhcp: true
+
+  vms:
+    - name: db-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: db-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/lab
+          - /var/log/postgresql
+          - /etc/postgresql
+        audit_commands: true
+        realtime: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: harden-auth
+      description: Harden PostgreSQL authentication (remove trust, require passwords)
+      points: 15
+      hints:
+        - level: 1
+          text: "Edit pg_hba.conf to replace 'trust' with 'scram-sha-256'"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: db-workstation
+          match:
+            path: /etc/postgresql/16/main/pg_hba.conf
+            contains: "scram-sha-256"
+
+    - id: least-privilege
+      description: Create roles with least-privilege access
+      points: 20
+      hints:
+        - level: 1
+          text: "Create separate roles for read-only and read-write access"
+          penalty: 4
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "CREATE ROLE|GRANT.*ON.*TO"
+
+    - id: sql-injection
+      description: Create and test SQL injection prevention scripts
+      points: 20
+      hints:
+        - level: 1
+          text: "Compare string concatenation vs parameterized queries"
+          penalty: 4
+      triggers:
+        - type: file_exists
+          target: db-workstation
+          match:
+            path: /home/student/lab/safe_query.py
+
+    - id: configure-tls
+      description: Enable TLS encryption for database connections
+      points: 15
+      hints:
+        - level: 1
+          text: "Generate a certificate and set ssl=on in postgresql.conf"
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "ssl_is_used|sslmode=require"
+
+    - id: audit-logging
+      description: Configure and verify database audit logging
+      points: 15
+      hints:
+        - level: 1
+          text: "Set log_connections, log_statement, and log_min_duration_statement"
+          penalty: 3
+      triggers:
+        - type: file_exists
+          target: db-workstation
+          match:
+            path: /home/student/lab/audit_config.txt
+
+    - id: secure-backups
+      description: Create an encrypted database backup
+      points: 15
+      hints:
+        - level: 1
+          text: "Pipe pg_dump output through gpg for encryption"
+          penalty: 3
+      triggers:
+        - type: file_exists
+          target: db-workstation
+          match:
+            path: /home/student/lab/backup_security.txt

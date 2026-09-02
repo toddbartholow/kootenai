@@ -1,0 +1,35 @@
+version: "2"
+
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/toddbartholow/kootenai
+
+linters:
+  # Only enable linters that provide high-value findings
+  # with low false-positive rates for this codebase
+  default: none
+  enable:
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - unconvert
+  settings:
+    govet:
+      disable:
+        - fieldalignment
+        - shadow
+    staticcheck:
+      checks:
+        - "all"
+        - "-QF*"
+        - "-ST*"

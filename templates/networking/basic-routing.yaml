@@ -1,0 +1,212 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Linux Routing Fundamentals
+  description: |
+    Learn basic IP routing concepts on Linux. Configure static routes,
+    enable IP forwarding, and understand routing tables.
+  duration: 60m
+  difficulty: intermediate
+  tags:
+    - linux
+    - networking
+    - routing
+    - ip
+  version: "1.0.0"
+  author: Kootenai Team
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: network-a
+        vlan: 101
+        subnet: 10.10.101.0/24
+        gateway: 10.10.101.1
+        dhcp: false
+      - name: network-b
+        vlan: 102
+        subnet: 10.10.102.0/24
+        gateway: 10.10.102.1
+        dhcp: false
+
+  vms:
+    - name: router
+      template: ubuntu-22.04-server-minimal
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /etc/sysctl.conf
+          - /etc/sysctl.d
+          - /etc/netplan
+          - /etc/network/interfaces
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 1
+        memory: 1024
+        disk: 8
+      networks:
+        - segment: network-a
+          ip: 10.10.101.1
+        - segment: network-b
+          ip: 10.10.102.1
+      snapshots:
+        - name: initial
+          description: Base router - IP forwarding disabled
+          default: true
+
+    - name: client-a
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /etc/netplan
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 1
+        memory: 2048
+        disk: 16
+      networks:
+        - segment: network-a
+          ip: 10.10.101.10
+      snapshots:
+        - name: initial
+          description: Client on Network A
+          default: true
+
+    - name: client-b
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /etc/netplan
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 1
+        memory: 2048
+        disk: 16
+      networks:
+        - segment: network-b
+          ip: 10.10.102.10
+      snapshots:
+        - name: initial
+          description: Client on Network B
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 75
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: view-routing-table
+      description: View the current routing table on the router
+      points: 5
+      hint: "Use 'ip route' or 'route -n' to view routes"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: router
+          match:
+            pattern: "ip route|route -n|netstat -rn"
+
+    - id: enable-ip-forwarding
+      description: Enable IP forwarding on the router
+      points: 20
+      hint: "Edit /etc/sysctl.conf and set net.ipv4.ip_forward=1, then run 'sysctl -p'"
+      order: 2
+      triggers:
+        - type: file_content
+          target: router
+          match:
+            path: /etc/sysctl.conf
+            regex: "^net\\.ipv4\\.ip_forward\\s*=\\s*1"
+        - type: active_check
+          target: router
+          match:
+            state: success
+          script: |
+            #!/bin/bash
+            [ "$(cat /proc/sys/net/ipv4/ip_forward)" = "1" ]
+
+    - id: set-gateway-client-a
+      description: Configure default gateway on Client A to use the router
+      points: 15
+      hint: "Use netplan or 'ip route add default via 10.10.101.1'"
+      depends_on:
+        - enable-ip-forwarding
+      order: 3
+      triggers:
+        - type: active_check
+          target: client-a
+          match:
+            state: success
+          script: |
+            #!/bin/bash
+            ip route | grep -q "default via 10.10.101.1"
+
+    - id: set-gateway-client-b
+      description: Configure default gateway on Client B to use the router
+      points: 15
+      hint: "Use netplan or 'ip route add default via 10.10.102.1'"
+      depends_on:
+        - enable-ip-forwarding
+      order: 4
+      triggers:
+        - type: active_check
+          target: client-b
+          match:
+            state: success
+          script: |
+            #!/bin/bash
+            ip route | grep -q "default via 10.10.102.1"
+
+    - id: ping-router-from-a
+      description: Ping the router's Network B interface from Client A
+      points: 10
+      hint: "From Client A, run 'ping 10.10.102.1'"
+      depends_on:
+        - set-gateway-client-a
+      order: 5
+      triggers:
+        - type: command_executed
+          target: client-a
+          match:
+            pattern: "ping.*10\\.10\\.102\\.1"
+
+    - id: ping-client-b-from-a
+      description: Successfully ping Client B from Client A
+      points: 20
+      hint: "From Client A, run 'ping 10.10.102.10' - this tests full routing"
+      depends_on:
+        - set-gateway-client-a
+        - set-gateway-client-b
+      order: 6
+      required: true
+      triggers:
+        - type: active_check
+          target: client-a
+          match:
+            state: success
+          script: |
+            #!/bin/bash
+            ping -c 3 -W 2 10.10.102.10 > /dev/null 2>&1
+
+    - id: traceroute
+      description: Run traceroute from Client A to Client B to verify path
+      points: 15
+      hint: "Use 'traceroute 10.10.102.10' to see the routing path"
+      depends_on:
+        - ping-client-b-from-a
+      order: 7
+      triggers:
+        - type: command_executed
+          target: client-a
+          match:
+            pattern: "traceroute.*10\\.10\\.102\\.10|tracepath.*10\\.10\\.102\\.10"

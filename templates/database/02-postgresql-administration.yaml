@@ -1,0 +1,267 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: PostgreSQL Administration
+  description: |
+    Learn PostgreSQL database administration including installation, user management,
+    backup and restore, performance tuning, and monitoring. Work with real databases
+    to build essential DBA skills.
+  duration: 90m
+  difficulty: intermediate
+  tags:
+    - database
+    - postgresql
+    - administration
+    - dba
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      PostgreSQL is one of the most advanced open-source relational databases. This lab
+      covers essential administration tasks: managing roles and permissions, configuring
+      the server, backup and restore operations, performance monitoring, and basic tuning.
+    learning_objectives:
+      - Manage PostgreSQL roles, users, and permissions
+      - Configure postgresql.conf and pg_hba.conf
+      - Perform logical and physical backups
+      - Monitor database performance with built-in tools
+      - Create and manage tablespaces
+      - Set up basic replication concepts
+    prerequisites:
+      - Completion of SQL Fundamentals
+      - Basic Linux command line skills
+      - Understanding of relational database concepts
+    steps:
+      - id: connect-psql
+        title: Connect to PostgreSQL
+        content: |
+          Use the psql command-line client to connect.
+
+          ```bash
+          # Connect as postgres superuser
+          sudo -u postgres psql
+
+          # List databases
+          \l
+
+          # Connect to a specific database
+          \c labdb
+
+          # List tables
+          \dt
+          ```
+      - id: manage-roles
+        title: Manage Roles and Users
+        content: |
+          PostgreSQL uses roles for authentication and authorization.
+
+          ```sql
+          -- Create a new role
+          CREATE ROLE app_user WITH LOGIN PASSWORD 'secure_pass';
+
+          -- Create a read-only role
+          CREATE ROLE readonly_role;
+          GRANT CONNECT ON DATABASE labdb TO readonly_role;
+          GRANT SELECT ON ALL TABLES IN SCHEMA public TO readonly_role;
+
+          -- Assign role to user
+          GRANT readonly_role TO app_user;
+
+          -- List roles
+          \du
+          ```
+      - id: configure-auth
+        title: Configure Authentication
+        content: |
+          Edit pg_hba.conf to control client authentication.
+
+          ```bash
+          # View current configuration
+          sudo cat /etc/postgresql/*/main/pg_hba.conf
+
+          # Add a line to allow app_user from specific subnet
+          echo "host labdb app_user 192.168.120.0/24 scram-sha-256" | \
+            sudo tee -a /etc/postgresql/*/main/pg_hba.conf
+
+          # Reload configuration
+          sudo systemctl reload postgresql
+          ```
+      - id: backup-restore
+        title: Backup and Restore
+        content: |
+          ```bash
+          # Logical backup with pg_dump
+          pg_dump -U postgres labdb > ~/lab/labdb_backup.sql
+
+          # Custom format (compressed, selective restore)
+          pg_dump -U postgres -Fc labdb > ~/lab/labdb_backup.dump
+
+          # Restore from dump
+          createdb -U postgres labdb_restored
+          pg_restore -U postgres -d labdb_restored ~/lab/labdb_backup.dump
+          ```
+      - id: performance-monitoring
+        title: Monitor Performance
+        content: |
+          Use built-in views to monitor database activity.
+
+          ```sql
+          -- Active queries
+          SELECT pid, now() - pg_stat_activity.query_start AS duration,
+                 query, state
+          FROM pg_stat_activity
+          WHERE state != 'idle'
+          ORDER BY duration DESC;
+
+          -- Table statistics
+          SELECT relname, seq_scan, idx_scan, n_tup_ins, n_tup_upd
+          FROM pg_stat_user_tables
+          ORDER BY seq_scan DESC;
+
+          -- Database size
+          SELECT pg_database.datname,
+                 pg_size_pretty(pg_database_size(pg_database.datname))
+          FROM pg_database ORDER BY pg_database_size(pg_database.datname) DESC;
+          ```
+      - id: create-index
+        title: Create and Analyze Indexes
+        content: |
+          ```sql
+          -- Analyze a slow query
+          EXPLAIN ANALYZE SELECT * FROM employees WHERE department = 'IT';
+
+          -- Create an index
+          CREATE INDEX idx_employees_dept ON employees(department);
+
+          -- Re-analyze to see the improvement
+          EXPLAIN ANALYZE SELECT * FROM employees WHERE department = 'IT';
+
+          -- List indexes
+          \di
+          ```
+    summary: |
+      You've learned PostgreSQL administration: roles, authentication, backup/restore,
+      performance monitoring, and indexing.
+    tips:
+      - Always test backup restores — a backup you can't restore is worthless
+      - Use EXPLAIN ANALYZE before and after adding indexes
+      - pg_hba.conf changes require a reload, postgresql.conf may require restart
+      - Monitor pg_stat_activity regularly for slow queries
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: db-network
+        vlan: 121
+        subnet: 192.168.121.0/24
+        gateway: 192.168.121.1
+        dhcp: true
+
+  vms:
+    - name: db-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: db-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /var/log/postgresql
+        audit_commands: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: connect-psql
+      description: Connect to PostgreSQL using psql and list databases
+      points: 10
+      hints:
+        - level: 1
+          text: "Use 'sudo -u postgres psql' then '\\l' to list databases"
+          penalty: 2
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "psql"
+
+    - id: create-role
+      description: Create a database role with login privileges
+      points: 15
+      hints:
+        - level: 1
+          text: "Use CREATE ROLE username WITH LOGIN PASSWORD 'pass'"
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "CREATE ROLE|createuser"
+
+    - id: configure-hba
+      description: Configure pg_hba.conf for client authentication
+      points: 15
+      triggers:
+        - type: file_content
+          target: db-workstation
+          match:
+            path: /etc/postgresql/16/main/pg_hba.conf
+            contains: "scram-sha-256"
+
+    - id: backup-database
+      description: Create a database backup using pg_dump
+      points: 20
+      hints:
+        - level: 1
+          text: "Use 'pg_dump -U postgres dbname > backup.sql'"
+          penalty: 4
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "pg_dump"
+
+    - id: restore-database
+      description: Restore a database from a backup
+      points: 15
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "pg_restore|psql.*<"
+
+    - id: monitor-queries
+      description: Query pg_stat_activity to monitor active queries
+      points: 10
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "pg_stat_activity"
+
+    - id: create-index
+      description: Create an index and verify with EXPLAIN ANALYZE
+      points: 15
+      hints:
+        - level: 1
+          text: "Use CREATE INDEX and then EXPLAIN ANALYZE your query"
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "CREATE INDEX"

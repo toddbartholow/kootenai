@@ -1,0 +1,199 @@
+/**
+ * Kootenai Platform - Custom Docusaurus Styles
+ * Uses Indigo color scheme to match Material theme
+ */
+
+:root {
+  --ifm-color-primary: #4f46e5;
+  --ifm-color-primary-dark: #4338ca;
+  --ifm-color-primary-darker: #3730a3;
+  --ifm-color-primary-darkest: #312e81;
+  --ifm-color-primary-light: #6366f1;
+  --ifm-color-primary-lighter: #818cf8;
+  --ifm-color-primary-lightest: #a5b4fc;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-link-color: var(--ifm-color-primary);
+  --ifm-menu-color-active: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #818cf8;
+  --ifm-color-primary-dark: #6366f1;
+  --ifm-color-primary-darker: #4f46e5;
+  --ifm-color-primary-darkest: #4338ca;
+  --ifm-color-primary-light: #a5b4fc;
+  --ifm-color-primary-lighter: #c7d2fe;
+  --ifm-color-primary-lightest: #e0e7ff;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* API method badges */
+.api-method {
+  display: inline-block;
+  padding: 0.2em 0.6em;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.85em;
+  margin-right: 0.5em;
+  text-transform: uppercase;
+}
+
+.api-method.get { background: #61affe; color: white; }
+.api-method.post { background: #49cc90; color: white; }
+.api-method.put { background: #fca130; color: white; }
+.api-method.patch { background: #50e3c2; color: white; }
+.api-method.delete { background: #f93e3e; color: white; }
+
+/* Status badges */
+.status-badge {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  border-radius: 9999px;
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.running { background: #d1fae5; color: #065f46; }
+.status-badge.stopped { background: #fee2e2; color: #991b1b; }
+.status-badge.pending { background: #fef3c7; color: #92400e; }
+
+/* Card grid for feature showcase */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.feature-card {
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: var(--ifm-card-background-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card h3 {
+  margin-top: 0;
+  color: var(--ifm-color-primary);
+}
+
+/* Terminal/console styling */
+.terminal {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+  overflow-x: auto;
+}
+
+.terminal .prompt {
+  color: #6a9955;
+}
+
+.terminal .command {
+  color: #569cd6;
+}
+
+/* Quick links grid */
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.quick-link {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 8px;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  text-decoration: none;
+  color: var(--ifm-font-color-base);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.quick-link:hover {
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-color-primary-lightest);
+  text-decoration: none;
+}
+
+/* Sidebar customization */
+.menu__link--active {
+  font-weight: 600;
+}
+
+/* Hero section improvements */
+.hero {
+  padding: 4rem 0;
+}
+
+.hero__title {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.hero__subtitle {
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+/* Table improvements */
+table {
+  width: 100%;
+}
+
+table th {
+  background: var(--ifm-color-emphasis-100);
+}
+
+/* Admonition customization */
+.admonition-heading h5 {
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+/* Code block improvements */
+.prism-code {
+  font-size: 0.9rem;
+}
+
+/* Search improvements */
+.DocSearch-Button {
+  border-radius: 8px !important;
+}
+
+/* Footer styling */
+.footer {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.footer__title {
+  color: var(--ifm-color-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 996px) {
+  .hero__title {
+    font-size: 2rem;
+  }
+
+  .hero__subtitle {
+    font-size: 1.25rem;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}

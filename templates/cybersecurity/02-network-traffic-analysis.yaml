@@ -1,0 +1,281 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Network Traffic Analysis
+  description: |
+    Master network traffic analysis using Wireshark and tcpdump. Learn to capture
+    packets, analyze protocols, identify suspicious traffic patterns, and detect
+    common network-based attacks like port scans, ARP spoofing, and data exfiltration.
+  duration: 120m
+  difficulty: intermediate
+  tags:
+    - security
+    - networking
+    - wireshark
+    - tcpdump
+    - traffic-analysis
+    - blue-team
+  version: "1.0.0"
+  author: Kootenai Team
+  category: cybersecurity
+  instructions:
+    overview: |
+      Network traffic analysis is essential for detecting intrusions, investigating incidents,
+      and understanding network behavior. You'll use tcpdump and Wireshark/tshark to capture
+      packets, analyze protocols, and identify attacks like port scans, credential theft,
+      and data exfiltration.
+    learning_objectives:
+      - Capture network traffic with tcpdump
+      - Analyze packet captures with Wireshark/tshark
+      - Identify common protocols in network traffic
+      - Detect port scans and reconnaissance activity
+      - Find credentials transmitted in cleartext
+      - Identify DNS-based data exfiltration
+    prerequisites:
+      - Basic understanding of TCP/IP and common protocols
+      - Linux command line familiarity
+      - Completion of SOC Analyst Fundamentals recommended
+    steps:
+      - id: capture-traffic
+        title: Start a Packet Capture
+        content: |
+          Begin by capturing network traffic on your interface.
+
+          ```bash
+          # Capture to file with tcpdump
+          sudo tcpdump -i eth0 -w ~/lab/capture.pcap -c 1000 &
+
+          # Generate some traffic to capture
+          ping -c 3 10.21.0.20
+          curl -s http://10.21.0.20/
+
+          # Stop capture
+          kill %1
+          ```
+      - id: identify-protocols
+        title: Identify Network Protocols
+        content: |
+          Analyze the capture to understand what protocols are in use.
+
+          ```bash
+          # List protocols with tshark
+          tshark -r ~/lab/capture.pcap -q -z io,phs
+
+          # Count packets by protocol
+          tshark -r ~/lab/capture.pcap -T fields -e frame.protocols | \
+            sort | uniq -c | sort -rn > ~/lab/protocols.txt
+
+          # Add protocol summary
+          echo "Protocols found: HTTP, DNS, SSH, ARP" >> ~/lab/protocols.txt
+          ```
+      - id: detect-port-scan
+        title: Detect a Port Scan
+        content: |
+          Port scans show many SYN packets to different ports from one source.
+
+          ```bash
+          # Filter for SYN packets (TCP flags = 0x02)
+          tshark -r ~/lab/capture.pcap -Y "tcp.flags.syn==1 && tcp.flags.ack==0" \
+            -T fields -e ip.src -e tcp.dstport | sort | head -20
+
+          # Document findings
+          cat > ~/lab/port_scan_analysis.txt << 'EOF'
+          Port Scan Detection Report
+          Type: SYN scan
+          Source IP: 10.21.0.100
+          Ports targeted: Multiple (sequential/random)
+          Indicator: Many SYN packets with no completed handshakes
+          EOF
+          ```
+      - id: extract-http
+        title: Extract HTTP Traffic
+        content: |
+          Examine HTTP requests and responses for interesting data.
+
+          ```bash
+          # List HTTP requests
+          tshark -r ~/lab/capture.pcap -Y http.request \
+            -T fields -e ip.src -e http.request.method -e http.host -e http.request.uri
+
+          # Extract HTTP objects (files transferred)
+          tshark -r ~/lab/capture.pcap --export-objects http,~/lab/http_objects/
+          ```
+      - id: find-credentials
+        title: Find Cleartext Credentials
+        content: |
+          Look for passwords transmitted without encryption.
+
+          ```bash
+          # Check for FTP credentials
+          tshark -r ~/lab/capture.pcap -Y "ftp.request.command == USER || ftp.request.command == PASS" \
+            -T fields -e ftp.request.command -e ftp.request.arg
+
+          # Check HTTP POST data
+          tshark -r ~/lab/capture.pcap -Y "http.request.method == POST" \
+            -T fields -e http.file_data | grep -i password
+
+          # Document
+          echo "Cleartext password found in FTP session" > ~/lab/credentials_found.txt
+          ```
+      - id: dns-exfiltration
+        title: Identify DNS Exfiltration
+        content: |
+          Attackers can hide data in DNS queries using long subdomain labels.
+
+          ```bash
+          # Look for unusually long DNS queries
+          tshark -r ~/lab/capture.pcap -Y "dns.qry.name" \
+            -T fields -e dns.qry.name | awk '{if(length($0)>50) print}' \
+            > ~/lab/dns_exfil_analysis.txt
+
+          # Flag suspicious findings
+          echo "suspicious: Long DNS queries indicate possible data exfiltration" \
+            >> ~/lab/dns_exfil_analysis.txt
+          ```
+    summary: |
+      You've learned to capture and analyze network traffic, detect port scans, find cleartext
+      credentials, and identify DNS exfiltration — core skills for network security monitoring.
+    tips:
+      - Always capture to a file for later analysis rather than just viewing live
+      - Use display filters in Wireshark to focus on relevant traffic
+      - "Cleartext protocols (FTP, HTTP, Telnet) are security risks — look for them"
+      - DNS exfiltration often uses unusually long subdomain names
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: analysis-network
+        vlan: 201
+        subnet: 10.21.0.0/24
+        gateway: 10.21.0.1
+        dhcp: false
+
+  vms:
+    - name: analyst-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/analyst
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: analysis-network
+          ip: 10.21.0.10
+      snapshots:
+        - name: initial
+          description: Workstation with Wireshark and tcpdump installed
+          default: true
+
+    - name: target-server
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: analysis-network
+          ip: 10.21.0.20
+      snapshots:
+        - name: running-services
+          description: Server with web, SSH, and FTP services
+          default: true
+
+    - name: attacker-machine
+      template: kali-linux
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: analysis-network
+          ip: 10.21.0.100
+      snapshots:
+        - name: initial
+          description: Kali with attack tools
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: capture-traffic
+      description: Start a packet capture on the network interface
+      points: 10
+      hint: "Use 'sudo tcpdump -i eth0 -w capture.pcap' or start Wireshark"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: analyst-workstation
+          match:
+            pattern: "tcpdump.*-w|wireshark"
+
+    - id: identify-protocols
+      description: Identify the protocols in use on the network
+      points: 15
+      hint: "Use Wireshark's Protocol Hierarchy or tcpdump filters"
+      order: 2
+      triggers:
+        - type: file_content
+          target: analyst-workstation
+          match:
+            path: /home/analyst/lab/protocols.txt
+            contains: "HTTP"
+
+    - id: detect-port-scan
+      description: Detect and document a port scan in the capture
+      points: 20
+      hint: "Look for SYN packets to multiple ports from the same source"
+      order: 3
+      triggers:
+        - type: file_content
+          target: analyst-workstation
+          match:
+            path: /home/analyst/lab/port_scan_analysis.txt
+            contains: "SYN"
+
+    - id: extract-http-data
+      description: Extract and analyze HTTP traffic from the capture
+      points: 15
+      hint: "Use 'Follow HTTP Stream' in Wireshark or tshark filters"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: analyst-workstation
+          match:
+            pattern: "tshark.*http|wireshark.*http"
+
+    - id: identify-credentials
+      description: Find credentials transmitted in cleartext
+      points: 20
+      hint: "Look for FTP or HTTP POST requests with login data"
+      order: 5
+      triggers:
+        - type: file_content
+          target: analyst-workstation
+          match:
+            path: /home/analyst/lab/credentials_found.txt
+            contains: "password"
+
+    - id: detect-exfiltration
+      description: Identify potential data exfiltration in DNS queries
+      points: 20
+      hint: "Look for unusually long DNS queries or high volume to single domain"
+      order: 6
+      triggers:
+        - type: file_content
+          target: analyst-workstation
+          match:
+            path: /home/analyst/lab/dns_exfil_analysis.txt
+            contains: "suspicious"

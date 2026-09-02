@@ -1,0 +1,287 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Monitoring and Observability
+  description: |
+    Learn monitoring and observability with Prometheus and Grafana. Configure metric
+    collection, build dashboards, set up alerting rules, and understand the three
+    pillars of observability: metrics, logs, and traces.
+  duration: 90m
+  difficulty: intermediate
+  tags:
+    - devops
+    - monitoring
+    - prometheus
+    - grafana
+    - observability
+    - alerting
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Observability is essential for understanding system behavior in production. In this lab,
+      you'll set up Prometheus for metrics collection, Grafana for visualization, configure
+      alerting rules, and learn to query metrics with PromQL.
+    learning_objectives:
+      - Install and configure Prometheus
+      - Set up metric scrape targets
+      - Build Grafana dashboards
+      - Write PromQL queries
+      - Configure alerting rules
+      - Understand log aggregation concepts
+    prerequisites:
+      - Basic Docker and Docker Compose knowledge
+      - Linux command line familiarity
+      - Understanding of HTTP and networking
+    steps:
+      - id: setup-prometheus
+        title: Install Prometheus
+        content: |
+          Deploy Prometheus using Docker Compose.
+
+          ```yaml
+          # compose.yaml
+          services:
+            prometheus:
+              image: prom/prometheus:latest
+              ports:
+                - "9090:9090"
+              volumes:
+                - ./prometheus.yml:/etc/prometheus/prometheus.yml
+                - prometheus-data:/prometheus
+          volumes:
+            prometheus-data:
+          ```
+
+          ```bash
+          docker compose up -d prometheus
+          # Access at http://localhost:9090
+          ```
+      - id: configure-scrape
+        title: Configure Scrape Targets
+        content: |
+          Tell Prometheus what to monitor.
+
+          ```yaml
+          # prometheus.yml
+          global:
+            scrape_interval: 15s
+
+          scrape_configs:
+            - job_name: 'prometheus'
+              static_configs:
+                - targets: ['localhost:9090']
+
+            - job_name: 'node'
+              static_configs:
+                - targets: ['node-exporter:9100']
+          ```
+      - id: setup-grafana
+        title: Set Up Grafana
+        content: |
+          Add Grafana to your monitoring stack.
+
+          ```yaml
+          # Add to compose.yaml services:
+            grafana:
+              image: grafana/grafana:latest
+              ports:
+                - "3000:3000"
+              environment:
+                - GF_SECURITY_ADMIN_PASSWORD=admin
+              volumes:
+                - grafana-data:/var/lib/grafana
+          ```
+
+          Access Grafana at http://localhost:3000 (admin/admin).
+          Add Prometheus as a data source: URL = http://prometheus:9090.
+      - id: promql
+        title: Query Metrics with PromQL
+        content: |
+          Learn to query metrics in Prometheus.
+
+          ```
+          # CPU usage rate over 5 minutes
+          rate(process_cpu_seconds_total[5m])
+
+          # Memory usage
+          process_resident_memory_bytes
+
+          # HTTP request rate
+          rate(prometheus_http_requests_total[5m])
+          ```
+      - id: alerting
+        title: Configure Alerting
+        content: |
+          Set up alert rules for important conditions.
+
+          ```yaml
+          # alert-rules.yml
+          groups:
+            - name: example
+              rules:
+                - alert: HighMemoryUsage
+                  expr: process_resident_memory_bytes > 1e9
+                  for: 5m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: "High memory usage detected"
+          ```
+      - id: dashboards
+        title: Build a Dashboard
+        content: |
+          Create a Grafana dashboard with key metrics panels showing system health,
+          request rates, and error rates. Use the Grafana UI to add panels with
+          PromQL queries as data sources.
+    summary: |
+      You've built a monitoring stack with Prometheus and Grafana, learned PromQL,
+      configured alerting, and created dashboards for system observability.
+    tips:
+      - "Start with the four golden signals: latency, traffic, errors, saturation"
+      - Use recording rules for frequently-used PromQL queries
+      - Set meaningful alert thresholds based on SLOs
+      - Dashboard panels should answer specific operational questions
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 135
+        subnet: 192.168.135.0/24
+        gateway: 192.168.135.1
+        dhcp: true
+
+  vms:
+    - name: dev-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 50
+      networks:
+        - segment: lab-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/monitoring-lab
+        audit_commands: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: install-prometheus
+      description: Deploy Prometheus using Docker and verify it's running on port 9090
+      points: 15
+      hints:
+        - level: 1
+          text: "Use docker compose or docker run to start Prometheus on port 9090"
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "docker (compose up|run).*prometheus"
+
+    - id: configure-scrape
+      description: Configure a Prometheus scrape target in prometheus.yml
+      points: 15
+      depends_on:
+        - install-prometheus
+      hints:
+        - level: 1
+          text: "Create prometheus.yml with scrape_configs containing a job_name and targets"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/monitoring-lab/prometheus.yml
+            contains: "scrape_configs:"
+
+    - id: setup-grafana
+      description: Deploy Grafana and access the web interface on port 3000
+      points: 15
+      hints:
+        - level: 1
+          text: "Add Grafana to your compose.yaml and run docker compose up -d"
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "docker (compose up|run).*grafana"
+
+    - id: create-dashboard
+      description: Create a Grafana dashboard configuration file
+      points: 20
+      depends_on:
+        - setup-grafana
+      hints:
+        - level: 1
+          text: "Create a dashboard JSON file or use the Grafana UI to build panels"
+          penalty: 4
+      triggers:
+        - type: file_exists
+          target: dev-workstation
+          match:
+            path: /home/student/monitoring-lab/dashboards/
+
+    - id: alert-rule
+      description: Write a Prometheus alert rule configuration
+      points: 15
+      hints:
+        - level: 1
+          text: "Create an alert-rules.yml with groups, rules, alert name, and expr"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/monitoring-lab/alert-rules.yml
+            contains: "alert:"
+
+    - id: promql-query
+      description: Execute a PromQL query using curl against the Prometheus API
+      points: 10
+      depends_on:
+        - install-prometheus
+      hints:
+        - level: 1
+          text: "Use curl 'http://localhost:9090/api/v1/query?query=up'"
+          penalty: 2
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "curl.*9090/api/v1/query"
+
+    - id: compose-stack
+      description: Create a complete monitoring compose.yaml with Prometheus, Grafana, and node-exporter
+      points: 20
+      hints:
+        - level: 1
+          text: "Define all three services in compose.yaml with proper networking"
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/monitoring-lab/compose.yaml
+            contains: "services:"
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/monitoring-lab/compose.yaml
+            contains: "grafana"

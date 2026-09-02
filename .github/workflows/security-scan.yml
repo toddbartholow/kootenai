@@ -1,0 +1,301 @@
+name: Security Scan
+
+on:
+  # Run weekly on Sunday at 2 AM UTC
+  schedule:
+    - cron: '0 2 * * 0'
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: 'Target URL for ZAP scan'
+        required: true
+        default: ''
+
+permissions:
+  contents: read
+
+env:
+  GO_VERSION: '1.25.13'
+  # Target must be provided via workflow_dispatch; scheduled runs skip DAST
+  DEFAULT_TARGET: ''
+
+jobs:
+  # OWASP ZAP Dynamic Application Security Testing
+  zap-scan:
+    name: OWASP ZAP DAST
+    runs-on: ubuntu-latest
+    # Only run if we can reach the target (self-hosted or VPN connected)
+    # For now, this job will fail gracefully if target unreachable
+    continue-on-error: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set target URL
+        id: target
+        run: |
+          if [ -n "${{ github.event.inputs.target_url }}" ]; then
+            echo "url=${{ github.event.inputs.target_url }}" >> $GITHUB_OUTPUT
+          else
+            echo "url=${{ env.DEFAULT_TARGET }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create ZAP rules file
+        run: |
+          mkdir -p .zap
+          cat > .zap/rules.tsv << 'EOF'
+          # Rule ID	Action	Parameter
+          # Ignore informational findings
+          10021	IGNORE	X-Content-Type-Options Header Missing
+          10036	IGNORE	Server Leaks Version Information
+          # Allow specific headers we intentionally use
+          10038	IGNORE	Content Security Policy Header Not Set
+          # Demo mode endpoints are intentionally permissive
+          10202	IGNORE	Absence of Anti-CSRF Tokens
+          EOF
+
+      - name: OWASP ZAP API Scan
+        uses: zaproxy/action-api-scan@v0.7.0
+        with:
+          target: ${{ steps.target.outputs.url }}/api/v1/
+          rules_file_name: '.zap/rules.tsv'
+          # Generate reports
+          cmd_options: '-a -j -l WARN'
+        continue-on-error: true
+
+      - name: Upload ZAP HTML Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-report-html
+          path: report_html.html
+          retention-days: 30
+
+      - name: Upload ZAP JSON Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-report-json
+          path: report_json.json
+          retention-days: 30
+
+      - name: Check for High/Critical Findings
+        if: always()
+        run: |
+          if [ -f report_json.json ]; then
+            HIGH_COUNT=$(jq '[.site[].alerts[] | select(.riskcode == "3")] | length' report_json.json 2>/dev/null || echo "0")
+            CRITICAL_COUNT=$(jq '[.site[].alerts[] | select(.riskcode == "4")] | length' report_json.json 2>/dev/null || echo "0")
+
+            echo "High severity findings: $HIGH_COUNT"
+            echo "Critical severity findings: $CRITICAL_COUNT"
+
+            if [ "$CRITICAL_COUNT" -gt "0" ]; then
+              echo "::error::Found $CRITICAL_COUNT critical severity findings!"
+              exit 1
+            fi
+
+            if [ "$HIGH_COUNT" -gt "5" ]; then
+              echo "::warning::Found $HIGH_COUNT high severity findings"
+            fi
+          else
+            echo "No report generated - target may be unreachable"
+          fi
+
+  # Dependency vulnerability scanning (more thorough than CI)
+  dependency-scan:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: api/go.sum
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Go vulnerability check
+        working-directory: api
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck -json ./... > govulncheck-report.json || true
+          govulncheck ./...
+
+      - name: Upload Go vulnerability report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: govulncheck-report
+          path: api/govulncheck-report.json
+          retention-days: 30
+
+      - name: NPM audit (detailed)
+        working-directory: web
+        run: |
+          npm ci
+          npm audit --json > npm-audit-report.json || true
+          npm audit --audit-level=high
+
+      - name: Upload NPM audit report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: npm-audit-report
+          path: web/npm-audit-report.json
+          retention-days: 30
+
+  # Container image scanning (more thorough than CI)
+  container-scan:
+    name: Container Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build API image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api
+          file: ./api/Dockerfile
+          push: false
+          tags: kootenai-api:scan
+          load: true
+
+      - name: Build Web image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./web
+          file: ./web/Dockerfile
+          push: false
+          tags: kootenai-web:scan
+          load: true
+          build-args: |
+            VITE_USE_MOCK_DATA=false
+            VITE_API_BASE_URL=http://localhost:8080
+
+      - name: Trivy API scan (full)
+        uses: aquasecurity/trivy-action@v0.35.0
+        with:
+          image-ref: 'kootenai-api:scan'
+          format: 'json'
+          output: 'trivy-api-report.json'
+          severity: 'LOW,MEDIUM,HIGH,CRITICAL'
+          vuln-type: 'os,library'
+
+      - name: Trivy Web scan (full)
+        uses: aquasecurity/trivy-action@v0.35.0
+        with:
+          image-ref: 'kootenai-web:scan'
+          format: 'json'
+          output: 'trivy-web-report.json'
+          severity: 'LOW,MEDIUM,HIGH,CRITICAL'
+          vuln-type: 'os,library'
+
+      - name: Upload Trivy reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: trivy-reports
+          path: |
+            trivy-api-report.json
+            trivy-web-report.json
+          retention-days: 30
+
+      - name: Check for critical vulnerabilities
+        run: |
+          API_CRITICAL=$(jq '[.Results[]?.Vulnerabilities[]? | select(.Severity == "CRITICAL")] | length' trivy-api-report.json 2>/dev/null || echo "0")
+          WEB_CRITICAL=$(jq '[.Results[]?.Vulnerabilities[]? | select(.Severity == "CRITICAL")] | length' trivy-web-report.json 2>/dev/null || echo "0")
+
+          echo "API critical vulnerabilities: $API_CRITICAL"
+          echo "Web critical vulnerabilities: $WEB_CRITICAL"
+
+          TOTAL=$((API_CRITICAL + WEB_CRITICAL))
+          if [ "$TOTAL" -gt "0" ]; then
+            echo "::warning::Found $TOTAL critical vulnerabilities across containers"
+          fi
+
+  # Secret scanning (extended)
+  secret-scan:
+    name: Extended Secret Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history
+
+      - name: Run gitleaks (full scan)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_COMMENTS: true
+
+      - name: TruffleHog scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ''
+          head: HEAD
+          extra_args: --json --only-verified
+        continue-on-error: true
+
+  # Create summary issue if critical findings
+  create-issue:
+    name: Report Findings
+    runs-on: ubuntu-latest
+    needs: [zap-scan, dependency-scan, container-scan, secret-scan]
+    if: failure()
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Create GitHub Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const date = new Date().toISOString().split('T')[0];
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Security Scan Findings - ${date}`,
+              body: `## Weekly Security Scan Results
+
+            The weekly security scan completed with findings that require attention.
+
+            ### Scan Results
+            - **ZAP DAST**: ${{ needs.zap-scan.result }}
+            - **Dependency Scan**: ${{ needs.dependency-scan.result }}
+            - **Container Scan**: ${{ needs.container-scan.result }}
+            - **Secret Scan**: ${{ needs.secret-scan.result }}
+
+            ### Action Required
+            1. Download the scan reports from the [workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            2. Review findings and prioritize remediation
+            3. Update this issue with remediation status
+
+            ### Reports Available
+            - ZAP HTML/JSON reports
+            - govulncheck report
+            - npm audit report
+            - Trivy container reports
+
+            /cc @toddbartholow`,
+              labels: ['security', 'automated']
+            });

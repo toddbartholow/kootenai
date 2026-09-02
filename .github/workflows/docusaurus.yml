@@ -1,0 +1,76 @@
+name: Deploy Docusaurus
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docusaurus/**'
+      - '.github/workflows/docusaurus.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docusaurus/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "docusaurus-pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: docusaurus/package-lock.json
+
+      - name: Install dependencies
+        working-directory: docusaurus
+        run: npm ci
+
+      - name: Build
+        working-directory: docusaurus
+        run: npm run build
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docusaurus-build
+          path: docusaurus/build
+          retention-days: 1
+
+  # Deploy job only runs on main branch push
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: docusaurus-pages
+      url: https://toddbartholow.github.io/kootenai-docs/
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docusaurus-build
+          path: build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          destination_dir: kootenai-docs
+          cname: ''

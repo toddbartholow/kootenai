@@ -1,0 +1,144 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Advanced Shell Scripting
+  description: |
+    Master Bash shell scripting for automation and administration. Learn
+    variables, control structures, functions, error handling, and creating
+    robust scripts for system administration tasks.
+  duration: 120m
+  difficulty: intermediate
+  tags:
+    - linux
+    - bash
+    - scripting
+    - automation
+    - shell
+  version: "1.0.0"
+  author: Kootenai Team
+  category: linux-advanced
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: scripting-network
+        vlan: 500
+        subnet: 10.50.0.0/24
+        gateway: 10.50.0.1
+        dhcp: false
+
+  vms:
+    - name: linux-vm
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /var/log
+          - /opt/scripts
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: scripting-network
+          ip: 10.50.0.10
+      snapshots:
+        - name: initial
+          description: Ubuntu with scripting environment ready
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: basic-script
+      description: Create a script that prints system information
+      points: 10
+      hint: "Use echo, uname, hostname, and date commands"
+      order: 1
+      triggers:
+        - type: file_content
+          target: linux-vm
+          match:
+            path: /home/student/scripts/sysinfo.sh
+            contains: "#!/bin/bash"
+
+    - id: variables
+      description: Create a script using variables and user input
+      points: 15
+      hint: "Use read command for input, variables for storage"
+      order: 2
+      triggers:
+        - type: file_content
+          target: linux-vm
+          match:
+            path: /home/student/scripts/greeting.sh
+            contains: "read"
+
+    - id: conditionals
+      description: Write a script with if/else logic for file checking
+      points: 15
+      hint: "Use test operators like -f for file, -d for directory"
+      order: 3
+      triggers:
+        - type: file_content
+          target: linux-vm
+          match:
+            path: /home/student/scripts/filecheck.sh
+            contains: "if"
+
+    - id: loops
+      description: Create a script using for and while loops
+      points: 15
+      hint: "Use for loop to iterate over files, while for conditions"
+      order: 4
+      triggers:
+        - type: file_content
+          target: linux-vm
+          match:
+            path: /home/student/scripts/loops.sh
+            contains: "for"
+
+    - id: functions
+      description: Write a script with reusable functions
+      points: 15
+      hint: "Define functions with function_name() { } syntax"
+      order: 5
+      triggers:
+        - type: file_content
+          target: linux-vm
+          match:
+            path: /home/student/scripts/functions.sh
+            contains: "function"
+
+    - id: error-handling
+      description: Add error handling and exit codes to a script
+      points: 15
+      hint: "Use set -e, trap, and check $? for exit codes"
+      order: 6
+      triggers:
+        - type: file_content
+          target: linux-vm
+          match:
+            path: /home/student/scripts/robust.sh
+            contains: "exit"
+
+    - id: automation-script
+      description: Create a backup automation script
+      points: 15
+      hint: "Script should backup files, log actions, handle errors"
+      order: 7
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/student/scripts/backup.sh

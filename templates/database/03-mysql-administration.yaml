@@ -1,0 +1,252 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: MySQL Administration
+  description: |
+    Learn MySQL database administration including user management, backup strategies
+    with mysqldump, replication basics, performance tuning, and monitoring with
+    the MySQL performance schema.
+  duration: 90m
+  difficulty: intermediate
+  tags:
+    - database
+    - mysql
+    - administration
+    - dba
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      MySQL is the world's most popular open-source relational database. This lab covers
+      essential MySQL administration: connecting and managing databases, user privileges,
+      backup and restore with mysqldump, the slow query log, performance schema, and
+      basic InnoDB tuning.
+    learning_objectives:
+      - Connect to MySQL and manage databases
+      - Create users and configure granular privileges
+      - Perform backups with mysqldump and mysqlpump
+      - Enable and analyze the slow query log
+      - Use performance schema for monitoring
+      - Configure basic InnoDB settings
+    prerequisites:
+      - Completion of SQL Fundamentals
+      - Basic Linux command line skills
+    steps:
+      - id: connect-mysql
+        title: Connect to MySQL
+        content: |
+          ```bash
+          # Connect as root
+          sudo mysql -u root
+
+          # Or with password
+          mysql -u root -p
+
+          # List databases
+          SHOW DATABASES;
+
+          # Create a lab database
+          CREATE DATABASE labdb CHARACTER SET utf8mb4;
+          USE labdb;
+          ```
+      - id: manage-users
+        title: Manage Users and Privileges
+        content: |
+          ```sql
+          -- Create a user
+          CREATE USER 'app_user'@'%' IDENTIFIED BY 'secure_pass';
+
+          -- Grant specific privileges
+          GRANT SELECT, INSERT, UPDATE ON labdb.* TO 'app_user'@'%';
+
+          -- Create a read-only user
+          CREATE USER 'reader'@'192.168.122.%' IDENTIFIED BY 'read_pass';
+          GRANT SELECT ON labdb.* TO 'reader'@'192.168.122.%';
+
+          -- Apply privilege changes
+          FLUSH PRIVILEGES;
+
+          -- Verify
+          SHOW GRANTS FOR 'app_user'@'%';
+          ```
+      - id: backup
+        title: Backup with mysqldump
+        content: |
+          ```bash
+          # Single database backup
+          mysqldump -u root labdb > ~/lab/labdb_backup.sql
+
+          # All databases
+          mysqldump -u root --all-databases > ~/lab/full_backup.sql
+
+          # With compression
+          mysqldump -u root labdb | gzip > ~/lab/labdb_backup.sql.gz
+          ```
+      - id: restore
+        title: Restore from Backup
+        content: |
+          ```bash
+          # Create target database
+          mysql -u root -e "CREATE DATABASE labdb_restored"
+
+          # Restore
+          mysql -u root labdb_restored < ~/lab/labdb_backup.sql
+
+          # Verify
+          mysql -u root -e "SHOW TABLES FROM labdb_restored"
+          ```
+      - id: slow-query-log
+        title: Enable Slow Query Log
+        content: |
+          ```sql
+          -- Enable slow query log
+          SET GLOBAL slow_query_log = 'ON';
+          SET GLOBAL long_query_time = 1;
+          SET GLOBAL slow_query_log_file = '/var/log/mysql/slow.log';
+
+          -- Verify settings
+          SHOW VARIABLES LIKE 'slow_query%';
+          SHOW VARIABLES LIKE 'long_query_time';
+          ```
+
+          Check `/var/log/mysql/slow.log` for queries exceeding the threshold.
+      - id: performance-schema
+        title: Monitor with Performance Schema
+        content: |
+          ```sql
+          -- Top queries by execution time
+          SELECT DIGEST_TEXT, COUNT_STAR, AVG_TIMER_WAIT/1000000000 AS avg_ms
+          FROM performance_schema.events_statements_summary_by_digest
+          ORDER BY AVG_TIMER_WAIT DESC LIMIT 10;
+
+          -- Current connections
+          SELECT * FROM performance_schema.threads
+          WHERE TYPE = 'FOREGROUND';
+
+          -- Table I/O stats
+          SELECT OBJECT_NAME, COUNT_READ, COUNT_WRITE
+          FROM performance_schema.table_io_waits_summary_by_table
+          WHERE OBJECT_SCHEMA = 'labdb'
+          ORDER BY COUNT_READ + COUNT_WRITE DESC;
+          ```
+    summary: |
+      You've learned MySQL administration: user management, privilege control, backup/restore
+      with mysqldump, slow query analysis, and performance monitoring.
+    tips:
+      - Always use FLUSH PRIVILEGES after direct grants table changes
+      - "Use the '%' host wildcard carefully — restrict to specific subnets when possible"
+      - Enable the slow query log in production to find performance issues
+      - mysqldump locks tables by default — use --single-transaction for InnoDB
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: db-network
+        vlan: 122
+        subnet: 192.168.122.0/24
+        gateway: 192.168.122.1
+        dhcp: true
+
+  vms:
+    - name: db-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: db-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /var/log/mysql
+        audit_commands: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: connect-mysql
+      description: Connect to MySQL and create a database
+      points: 10
+      hints:
+        - level: 1
+          text: "Use 'sudo mysql -u root' then CREATE DATABASE dbname"
+          penalty: 2
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "mysql"
+
+    - id: create-user
+      description: Create a MySQL user with specific privileges
+      points: 15
+      hints:
+        - level: 1
+          text: "Use CREATE USER and GRANT statements"
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "CREATE USER|GRANT"
+
+    - id: backup-db
+      description: Create a database backup using mysqldump
+      points: 20
+      hints:
+        - level: 1
+          text: "Use 'mysqldump -u root dbname > backup.sql'"
+          penalty: 4
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "mysqldump"
+
+    - id: restore-db
+      description: Restore a database from a mysqldump backup
+      points: 15
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "mysql.*<"
+
+    - id: slow-log
+      description: Enable and configure the slow query log
+      points: 15
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "slow_query_log"
+
+    - id: perf-schema
+      description: Query the performance schema for monitoring data
+      points: 15
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "performance_schema"
+
+    - id: configure-innodb
+      description: Review and document InnoDB buffer pool configuration
+      points: 10
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "innodb_buffer_pool"

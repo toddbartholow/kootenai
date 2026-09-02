@@ -1,0 +1,30 @@
+Kootenai Platform
+Copyright 2024-present Todd Bartholow
+
+This software is licensed under the Apache License, Version 2.0.
+See LICENSE file for details.
+
+---
+
+THIRD-PARTY SOFTWARE
+
+This project includes or depends on the following third-party software:
+
+Go Dependencies (see api/go.mod for full list):
+- github.com/gin-gonic/gin - MIT License
+- github.com/jackc/pgx - MIT License
+- github.com/nats-io/nats.go - Apache 2.0 License
+- github.com/redis/go-redis - BSD-2-Clause License
+- github.com/golang-jwt/jwt - MIT License
+
+JavaScript Dependencies (see web/package.json for full list):
+- Vue.js - MIT License
+- Vite - MIT License
+- Pinia - MIT License
+- Tailwind CSS - MIT License
+
+Documentation:
+- Docusaurus - MIT License
+
+For complete dependency information, see the respective package manager
+lock files (go.sum, package-lock.json).

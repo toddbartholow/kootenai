@@ -1,0 +1,39 @@
+lab_template: "Incident Response and Forensics"
+
+steps:
+  # Objective 1: Create forensic images of compromised systems
+  - objective: preserve-evidence
+    target: forensics-workstation
+    actions:
+      - "mkdir -p /cases/images"
+      - "dc3dd if=/dev/sda of=/cases/images/compromised-server.dd hash=md5 hash=sha256 log=/cases/images/server-image.log"
+    delay_after: 3
+
+  # Objective 2: Create a timeline of system events
+  - objective: timeline-creation
+    target: forensics-workstation
+    actions:
+      - "mkdir -p /cases/timeline"
+      - "log2timeline --storage-file /cases/timeline/evidence.plaso /cases/images/compromised-server.dd"
+      - "psort --output-time-zone UTC -o l2tcsv -w /cases/timeline/supertimeline.csv /cases/timeline/evidence.plaso"
+    delay_after: 5
+
+  # Objective 3: Identify IOCs on the Linux server
+  # Auto-generated commands are sufficient (file_content trigger)
+
+  # Objective 4: Perform basic static analysis on suspicious files
+  - objective: analyze-malware
+    target: forensics-workstation
+    actions:
+      - "mkdir -p /cases/malware"
+      - "file /tmp/suspicious_binary > /cases/malware/file-type.txt"
+      - "strings /tmp/suspicious_binary > /cases/malware/strings-output.txt"
+      - "md5sum /tmp/suspicious_binary > /cases/malware/hashes.txt"
+      - "sha256sum /tmp/suspicious_binary >> /cases/malware/hashes.txt"
+    delay_after: 2
+
+  # Objective 5: Analyze Windows registry for persistence
+  # Auto-generated commands are sufficient (file_content trigger)
+
+  # Objective 6: Create incident report
+  # Auto-generated commands are sufficient (file_exists trigger)

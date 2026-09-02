@@ -1,0 +1,13 @@
+node_modules
+dist
+coverage
+*.min.js
+*.min.css
+package-lock.json
+
+# Generated from ../api/docs/swagger.json by `npm run generate:api-types`.
+# check:api-types diffs this against a fresh generation, so reformatting it
+# breaks that gate. Leave it exactly as the generator emits it. Sibling files
+# in that directory (index.ts, schema.test.ts) are hand-written and still
+# formatted.
+src/api/generated/schema.ts

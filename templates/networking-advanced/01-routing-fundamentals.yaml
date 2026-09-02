@@ -1,0 +1,351 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: IP Routing Fundamentals
+  description: |
+    Master IP routing concepts and configuration. Learn static routing,
+    dynamic routing with OSPF and BGP basics, route summarization,
+    and troubleshooting routing issues.
+  duration: 120m
+  difficulty: intermediate
+  tags:
+    - networking
+    - routing
+    - ospf
+    - bgp
+    - cisco
+    - linux
+  version: "1.0.0"
+  author: Kootenai Team
+  category: networking-advanced
+  instructions:
+    overview: |
+      IP routing is how packets find their way across networks. This lab covers static
+      routing configuration, dynamic routing with OSPF using FRRouting, route verification,
+      and troubleshooting. You'll work with a multi-router topology connecting three
+      separate networks.
+    learning_objectives:
+      - Enable IP forwarding on Linux routers
+      - Configure static routes for inter-network communication
+      - Set up OSPF dynamic routing with FRRouting
+      - Verify routing tables and adjacencies
+      - Implement route summarization
+      - Troubleshoot routing issues with traceroute
+    prerequisites:
+      - Basic TCP/IP networking knowledge (IP addresses, subnets)
+      - Linux command line familiarity
+      - Understanding of network interfaces
+    steps:
+      - id: enable-forwarding
+        title: Enable IP Forwarding
+        content: |
+          Linux doesn't forward packets between interfaces by default.
+
+          ```bash
+          # Enable IP forwarding temporarily
+          sudo sysctl -w net.ipv4.ip_forward=1
+
+          # Make it persistent
+          echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf
+          sudo sysctl -p
+
+          # Verify
+          cat /proc/sys/net/ipv4/ip_forward  # Should show 1
+          ```
+
+          Do this on both Router1 and Router2.
+      - id: static-routes
+        title: Configure Static Routes
+        content: |
+          Add routes so each router knows how to reach all three networks.
+
+          ```bash
+          # On Router1: add route to Network C via Router2
+          sudo ip route add 10.62.0.0/24 via 10.61.0.2
+
+          # On Router2: add route to Network A via Router1
+          sudo ip route add 10.60.0.0/24 via 10.61.0.1
+
+          # Verify routes
+          ip route show
+          ```
+      - id: verify-connectivity
+        title: Verify End-to-End Connectivity
+        content: |
+          Test that Host A can reach Host C through both routers.
+
+          ```bash
+          # From Host A, ping Host C
+          ping -c 4 10.62.0.10
+
+          # Verify the path
+          traceroute 10.62.0.10
+          ```
+
+          If ping fails, check: IP forwarding enabled? Routes correct on both routers?
+      - id: configure-ospf
+        title: Configure OSPF Dynamic Routing
+        content: |
+          Replace static routes with OSPF for automatic route discovery.
+
+          ```bash
+          # Enter FRRouting shell
+          sudo vtysh
+
+          # Configure OSPF
+          configure terminal
+          router ospf
+            network 10.60.0.0/24 area 0
+            network 10.61.0.0/24 area 0
+          exit
+          exit
+
+          # Save configuration
+          write memory
+          ```
+
+          Repeat on Router2 with its networks (10.61.0.0/24 and 10.62.0.0/24).
+      - id: verify-ospf
+        title: Verify OSPF Adjacency
+        content: |
+          Confirm OSPF neighbors have formed and routes are learned.
+
+          ```bash
+          sudo vtysh -c "show ip ospf neighbor"
+          sudo vtysh -c "show ip route ospf"
+          ```
+
+          You should see Router2 as a Full neighbor and OSPF-learned routes (marked `O`).
+      - id: route-summarization
+        title: Route Summarization
+        content: |
+          Summarize routes to reduce routing table size.
+
+          ```bash
+          sudo vtysh
+          configure terminal
+          router ospf
+            area 0 range 10.60.0.0/22
+          exit
+          exit
+          write memory
+          ```
+      - id: traceroute-verify
+        title: Verify Path with Traceroute
+        content: |
+          ```bash
+          # From Host A
+          traceroute 10.62.0.10
+          ```
+
+          You should see two hops: Router1 (10.60.0.1) then Router2 (10.62.0.1).
+      - id: document
+        title: Document the Topology
+        content: |
+          ```bash
+          cat > ~/routing_documentation.txt << 'EOF'
+          Network Topology
+          ================
+          Network A (10.60.0.0/24) -- Router1 -- Network B (10.61.0.0/24) -- Router2 -- Network C (10.62.0.0/24)
+
+          Router1: 10.60.0.1 (eth0), 10.61.0.1 (eth1)
+          Router2: 10.61.0.2 (eth0), 10.62.0.1 (eth1)
+
+          Routing: OSPF Area 0
+          EOF
+          ```
+    summary: |
+      You've configured both static and OSPF dynamic routing across a multi-router topology,
+      verified connectivity end-to-end, and learned route troubleshooting techniques.
+    tips:
+      - Always verify IP forwarding is enabled on routers
+      - Use traceroute to visualize the packet path
+      - OSPF requires matching network statements and area IDs on both sides
+      - Static routes are simpler but don't adapt to topology changes
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: network-a
+        vlan: 600
+        subnet: 10.60.0.0/24
+        gateway: 10.60.0.1
+        dhcp: false
+      - name: network-b
+        vlan: 601
+        subnet: 10.61.0.0/24
+        gateway: 10.61.0.1
+        dhcp: false
+      - name: network-c
+        vlan: 602
+        subnet: 10.62.0.0/24
+        gateway: 10.62.0.1
+        dhcp: false
+
+  vms:
+    - name: router1
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/netadmin
+          - /var/log
+          - /etc/frr
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: network-a
+          ip: 10.60.0.1
+        - segment: network-b
+          ip: 10.61.0.1
+      snapshots:
+        - name: initial
+          description: Ubuntu with FRRouting installed
+          default: true
+
+    - name: router2
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: network-b
+          ip: 10.61.0.2
+        - segment: network-c
+          ip: 10.62.0.1
+      snapshots:
+        - name: initial
+          description: Ubuntu with FRRouting installed
+          default: true
+
+    - name: host-a
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: network-a
+          ip: 10.60.0.10
+      snapshots:
+        - name: initial
+          description: Client workstation in Network A
+          default: true
+
+    - name: host-c
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: network-c
+          ip: 10.62.0.10
+      snapshots:
+        - name: initial
+          description: Client workstation in Network C
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: enable-forwarding
+      description: Enable IP forwarding on both routers
+      points: 10
+      hint: "Set net.ipv4.ip_forward=1 in /etc/sysctl.conf"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: router1
+          match:
+            pattern: "sysctl.*ip_forward|echo.*ip_forward"
+
+    - id: static-routes
+      description: Configure static routes for inter-network communication
+      points: 15
+      hint: "Use 'ip route add' or edit /etc/netplan for persistent routes"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: router1
+          match:
+            pattern: "ip route add"
+
+    - id: verify-connectivity
+      description: Verify end-to-end connectivity between Host A and Host C
+      points: 10
+      hint: "Ping from Host A to Host C (10.62.0.10)"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: host-a
+          match:
+            pattern: "ping.*10.62.0"
+
+    - id: configure-ospf
+      description: Configure OSPF on both routers
+      points: 20
+      hint: "Use vtysh to configure OSPF areas and network statements"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: router1
+          match:
+            pattern: "vtysh|router ospf"
+
+    - id: verify-ospf
+      description: Verify OSPF adjacency and routing table
+      points: 10
+      hint: "Use 'show ip ospf neighbor' and 'show ip route'"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: router1
+          match:
+            pattern: "show ip ospf|show ip route"
+
+    - id: route-summary
+      description: Implement route summarization on Router1
+      points: 15
+      hint: "Use area range command for OSPF summarization"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: router1
+          match:
+            pattern: "area.*range"
+
+    - id: traceroute
+      description: Use traceroute to verify the path between networks
+      points: 10
+      hint: "Run traceroute from Host A to Host C"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: host-a
+          match:
+            pattern: "traceroute|tracepath"
+
+    - id: troubleshoot
+      description: Document the routing topology and troubleshooting steps
+      points: 10
+      hint: "Create a network diagram and document commands used"
+      order: 8
+      triggers:
+        - type: file_exists
+          target: router1
+          match:
+            path: /home/netadmin/routing_documentation.txt

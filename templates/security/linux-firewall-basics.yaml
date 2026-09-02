@@ -1,0 +1,214 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Linux Firewall Basics
+  description: |
+    Learn to configure UFW (Uncomplicated Firewall) on Ubuntu Linux.
+    Students will install, configure, and test basic firewall rules to
+    secure a Linux system.
+  duration: 90m
+  difficulty: beginner
+  tags:
+    - linux
+    - security
+    - firewall
+    - ufw
+    - networking
+  version: "1.0.0"
+  author: Kootenai Team
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 100
+        subnet: 10.10.100.0/24
+        gateway: 10.10.100.1
+        dhcp: false
+
+  vms:
+    - name: workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /etc/ufw
+          - /etc/default/ufw
+          - /var/log/ufw.log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 32
+      networks:
+        - segment: lab-network
+          ip: 10.10.100.10
+      snapshots:
+        - name: initial
+          description: Fresh Ubuntu installation
+          default: true
+
+    - name: target-server
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /var/log/auth.log
+        audit_commands: false
+        realtime: true
+      resources:
+        cpu: 1
+        memory: 2048
+        disk: 16
+      networks:
+        - segment: lab-network
+          ip: 10.10.100.20
+      snapshots:
+        - name: initial
+          description: Server with SSH and HTTP running
+          default: true
+
+  # Checkpoint/grading configuration
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  # Graded objectives
+  objectives:
+    - id: install-ufw
+      description: Install the UFW firewall package
+      points: 10
+      hint: "Use 'sudo apt install ufw' to install the UFW package"
+      order: 1
+      triggers:
+        - type: package
+          target: workstation
+          match:
+            package: ufw
+            state: installed
+
+    - id: check-ufw-status
+      description: Check the current UFW status
+      points: 5
+      hint: "Run 'sudo ufw status' to see the firewall status"
+      depends_on:
+        - install-ufw
+      order: 2
+      triggers:
+        - type: command_executed
+          target: workstation
+          match:
+            pattern: "ufw status"
+
+    - id: enable-ufw
+      description: Enable the UFW firewall
+      points: 15
+      hint: "Run 'sudo ufw enable' to activate the firewall"
+      depends_on:
+        - install-ufw
+      order: 3
+      triggers:
+        - type: file_content
+          target: workstation
+          match:
+            path: /etc/ufw/ufw.conf
+            contains: "ENABLED=yes"
+        - type: service
+          target: workstation
+          match:
+            name: ufw
+            state: active
+
+    - id: allow-ssh
+      description: Allow SSH connections (port 22)
+      points: 15
+      hint: "Use 'sudo ufw allow ssh' or 'sudo ufw allow 22/tcp'"
+      depends_on:
+        - enable-ufw
+      order: 4
+      triggers:
+        - type: file_content
+          target: workstation
+          match:
+            path: /etc/ufw/user.rules
+            regex: "-A ufw-user-input.*--dport 22.*-j ACCEPT"
+
+    - id: allow-http
+      description: Allow HTTP traffic (port 80)
+      points: 10
+      hint: "Use 'sudo ufw allow http' or 'sudo ufw allow 80/tcp'"
+      depends_on:
+        - enable-ufw
+      order: 5
+      triggers:
+        - type: file_content
+          target: workstation
+          match:
+            path: /etc/ufw/user.rules
+            regex: "-A ufw-user-input.*--dport 80.*-j ACCEPT"
+
+    - id: allow-https
+      description: Allow HTTPS traffic (port 443)
+      points: 10
+      hint: "Use 'sudo ufw allow https' or 'sudo ufw allow 443/tcp'"
+      depends_on:
+        - enable-ufw
+      order: 6
+      triggers:
+        - type: file_content
+          target: workstation
+          match:
+            path: /etc/ufw/user.rules
+            regex: "-A ufw-user-input.*--dport 443.*-j ACCEPT"
+
+    - id: deny-telnet
+      description: Explicitly deny Telnet (port 23)
+      points: 15
+      hint: "Use 'sudo ufw deny 23/tcp' to block Telnet"
+      depends_on:
+        - enable-ufw
+      order: 7
+      triggers:
+        - type: file_content
+          target: workstation
+          match:
+            path: /etc/ufw/user.rules
+            regex: "-A ufw-user-input.*--dport 23.*-j (DROP|REJECT)"
+
+    - id: limit-ssh
+      description: Enable rate limiting for SSH to prevent brute force attacks
+      points: 20
+      hint: "Use 'sudo ufw limit ssh' to enable connection rate limiting"
+      depends_on:
+        - allow-ssh
+      order: 8
+      triggers:
+        - type: file_content
+          target: workstation
+          match:
+            path: /etc/ufw/user.rules
+            regex: "-A ufw-user-limit.*--dport 22"
+
+    - id: verify-connectivity
+      description: Verify you can still connect to the target server
+      points: 10
+      hint: "Try 'ping 10.10.100.20' or 'curl http://10.10.100.20'"
+      depends_on:
+        - allow-http
+      order: 9
+      triggers:
+        - type: active_check
+          target: workstation
+          match:
+            state: success
+          script: |
+            #!/bin/bash
+            # Verify connectivity to target server
+            ping -c 1 10.10.100.20 > /dev/null 2>&1 && \
+            curl -s --connect-timeout 5 http://10.10.100.20 > /dev/null 2>&1

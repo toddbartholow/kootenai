@@ -1,0 +1,347 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: File Mastery
+  description: |
+    Deep dive into Linux file operations including permissions, ownership,
+    archive creation/extraction, and symbolic/hard links. Master the skills
+    needed to effectively manage files and directories.
+  duration: 60m
+  difficulty: intermediate
+  tags:
+    - linux
+    - intermediate
+    - permissions
+    - chmod
+    - chown
+    - archives
+    - links
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      File management goes beyond creating and deleting files. In this lab, you'll learn
+      Linux file permissions and ownership, create and extract archives, and work with
+      symbolic and hard links.
+    learning_objectives:
+      - Understand and modify file permissions with chmod
+      - Use numeric (octal) and symbolic permission notation
+      - Create tar and compressed archives
+      - Extract and list archive contents
+      - Create and understand symbolic and hard links
+    prerequisites:
+      - Shell Essentials (redirection, pipes, sudo)
+      - Basic file navigation and creation
+    steps:
+      - id: permissions-basics
+        title: File Permissions
+        content: |
+          Every file has permissions for owner, group, and others.
+
+          ```bash
+          # Create a script
+          echo 'echo Hello' > myscript.sh
+
+          # Make it executable
+          chmod +x myscript.sh
+
+          # Run it
+          ./myscript.sh
+
+          # View permissions with stat
+          stat myscript.sh
+          ```
+      - id: numeric-permissions
+        title: Numeric Permissions
+        content: |
+          Permissions can be set with octal numbers: read=4, write=2, execute=1.
+
+          ```bash
+          # Set to rw-r--r-- (owner read/write, others read-only)
+          chmod 644 myscript.sh
+
+          # Set to rwxr-xr-x (owner full, others read/execute)
+          chmod 755 myscript.sh
+          ```
+
+          Common values: 644 (files), 755 (scripts/directories), 600 (private files).
+      - id: archives
+        title: Creating Archives
+        content: |
+          Bundle files together using tar.
+
+          ```bash
+          # Create test files
+          mkdir archive-test
+          touch archive-test/file{1,2,3}.txt
+
+          # Create a tar archive
+          tar -cvf backup.tar archive-test/
+
+          # Create a compressed archive
+          tar -czvf backup.tar.gz archive-test/
+
+          # List contents without extracting
+          tar -tzf backup.tar.gz
+          ```
+      - id: extract-archives
+        title: Extracting Archives
+        content: |
+          Extract files from archives to a specific location.
+
+          ```bash
+          mkdir restored
+          tar -xzf backup.tar.gz -C restored
+          ls restored/archive-test/
+          ```
+      - id: links
+        title: Symbolic and Hard Links
+        content: |
+          Links create references to existing files.
+
+          ```bash
+          echo "original content" > original.txt
+
+          # Symbolic link (shortcut, can break if target moves)
+          ln -s original.txt link-to-original
+
+          # Hard link (same inode, survives if original is deleted)
+          ln original.txt hardlink-original
+
+          # View inode numbers
+          ls -li
+          ```
+
+          Hard links share the same inode; symbolic links are pointers to a path.
+    summary: |
+      You've mastered file permissions, archives, and links — essential skills for
+      managing files in any Linux environment.
+    tips:
+      - Use `ls -la` to quickly check permissions on all files
+      - The `stat` command gives the most detailed file information
+      - Prefer tar.gz for archives (good compression, universal support)
+      - Hard links cannot cross filesystem boundaries; symlinks can
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 100
+        subnet: 10.10.100.0/24
+        gateway: 10.10.100.1
+        dhcp: false
+
+  vms:
+    - name: linux-vm
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /tmp
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: lab-network
+          ip: 10.10.100.10
+      snapshots:
+        - name: initial
+          description: Fresh Ubuntu installation with test files
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # File Permissions
+    - id: create-script
+      description: Create a shell script called 'myscript.sh' with echo "Hello"
+      points: 10
+      hint: "Use 'echo 'echo Hello' > myscript.sh'"
+      order: 1
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/student/myscript.sh
+
+    - id: make-executable
+      description: Make myscript.sh executable using chmod
+      points: 15
+      hint: "Use 'chmod +x myscript.sh' or 'chmod 755 myscript.sh'"
+      depends_on:
+        - create-script
+      order: 2
+      triggers:
+        - type: permission_changed
+          target: linux-vm
+          match:
+            path: /home/student/myscript.sh
+            permission: "755"
+
+    - id: run-script
+      description: Execute your script
+      points: 10
+      hint: "Run './myscript.sh' from the directory containing it"
+      depends_on:
+        - make-executable
+      order: 3
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "\\./myscript\\.sh"
+
+    - id: numeric-permissions
+      description: Set myscript.sh permissions to exactly 644 (rw-r--r--)
+      points: 15
+      hint: "Use 'chmod 644 myscript.sh'"
+      depends_on:
+        - create-script
+      order: 4
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "chmod 644 myscript"
+
+    - id: view-permissions
+      description: View detailed permissions of myscript.sh using stat
+      points: 10
+      hint: "Use 'stat myscript.sh' for detailed file information"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "stat.*myscript"
+
+    # Archives
+    - id: create-archive-dir
+      description: Create a directory called 'archive-test' with 3 files inside
+      points: 10
+      hint: "mkdir archive-test && touch archive-test/file{1,2,3}.txt"
+      order: 6
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/student/archive-test/file1.txt
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/student/archive-test/file2.txt
+
+    - id: create-tar
+      description: Create a tar archive called 'backup.tar' from archive-test/
+      points: 15
+      hint: "Use 'tar -cvf backup.tar archive-test/'"
+      depends_on:
+        - create-archive-dir
+      order: 7
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/student/backup.tar
+
+    - id: create-tar-gz
+      description: Create a compressed archive called 'backup.tar.gz'
+      points: 15
+      hint: "Use 'tar -czvf backup.tar.gz archive-test/'"
+      depends_on:
+        - create-archive-dir
+      order: 8
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/student/backup.tar.gz
+
+    - id: list-archive
+      description: List the contents of backup.tar.gz without extracting
+      points: 10
+      hint: "Use 'tar -tzf backup.tar.gz' to list contents"
+      depends_on:
+        - create-tar-gz
+      order: 9
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "tar.*-t.*backup\\.tar\\.gz"
+
+    - id: extract-archive
+      description: Extract backup.tar.gz to a new directory called 'restored'
+      points: 10
+      hint: "Use 'mkdir restored && tar -xzf backup.tar.gz -C restored'"
+      depends_on:
+        - create-tar-gz
+      order: 10
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/student/restored/archive-test
+
+    # Links
+    - id: create-original
+      description: Create a file called 'original.txt' with some content
+      points: 5
+      hint: "echo 'This is the original file' > original.txt"
+      order: 11
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/student/original.txt
+
+    - id: create-symlink
+      description: Create a symbolic link called 'link-to-original' pointing to original.txt
+      points: 15
+      hint: "Use 'ln -s original.txt link-to-original'"
+      depends_on:
+        - create-original
+      order: 12
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ln -s original\\.txt link-to-original"
+
+    - id: create-hardlink
+      description: Create a hard link called 'hardlink-original' pointing to original.txt
+      points: 15
+      hint: "Use 'ln original.txt hardlink-original' (no -s flag)"
+      depends_on:
+        - create-original
+      order: 13
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ln original\\.txt hardlink-original$"
+
+    - id: verify-links
+      description: Use ls -li to verify the inode numbers of the links
+      points: 10
+      hint: "Use 'ls -li' to see inode numbers - hard links share the same inode"
+      depends_on:
+        - create-symlink
+        - create-hardlink
+      order: 14
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ls.*-li"

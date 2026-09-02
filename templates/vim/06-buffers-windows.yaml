@@ -1,0 +1,201 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: "Buffers, Windows & Tabs"
+  description: |
+    Learn to work with multiple files efficiently in Vim. Master buffers for managing
+    open files, windows for viewing multiple files simultaneously, and tabs for
+    organizing your workspace. These skills are essential for real-world development.
+  duration: 35m
+  difficulty: intermediate
+  tags: [vim, editor, linux, text-editing, intermediate, workflow]
+  version: "1.0.0"
+  author: Kootenai Team
+  category: vim
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: vim-lab-net
+        vlan: 200
+        subnet: 10.20.200.0/24
+        gateway: 10.20.200.1
+        dhcp: false
+
+  vms:
+    - name: vim-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /tmp/vim-exercises
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: vim-lab-net
+          ip: 10.20.200.10
+      snapshots:
+        - name: initial
+          description: Ubuntu with multiple project files
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Buffers
+    - id: open-multiple-files
+      description: "Open multiple files: vim file1 file2 file3"
+      points: 10
+      hint: "Run 'vim file1.txt file2.txt' to open multiple files as buffers"
+      order: 1
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/buffers.txt
+            contains: "MULTI_FILE_COMPLETE"
+
+    - id: list-buffers
+      description: "List all open buffers using :ls or :buffers"
+      points: 10
+      hint: ":ls shows all buffers with their numbers"
+      order: 2
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/buffers.txt
+            contains: "LIST_BUFFERS_COMPLETE"
+
+    - id: switch-buffers
+      description: "Switch between buffers using :b<n> or :bn/:bp"
+      points: 10
+      hint: ":b2 switches to buffer 2, :bn = next, :bp = previous"
+      order: 3
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/buffers.txt
+            contains: "SWITCH_BUFFER_COMPLETE"
+
+    - id: edit-new-file
+      description: "Open a new file in buffer using :e filename"
+      points: 10
+      hint: ":e newfile.txt opens a new file in a new buffer"
+      order: 4
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/buffers.txt
+            contains: "EDIT_NEW_COMPLETE"
+
+    # Windows (Splits)
+    - id: horizontal-split
+      description: "Create horizontal split using :sp or Ctrl-w s"
+      points: 10
+      hint: ":sp or Ctrl-w s splits window horizontally"
+      order: 5
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/windows.txt
+            contains: "HSPLIT_COMPLETE"
+
+    - id: vertical-split
+      description: "Create vertical split using :vsp or Ctrl-w v"
+      points: 10
+      hint: ":vsp or Ctrl-w v splits window vertically"
+      order: 6
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/windows.txt
+            contains: "VSPLIT_COMPLETE"
+
+    - id: navigate-windows
+      description: "Navigate between windows using Ctrl-w + direction"
+      points: 10
+      hint: "Ctrl-w h/j/k/l moves between windows in that direction"
+      order: 7
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/windows.txt
+            contains: "WINDOW_NAV_COMPLETE"
+
+    - id: resize-windows
+      description: "Resize windows using Ctrl-w + or Ctrl-w -"
+      points: 10
+      hint: "Ctrl-w + increases height, Ctrl-w - decreases, Ctrl-w = equalizes"
+      order: 8
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/windows.txt
+            contains: "WINDOW_RESIZE_COMPLETE"
+
+    # Tabs
+    - id: create-tab
+      description: "Create a new tab using :tabnew"
+      points: 10
+      hint: ":tabnew opens empty tab, :tabedit file opens file in new tab"
+      order: 9
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/tabs.txt
+            contains: "TAB_NEW_COMPLETE"
+
+    - id: navigate-tabs
+      description: "Navigate tabs using gt, gT, or :tabn/:tabp"
+      points: 10
+      hint: "gt = next tab, gT = previous tab, :tabn/:tabp also work"
+      order: 10
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/tabs.txt
+            contains: "TAB_NAV_COMPLETE"
+
+    - id: close-tab
+      description: "Close a tab using :tabclose"
+      points: 5
+      hint: ":tabclose closes current tab, :tabonly closes all except current"
+      order: 11
+      required: false
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/tabs.txt
+            contains: "TAB_CLOSE_COMPLETE"

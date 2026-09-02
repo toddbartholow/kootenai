@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: cloudstack-iaas-fundamentals
+  description: "Learn IaaS concepts using Apache CloudStack."
+  duration: 2h
+  difficulty: intermediate
+  tags:
+    - cloud
+    - iaas
+    - api
+  version: "1.0.0"
+
+spec:
+  platform: cloudstack
+  
+  network:
+    segments:
+      - name: isolated-network
+        vlan: 300
+        subnet: 10.1.1.0/24
+        gateway: 10.1.1.1
+        dhcp: true
+  
+  vms:
+    - name: jumpbox
+      template: rocky9-minimal-cloud
+      resources:
+        cpu: 1
+        memory: 1024
+      networks:
+        - segment: isolated-network
+      snapshots:
+        - name: baseline
+          description: "Jumpbox with CloudMonkey CLI"
+          default: true
+      startOnCreate: true

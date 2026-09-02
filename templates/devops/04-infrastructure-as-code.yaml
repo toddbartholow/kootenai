@@ -1,0 +1,276 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Infrastructure as Code
+  description: |
+    Learn Infrastructure as Code (IaC) principles with Terraform. Write declarative
+    configurations to provision and manage infrastructure, use variables and outputs,
+    and understand state management.
+  duration: 120m
+  difficulty: intermediate
+  tags:
+    - devops
+    - terraform
+    - iac
+    - infrastructure
+    - automation
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Infrastructure as Code (IaC) treats infrastructure configuration as software, enabling
+      version control, repeatability, and automation. In this lab, you'll use Terraform to
+      define infrastructure declaratively using the Docker provider for hands-on practice.
+    learning_objectives:
+      - Understand IaC concepts and benefits
+      - Install and configure Terraform
+      - Write HCL configuration files
+      - Use terraform init, plan, and apply
+      - Manage variables and outputs
+      - Understand Terraform state management
+    prerequisites:
+      - Basic Docker knowledge
+      - Command line familiarity
+      - Understanding of YAML/JSON configuration
+    steps:
+      - id: install-terraform
+        title: Install Terraform
+        content: |
+          Install the Terraform CLI tool.
+
+          ```bash
+          # Add HashiCorp GPG key and repository
+          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt update && sudo apt install terraform -y
+
+          # Verify installation
+          terraform version
+          ```
+      - id: first-config
+        title: Write Your First Configuration
+        content: |
+          Create a Terraform project using the Docker provider.
+
+          ```hcl
+          # main.tf
+          terraform {
+            required_providers {
+              docker = {
+                source  = "kreuzwerker/docker"
+                version = "~> 3.0"
+              }
+            }
+          }
+
+          provider "docker" {}
+
+          resource "docker_image" "nginx" {
+            name = "nginx:latest"
+          }
+
+          resource "docker_container" "web" {
+            name  = "tf-nginx"
+            image = docker_image.nginx.image_id
+            ports {
+              internal = 80
+              external = 8080
+            }
+          }
+          ```
+      - id: init-plan
+        title: Initialize and Plan
+        content: |
+          Initialize the project and preview changes.
+
+          ```bash
+          terraform init     # Download providers
+          terraform plan     # Preview what will be created
+          ```
+
+          `terraform plan` shows you exactly what will change before making modifications.
+      - id: apply
+        title: Apply Configuration
+        content: |
+          Apply the configuration to create real resources.
+
+          ```bash
+          terraform apply    # Create the resources (type 'yes')
+          terraform show     # View current state
+          ```
+      - id: variables
+        title: Using Variables
+        content: |
+          Parameterize your configuration with variables.
+
+          ```hcl
+          # variables.tf
+          variable "container_name" {
+            description = "Name of the Docker container"
+            type        = string
+            default     = "tf-nginx"
+          }
+
+          variable "external_port" {
+            description = "External port for the container"
+            type        = number
+            default     = 8080
+          }
+          ```
+
+          Reference with `var.container_name` in your main.tf.
+      - id: state
+        title: State Management
+        content: |
+          Understand and manage Terraform state.
+
+          ```bash
+          terraform state list       # List tracked resources
+          terraform state show docker_container.web  # Show details
+          terraform destroy          # Remove all resources
+          ```
+
+          State tracks the mapping between your configuration and real-world resources.
+    summary: |
+      You've learned Infrastructure as Code with Terraform including HCL syntax, providers,
+      resources, variables, and state management.
+    tips:
+      - Always run terraform plan before apply
+      - Use variables for any value that might change
+      - Never edit the state file manually
+      - Store state remotely for team collaboration
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 133
+        subnet: 192.168.133.0/24
+        gateway: 192.168.133.1
+        dhcp: true
+
+  vms:
+    - name: dev-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: lab-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/terraform-lab
+        audit_commands: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: install-terraform
+      description: Install Terraform and verify with terraform version
+      points: 10
+      hints:
+        - level: 1
+          text: "Follow the HashiCorp installation guide for Ubuntu/Debian"
+          penalty: 2
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "terraform version"
+
+    - id: create-config
+      description: Create a main.tf file with a Terraform configuration
+      points: 15
+      hints:
+        - level: 1
+          text: "Create main.tf with a terraform{} block and a provider block"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/terraform-lab/main.tf
+            contains: "terraform {"
+
+    - id: terraform-init
+      description: Initialize the Terraform project with terraform init
+      points: 15
+      depends_on:
+        - create-config
+      hints:
+        - level: 1
+          text: "Run 'terraform init' in the directory containing main.tf"
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "terraform init"
+
+    - id: terraform-plan
+      description: Run terraform plan to preview infrastructure changes
+      points: 15
+      depends_on:
+        - terraform-init
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "terraform plan"
+
+    - id: terraform-apply
+      description: Apply the Terraform configuration to create resources
+      points: 20
+      depends_on:
+        - terraform-plan
+      hints:
+        - level: 1
+          text: "Run 'terraform apply' and type 'yes' when prompted"
+          penalty: 4
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "terraform apply"
+
+    - id: create-variables
+      description: Create a variables.tf file with input variables
+      points: 15
+      hints:
+        - level: 1
+          text: "Create variables.tf with variable blocks using type and default"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/terraform-lab/variables.tf
+            contains: "variable"
+
+    - id: state-management
+      description: List resources tracked in Terraform state
+      points: 10
+      depends_on:
+        - terraform-apply
+      hints:
+        - level: 1
+          text: "Use 'terraform state list' to see tracked resources"
+          penalty: 2
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "terraform state list"

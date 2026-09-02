@@ -1,0 +1,207 @@
+# Prometheus Alert Rules for Kootenai Platform
+#
+# These alerts cover critical paths for production monitoring.
+
+groups:
+  - name: kootenai-api
+    interval: 30s
+    rules:
+      # API High Error Rate
+      - alert: APIHighErrorRate
+        expr: |
+          (
+            sum(rate(labctl_http_responses_by_code_total{code=~"5.."}[5m]))
+            /
+            sum(rate(labctl_http_responses_total[5m]))
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High API error rate detected"
+          description: "API error rate is {{ $value | humanizePercentage }} (> 5%) over the last 5 minutes"
+
+      # API High Latency
+      - alert: APIHighLatency
+        expr: |
+          histogram_quantile(0.99,
+            sum(rate(labctl_http_request_duration_seconds_bucket[5m])) by (le)
+          ) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High API latency detected"
+          description: "API p99 latency is {{ $value | humanizeDuration }} (> 2s)"
+
+      # API Down
+      - alert: APIDown
+        expr: up{job="kootenai-api"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Kootenai API is down"
+          description: "The API server has been unreachable for more than 2 minutes"
+
+  # All three infrastructure rules are disabled — see each for why and what it
+  # would take to restore. Prometheus rejects a group with no rules, so the
+  # group itself is commented out too.
+  # - name: kootenai-infrastructure
+  #   interval: 60s
+  #   rules:
+      # DISABLED: labctl_database_healthy is not a metric the API exposes.
+      # The API has no health gauge; /ready is its readiness signal and the
+      # APIDown alert above covers total unreachability. Re-enable this by
+      # registering a gauge fed from the database health checker.
+      # - alert: DatabaseUnhealthy
+      #   expr: labctl_database_healthy == 0
+      #   for: 2m
+      #   labels:
+      #     severity: critical
+      #   annotations:
+      #     summary: "Database connection unhealthy"
+      #     description: "The API cannot connect to the database"
+
+      # DISABLED: labctl_nats_connected is not a metric the API exposes.
+      # This alert was meant to catch the API losing its client connection
+      # while NATS itself stayed up. Re-enable by registering a gauge fed from
+      # the NATS client.
+      # - alert: NATSDisconnected
+      #   expr: labctl_nats_connected == 0
+      #   for: 1m
+      #   labels:
+      #     severity: warning
+      #   annotations:
+      #     summary: "NATS connection lost"
+      #     description: "The API has lost connection to NATS message queue"
+
+      # DISABLED: there is no NATS scrape job. nats:8222/varz serves JSON, not
+      # Prometheus text, so the job was permanently failing and this rule fired
+      # critical two minutes after every `docker compose up`. Re-enable it
+      # together with the nats-exporter job in prometheus.yml.
+      # - alert: NATSDown
+      #   expr: up{job="nats"} == 0
+      #   for: 2m
+      #   labels:
+      #     severity: critical
+      #   annotations:
+      #     summary: "NATS server is down"
+      #     description: "The NATS message queue has been unreachable for more than 2 minutes"
+
+  - name: kootenai-pods
+    interval: 60s
+    rules:
+      # High Pod Provisioning Time
+      - alert: HighPodProvisioningTime
+        expr: |
+          histogram_quantile(0.90,
+            sum(rate(labctl_vm_operation_duration_seconds_bucket{operation="provision"}[30m])) by (le)
+          ) > 300
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Pod provisioning is slow"
+          description: "90th percentile pod provisioning time is {{ $value | humanizeDuration }} (> 5 minutes)"
+
+      # DISABLED: labctl_pods_created_total is an unlabelled counter of
+      # successful creations, so the status="failed" selector matches nothing
+      # and no failure counter exists. Re-enable by registering one and
+      # incrementing it where CreatePod returns an error.
+      # - alert: PodProvisioningFailure
+      #   expr: |
+      #     sum(increase(labctl_pods_failed_total[10m])) > 3
+      #   for: 5m
+      #   labels:
+      #     severity: warning
+      #   annotations:
+      #     summary: "Multiple pod provisioning failures"
+      #     description: "{{ $value }} pods have failed to provision in the last 10 minutes"
+
+      # labctl_pods_active is reconciled from the database every 60s
+      # (Server.runMetricsReconcile), so this survives an API restart.
+      - alert: TooManyActivePods
+        # max(): the gauge is reconciled from the database, so every replica
+        # reports the same value. A bare selector would fire once per replica.
+        expr: max(labctl_pods_active) > 50
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High number of active pods"
+          description: "{{ $value }} pods are currently active (threshold: 50)"
+
+  - name: kootenai-sessions
+    interval: 60s
+    rules:
+      # Share of checkpoint outcomes that are active-verification rejections.
+      #
+      # NOT a student pass rate. labctl_checkpoints_failed_total is incremented
+      # from exactly one place, MarkCheckpointVerificationFailed — the guest
+      # agent disagreeing with a passive event. A student failing to complete
+      # an objective never increments it.
+      #
+      # Note the denominator is ALL passes, not verified passes:
+      # CheckpointPassed() is called from three sites and only one of them
+      # (verifyAndConfirm) is a verification, so there is no verified-pass
+      # counter to divide by. This therefore measures rejections as a share of
+      # all checkpoint activity, which is why the threshold is a low positive
+      # number rather than a high agreement ratio — the earlier form could not
+      # be crossed in any deployment where most triggers are non-verifiable.
+      #
+      # rate() rather than raw sums: the counters are cumulative for the life of
+      # the process, so raw sums grow less sensitive with uptime and reset on
+      # restart.
+      - alert: HighCheckpointVerificationRejectionRate
+        expr: |
+          (
+            sum(rate(labctl_checkpoints_failed_total[30m]))
+            /
+            (sum(rate(labctl_checkpoints_passed_total[30m])) + sum(rate(labctl_checkpoints_failed_total[30m])))
+          ) > 0.1
+        for: 30m
+        labels:
+          severity: info
+        annotations:
+          summary: "Active verification is rejecting checkpoints"
+          description: "{{ $value | humanizePercentage }} of checkpoint outcomes are verification rejections — suspect the Wazuh/guest agents, not the students"
+
+  - name: kootenai-metrics
+    interval: 60s
+    rules:
+      # The pods_active and sessions_active gauges are reconciled from the
+      # database. If that reconcile fails it holds the last good values rather
+      # than zeroing, so without this alert a stale gauge is indistinguishable
+      # from a quiet system and TooManyActivePods silently stops tracking.
+      - alert: MetricsReconcileStale
+        expr: time() - labctl_metrics_reconcile_success_timestamp_seconds > 300
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Metrics reconcile has not succeeded recently"
+          description: "pods_active and sessions_active are stale; check the API logs for reconcile errors"
+
+  - name: kootenai-system
+    interval: 60s
+    rules:
+      # High Memory Usage
+      - alert: HighMemoryUsage
+        expr: process_resident_memory_bytes{job="kootenai-api"} > 1073741824
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High API memory usage"
+          description: "API is using {{ $value | humanize1024 }}B of memory (> 1GB)"
+
+      # High Goroutine Count
+      - alert: HighGoroutineCount
+        expr: go_goroutines{job="kootenai-api"} > 1000
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High goroutine count"
+          description: "API has {{ $value }} goroutines (> 1000)"

@@ -1,0 +1,249 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Cloud Security Fundamentals
+  description: |
+    Understand the shared responsibility model and cloud security basics. Learn identity
+    management, network security, and compliance considerations across cloud platforms.
+  duration: 60m
+  difficulty: beginner
+  tags:
+    - cloud
+    - security
+    - fundamentals
+    - compliance
+    - iam
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Cloud security requires understanding the shared responsibility model between cloud
+      providers and customers. This lab covers fundamental concepts that apply across
+      AWS, Azure, GCP, and private cloud platforms.
+    learning_objectives:
+      - Understand the shared responsibility model
+      - Configure basic IAM policies
+      - Implement network security controls
+      - Enable audit logging
+      - Apply security best practices
+      - Understand compliance considerations
+    prerequisites:
+      - Basic cloud computing concepts
+      - Understanding of networking basics
+    steps:
+      - id: shared-responsibility
+        title: The Shared Responsibility Model
+        content: |
+          Understanding who is responsible for what in cloud security.
+
+          **Cloud Provider Responsibilities:**
+          - Physical security of data centers
+          - Network infrastructure
+          - Hypervisor and virtualization layer
+          - Hardware maintenance
+
+          **Customer Responsibilities:**
+          - Data encryption and protection
+          - Identity and access management
+          - Operating system configuration
+          - Network firewall rules
+          - Application security
+      - id: iam-basics
+        title: Identity and Access Management
+        content: |
+          Configure basic identity and access controls.
+
+          Key principles:
+          - **Least Privilege**: Only grant permissions that are needed
+          - **Separation of Duties**: Distribute critical functions
+          - **No Root/Admin for Daily Work**: Use role-based accounts
+
+          ```yaml
+          # Example IAM policy
+          policy:
+            name: ReadOnlyS3
+            effect: Allow
+            actions:
+              - s3:GetObject
+              - s3:ListBucket
+            resources:
+              - arn:aws:s3:::my-bucket/*
+          ```
+      - id: network-security
+        title: Cloud Network Security
+        content: |
+          Secure your cloud network architecture.
+
+          - **Security Groups**: Instance-level firewall rules
+          - **Network ACLs**: Subnet-level access control
+          - **VPC Design**: Isolate workloads in separate networks
+          - **Private Subnets**: Keep sensitive resources off the internet
+      - id: audit-logging
+        title: Enable Audit Logging
+        content: |
+          Track all actions in your cloud environment.
+
+          - Enable cloud trail/audit logs
+          - Store logs in immutable storage
+          - Set up alerts for suspicious activity
+          - Retain logs per compliance requirements
+      - id: compliance
+        title: Compliance Considerations
+        content: |
+          Understand common compliance frameworks.
+
+          - **SOC 2**: Security, availability, confidentiality
+          - **HIPAA**: Healthcare data protection
+          - **PCI DSS**: Payment card data security
+          - **GDPR**: EU data privacy regulations
+    summary: |
+      You've learned cloud security fundamentals including shared responsibility, IAM,
+      network security, and compliance basics.
+    tips:
+      - Always enable MFA for privileged accounts
+      - Encrypt data at rest and in transit
+      - Regularly review access permissions
+      - Automate security controls where possible
+    resources:
+      - title: Cloud Security Alliance
+        url: https://cloudsecurityalliance.org/
+      - title: NIST Cloud Computing Standards
+        url: https://www.nist.gov/programs-projects/nist-cloud-computing-program
+
+spec:
+  platform: cloudstack
+
+  network:
+    segments:
+      - name: public-network
+        vlan: 130
+        subnet: 192.168.130.0/24
+        gateway: 192.168.130.1
+        dhcp: true
+      - name: private-network
+        vlan: 131
+        subnet: 10.0.1.0/24
+        gateway: 10.0.1.1
+        dhcp: true
+
+  vms:
+    - name: management-console
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: public-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/cloud-security
+        audit_commands: true
+
+    - name: web-server
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 1
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: public-network
+          ip: 192.168.130.20
+        - segment: private-network
+          ip: 10.0.1.20
+      startOnCreate: true
+
+    - name: database-server
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: private-network
+          ip: 10.0.1.30
+      startOnCreate: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: identify-responsibility
+      description: Document what customer is responsible for securing
+      points: 15
+      triggers:
+        - type: file_content
+          target: management-console
+          match:
+            path: /home/student/cloud-security/responsibility.txt
+            regex: "(customer|data|IAM|application)"
+
+    - id: create-iam-policy
+      description: Create an IAM policy following least privilege
+      points: 20
+      hints:
+        - level: 1
+          text: Define specific actions and resources, avoid wildcards
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: management-console
+          match:
+            path: /home/student/cloud-security/iam-policy.json
+            contains: "effect"
+
+    - id: configure-security-group
+      description: Configure a security group for the web server
+      points: 20
+      hints:
+        - level: 1
+          text: Allow only necessary ports (80, 443) from specific sources
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: management-console
+          match:
+            path: /home/student/cloud-security/security-group.json
+            regex: "(inbound|ingress|port)"
+
+    - id: private-subnet
+      description: Verify database is only accessible from private network
+      points: 15
+      triggers:
+        - type: active_check
+          target: management-console
+          script: |
+            # Check that database is not reachable from public network
+            timeout 2 nc -z 192.168.130.30 5432 2>/dev/null
+            if [ $? -eq 0 ]; then
+              exit 1  # Fail if reachable from public
+            fi
+            exit 0
+
+    - id: enable-audit-log
+      description: Enable and configure audit logging
+      points: 15
+      triggers:
+        - type: file_content
+          target: management-console
+          match:
+            path: /home/student/cloud-security/audit-config.yaml
+            contains: "logging"
+
+    - id: compliance-checklist
+      description: Create a compliance checklist for your environment
+      points: 15
+      triggers:
+        - type: file_exists
+          target: management-console
+          match:
+            path: /home/student/cloud-security/compliance-checklist.md

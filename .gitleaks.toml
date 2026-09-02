@@ -1,0 +1,124 @@
+# Gitleaks Configuration for Kootenai
+#
+# Secret-scanning rules for this repository, used by the `security` job in
+# .github/workflows/ci.yml and by `gitleaks detect` run locally.
+#
+# The rules below are deliberately generic -- credential shapes rather than
+# specific values -- so they stay useful in any deployment. Add your own
+# environment's literals if you want them caught: an address, hostname or
+# password you never want committed makes a good rule. Note that a rule
+# matching a literal necessarily contains that literal, so anything you add
+# here is readable to anyone who can read this file.
+
+title = "Kootenai Gitleaks Configuration"
+
+# Extend the default rules
+[extend]
+useDefault = true
+
+# ===========================================
+# Custom Rules for Project-Specific Secrets
+# ===========================================
+
+[[rules]]
+id = "proxmox-api-token"
+description = "Proxmox API Token"
+regex = '''PVEAPIToken=[a-zA-Z0-9@!-]+=[a-f0-9-]{36}'''
+tags = ["api-token", "proxmox"]
+keywords = ["PVEAPIToken"]
+
+[[rules]]
+id = "proxmox-api-secret"
+description = "Proxmox API Secret"
+regex = '''[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'''
+tags = ["api-secret", "proxmox"]
+keywords = ["proxmox", "pve"]
+# Only flag if near proxmox-related context
+entropy = 3.5
+
+[[rules]]
+id = "ssh-password-inline"
+description = "SSH password in command or config"
+regex = '''sshpass\s+-p\s+['"]?[^'">\s]+['"]?'''
+tags = ["password", "ssh"]
+keywords = ["sshpass"]
+
+[[rules]]
+id = "labadmin-credentials"
+description = "Labadmin user with password"
+regex = '''labadmin:[^@\s]+@'''
+tags = ["credentials", "kootenai"]
+keywords = ["labadmin"]
+
+# ===========================================
+# Allowlist - Known false positives
+# ===========================================
+
+[allowlist]
+description = "Global allowlist"
+
+# Paths to ignore — generated/vendored/doc content. Docusaurus pages in
+# particular contain realistic-format example values (JWT tokens with "..."
+# truncation, curl examples with PVEAPIToken=..., sshpass env-var
+# placeholders) that a scan would otherwise flag.
+paths = [
+    '''\.gitleaks\.toml$''',
+    '''node_modules/.*''',
+    '''vendor/.*''',
+    '''\.venv/.*''',
+    '''.*_test\.go$''',
+    '''.*\.test\.ts$''',
+    '''.*\.spec\.ts$''',
+    '''api/coverage\.html$''',
+    '''.*\.env\.example$''',
+    '''docusaurus/docs/.*\.md$''',
+    '''magefiles/.*\.go$''',
+    '''scripts/install-wazuh-on-template\.sh$''',
+]
+
+# Regex patterns to ignore (placeholder values in docs/config).
+regexes = [
+    '''<INFRA_IP>''',
+    '''<INFRA_VM_IP>''',
+    '''<PROXMOX_IP>''',
+    '''<LOCAL_IP>''',
+    '''<CHANGE_ME>''',
+    '''<GENERATE_RANDOM_32CHAR_SECRET>''',
+    '''<EXAMPLE_PASSWORD>''',
+    '''<PROXMOX_API_TOKEN>''',
+    '''<PROXMOX_TOKEN_ID>''',
+    '''<JWT_SECRET_CHANGE_ME>''',
+    '''<DB_PASSWORD>''',
+    '''<FREEIPA_IP>''',
+    '''<MAINTAINER_EMAIL>''',
+    '''<CANVAS_HOST>''',
+    '''example\.com''',
+    '''localhost''',
+    '''127\.0\.0\.1''',
+    # Shell env-var placeholders in scripts (sshpass -p "$VAR", etc.) —
+    # these are interpolated at runtime, not baked-in credentials.
+    '''\$[A-Z_]+''',
+    '''\$\{[A-Z_]+(:-[^}]*)?\}''',
+    # Truncated JWT examples in documentation (the `...` suffix is the
+    # documentation convention for "the rest of the token").
+    '''eyJhbGciOi[A-Za-z0-9+/=]+\.\.\.''',
+    # RFC 6455 §1.3 standard example WebSocket handshake key
+    # ("the sample nonce" base64-encoded). Appears in WS test fixtures.
+    '''dGhlIHNhbXBsZSBub25jZQ==''',
+]
+
+# ===========================================
+# Rule-specific allowlists
+# ===========================================
+
+# Allow generic API key patterns in mocks, fixtures, and examples
+[[rules]]
+id = "generic-api-key"
+[rules.allowlist]
+paths = [
+    '''.*mock.*''',
+    '''.*fixture.*''',
+    '''.*example.*''',
+    '''.*\.env\.example$''',
+    '''api/labctl\.service$''',
+]

@@ -1,0 +1,292 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Python Network Programming
+  description: |
+    Build network tools and applications with Python. Learn socket programming,
+    HTTP requests, REST API interaction, and create practical network utilities
+    like ping sweeps and port scanners.
+  duration: 75m
+  difficulty: intermediate
+  tags:
+    - python
+    - networking
+    - sockets
+    - http
+    - rest-api
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Python's networking libraries make it easy to build network tools and interact
+      with remote services. In this lab, you'll learn socket programming basics, make
+      HTTP requests, work with REST APIs, and build practical network utilities.
+    learning_objectives:
+      - Create TCP socket clients and servers
+      - Make HTTP requests with the requests library
+      - Interact with REST APIs
+      - Build network utilities (ping sweep, port checker, DNS lookup)
+    prerequisites:
+      - Python Fundamentals (functions, data structures)
+      - Basic networking concepts (IP, ports, TCP/UDP)
+    steps:
+      - id: socket-client
+        title: Socket Client
+        content: |
+          Create a basic TCP client to connect to a server.
+
+          ```python
+          # socket_client.py
+          import socket
+
+          sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+          sock.settimeout(5)
+          try:
+              sock.connect(("target-server", 80))
+              sock.sendall(b"GET / HTTP/1.0\r\nHost: target-server\r\n\r\n")
+              response = sock.recv(4096)
+              print(response.decode())
+          finally:
+              sock.close()
+          ```
+      - id: socket-server
+        title: Socket Server
+        content: |
+          Build a simple echo server.
+
+          ```python
+          # socket_server.py
+          import socket
+
+          server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+          server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+          server.bind(("0.0.0.0", 9999))
+          server.listen(1)
+          print("Listening on port 9999...")
+
+          conn, addr = server.accept()
+          print(f"Connection from {addr}")
+          data = conn.recv(1024)
+          conn.sendall(data)  # Echo back
+          conn.close()
+          server.close()
+          ```
+      - id: http-requests
+        title: HTTP Requests
+        content: |
+          Use the requests library for HTTP operations.
+
+          ```python
+          # http_requests.py
+          import requests
+
+          # GET request
+          resp = requests.get("http://httpbin.org/get")
+          print(f"Status: {resp.status_code}")
+          print(resp.json())
+
+          # POST request
+          data = {"name": "student", "role": "learner"}
+          resp = requests.post("http://httpbin.org/post", json=data)
+          print(resp.json())
+          ```
+      - id: rest-api
+        title: REST API Interaction
+        content: |
+          Work with a REST API using standard CRUD operations.
+
+          ```python
+          # rest_api.py
+          import requests
+
+          API_URL = "https://jsonplaceholder.typicode.com"
+
+          # List resources
+          posts = requests.get(f"{API_URL}/posts").json()
+          print(f"Total posts: {len(posts)}")
+
+          # Get a specific resource
+          post = requests.get(f"{API_URL}/posts/1").json()
+          print(f"Title: {post['title']}")
+          ```
+      - id: network-utils
+        title: Network Utilities
+        content: |
+          Build practical networking tools.
+
+          ```python
+          # net_utils.py
+          import socket
+          import subprocess
+
+          # DNS lookup
+          ip = socket.gethostbyname("google.com")
+          print(f"google.com -> {ip}")
+
+          # Simple port checker
+          def check_port(host, port):
+              sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+              sock.settimeout(2)
+              result = sock.connect_ex((host, port))
+              sock.close()
+              return result == 0
+
+          for port in [22, 80, 443, 8080]:
+              status = "open" if check_port("target-server", port) else "closed"
+              print(f"Port {port}: {status}")
+          ```
+    summary: |
+      You've built network tools with Python including socket clients/servers, HTTP
+      requests, REST API integration, and network utilities.
+    tips:
+      - Always set socket timeouts to prevent hanging
+      - Use requests library instead of urllib for HTTP
+      - Handle connection errors gracefully with try/except
+      - Never run port scanners against systems you don't own
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 112
+        subnet: 192.168.112.0/24
+        gateway: 192.168.112.1
+        dhcp: true
+
+  vms:
+    - name: python-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: lab-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/python-labs
+        audit_commands: true
+
+    - name: target-server
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 1
+        memory: 1024
+        disk: 20
+      networks:
+        - segment: lab-network
+          ip: dhcp
+      startOnCreate: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: socket-client
+      description: Create a Python TCP socket client that connects to a server
+      points: 15
+      hints:
+        - level: 1
+          text: "Import socket, create socket.socket(AF_INET, SOCK_STREAM), then .connect()"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/socket_client.py
+            contains: "socket.connect"
+
+    - id: socket-server
+      description: Build a simple socket server that listens on a port
+      points: 15
+      hints:
+        - level: 1
+          text: "Use socket.bind(), socket.listen(), and socket.accept()"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/socket_server.py
+            contains: "server.listen"
+
+    - id: http-request
+      description: Make an HTTP GET request using the requests library
+      points: 15
+      hints:
+        - level: 1
+          text: "Use requests.get(url) and check .status_code and .json()"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/http_requests.py
+            contains: "requests.get"
+
+    - id: rest-api
+      description: Interact with a REST API endpoint
+      points: 15
+      hints:
+        - level: 1
+          text: "Use requests.get() with the API URL, parse the JSON response"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/rest_api.py
+            regex: "requests\\.(get|post)"
+
+    - id: ping-sweep
+      description: Create a script that checks if hosts are reachable
+      points: 15
+      hints:
+        - level: 1
+          text: "Use subprocess.run(['ping', '-c', '1', host]) and check returncode"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/net_utils.py
+            contains: "ping"
+
+    - id: dns-lookup
+      description: Perform DNS lookups using socket.gethostbyname()
+      points: 10
+      hints:
+        - level: 1
+          text: "Use socket.gethostbyname('hostname') to resolve to IP"
+          penalty: 2
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/net_utils.py
+            contains: "gethostbyname"
+
+    - id: port-checker
+      description: Create a port checker that tests if ports are open
+      points: 15
+      hints:
+        - level: 1
+          text: "Use socket.connect_ex() which returns 0 if the port is open"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/net_utils.py
+            contains: "connect_ex"

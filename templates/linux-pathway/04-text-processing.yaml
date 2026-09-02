@@ -1,0 +1,321 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Text Processing
+  description: |
+    Master Linux text processing tools including grep, awk, sed, cut, and sort.
+    Learn to efficiently search, transform, and analyze text data using pipes
+    and command chaining.
+  duration: 60m
+  difficulty: intermediate
+  tags:
+    - linux
+    - intermediate
+    - grep
+    - awk
+    - sed
+    - text-processing
+    - pipes
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Linux provides powerful text processing tools that work together through pipes.
+      In this lab, you'll master grep for searching, cut and sort for extracting and
+      ordering data, awk for field processing, and sed for text transformation.
+    learning_objectives:
+      - Search text with grep and regular expressions
+      - Extract fields with cut and sort data
+      - Process structured text with awk
+      - Transform text with sed substitutions
+      - Build complex pipelines combining multiple tools
+    prerequisites:
+      - Shell Essentials (pipes and redirection)
+      - Basic understanding of /etc/passwd format
+    steps:
+      - id: grep-basics
+        title: Searching with grep
+        content: |
+          grep searches for patterns in text.
+
+          ```bash
+          # Basic search
+          grep root /etc/passwd
+
+          # Case-insensitive
+          grep -i user /etc/passwd
+
+          # Show line numbers
+          grep -n bash /etc/passwd
+
+          # Invert match (lines NOT matching)
+          grep -v nologin /etc/passwd
+
+          # Count matches
+          grep -c /bin/bash /etc/passwd
+          ```
+      - id: cut-sort
+        title: Extracting and Sorting
+        content: |
+          cut extracts fields; sort orders lines.
+
+          ```bash
+          # Extract usernames (field 1, delimiter :)
+          cut -d: -f1 /etc/passwd
+
+          # Sort alphabetically
+          cut -d: -f1 /etc/passwd | sort
+
+          # Reverse sort
+          cut -d: -f1 /etc/passwd | sort -r
+
+          # Count unique shells
+          cut -d: -f7 /etc/passwd | sort | uniq -c
+          ```
+      - id: awk-basics
+        title: Field Processing with awk
+        content: |
+          awk is a powerful tool for processing structured text.
+
+          ```bash
+          # Print first and last fields
+          awk -F: '{print $1, $7}' /etc/passwd
+
+          # Filter by condition (UIDs >= 1000)
+          awk -F: '$3 >= 1000 {print $1}' /etc/passwd
+          ```
+
+          `-F:` sets the field separator. `$1` is the first field, `$NF` is the last.
+      - id: sed-basics
+        title: Text Transformation with sed
+        content: |
+          sed performs search-and-replace on text streams.
+
+          ```bash
+          # Replace text (display only, no file modification)
+          sed 's/root/admin/g' /etc/passwd
+
+          # Delete lines matching a pattern
+          sed '/nologin/d' /etc/passwd
+          ```
+
+          The `s/old/new/g` syntax substitutes globally. The `d` command deletes matching lines.
+      - id: pipeline-challenge
+        title: Complex Pipelines
+        content: |
+          Combine tools for powerful analysis.
+
+          ```bash
+          # Find the 5 most common shells
+          cut -d: -f7 /etc/passwd | sort | uniq -c | sort -rn | head -5
+          ```
+
+          Each command in the pipeline transforms the data for the next.
+    summary: |
+      You can now search, extract, transform, and analyze text data using Linux's
+      powerful text processing toolkit.
+    tips:
+      - grep -E enables extended regex (same as egrep)
+      - awk can replace many uses of cut + grep combined
+      - Test sed commands without -i first to preview changes
+      - Build pipelines incrementally — add one command at a time
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 100
+        subnet: 10.10.100.0/24
+        gateway: 10.10.100.1
+        dhcp: false
+
+  vms:
+    - name: linux-vm
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: lab-network
+          ip: 10.10.100.10
+      snapshots:
+        - name: initial
+          description: Fresh Ubuntu installation with sample data files
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # grep basics
+    - id: grep-simple
+      description: Search for the word 'root' in /etc/passwd
+      points: 10
+      hint: "Use 'grep root /etc/passwd'"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "grep root /etc/passwd"
+
+    - id: grep-case-insensitive
+      description: Search for 'user' case-insensitively in /etc/passwd
+      points: 10
+      hint: "Use 'grep -i user /etc/passwd' for case-insensitive search"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "grep -i user /etc/passwd"
+
+    - id: grep-line-numbers
+      description: Search for 'bash' in /etc/passwd and show line numbers
+      points: 10
+      hint: "Use 'grep -n bash /etc/passwd'"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "grep -n bash /etc/passwd"
+
+    - id: grep-invert
+      description: Show all lines in /etc/passwd that do NOT contain 'nologin'
+      points: 10
+      hint: "Use 'grep -v nologin /etc/passwd' to invert the match"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "grep -v nologin /etc/passwd"
+
+    - id: grep-count
+      description: Count how many users have /bin/bash as their shell
+      points: 10
+      hint: "Use 'grep -c /bin/bash /etc/passwd'"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "grep -c.*/bin/bash /etc/passwd"
+
+    # cut and sort
+    - id: cut-usernames
+      description: Extract only the usernames (first field) from /etc/passwd
+      points: 10
+      hint: "Use 'cut -d: -f1 /etc/passwd' where -d sets delimiter and -f selects field"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "cut.*-d:.*-f1.*/etc/passwd"
+
+    - id: sort-users
+      description: List usernames from /etc/passwd in alphabetical order
+      points: 10
+      hint: "Pipe cut output to sort: 'cut -d: -f1 /etc/passwd | sort'"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "cut.*-f1.*/etc/passwd.*\\|.*sort"
+
+    - id: sort-reverse
+      description: List usernames in reverse alphabetical order
+      points: 10
+      hint: "Add -r flag to sort: 'cut -d: -f1 /etc/passwd | sort -r'"
+      order: 8
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sort.*-r"
+
+    - id: uniq-count
+      description: Count unique shells used in /etc/passwd
+      points: 15
+      hint: "Use 'cut -d: -f7 /etc/passwd | sort | uniq -c'"
+      order: 9
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "cut.*-f7.*/etc/passwd.*\\|.*sort.*\\|.*uniq.*-c"
+
+    # awk basics
+    - id: awk-print
+      description: Use awk to print only the first and last field of /etc/passwd
+      points: 15
+      hint: "Use 'awk -F: '{print $1, $7}' /etc/passwd'"
+      order: 10
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "awk.*-F:.*\\{print.*\\$1.*\\$7.*\\}"
+
+    - id: awk-condition
+      description: Use awk to show only users with UID >= 1000
+      points: 15
+      hint: "Use 'awk -F: '$3 >= 1000 {print $1}' /etc/passwd'"
+      order: 11
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "awk.*\\$3.*>=.*1000"
+
+    # sed basics
+    - id: sed-substitute
+      description: Use sed to replace 'root' with 'admin' in /etc/passwd (display only)
+      points: 15
+      hint: "Use 'sed 's/root/admin/g' /etc/passwd' - this only displays, doesn't modify"
+      order: 12
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sed.*s/root/admin"
+
+    - id: sed-delete
+      description: Use sed to display /etc/passwd without lines containing 'nologin'
+      points: 10
+      hint: "Use 'sed '/nologin/d' /etc/passwd' to delete matching lines"
+      order: 13
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sed.*/nologin/d"
+
+    # Complex pipeline
+    - id: pipeline-challenge
+      description: Find the 5 most common shells in /etc/passwd
+      points: 20
+      hint: "Combine: cut -d: -f7 /etc/passwd | sort | uniq -c | sort -rn | head -5"
+      order: 14
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "cut.*-f7.*\\|.*sort.*\\|.*uniq.*-c.*\\|.*sort.*-rn.*\\|.*head"

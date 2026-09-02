@@ -1,0 +1,450 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Simple Linux Introduction
+  description: |
+    A beginner-friendly lab to learn basic Linux commands and file operations.
+    Perfect for testing the lab completion and grading system.
+  duration: 30m
+  difficulty: beginner
+  tags:
+    - linux
+    - beginner
+    - basics
+  version: "1.0.0"
+  author: Kootenai Team
+
+  # Educational content for the lab
+  instructions:
+    overview: |
+      Welcome to your first Linux lab! In this exercise, you'll learn the fundamental
+      commands that every Linux user needs to know. By the end, you'll be comfortable
+      creating directories, files, and understanding how the Linux filesystem works.
+
+    learning_objectives:
+      - Understand the Linux directory structure and home directory concept
+      - Create and organize directories using the mkdir command
+      - Create and manipulate files using touch and echo
+      - View filesystem information using ls and df commands
+      - Understand file paths (absolute vs relative)
+
+    prerequisites:
+      - Basic computer literacy
+      - Access to a terminal (provided in this lab)
+
+    steps:
+      - id: step-1
+        title: "Understanding Your Home Directory"
+        objective_id: create-directory
+        content: |
+          ## What is a Home Directory?
+
+          In Linux, every user has a personal space called a **home directory**. This is
+          where you store your personal files, configurations, and projects. It's similar
+          to "My Documents" in Windows or your user folder on a Mac.
+
+          Your home directory path is `/home/labadmin` (or `/home/<your-username>` on other
+          systems). Linux provides a convenient shortcut: the tilde symbol `~` always
+          refers to your home directory.
+
+          ## Why Organize with Directories?
+
+          Just like physical folders help organize papers on your desk, directories (folders)
+          in Linux help organize your files. Good organization makes it easier to:
+          - Find files quickly
+          - Back up important data
+          - Share specific projects with others
+          - Keep your system clean and manageable
+
+          ## Creating Your First Directory
+
+          The `mkdir` command (short for "make directory") creates new directories.
+
+          **Syntax:** `mkdir [options] directory_name`
+
+          ### Your Task
+
+          Create a directory called `mywork` in your home directory:
+
+          ```bash
+          mkdir ~/mywork
+          ```
+
+          **Breaking it down:**
+          - `mkdir` - the command to create a directory
+          - `~/mywork` - the path where you want to create it
+            - `~` expands to `/home/labadmin`
+            - So this creates `/home/labadmin/mywork`
+
+          ### Verify It Worked
+
+          After creating the directory, you can verify it exists:
+
+          ```bash
+          ls ~
+          ```
+
+          You should see `mywork` listed in the output.
+
+      - id: step-2
+        title: "Creating an Empty File"
+        objective_id: create-file
+        content: |
+          ## What is the touch Command?
+
+          The `touch` command is one of the most versatile commands in Linux. Its primary
+          purposes are:
+
+          1. **Create empty files** - If a file doesn't exist, `touch` creates it
+          2. **Update timestamps** - If a file exists, `touch` updates its modification time
+
+          In this step, we'll use it to create a new, empty file.
+
+          ## Why Create Empty Files?
+
+          You might wonder: why create an empty file? Common reasons include:
+          - Creating a placeholder for future content
+          - Creating configuration files before editing them
+          - Creating log files that programs will write to
+          - Testing file permissions and paths
+
+          ## Creating notes.txt
+
+          **Syntax:** `touch file_path`
+
+          ### Your Task
+
+          Create a file called `notes.txt` inside your `mywork` directory:
+
+          ```bash
+          touch ~/mywork/notes.txt
+          ```
+
+          **Understanding the path:**
+          - `~/mywork/notes.txt` means:
+            - Start at home directory (`~`)
+            - Go into the `mywork` directory
+            - Create a file named `notes.txt`
+
+          ### Verify the File Exists
+
+          ```bash
+          ls ~/mywork
+          ```
+
+          You should see `notes.txt` in the output. Note that it's empty right now—it
+          has 0 bytes of content.
+
+      - id: step-3
+        title: "Writing Content to a File"
+        objective_id: write-content
+        content: |
+          ## Output Redirection: The Power of >
+
+          Linux has a powerful feature called **output redirection**. Normally, when you
+          run a command, its output appears on your screen (called "standard output" or stdout).
+          The `>` operator redirects this output to a file instead.
+
+          ## The echo Command
+
+          `echo` simply prints (echoes) text to standard output. Combined with redirection,
+          it becomes a quick way to write content to files.
+
+          **Examples:**
+          - `echo "Hello"` - prints "Hello" to screen
+          - `echo "Hello" > file.txt` - writes "Hello" to file.txt
+
+          ## Overwrite vs Append
+
+          Understanding these two redirection operators is crucial:
+
+          | Operator | Behavior | Example |
+          |----------|----------|---------|
+          | `>` | **Overwrites** the file (replaces all content) | `echo "new" > file` |
+          | `>>` | **Appends** to the file (adds to end) | `echo "more" >> file` |
+
+          ⚠️ **Warning:** Using `>` will destroy any existing content in the file!
+
+          ### Your Task
+
+          Write the text "Hello, Kootenai!" into your notes.txt file:
+
+          ```bash
+          echo "Hello, Kootenai!" > ~/mywork/notes.txt
+          ```
+
+          ### Verify the Content
+
+          Use `cat` (concatenate) to display the file contents:
+
+          ```bash
+          cat ~/mywork/notes.txt
+          ```
+
+          You should see: `Hello, Kootenai!`
+
+          ### Experiment (Optional)
+
+          Try these to understand the difference:
+          ```bash
+          echo "Line 2" >> ~/mywork/notes.txt  # Appends a second line
+          cat ~/mywork/notes.txt                # Shows both lines
+          ```
+
+      - id: step-4
+        title: "Checking Disk Space"
+        objective_id: check-disk-space
+        content: |
+          ## Why Monitor Disk Space?
+
+          Running out of disk space can cause serious problems:
+          - Applications may crash or refuse to start
+          - System logs can't be written, hiding important errors
+          - Databases may become corrupted
+          - You might lose unsaved work
+
+          Regularly checking disk space is a good habit for any Linux user or administrator.
+
+          ## The df Command
+
+          `df` stands for "disk free" and shows how much space is available on mounted
+          filesystems.
+
+          **Common options:**
+          - `df` - basic output in 1K blocks (hard to read)
+          - `df -h` - **human-readable** format (KB, MB, GB)
+          - `df -T` - shows filesystem **type**
+          - `df -h /home` - shows space for a specific path
+
+          ### Your Task
+
+          Check the available disk space on your system:
+
+          ```bash
+          df -h
+          ```
+
+          ### Understanding the Output
+
+          ```
+          Filesystem      Size  Used Avail Use% Mounted on
+          /dev/sda1        16G  4.2G   11G  28% /
+          ```
+
+          | Column | Meaning |
+          |--------|---------|
+          | Filesystem | The device or partition name |
+          | Size | Total capacity of the filesystem |
+          | Used | How much space is currently used |
+          | Avail | How much free space remains |
+          | Use% | Percentage of space used |
+          | Mounted on | Where this filesystem is accessible |
+
+          **Key insight:** The `/` (root) filesystem contains your entire system. If this
+          fills up, you'll have problems!
+
+          ### Pro Tip
+
+          To see just your home directory's filesystem:
+          ```bash
+          df -h ~
+          ```
+
+      - id: step-5
+        title: "Listing Directory Contents"
+        objective_id: list-files
+        content: |
+          ## The ls Command: Your Filesystem Explorer
+
+          `ls` (list) is probably the most frequently used Linux command. It shows you
+          what files and directories exist in a location.
+
+          ## Common ls Options
+
+          | Option | Purpose | Example |
+          |--------|---------|---------|
+          | (none) | Basic listing | `ls` |
+          | `-l` | Long format (details) | `ls -l` |
+          | `-a` | Show hidden files (starting with .) | `ls -a` |
+          | `-h` | Human-readable sizes (with -l) | `ls -lh` |
+          | `-R` | Recursive (include subdirectories) | `ls -R` |
+          | `-t` | Sort by modification time | `ls -lt` |
+
+          **Pro tip:** Combine options! `ls -lah` shows all files in long, human-readable format.
+
+          ## Understanding Long Format Output
+
+          ```
+          -rw-r--r-- 1 student student 21 Dec 30 10:15 notes.txt
+          ```
+
+          | Part | Meaning |
+          |------|---------|
+          | `-rw-r--r--` | File permissions (read/write/execute) |
+          | `1` | Number of hard links |
+          | `student` | Owner of the file |
+          | `student` | Group owner |
+          | `21` | File size in bytes |
+          | `Dec 30 10:15` | Last modification time |
+          | `notes.txt` | Filename |
+
+          ### Your Task
+
+          List the contents of your mywork directory:
+
+          ```bash
+          ls ~/mywork
+          ```
+
+          For more details, try:
+          ```bash
+          ls -l ~/mywork
+          ```
+
+          ### What You Should See
+
+          You should see `notes.txt` listed. The long format will show you:
+          - The file permissions
+          - That you (student) own it
+          - The file size (should be 17 bytes for "Hello, Kootenai!\n")
+          - When you created it
+
+    summary: |
+      ## Congratulations! 🎉
+
+      You've completed the Simple Linux Introduction lab. You've learned:
+
+      1. **Home Directory (`~`)** - Your personal space in the Linux filesystem
+      2. **mkdir** - Create directories to organize your files
+      3. **touch** - Create empty files or update timestamps
+      4. **echo with >** - Write content to files using output redirection
+      5. **df -h** - Check available disk space in human-readable format
+      6. **ls** - List and explore directory contents
+
+      ## Next Steps
+
+      Now that you understand these basics, you're ready to:
+      - Learn about file permissions (`chmod`)
+      - Navigate the filesystem (`cd`, `pwd`)
+      - Edit files with text editors (`nano`, `vim`)
+      - Copy, move, and delete files (`cp`, `mv`, `rm`)
+
+      Continue to the **Linux Foundations** lab to deepen your knowledge!
+
+    tips:
+      - "Use Tab for auto-completion: type 'cd ~/myw' and press Tab to complete to 'mywork'"
+      - "Use the up arrow key to recall previous commands"
+      - "If you make a mistake, you can always delete and start over with 'rm -r ~/mywork'"
+      - "The 'clear' command cleans up your terminal screen"
+      - "Use 'man <command>' to read the manual for any command (e.g., 'man ls')"
+
+    resources:
+      - title: "Linux Command Line Basics"
+        url: "https://ubuntu.com/tutorials/command-line-for-beginners"
+      - title: "The Linux Filesystem Hierarchy"
+        url: "https://www.pathname.com/fhs/"
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 100
+        subnet: 10.10.100.0/24
+        gateway: 10.10.100.1
+        dhcp: false
+
+  vms:
+    - name: linux-vm
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/labadmin
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 1
+        memory: 2048
+        disk: 16
+      networks:
+        - segment: lab-network
+          ip: 10.10.100.10
+      snapshots:
+        - name: initial
+          description: Fresh Ubuntu installation
+          default: true
+
+  # Checkpoint/grading configuration
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  # Graded objectives
+  objectives:
+    - id: create-directory
+      description: Create a directory called 'mywork' in your home directory
+      points: 20
+      hint: "Use 'mkdir ~/mywork' to create the directory"
+      order: 1
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/labadmin/mywork
+
+    - id: create-file
+      description: Create a file called 'notes.txt' in the mywork directory
+      points: 20
+      hint: "Use 'touch ~/mywork/notes.txt' to create the file"
+      depends_on:
+        - create-directory
+      order: 2
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/labadmin/mywork/notes.txt
+
+    - id: write-content
+      description: Write 'Hello, Kootenai!' into notes.txt
+      points: 30
+      hint: "Use 'echo \"Hello, Kootenai!\" > ~/mywork/notes.txt'"
+      depends_on:
+        - create-file
+      order: 3
+      triggers:
+        - type: file_content
+          target: linux-vm
+          match:
+            path: /home/labadmin/mywork/notes.txt
+            contains: "Hello, Kootenai!"
+
+    - id: check-disk-space
+      description: Check available disk space
+      points: 10
+      hint: "Run the 'df -h' command"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "df"
+
+    - id: list-files
+      description: List all files in your mywork directory
+      points: 20
+      hint: "Use 'ls ~/mywork' to list the files"
+      depends_on:
+        - create-file
+      order: 5
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ls.*mywork"

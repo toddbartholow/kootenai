@@ -1,0 +1,86 @@
+# Kootenai Platform Configuration
+# Copy to config.yaml and update values
+
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+database:
+  host: "localhost"
+  port: 5432
+  user: "labctl"
+  password: "${DATABASE_PASSWORD}"
+  database: "labctl"
+  sslmode: "disable"
+
+proxmox:
+  host: "proxmox.example.com"
+  port: 8006
+  token_id: "api@pve!labctl"
+  token: "${PROXMOX_TOKEN}"
+  default_node: "pve"
+  insecure: false
+
+cloudstack:
+  host: "cloudstack.example.com"
+  port: 8080
+  api_key: "${CLOUDSTACK_API_KEY}"
+  secret_key: "${CLOUDSTACK_SECRET_KEY}"
+  default_zone: "zone1"
+
+nats:
+  url: "nats://localhost:4222"
+
+auth:
+  jwt_secret: "${JWT_SECRET}"
+  token_duration: "24h"
+  demo_mode: true
+
+templates_dir: "./templates"
+
+# Logging configuration
+logging:
+  # Log level: debug, info, warn, error
+  level: "info"
+
+  # Output destination: stdout, file, or both
+  # Use "file" or "both" to enable /var/log/labctl/labctl.log
+  output: "stdout"
+
+  # Log file path (used when output is "file" or "both")
+  file_path: "/var/log/labctl/labctl.log"
+
+  # Log format: json (for log aggregation) or text (for tail -f)
+  # Text format example: 2024-01-15 10:30:00 [INFO ] Starting server host=0.0.0.0 port=8080
+  format: "json"
+
+  # Maximum log file size in MB before rotation (0 = no rotation)
+  max_size: 100
+
+# Deprecated: use logging.level instead
+log_level: "info"
+
+# Template VMID mappings
+# Maps lab template names (as specified in template YAML files) to Proxmox VM IDs
+# These are the base VM templates that will be cloned when creating pods
+template_vmids:
+  # Ubuntu variants - all map to Ubuntu 22.04 template (VMID 9002)
+  ubuntu-22.04-desktop: 9002
+  ubuntu-22.04-server: 9002
+  ubuntu-22.04-server-minimal: 9002
+  ubuntu22-server-nginx: 9002
+  ubuntu22-server-lamp: 9002
+
+  # Rocky Linux variants - all map to Rocky 9 template (VMID 9001)
+  rocky9-minimal-cloud: 9001
+  rocky9-desktop-minimal: 9001
+  rocky9-desktop-soc: 9001
+
+  # Additional templates (create these VMs on Proxmox as needed)
+  pfsense-ce-2.7: 9003
+  security-onion: 9004
+  kali-linux: 9005
+  windows-server-2022-ad: 9006
+  windows-10-enterprise: 9007
+  # Add more template mappings as needed
+  # template-name: proxmox-vmid

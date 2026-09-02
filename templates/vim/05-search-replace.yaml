@@ -1,0 +1,203 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: "Search and Replace"
+  description: |
+    Learn Vim's powerful search and replace capabilities. Master the substitute command,
+    work with regular expressions, and perform global operations across files. These
+    skills are essential for efficient text manipulation and code refactoring.
+  duration: 40m
+  difficulty: intermediate
+  tags: [vim, editor, linux, text-editing, intermediate, regex, search]
+  version: "1.0.0"
+  author: Kootenai Team
+  category: vim
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: vim-lab-net
+        vlan: 200
+        subnet: 10.20.200.0/24
+        gateway: 10.20.200.1
+        dhcp: false
+
+  vms:
+    - name: vim-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /tmp/vim-exercises
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: vim-lab-net
+          ip: 10.20.200.10
+      snapshots:
+        - name: initial
+          description: Ubuntu with search/replace exercise files
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Basic Substitution
+    - id: substitute-first
+      description: "Replace the first occurrence on a line using :s/old/new/"
+      points: 10
+      hint: ":s/foo/bar/ replaces first 'foo' with 'bar' on current line"
+      order: 1
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/substitute.txt
+            contains: "SUBSTITUTE_FIRST_COMPLETE"
+
+    - id: substitute-all-line
+      description: "Replace all occurrences on a line using :s/old/new/g"
+      points: 10
+      hint: "Add 'g' flag: :s/foo/bar/g replaces ALL 'foo' on current line"
+      order: 2
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/substitute.txt
+            contains: "SUBSTITUTE_ALL_LINE_COMPLETE"
+
+    - id: substitute-whole-file
+      description: "Replace in entire file using :%s/old/new/g"
+      points: 15
+      hint: "% means whole file: :%s/foo/bar/g replaces all 'foo' in file"
+      order: 3
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/substitute-file.txt
+            contains: "SUBSTITUTE_FILE_COMPLETE"
+
+    - id: substitute-confirm
+      description: "Confirm each replacement using the c flag"
+      points: 10
+      hint: "Add 'c' flag: :%s/foo/bar/gc asks before each replacement"
+      order: 4
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/substitute-confirm.txt
+            contains: "SUBSTITUTE_CONFIRM_COMPLETE"
+
+    # Range Substitution
+    - id: substitute-range
+      description: "Replace within a line range using :10,20s/old/new/g"
+      points: 10
+      hint: ":10,20s/foo/bar/g replaces only on lines 10-20"
+      order: 5
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/substitute-range.txt
+            contains: "SUBSTITUTE_RANGE_COMPLETE"
+
+    - id: substitute-visual
+      description: "Replace within visual selection"
+      points: 10
+      hint: "Select with V, then :s/foo/bar/g replaces in selection"
+      order: 6
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/substitute-visual.txt
+            contains: "SUBSTITUTE_VISUAL_COMPLETE"
+
+    # Regular Expressions
+    - id: regex-basic
+      description: "Use basic regex patterns in search and replace"
+      points: 15
+      hint: "Use \\d for digit, \\w for word char, . for any char"
+      order: 7
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/regex.txt
+            contains: "REGEX_BASIC_COMPLETE"
+
+    - id: regex-groups
+      description: "Use capture groups with \\( \\) and \\1"
+      points: 10
+      hint: "\\(pattern\\) captures, \\1 references it: :s/\\(word\\)/[\\1]/"
+      order: 8
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/regex-groups.txt
+            contains: "REGEX_GROUPS_COMPLETE"
+
+    # Global Command
+    - id: global-delete
+      description: "Delete lines matching a pattern using :g/pattern/d"
+      points: 10
+      hint: ":g/TODO/d deletes all lines containing 'TODO'"
+      order: 9
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/global.txt
+            contains: "GLOBAL_DELETE_COMPLETE"
+
+    - id: global-inverse
+      description: "Operate on lines NOT matching using :v/pattern/command"
+      points: 5
+      hint: ":v/keep/d deletes lines that DON'T contain 'keep'"
+      order: 10
+      required: false
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/global-inverse.txt
+            contains: "GLOBAL_INVERSE_COMPLETE"
+
+    # Case Sensitivity
+    - id: case-insensitive
+      description: "Perform case-insensitive search with \\c"
+      points: 5
+      hint: "/\\cword matches 'word', 'Word', 'WORD', etc."
+      order: 11
+      required: false
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/case.txt
+            contains: "CASE_INSENSITIVE_COMPLETE"

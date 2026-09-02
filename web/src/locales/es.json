@@ -1,0 +1,2927 @@
+{
+  "common": {
+    "notAvailable": "N/D",
+    "unknown": "Desconocido",
+    "wizardProgress": {
+      "aria": "Progreso del asistente",
+      "stepAria": "Paso {step}: {label} ({status})",
+      "stepStatus": {
+        "completed": "completado",
+        "current": "actual",
+        "upcoming": "pendiente"
+      }
+    }
+  },
+  "notFound": {
+    "heading": "404",
+    "body": "La página que busca no existe.",
+    "backAction": "Volver al panel"
+  },
+  "errorBoundary": {
+    "heading": "Algo salió mal",
+    "fallbackMessage": "Se produjo un error inesperado",
+    "reload": "Recargar página",
+    "goHome": "Ir al inicio"
+  },
+  "languageSwitcher": {
+    "aria": "Idioma"
+  },
+  "leaderboardCard": {
+    "title": "Tabla de clasificación",
+    "youTag": "(Tú)",
+    "labsCompleted": "{count} laboratorios completados",
+    "badges": "insignias",
+    "points": "puntos"
+  },
+  "topology": {
+    "toolbar": {
+      "zoomIn": "Acercar",
+      "zoomOut": "Alejar",
+      "fit": "Ajustar a la vista",
+      "export": "Exportar como imagen",
+      "hideTraffic": "Ocultar flujo de tráfico",
+      "showTraffic": "Mostrar flujo de tráfico"
+    },
+    "legend": {
+      "running": "En ejecución",
+      "stopped": "Detenida",
+      "starting": "Iniciando",
+      "network": "Red"
+    },
+    "vm": {
+      "noIp": "Sin IP",
+      "ipLabel": "IP:",
+      "ipFallback": "N/D",
+      "templateLabel": "Plantilla:",
+      "cpuLabel": "CPU:",
+      "cpuValue": "{count} núcleos",
+      "memoryLabel": "Memoria:",
+      "memoryValue": "{gb} GB",
+      "networksLabel": "Redes:",
+      "networkTag": "{segment}",
+      "networkTagWithIp": "{segment} ({ip})",
+      "doubleClickHint": "Haga doble clic para abrir la consola"
+    },
+    "segment": {
+      "subnetLabel": "Subred:",
+      "vlanLabel": "VLAN:",
+      "gatewayLabel": "Puerta de enlace:",
+      "dhcpLabel": "DHCP:",
+      "dhcpEnabled": "Habilitado",
+      "dhcpDisabled": "Deshabilitado"
+    }
+  },
+  "organization": {
+    "view": {
+      "fallbackTitle": "Organización",
+      "settingsAction": "Configuración",
+      "tabOverview": "Resumen",
+      "tabMembers": "Miembros",
+      "tabTeams": "Equipos",
+      "tabFeatures": "Funciones",
+      "cardMembers": "Miembros",
+      "cardTeams": "Equipos",
+      "cardEdition": "Edición",
+      "editionFallback": "community",
+      "membersCap": "de {max} máx.",
+      "membersHeading": "Miembros de la organización",
+      "inviteMember": "Invitar miembro",
+      "columnName": "Nombre",
+      "columnEmail": "Correo",
+      "columnRole": "Rol",
+      "columnJoined": "Se unió",
+      "joinedPending": "Pendiente",
+      "teamsHeading": "Equipos",
+      "createTeamAction": "Crear equipo",
+      "teamsEmpty": "Aún no hay equipos. Cree su primer equipo para organizar a los miembros.",
+      "teamsMemberCount": "{count} miembros",
+      "teamNoDescription": "Sin descripción",
+      "featuresHeading": "Funciones habilitadas",
+      "featureEnabled": "Habilitada",
+      "featureDisabled": "Deshabilitada"
+    },
+    "settings": {
+      "title": "Configuración de la organización",
+      "subtitle": "Gestione la configuración de {name}",
+      "generalHeading": "Configuración general",
+      "nameLabel": "Nombre de la organización",
+      "namePlaceholder": "Introduzca el nombre de la organización",
+      "slugLabel": "Identificador (slug)",
+      "slugHelp": "El slug se usa en las URL y no se puede cambiar.",
+      "contactEmailLabel": "Correo de contacto",
+      "contactEmailPlaceholder": "admin@ejemplo.com",
+      "cancel": "Cancelar",
+      "submit": "Guardar cambios",
+      "planHeading": "Plan y límites",
+      "editionLabel": "Edición",
+      "editionFallback": "community",
+      "maxUsersLabel": "Usuarios máximos",
+      "maxUsersUnlimited": "Ilimitado",
+      "maxPodsLabel": "Pods máximos",
+      "maxPodsUnlimited": "Ilimitado",
+      "upgradeAction": "Actualizar plan",
+      "dangerHeading": "Zona peligrosa",
+      "dangerBody": "Elimine permanentemente esta organización y todos sus datos.",
+      "deleteAction": "Eliminar organización"
+    },
+    "switcher": {
+      "placeholder": "Seleccionar organización",
+      "aria": "Seleccionar organización"
+    }
+  },
+  "team": {
+    "create": {
+      "title": "Crear equipo",
+      "subtitle": "Cree un nuevo equipo en {org}",
+      "loadFailedFallback": "No se pudo crear el equipo",
+      "nameLabel": "Nombre del equipo",
+      "namePlaceholder": "Introduzca el nombre del equipo",
+      "nameHint": "Se requieren al menos 2 caracteres.",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "Describa el propósito del equipo...",
+      "descriptionAria": "Descripción",
+      "cancel": "Cancelar",
+      "submit": "Crear equipo"
+    },
+    "view": {
+      "noDescription": "Sin descripción",
+      "editAction": "Editar",
+      "statusActive": "Activo",
+      "statusInactive": "Inactivo",
+      "statMembers": "Miembros",
+      "statStatus": "Estado",
+      "statCreated": "Creado",
+      "membersHeading": "Miembros del equipo",
+      "addMember": "Añadir miembro",
+      "emptyMembers": "Aún no hay miembros en este equipo.",
+      "columnName": "Nombre",
+      "columnEmail": "Correo",
+      "columnRole": "Rol",
+      "columnJoined": "Se unió",
+      "columnActions": "Acciones",
+      "removeTooltip": "Eliminar del equipo",
+      "editDialog": {
+        "header": "Editar equipo",
+        "nameLabel": "Nombre del equipo",
+        "descriptionLabel": "Descripción",
+        "descriptionAria": "Descripción",
+        "cancel": "Cancelar",
+        "submit": "Guardar"
+      },
+      "deleteDialog": {
+        "header": "Eliminar equipo",
+        "question": "¿Está seguro de que desea eliminar este equipo?",
+        "warning": "Esta acción no se puede deshacer. Se eliminarán todas las membresías del equipo.",
+        "cancel": "Cancelar",
+        "submit": "Eliminar"
+      }
+    }
+  },
+  "reservations": {
+    "title": "Reservas",
+    "subtitle": "Programe y gestione sus reservas de laboratorios",
+    "tabs": {
+      "reserve": "Reservar una VM",
+      "my": "Mis reservas",
+      "templates": "Plantillas"
+    },
+    "reserveAction": "Reservar la franja horaria seleccionada",
+    "my": {
+      "heading": "Mis reservas",
+      "subheading": "Vea y gestione sus reservas de laboratorios",
+      "resources": "{cpu} núcleos · {memory} GB RAM · {storage} GB de almacenamiento",
+      "launch": "Iniciar",
+      "cancel": "Cancelar",
+      "viewDetails": "Ver detalles",
+      "emptyTitle": "Sin reservas",
+      "emptyBody": "Comience reservando una VM.",
+      "emptyAction": "Reservar una VM"
+    },
+    "templates": {
+      "heading": "Plantillas disponibles",
+      "subheading": "Explore las plantillas de laboratorio disponibles y sus especificaciones",
+      "selectAria": "Seleccionar plantilla: {name}",
+      "durationMinutes": "{count} min"
+    },
+    "statusUpcoming": "Próxima",
+    "statusActive": "Activa",
+    "statusCompleted": "Completada",
+    "confirm": {
+      "header": "Confirmar reserva",
+      "templateLabel": "Plantilla:",
+      "dateLabel": "Fecha:",
+      "timeLabel": "Hora:",
+      "durationLabel": "Duración:",
+      "durationHourSingular": "{count} hora",
+      "durationHourPlural": "{count} horas",
+      "resourcesLabel": "Recursos:",
+      "resourcesValue": "{cpu} núcleos, {memory} GB RAM, {storage} GB de almacenamiento",
+      "cancel": "Cancelar",
+      "submit": "Confirmar reserva"
+    },
+    "calendar": {
+      "nav": {
+        "previousMonthAria": "Mes anterior",
+        "nextMonthAria": "Mes siguiente",
+        "previousWeek": "Semana anterior",
+        "nextWeek": "Semana siguiente"
+      },
+      "weekRange": "{start} - {end}, {year}",
+      "dayNames": {
+        "sun": "Dom",
+        "mon": "Lun",
+        "tue": "Mar",
+        "wed": "Mié",
+        "thu": "Jue",
+        "fri": "Vie",
+        "sat": "Sáb"
+      },
+      "slot": {
+        "reservedTitle": "Reservado por {name}",
+        "selectTitle": "Haga clic para seleccionar"
+      },
+      "legend": {
+        "available": "Disponible",
+        "reserved": "Reservado",
+        "selected": "Seleccionado"
+      }
+    },
+    "settings": {
+      "heading": "Configuración de reserva",
+      "labTemplateLabel": "Plantilla de laboratorio",
+      "labTemplateAria": "Plantilla de laboratorio",
+      "labMeta": "{difficulty} · {minutes} min estimados",
+      "durationLabel": "Duración",
+      "durationAria": "Duración",
+      "resourcesLabel": "Recursos",
+      "cpuLabel": "CPU",
+      "cpuValue": "{count} núcleos",
+      "cpuAria": "Núcleos de CPU",
+      "memoryLabel": "Memoria",
+      "memoryValue": "{count} GB",
+      "memoryAria": "Memoria (GB)",
+      "storageLabel": "Almacenamiento",
+      "storageValue": "{count} GB",
+      "storageAria": "Almacenamiento (GB)",
+      "labIncludes": "El laboratorio incluye",
+      "platformLabel": "Plataforma"
+    }
+  },
+  "achievementsView": {
+    "loading": "Cargando logros...",
+    "loadingAria": "Cargando logros",
+    "errorTitle": "No se pudieron cargar los logros",
+    "loadFailedFallback": "No se pudieron cargar los logros",
+    "retryAction": "Reintentar",
+    "retryAria": "Reintentar carga de logros",
+    "title": "Logros",
+    "subtitle": "Desbloquee insignias completando desafíos e hitos",
+    "unlockedSummary": "Logros desbloqueados",
+    "statsGroupAria": "Estadísticas de logros",
+    "pointsFromBadges": "Puntos de insignias",
+    "categoryProgression": "Progresión",
+    "categorySkillCard": "De habilidad",
+    "categorySkillFilter": "Habilidad",
+    "categorySpecial": "Especial",
+    "categoryProgressionAria": "Filtrar por logros de progresión",
+    "categorySkillAria": "Filtrar por logros de habilidad",
+    "categorySpecialAria": "Filtrar por logros especiales",
+    "categoryAriaGroup": "Filtrar logros",
+    "categoryAll": "Todos",
+    "categoryFilterAria": "Filtrar por categoría",
+    "showUnlockedOnly": "Mostrar solo desbloqueados",
+    "gridAria": "Logros",
+    "emptyTitle": "No se encontraron logros",
+    "emptyBody": "Pruebe a ajustar sus filtros",
+    "clearFiltersAction": "Limpiar filtros",
+    "clearFiltersAria": "Limpiar todos los filtros"
+  },
+  "leaderboardView": {
+    "title": "Tabla de clasificación",
+    "subtitle": "Vea cómo se clasifica frente a otros estudiantes",
+    "timeRangeAll": "Siempre",
+    "timeRangeMonth": "Este mes",
+    "timeRangeWeek": "Esta semana",
+    "tryAgain": "Reintentar",
+    "loadFailed": "No se pudo cargar la tabla de clasificación",
+    "statTotalLearners": "Total de estudiantes",
+    "statYourRank": "Su posición",
+    "statYourPoints": "Sus puntos",
+    "columnRank": "Posición",
+    "columnLearner": "Estudiante",
+    "columnLabs": "Laboratorios",
+    "columnAchievements": "Logros",
+    "columnPoints": "Puntos",
+    "youTag": "(Tú)",
+    "loadMore": "Cargar más",
+    "emptyTitle": "Aún no hay datos de clasificación",
+    "emptyBody": "Complete laboratorios para ganar puntos y aparecer en la tabla de clasificación.",
+    "yourPositionHeading": "Su posición",
+    "labsCompleted": "{count} laboratorios completados",
+    "pointsSuffix": "{points} puntos",
+    "avatarFallback": "?"
+  },
+  "achievementCard": {
+    "progressLabel": "Progreso",
+    "pointsEarned": "+{points} pts"
+  },
+  "objectiveItem": {
+    "pointsSuffix": "{points} pts",
+    "completedAt": "Completado {when}"
+  },
+  "format": {
+    "duration": {
+      "minutes": "{count}m | {count}m",
+      "hours": "{count}h | {count}h",
+      "hoursMinutes": "{hours}h {minutes}m"
+    }
+  },
+  "difficulty": {
+    "beginner": "Principiante",
+    "intermediate": "Intermedio",
+    "advanced": "Avanzado",
+    "expert": "Experto",
+    "allFilter": "Todas las dificultades"
+  },
+  "platform": {
+    "proxmox": "Proxmox",
+    "cloudstack": "CloudStack",
+    "allFilter": "Todas las plataformas"
+  },
+  "visibility": {
+    "global": "Global (Todos)",
+    "organization": "Solo organización",
+    "private": "Privado"
+  },
+  "session": {
+    "fallbackTitle": "Sesión de laboratorio",
+    "idLabel": "Sesión:",
+    "actions": {
+      "goBackAria": "Volver a la página anterior",
+      "instructions": "Instrucciones",
+      "instructionsAria": "Abrir las instrucciones del laboratorio",
+      "submit": "Enviar",
+      "end": "Finalizar"
+    },
+    "workspace": {
+      "title": "Espacio de trabajo del laboratorio",
+      "wsStatus": {
+        "live": "En vivo",
+        "offline": "Desconectado",
+        "onlineAria": "Actualizaciones en tiempo real conectadas",
+        "offlineAria": "Actualizaciones en tiempo real sin conexión"
+      },
+      "progress": {
+        "regionLabel": "Resumen de progreso del laboratorio",
+        "progressCell": "Progreso",
+        "pointsCell": "Puntos",
+        "checksCell": "Checks"
+      },
+      "loadingVms": "Cargando VMs...",
+      "noVms": {
+        "title": "No se encontraron máquinas virtuales",
+        "hint": "Puede que el Pod aún se esté aprovisionando"
+      },
+      "noVmSelected": {
+        "title": "Selecciona una VM para abrir su consola",
+        "hint": "Haz clic en una VM en ejecución para conectarte"
+      },
+      "quickActions": {
+        "fullConsole": "Consola completa",
+        "fullConsoleAria": "Abrir la consola completa en una ventana nueva con todas las VMs",
+        "resetInitial": "Restablecer al estado inicial",
+        "openInWindow": "Abrir en ventana"
+      },
+      "nudge": {
+        "heading": "¿Tienes problemas con \"{name}\"?",
+        "body": "Llevas {minutes} minutos con este paso. Hay una pista disponible.",
+        "showHint": "Mostrar pista",
+        "dismiss": "Descartar"
+      }
+    },
+    "panels": {
+      "tablistAria": "Paneles de la sesión",
+      "assessment": "Evaluación",
+      "questions": "Preguntas",
+      "completion": "Enviar",
+      "pod": "Pod",
+      "snapshots": "Snapshots",
+      "noPodAssociated": "No hay Pod asociado a esta sesión"
+    },
+    "console": {
+      "connectingTo": "Conectando a {name}...",
+      "connectionFailedSummary": "Error de conexión"
+    },
+    "instructionsDialog": {
+      "fallbackHeader": "Instrucciones del laboratorio"
+    },
+    "confirm": {
+      "reset": {
+        "header": "Restablecer laboratorio",
+        "message": "¿Restablecer todas las VMs a su estado inicial? Se descartarán los cambios."
+      }
+    },
+    "notifications": {
+      "resetting": {
+        "title": "Restableciendo",
+        "message": "Revirtiendo todas las VMs al estado inicial..."
+      },
+      "resetComplete": {
+        "title": "Restablecimiento completado",
+        "message": "Todas las VMs se han revertido al estado inicial"
+      },
+      "resetFailed": "No se pudieron restablecer las VMs",
+      "loadPodFailed": "No se pudieron cargar los detalles del Pod"
+    }
+  },
+  "sessionsList": {
+    "title": "Sesiones",
+    "subtitle": "Visualiza y gestiona las sesiones de laboratorio",
+    "actions": {
+      "cleanupStale": "Limpiar obsoletas ({count})",
+      "refresh": "Actualizar",
+      "view": "Ver",
+      "end": "Finalizar",
+      "delete": "Eliminar"
+    },
+    "filters": {
+      "heading": "Filtros",
+      "userIdLabel": "ID de usuario",
+      "userIdPlaceholder": "Filtrar por ID de usuario...",
+      "statusLabel": "Estado",
+      "clearFilters": "Borrar filtros",
+      "status": {
+        "all": "Todas las sesiones",
+        "active": "Solo activas",
+        "completed": "Completadas"
+      }
+    },
+    "fields": {
+      "user": "Usuario",
+      "pod": "Pod",
+      "started": "Iniciada",
+      "duration": "Duración",
+      "scoreProgress": "Progreso de puntuación",
+      "scoreValue": "{earned} / {total} puntos ({percent}%)",
+      "passed": "Aprobada",
+      "notPassed": "No aprobada",
+      "staleTag": "obsoleta"
+    },
+    "empty": {
+      "title": "No se encontraron sesiones",
+      "hintFiltered": "Prueba a ajustar los filtros",
+      "hintEmpty": "Inicia una sesión desde un Pod para verla aquí"
+    },
+    "confirm": {
+      "end": {
+        "header": "Finalizar sesión",
+        "message": "¿Seguro que quieres finalizar esta sesión? Esto cerrará la calificación."
+      },
+      "delete": {
+        "header": "Eliminar sesión",
+        "message": "¿Seguro que quieres eliminar esta sesión? Esta acción no se puede deshacer."
+      },
+      "cleanup": {
+        "header": "Limpiar sesiones obsoletas",
+        "message": "Esto finalizará {count} sesión(es) activa(s) que llevan más de 24 horas en ejecución. ¿Continuar?"
+      }
+    },
+    "toasts": {
+      "ended": {
+        "summary": "Sesión finalizada",
+        "detailPassed": "Puntuación: {points} puntos. ¡Aprobada!",
+        "detailNotPassed": "Puntuación: {points} puntos. No aprobada."
+      },
+      "deleted": {
+        "summary": "Sesión eliminada",
+        "detail": "La sesión se ha eliminado de forma permanente."
+      },
+      "deleteFailed": {
+        "summary": "Error al eliminar",
+        "detail": "No se pudo eliminar la sesión. Inténtalo de nuevo."
+      },
+      "cleanedUp": {
+        "summary": "Sesiones obsoletas limpiadas",
+        "detail": "{count} sesión(es) finalizada(s)."
+      },
+      "cleanupFailed": {
+        "summary": "Error en la limpieza",
+        "detail": "No se pudieron limpiar las sesiones obsoletas. Es posible que necesites permisos de administrador."
+      }
+    },
+    "errors": {
+      "loadFailed": "No se pudieron cargar las sesiones",
+      "endFailed": "No se pudo finalizar la sesión"
+    }
+  },
+  "podDetail": {
+    "backLabel": "Volver a Pods",
+    "wsStatus": {
+      "live": "En vivo",
+      "offline": "Desconectado"
+    },
+    "fields": {
+      "platform": "Plataforma",
+      "owner": "Propietario",
+      "created": "Creado",
+      "expires": "Expira"
+    },
+    "actions": {
+      "startPod": "Iniciar Pod",
+      "stopPod": "Detener Pod",
+      "startSession": "Iniciar sesión",
+      "resetAllVms": "Restablecer todas las VMs",
+      "destroy": "Destruir"
+    },
+    "confirm": {
+      "destroy": {
+        "header": "Confirmar destrucción",
+        "message": "¿Seguro que quieres destruir este Pod? Esta acción no se puede deshacer.",
+        "accept": "Destruir",
+        "reject": "Cancelar"
+      },
+      "stop": {
+        "header": "Confirmar detención",
+        "message": "¿Seguro que quieres detener este Pod? Las VMs se apagarán pero los datos se conservarán.",
+        "accept": "Detener",
+        "reject": "Cancelar"
+      }
+    },
+    "vms": {
+      "cardTitle": "Máquinas virtuales",
+      "listTab": "Lista de VMs",
+      "topologyTab": "Topología de red",
+      "empty": "No hay VMs en este Pod",
+      "topologyEmpty": "No hay datos de topología disponibles"
+    },
+    "notFound": {
+      "title": "Pod no encontrado",
+      "goBack": "Volver a Pods"
+    },
+    "console": {
+      "loadingVnc": "Cargando consola VNC para {name}...",
+      "connectionFailedTitle": "Error de conexión"
+    },
+    "errors": {
+      "loadFailed": "No se pudieron cargar los detalles del Pod",
+      "topologyFailed": "No se pudo cargar la topología de red",
+      "startSessionFailed": "No se pudo iniciar la sesión",
+      "resetFailed": "No se pudo restablecer el Pod",
+      "destroyFailed": "No se pudo destruir el Pod",
+      "startFailed": "No se pudo iniciar el Pod",
+      "stopFailed": "No se pudo detener el Pod"
+    }
+  },
+  "dashboard": {
+    "toolbar": {
+      "welcome": "¡Bienvenido de nuevo, {name}!",
+      "subtitle": "Sigue tu progreso y continúa aprendiendo",
+      "browsePathways": "Explorar rutas",
+      "startLab": "Iniciar un laboratorio",
+      "lockAria": "Bloquear panel",
+      "unlockAria": "Desbloquear panel para editar"
+    },
+    "widgets": {
+      "stats": "Resumen de estadísticas",
+      "insights": "Análisis de aprendizaje",
+      "enrollments": "Mis rutas de aprendizaje",
+      "achievements": "Logros recientes",
+      "sessions": "Sesiones de laboratorio activas",
+      "recommendations": "Recomendado para ti",
+      "quickActions": "Acciones rápidas"
+    },
+    "stats": {
+      "totalPoints": "Puntos totales",
+      "achievements": "Logros",
+      "learningTime": "Tiempo de estudio",
+      "activeSessions": "Sesiones activas",
+      "runningPods": "Pods en ejecución",
+      "availableLabs": "Laboratorios disponibles"
+    },
+    "enrollments": {
+      "empty": "Aún no te has inscrito en ninguna ruta",
+      "exploreAction": "Explorar rutas",
+      "viewAll": "Ver todas",
+      "modulesProgress": "{completed} de {total} módulos completados",
+      "progressLabel": "Progreso",
+      "startedAt": "Iniciada {when}",
+      "unknownPathway": "Ruta desconocida"
+    },
+    "achievements": {
+      "empty": "¡Completa laboratorios para ganar logros!",
+      "viewAll": "Ver todos",
+      "defaultName": "Logro",
+      "earnedAt": "Ganado {when}"
+    },
+    "sessions": {
+      "empty": "No hay sesiones de laboratorio activas",
+      "startAction": "Iniciar un laboratorio",
+      "viewAll": "Ver todas",
+      "itemTitle": "Sesión de laboratorio",
+      "startedAt": "Iniciada {when}"
+    },
+    "recommendations": {
+      "empty": "¡Completa más laboratorios para obtener recomendaciones personalizadas!",
+      "resumeTag": "Reanudar",
+      "popularTag": "Popular",
+      "featuredTitle": "Rutas destacadas",
+      "featuredTag": "Destacada"
+    },
+    "quickActions": {
+      "browseLabs": "Explorar laboratorios",
+      "myPods": "Mis Pods",
+      "viewProgress": "Ver progreso",
+      "pathwayPreview": "Vista previa de ruta"
+    },
+    "availableWidgets": {
+      "heading": "Widgets disponibles",
+      "addAria": "Agregar widget {label}"
+    },
+    "widgetSettings": {
+      "heading": "Configuración de widget",
+      "widthLabel": "Ancho",
+      "widthAria": "Establecer ancho a {size}",
+      "widthOptions": {
+        "small": "1/3",
+        "large": "2/3",
+        "full": "Completo"
+      },
+      "itemsLabel": "Elementos a mostrar"
+    },
+    "skillRadar": {
+      "empty": "Complete laboratorios con etiquetas para ver su competencia"
+    }
+  },
+  "console": {
+    "status": {
+      "connected": "Conectado",
+      "connecting": "Conectando...",
+      "disconnected": "Desconectado",
+      "reconnecting": "Reconectando ({current}/{max})..."
+    },
+    "loading": "Cargando consola...",
+    "error": {
+      "connectionFailed": "Error de conexión",
+      "failedToConnect": "No se pudo conectar",
+      "connectionLost": "Conexión perdida inesperadamente",
+      "maxAttempts": "Conexión fallida después de {max} intentos. Haz clic para reintentar."
+    },
+    "actions": {
+      "reconnect": "Reconectar",
+      "retryConnection": "Reintentar conexión",
+      "disconnect": "Desconectar",
+      "close": "Cerrar",
+      "closeConsole": "Cerrar consola",
+      "toggleFullscreen": "Alternar pantalla completa",
+      "sendCtrlAltDel": "Enviar Ctrl+Alt+Supr",
+      "ctrlAltDel": "Ctrl+Alt+Supr",
+      "openProxmox": "Abrir Proxmox",
+      "connect": "Conectar",
+      "settings": "Configuración",
+      "expandToolbar": "Expandir barra de herramientas",
+      "collapseToolbar": "Contraer barra de herramientas"
+    },
+    "disconnected": {
+      "title": "Consola desconectada.",
+      "hint": "Haz clic en reconectar o usa la consola de Proxmox directamente."
+    },
+    "labels": {
+      "type": "Tipo:",
+      "host": "Host:",
+      "port": "Puerto:",
+      "node": "Nodo:",
+      "vmid": "VM ID:",
+      "name": "Nombre:",
+      "platformId": "ID de plataforma:",
+      "status": "Estado:",
+      "ip": "IP:",
+      "connectionDetails": "Detalles de conexión:"
+    },
+    "vnc": {
+      "title": "Consola VNC",
+      "connectDescription": "Conectar a {name} mediante consola VNC.",
+      "openNewTab": "Abrir consola Proxmox (nueva pestaña)",
+      "copyProxyUrl": "Copiar URL proxy de la API",
+      "copyDirectUrl": "Copiar URL directa de Proxmox",
+      "copiedProxy": "¡URL WebSocket proxy copiada al portapapeles!",
+      "copiedDirect": "¡URL WebSocket copiada al portapapeles!",
+      "noLibrary": "Biblioteca noVNC no disponible. Usa un cliente externo o el enlace de consola de Proxmox a continuación.",
+      "noProxyUrl": "URL proxy VNC no disponible",
+      "note": "El enlace de consola de Proxmox requiere que hayas iniciado sesión en Proxmox. Las URL proxy de la API se pueden usar con un cliente noVNC sin iniciar sesión en Proxmox."
+    },
+    "spice": {
+      "title": "Consola SPICE",
+      "vmDescription": "Esta VM usa SPICE. Descarga el archivo de conexión y ábrelo con un cliente SPICE (como virt-viewer).",
+      "downloadConnection": "Descargar archivo de conexión SPICE",
+      "downloadVv": "Descargar .vv",
+      "downloadVvTitle": "Descargar archivo .vv para virt-viewer",
+      "downloadNative": "Descargar para cliente nativo",
+      "downloadNativeTitle": "Descargar archivo de conexión SPICE para cliente nativo",
+      "loading": "Cargando consola SPICE...",
+      "establishing": "Estableciendo conexión SPICE...",
+      "connecting": "Conectando a consola SPICE...",
+      "noProxy": "URL proxy SPICE no disponible",
+      "containerNotReady": "Contenedor de pantalla SPICE no está listo",
+      "authFailed": "Autenticación SPICE fallida. Intenta reconectar.",
+      "connectionClosed": "Conexión SPICE cerrada inesperadamente",
+      "notSupported": "La VM no soporta SPICE (tipo: {type})",
+      "accessFailed": "No se pudo obtener acceso a la consola SPICE",
+      "disconnectedTitle": "Consola SPICE desconectada.",
+      "disconnectedHint": "Haz clic en reconectar, descarga el archivo .vv para virt-viewer o usa la consola de Proxmox.",
+      "connectionInfo": "Información de conexión",
+      "reconnectTitle": "Reconectar a la consola"
+    },
+    "inline": {
+      "vmActions": "Acciones de VM",
+      "start": "Iniciar",
+      "reboot": "Reiniciar",
+      "shutdown": "Apagar",
+      "forceStop": "Forzar detención",
+      "ctrlSticky": "Alternar tecla Ctrl (fija)",
+      "altSticky": "Alternar tecla Alt (fija)",
+      "sendTab": "Enviar tecla Tab",
+      "sendEscape": "Enviar tecla Escape",
+      "sendCtrlAltDel": "Enviar Ctrl+Alt+Supr",
+      "enterFullscreen": "Entrar en pantalla completa",
+      "exitFullscreen": "Salir de pantalla completa",
+      "openFloating": "Abrir en ventana flotante",
+      "connectingTo": "Conectando a {name}...",
+      "demoTitle": "Modo demostración",
+      "demoBody": "La consola VM no está disponible en modo demostración. En un entorno de producción, verías una consola VNC en vivo a la máquina virtual aquí.",
+      "vmInfo": "Información de la VM:",
+      "httpsTitle": "Se requiere HTTPS",
+      "httpsBody": "La consola VNC requiere una conexión segura (HTTPS). Accede a este sitio usando HTTPS para usar la función de consola.",
+      "httpsTryAnyway": "Intentar de todos modos",
+      "notAvailable": "Consola VM no disponible — la VM puede no existir o no estar ejecutándose",
+      "noLibrary": "Biblioteca noVNC no disponible",
+      "demoNotAvailable": "Consola no disponible en modo demostración",
+      "failedPreload": "Error al precargar noVNC",
+      "toast": {
+        "ctrlAltDelSent": "Ctrl+Alt+Supr enviado",
+        "actionInitiated": "{action} de {name} iniciada",
+        "actionInProgress": "{action} de {name}...",
+        "actionFailed": "Error al {action} {name}: {reason}",
+        "connectionLost": "Conexión perdida (intento {current}/{max})",
+        "securityError": "Error de seguridad: {reason}"
+      }
+    }
+  },
+  "pods": {
+    "title": "Mis Pods",
+    "subtitle": "Gestiona tus entornos de laboratorio activos",
+    "actions": {
+      "create": "Crear Pod",
+      "refresh": "Actualizar",
+      "browseLabs": "Explorar laboratorios"
+    },
+    "empty": {
+      "title": "No hay Pods activos",
+      "hint": "Lanza un laboratorio para crear tu primer Pod"
+    },
+    "card": {
+      "viewAria": "Ver Pod {name}",
+      "vmsCount": "{count} VMs",
+      "expiresLabel": "Expira: {when}"
+    },
+    "actionLabels": {
+      "start": "Iniciar",
+      "stop": "Detener",
+      "reset": "Restablecer",
+      "destroy": "Destruir",
+      "remove": "Eliminar"
+    },
+    "confirm": {
+      "remove": {
+        "header": "Eliminar Pod",
+        "message": "¿Eliminar el Pod \"{name}\" de tu lista? Esto limpiará el registro."
+      },
+      "destroy": {
+        "header": "Confirmar destrucción",
+        "message": "¿Seguro que quieres destruir el Pod \"{name}\"? Esta acción no se puede deshacer."
+      },
+      "stop": {
+        "header": "Confirmar detención",
+        "message": "¿Seguro que quieres detener el Pod \"{name}\"? Las VMs se apagarán pero los datos se conservarán."
+      }
+    },
+    "errors": {
+      "noVmsToReset": "No hay VMs para restablecer"
+    },
+    "create": {
+      "title": "Crear Pod",
+      "subtitle": "Inicie un nuevo entorno de laboratorio",
+      "errors": {
+        "loadFailed": "No se pudieron cargar los laboratorios disponibles. Inténtelo de nuevo.",
+        "createFailed": "No se pudo crear el pod. Inténtelo de nuevo."
+      },
+      "toast": {
+        "createdSummary": "Pod creado",
+        "createdDetail": "El pod {id} se está aprovisionando"
+      },
+      "form": {
+        "labLabel": "Plantilla de laboratorio",
+        "labPlaceholder": "Seleccione una plantilla de laboratorio",
+        "labFilterPlaceholder": "Buscar laboratorios...",
+        "durationMinutes": "{count} min",
+        "ownerLabel": "Propietario",
+        "ownerPlaceholder": "Escriba el nombre del propietario",
+        "ownerHint": "El pod se creará para su cuenta"
+      },
+      "details": {
+        "heading": "Detalles del laboratorio",
+        "platform": "Plataforma:",
+        "duration": "Duración:",
+        "difficulty": "Dificultad:",
+        "maxPoints": "Puntos máximos:"
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "submit": "Crear pod"
+      },
+      "info": {
+        "heading": "Acerca de los Pods",
+        "body": "Un pod es su entorno de laboratorio personal con una o más máquinas virtuales. Cuando crea un pod, las VMs se clonan desde plantillas y se inician automáticamente. Puede detener, reiniciar o destruir sus pods en cualquier momento."
+      }
+    }
+  },
+  "labs": {
+    "title": "Catálogo de laboratorios",
+    "subtitle": "Explora y lanza los entornos de laboratorio disponibles",
+    "resultCount": "{shown} de {total} laboratorios",
+    "search": {
+      "placeholder": "Buscar laboratorios por nombre, descripción o etiquetas...",
+      "ariaLabel": "Buscar laboratorios por nombre, descripción o etiquetas"
+    },
+    "filters": {
+      "difficulty": "Dificultad",
+      "platform": "Plataforma",
+      "clear": "Borrar",
+      "clearFilters": "Borrar filtros"
+    },
+    "empty": {
+      "none": {
+        "title": "No hay laboratorios disponibles",
+        "hint": "Vuelve más tarde o contacta a tu administrador."
+      },
+      "noMatches": {
+        "title": "Ningún laboratorio coincide con los filtros",
+        "hint": "Prueba a ajustar la búsqueda o los filtros."
+      }
+    },
+    "card": {
+      "viewDetailsAria": "Ver detalles de {name}",
+      "detailsAction": "Detalles",
+      "launchAction": "Lanzar",
+      "moreTags": "+{count}"
+    },
+    "errors": {
+      "loadFailed": "No se pudo cargar el catálogo. Inténtalo de nuevo más tarde.",
+      "mustBeLoggedIn": "Debes iniciar sesión para lanzar un laboratorio.",
+      "launchFailed": "No se pudo lanzar {name}. Inténtalo de nuevo."
+    }
+  },
+  "login": {
+    "title": "Plataforma Kootenai",
+    "subtitle": "Inicia sesión en tu cuenta",
+    "formLabel": "Formulario de inicio de sesión",
+    "ariaForm": "Formulario de inicio de sesión",
+    "oauth": {
+      "promptHeading": "Iniciar sesión con",
+      "continueWith": "Continuar con {provider}",
+      "ariaSignInWith": "Iniciar sesión con {provider}",
+      "divider": "o continuar con correo electrónico"
+    },
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "tu{'@'}ejemplo.com",
+      "requiredHint": "(obligatorio)",
+      "missingError": "El correo electrónico es obligatorio"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Introduce tu contraseña",
+      "forgotLink": "¿Olvidaste tu contraseña?"
+    },
+    "submit": {
+      "idle": "Iniciar sesión",
+      "pending": "Iniciando sesión...",
+      "ariaIdle": "Iniciar sesión en tu cuenta",
+      "ariaPending": "Iniciando sesión, espera por favor"
+    },
+    "demo": {
+      "label": "Probar cuenta demo",
+      "aria": "Iniciar sesión con cuenta demo (no requiere contraseña)"
+    },
+    "footerHelp": "¿Necesitas ayuda? Contacta a tu administrador para acceder.",
+    "errors": {
+      "fallback": "Error al iniciar sesión"
+    }
+  },
+  "app": {
+    "brand": "Kootenai",
+    "skipToContent": "Saltar al contenido principal",
+    "mainContentAria": "Contenido principal",
+    "closeSidebarAria": "Cerrar barra lateral"
+  },
+  "topbar": {
+    "toggleSidebarAria": "Alternar menú lateral",
+    "lightModeAria": "Cambiar a modo claro",
+    "darkModeAria": "Cambiar a modo oscuro",
+    "lightModeTooltip": "Modo claro",
+    "darkModeTooltip": "Modo oscuro",
+    "openUserMenuAria": "Abrir menú de usuario",
+    "userMenu": {
+      "profile": "Perfil",
+      "settings": "Configuración",
+      "organization": "Organización",
+      "logout": "Cerrar sesión"
+    }
+  },
+  "sidebar": {
+    "navAria": "Navegación principal"
+  },
+  "menu": {
+    "sections": {
+      "home": "Inicio",
+      "learning": "Aprendizaje",
+      "myWork": "Mi trabajo",
+      "progress": "Progreso",
+      "schedule": "Calendario",
+      "instructor": "Instructor",
+      "administration": "Administración"
+    },
+    "items": {
+      "dashboard": "Panel",
+      "pathways": "Rutas de aprendizaje",
+      "labCatalog": "Catálogo de laboratorios",
+      "myPods": "Mis Pods",
+      "createPod": "Crear Pod",
+      "sessions": "Sesiones",
+      "achievements": "Logros",
+      "leaderboard": "Clasificación",
+      "reservations": "Reservas",
+      "classDashboard": "Panel de clase",
+      "createPathway": "Crear ruta",
+      "createLab": "Crear laboratorio",
+      "userManagement": "Gestión de usuarios",
+      "labTemplates": "Plantillas de laboratorio",
+      "analytics": "Analítica",
+      "eventMonitoring": "Monitoreo de eventos",
+      "systemHealth": "Estado del sistema",
+      "proxmoxVms": "VMs de Proxmox"
+    }
+  },
+  "pod": {
+    "vmSelector": {
+      "heading": "Máquinas virtuales",
+      "countBadge": "{count} VMs",
+      "groupAria": "Selección de máquina virtual",
+      "itemAria": "Seleccionar {name} - {status}",
+      "itemAriaSelected": "Seleccionar {name} - {status} (seleccionada actualmente)",
+      "statusParen": "({status})"
+    },
+    "vmListItem": {
+      "ipLabel": "IP: {address}",
+      "snapshotLabel": "Snapshot: {name}",
+      "powerControlsHeading": "Controles de energía",
+      "consoleHeading": "Consola",
+      "consoleButton": "Consola",
+      "consoleMenu": {
+        "novnc": "Consola noVNC",
+        "downloadSpice": "Descargar archivo SPICE"
+      }
+    },
+    "vmPower": {
+      "actions": {
+        "start": "Iniciar",
+        "stop": "Detener",
+        "suspend": "Suspender",
+        "resume": "Reanudar"
+      },
+      "confirm": {
+        "stop": {
+          "header": "Confirmar detención",
+          "message": "¿Detener la VM \"{name}\"? Esto apagará la VM.",
+          "accept": "Detener",
+          "reject": "Cancelar"
+        }
+      },
+      "toasts": {
+        "started": { "summary": "VM iniciada", "detail": "{name} se está iniciando" },
+        "stopped": { "summary": "VM detenida", "detail": "{name} se ha detenido" },
+        "suspended": { "summary": "VM suspendida", "detail": "{name} se ha suspendido" },
+        "resumed": { "summary": "VM reanudada", "detail": "{name} se está reanudando" }
+      },
+      "errors": {
+        "startFailed": "No se pudo iniciar la VM {name}",
+        "stopFailed": "No se pudo detener la VM {name}",
+        "suspendFailed": "No se pudo suspender la VM {name}",
+        "resumeFailed": "No se pudo reanudar la VM {name}"
+      }
+    }
+  },
+  "checkpoints": {
+    "heading": "Puntos de control",
+    "itemAria": "{name}: {status}, {score} de {maxScore} puntos",
+    "pointsTag": "{score}/{maxScore} pts",
+    "hint": {
+      "label": "Pista {level}/{total}:",
+      "pointsDeducted": "{count} punto descontado | {count} puntos descontados",
+      "getNext": "Obtener pista {level}/{total}",
+      "allRevealed": "Todas las pistas reveladas"
+    }
+  },
+  "labTemplate": {
+    "delete": {
+      "header": "Eliminar plantilla de laboratorio",
+      "confirmQuestion": "¿Seguro que desea eliminar esta plantilla?",
+      "confirmDetail": "{name} se eliminará de forma permanente. Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar"
+    },
+    "form": {
+      "createHeader": "Crear plantilla de laboratorio",
+      "editHeader": "Editar plantilla de laboratorio",
+      "submitCreate": "Crear",
+      "submitEdit": "Guardar cambios",
+      "cancel": "Cancelar",
+      "specLabelCreate": "Especificación (YAML) *",
+      "specLabelEdit": "Especificación (YAML/JSON)",
+      "specPlaceholder": "Especificación del laboratorio en formato YAML",
+      "fields": {
+        "nameLabel": "Nombre *",
+        "namePlaceholder": "Nombre del laboratorio",
+        "nameAria": "Nombre",
+        "versionLabel": "Versión *",
+        "versionPlaceholder": "1.0.0",
+        "versionAria": "Versión",
+        "descriptionLabel": "Descripción",
+        "descriptionPlaceholder": "Descripción del laboratorio",
+        "descriptionAria": "Descripción",
+        "platformLabel": "Plataforma *",
+        "platformAria": "Plataforma",
+        "difficultyLabel": "Dificultad",
+        "difficultyAria": "Dificultad",
+        "visibilityLabel": "Visibilidad",
+        "visibilityAria": "Visibilidad",
+        "durationLabel": "Duración (minutos)",
+        "maxPointsLabel": "Puntos máximos",
+        "passThresholdLabel": "Umbral de aprobación (%)",
+        "activeLabel": "Activo (visible en el catálogo)"
+      }
+    },
+    "spec": {
+      "header": "Especificación: {name}",
+      "close": "Cerrar"
+    },
+    "import": {
+      "header": "Importar plantilla de laboratorio",
+      "description": "Pegue una definición YAML de plantilla de laboratorio para importarla como nueva plantilla.",
+      "yamlPlaceholder": "Pegue YAML aquí...",
+      "yamlAria": "YAML de plantilla de laboratorio",
+      "cancel": "Cancelar",
+      "import": "Importar"
+    },
+    "history": {
+      "header": "Historial de versiones: {name}",
+      "empty": "Sin historial de versiones. Las versiones se crean automáticamente al editar una plantilla.",
+      "versionLabel": "Versión {number}",
+      "restore": "Restaurar",
+      "close": "Cerrar"
+    }
+  },
+  "assessment": {
+    "panel": {
+      "resultsHeading": "Resultados de la evaluación",
+      "pointsEarned": "Puntos obtenidos",
+      "itemsFraction": "{passed}/{total} elementos",
+      "checking": "Comprobando...",
+      "checkMyWork": "Comprobar mi trabajo",
+      "lastChecked": "Última comprobación: {when}",
+      "componentScoresHeading": "Puntuaciones por componente",
+      "componentItems": "{passed}/{total} elementos",
+      "errorTypes": {
+        "network": "Error de conexión",
+        "server": "Error del servidor",
+        "generic": "Error de evaluación"
+      },
+      "dismissErrorAria": "Descartar error",
+      "errorCode": "Error {code}",
+      "tryAgain": "Reintentar"
+    },
+    "tree": {
+      "heading": "Elementos de la evaluación",
+      "empty": "Aún no hay resultados de evaluación. Haga clic en «Comprobar mi trabajo» para ejecutarla.",
+      "deviceTypeParen": "({type})",
+      "pointsFraction": "{earned}/{max} pts",
+      "expectedLabel": "Esperado:",
+      "actualLabel": "Actual:",
+      "emptyValue": "(vacío)"
+    }
+  },
+  "achievementUnlock": {
+    "header": "¡Logro desbloqueado!",
+    "multiProgress": "{current} de {total}",
+    "pointsAwarded": "+{points} puntos",
+    "totalPointsHeading": "Puntos totales obtenidos",
+    "totalPointsValue": "+{points}",
+    "next": "Siguiente",
+    "finish": "¡Genial!"
+  },
+  "achievementTier": {
+    "bronze": "Bronce",
+    "silver": "Plata",
+    "gold": "Oro",
+    "platinum": "Platino",
+    "diamond": "Diamante"
+  },
+  "snapshot": {
+    "sectionHeading": "Snapshots",
+    "actions": {
+      "revert": "Revertir a Snapshot",
+      "create": "Crear Snapshot",
+      "resetInitial": "Restablecer al estado inicial",
+      "inlineRevert": "Revertir",
+      "inlineDelete": "Eliminar"
+    },
+    "emptyList": "No hay snapshots disponibles",
+    "parentLabel": "(padre: {name})",
+    "create": {
+      "header": "Crear Snapshot",
+      "intro": "Creando snapshot para la VM: {name}",
+      "nameLabel": "Nombre del snapshot *",
+      "namePlaceholder": "p. ej., checkpoint-1",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "Descripción opcional",
+      "includeRamLabel": "Incluir estado de la RAM",
+      "cancel": "Cancelar",
+      "submit": "Crear Snapshot"
+    },
+    "revertModal": {
+      "header": "Revertir a Snapshot",
+      "intro": "Seleccione un snapshot para revertir la VM: {name}",
+      "empty": "No hay snapshots disponibles para esta VM",
+      "cancel": "Cancelar",
+      "submit": "Revertir"
+    },
+    "confirmDelete": {
+      "header": "Confirmar eliminación",
+      "message": "¿Eliminar el snapshot \"{name}\"? Esto no se puede deshacer.",
+      "accept": "Eliminar",
+      "reject": "Cancelar"
+    },
+    "toasts": {
+      "created": {
+        "summary": "Snapshot creado",
+        "detail": "Se creó \"{name}\" en {vm}"
+      }
+    },
+    "errors": {
+      "loadFailed": "No se pudieron cargar los snapshots de {vm}",
+      "createFailed": "No se pudo crear el snapshot en {vm}",
+      "deleteFailed": "No se pudo eliminar el snapshot \"{name}\"",
+      "revertFailed": "No se pudo revertir {vm}"
+    }
+  },
+  "snapshotPanel": {
+    "cardTitle": "Snapshots",
+    "resetAllAction": "Restablecer todo",
+    "retry": "Reintentar",
+    "errorLoadFailed": "No se pudo cargar el pod",
+    "emptyNoVms": "No hay VMs en este pod",
+    "vmSnapshotCount": "{count} snapshots",
+    "vmCreateTooltip": "Crear Snapshot",
+    "snapshotEmpty": "No hay snapshots disponibles",
+    "currentTag": "Actual",
+    "restoreTooltip": "Restaurar a este snapshot",
+    "deleteTooltip": "Eliminar snapshot",
+    "notifications": {
+      "nameRequired": "El nombre del snapshot es obligatorio",
+      "creatingTitle": "Creando snapshot",
+      "creatingMessage": "Creando {name}...",
+      "createdTitle": "Snapshot creado",
+      "createdMessage": "{name} se creó correctamente",
+      "createFailed": "No se pudo crear el snapshot",
+      "restoringTitle": "Restaurando",
+      "restoringMessage": "Restaurando {vm} a {snapshot}...",
+      "restoreFailed": "No se pudo restaurar el snapshot",
+      "deletingTitle": "Eliminando",
+      "deletingMessage": "Eliminando {name}...",
+      "deletedTitle": "Snapshot eliminado",
+      "deletedMessage": "{name} eliminado",
+      "deleteFailed": "No se pudo eliminar el snapshot",
+      "restoringAllTitle": "Restaurando todo",
+      "restoringAllMessage": "Restaurando todas las VMs al estado inicial...",
+      "restoredAllTitle": "Restaurado",
+      "restoredAllMessage": "Todas las VMs restauradas al estado inicial",
+      "restoreAllFailed": "No se pudieron restaurar todas las VMs"
+    },
+    "createDialog": {
+      "header": "Crear Snapshot",
+      "vmLabel": "VM",
+      "nameLabel": "Nombre del snapshot *",
+      "namePlaceholder": "p. ej., antes-cambio-config",
+      "descriptionLabel": "Descripción (opcional)",
+      "descriptionPlaceholder": "Describa el estado de la VM...",
+      "descriptionAria": "Descripción (opcional)",
+      "cancel": "Cancelar",
+      "submit": "Crear"
+    },
+    "restoreDialog": {
+      "header": "Restaurar Snapshot",
+      "confirmQuestion": "¿Seguro que desea restaurar {vm} al snapshot {snapshot}?",
+      "warning": "Esto descartará cualquier cambio no guardado en la VM.",
+      "cancel": "Cancelar",
+      "submit": "Restaurar"
+    },
+    "deleteDialog": {
+      "header": "Eliminar Snapshot",
+      "confirmQuestion": "¿Seguro que desea eliminar el snapshot {snapshot} de {vm}?",
+      "warning": "Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "submit": "Eliminar"
+    }
+  },
+  "auditLog": {
+    "title": "Registro de auditoría",
+    "subtitle": "Vea las acciones administrativas y los eventos de seguridad",
+    "exportAction": "Exportar",
+    "noOrgError": "No hay organización seleccionada",
+    "loadFailed": "No se pudieron cargar los registros. Verifique que tenga acceso de administrador.",
+    "filters": {
+      "actorLabel": "ID de actor",
+      "actorPlaceholder": "Filtrar por actor...",
+      "actionLabel": "Acción",
+      "actionAria": "Acción",
+      "resourceLabel": "Tipo de recurso",
+      "resourceAria": "Tipo de recurso",
+      "dateRangeLabel": "Intervalo de fechas",
+      "dateRangePlaceholder": "Seleccione intervalo de fechas",
+      "clearAction": "Limpiar filtros"
+    },
+    "actionOptions": {
+      "all": "Todas las acciones",
+      "orgUpdated": "Organización actualizada",
+      "orgDeleted": "Organización eliminada",
+      "memberInvited": "Miembro invitado",
+      "memberRoleChanged": "Rol de miembro cambiado",
+      "memberRemoved": "Miembro eliminado",
+      "loginSuccess": "Inicio de sesión exitoso",
+      "loginFailed": "Inicio de sesión fallido",
+      "passwordChanged": "Contraseña cambiada"
+    },
+    "resourceOptions": {
+      "all": "Todos los recursos",
+      "organization": "Organización",
+      "membership": "Membresía",
+      "user": "Usuario",
+      "session": "Sesión",
+      "pod": "Pod",
+      "lab": "Laboratorio"
+    },
+    "empty": "No se encontraron entradas de auditoría",
+    "table": {
+      "timestamp": "Marca de tiempo",
+      "action": "Acción",
+      "resource": "Recurso",
+      "actor": "Actor",
+      "ipAddress": "Dirección IP",
+      "actions": "Acciones",
+      "idTruncated": "({id}...)",
+      "actorTruncated": "{id}...",
+      "dashPlaceholder": "-"
+    },
+    "pagination": {
+      "showing": "Mostrando {from} - {to} de {total} entradas",
+      "pageOfTotal": "Página {current} de {total}"
+    },
+    "detail": {
+      "header": "Detalles de la entrada de auditoría",
+      "idLabel": "ID",
+      "timestampLabel": "Marca de tiempo",
+      "actionLabel": "Acción",
+      "resourceLabel": "Recurso",
+      "resourceWithId": "({id})",
+      "actorLabel": "Actor",
+      "ipLabel": "Dirección IP",
+      "userAgentLabel": "Agente de usuario",
+      "detailsLabel": "Detalles",
+      "noDetails": "-",
+      "close": "Cerrar"
+    },
+    "exportToast": {
+      "successSummary": "Exportación completa",
+      "successDetail": "Se exportaron {count} entradas de auditoría",
+      "failedSummary": "Exportación fallida",
+      "failedDetail": "No se pudieron exportar los registros de auditoría"
+    }
+  },
+  "eventsMonitoring": {
+    "title": "Monitoreo de eventos",
+    "subtitle": "Flujo de eventos de Wazuh en tiempo real y detección de puntos de control",
+    "status": {
+      "live": "En vivo",
+      "disconnected": "Desconectado"
+    },
+    "autoRefreshOn": "Actualización automática activada",
+    "autoRefreshOff": "Actualización automática desactivada",
+    "refreshNow": "Actualizar ahora",
+    "loadFailed": "No se pudieron cargar los eventos",
+    "stats": {
+      "eventsToday": "Eventos hoy",
+      "checkpointsPassed": "Puntos de control aprobados",
+      "thisHour": "Esta hora",
+      "pending": "Pendientes"
+    },
+    "breakdown": {
+      "heading": "Eventos por tipo"
+    },
+    "filters": {
+      "heading": "Filtros",
+      "typeLabel": "Tipo de evento",
+      "typeAria": "Tipo de evento",
+      "typeAllOption": "Todos los tipos",
+      "podLabel": "ID de pod",
+      "podAria": "ID de pod",
+      "podPlaceholder": "Filtrar por pod...",
+      "sessionLabel": "ID de sesión",
+      "sessionAria": "ID de sesión",
+      "sessionPlaceholder": "Filtrar por sesión...",
+      "apply": "Aplicar",
+      "clear": "Limpiar"
+    },
+    "table": {
+      "heading": "Eventos recientes",
+      "time": "Hora",
+      "type": "Tipo",
+      "vm": "VM",
+      "description": "Descripción",
+      "checkpoints": "Puntos de control",
+      "status": "Estado",
+      "loading": "Cargando eventos...",
+      "tryAgain": "Reintentar",
+      "dashPlaceholder": "-",
+      "podIdTruncated": "{id}...",
+      "ruleLine": "Regla: {ruleId} (Nivel {level})",
+      "statusProcessed": "Procesado",
+      "statusPending": "Pendiente"
+    },
+    "empty": {
+      "title": "Sin eventos",
+      "body": "No se encontraron eventos que coincidan con los filtros."
+    },
+    "detail": {
+      "header": "Evento n.º {id}",
+      "timestampLabel": "Marca de tiempo",
+      "descriptionLabel": "Descripción",
+      "ruleIdLabel": "ID de regla",
+      "ruleLevelLabel": "Nivel de regla",
+      "vmNameLabel": "Nombre de VM",
+      "podIdLabel": "ID de pod",
+      "sessionIdLabel": "ID de sesión",
+      "statusLabel": "Estado",
+      "statusProcessed": "Procesado",
+      "statusPending": "Pendiente",
+      "matchedCheckpointsLabel": "Puntos de control coincidentes",
+      "close": "Cerrar"
+    }
+  },
+  "instructorDashboard": {
+    "title": "Panel del instructor",
+    "subtitle": "Supervise el progreso de los estudiantes, identifique a los que tienen dificultades y analice el rendimiento de los laboratorios",
+    "exportAction": "Exportar informe",
+    "loadFailed": "No se pudieron cargar los datos del panel",
+    "overview": {
+      "totalStudents": "Total de estudiantes",
+      "avgCompletion": "Finalización promedio",
+      "atRiskStudents": "Estudiantes en riesgo",
+      "averageScore": "Puntuación promedio"
+    },
+    "tabs": {
+      "students": "Estudiantes",
+      "struggling": "Estudiantes con dificultades",
+      "labAnalytics": "Analítica de laboratorios",
+      "activity": "Actividad"
+    },
+    "statusLabels": {
+      "excelling": "Destacando",
+      "active": "Activo",
+      "atRisk": "En riesgo",
+      "inactive": "Inactivo"
+    },
+    "filters": {
+      "all": "Todos"
+    },
+    "students": {
+      "cardTitle": "Todos los estudiantes",
+      "columnName": "Nombre",
+      "columnStatus": "Estado",
+      "columnLabs": "Laboratorios",
+      "columnAvgScore": "Puntuación prom.",
+      "columnStreak": "Racha",
+      "columnLastActive": "Última actividad",
+      "columnPoints": "Puntos",
+      "streakDays": "{count} días",
+      "dashPlaceholder": "-"
+    },
+    "struggling": {
+      "heading": "Estudiantes que necesitan atención",
+      "emptyMessage": "¡Todos los estudiantes van por buen camino! No hay estudiantes en riesgo actualmente.",
+      "labsCompleted": "Laboratorios completados",
+      "averageScore": "Puntuación promedio",
+      "currentStreak": "Racha actual",
+      "lastActive": "Última actividad",
+      "streakDays": "{count} días",
+      "inactiveHeadline": "Inactivo durante {count} días.",
+      "inactiveAdvice": "Considere contactarlo para revisar su progreso.",
+      "lowScoreHeadline": "Puntuación promedio baja ({score}%).",
+      "lowScoreAdvice": "Puede necesitar apoyo o tutoría adicional.",
+      "fallingBehindHeadline": "Se está quedando atrás en las finalizaciones de laboratorio.",
+      "fallingBehindAdvice": "Considere verificar si está enfrentando dificultades técnicas."
+    },
+    "labs": {
+      "lowPassRateHeading": "Laboratorios con tasas de aprobación bajas",
+      "allPassingMessage": "¡Todos los laboratorios tienen buenas tasas de aprobación!",
+      "passRateTag": "{rate}% de aprobación",
+      "completionLine": "{completed} / {total} completados • Prom. {minutes} min",
+      "failurePointsHeading": "Puntos comunes de fallo:",
+      "failureRate": "{rate}% fallan",
+      "statsHeading": "Estadísticas de finalización de laboratorios",
+      "attempts": "{count} intentos",
+      "detailLine": "Puntuación prom.: {score}% • Tiempo prom.: {minutes} min"
+    },
+    "activity": {
+      "heatmapHeading": "Mapa de calor de actividad (últimos 14 días)",
+      "heatmapTooltip": "{date}: {count} actividades",
+      "less": "Menos",
+      "more": "Más",
+      "recentHeading": "Progreso reciente de los estudiantes"
+    },
+    "formatDate": {
+      "never": "Nunca",
+      "today": "Hoy",
+      "yesterday": "Ayer",
+      "daysAgo": "Hace {count} días"
+    },
+    "export": {
+      "header": "Exportar informe de progreso",
+      "formatLabel": "Formato de exportación",
+      "formatAria": "Formato de exportación",
+      "description": "La exportación incluirá todos los datos de progreso de los estudiantes, incluidos los laboratorios completados, puntuaciones y estado de actividad.",
+      "cancel": "Cancelar",
+      "submit": "Exportar",
+      "formatCsv": "CSV (Hoja de cálculo)",
+      "formatJson": "JSON (Datos)"
+    },
+    "exportToast": {
+      "successSummary": "Exportación completa",
+      "successDetail": "Informe descargado correctamente",
+      "failedSummary": "Exportación fallida",
+      "failedDetail": "No se pudo exportar el informe. Inténtelo de nuevo."
+    }
+  },
+  "users": {
+    "accessDenied": "Acceso denegado: solo los administradores pueden gestionar usuarios.",
+    "title": "Gestión de usuarios",
+    "subtitle": "Cree, edite y gestione los usuarios de la plataforma",
+    "addUser": "Añadir usuario",
+    "loadFailed": "No se pudieron cargar los usuarios. Asegúrese de tener acceso de administrador.",
+    "filters": {
+      "heading": "Filtros",
+      "searchLabel": "Buscar",
+      "searchPlaceholder": "Buscar por nombre de usuario, correo o nombre...",
+      "roleLabel": "Rol",
+      "roleAria": "Filtrar por rol",
+      "statusLabel": "Estado",
+      "statusAria": "Filtrar por estado",
+      "clear": "Limpiar"
+    },
+    "roleOptions": {
+      "all": "Todos los roles",
+      "students": "Estudiantes",
+      "instructors": "Instructores",
+      "admins": "Administradores"
+    },
+    "statusOptions": {
+      "all": "Todos los usuarios",
+      "active": "Solo activos",
+      "inactive": "Inactivos"
+    },
+    "table": {
+      "heading": "Usuarios ({count})",
+      "user": "Usuario",
+      "email": "Correo",
+      "role": "Rol",
+      "status": "Estado",
+      "created": "Creado",
+      "actions": "Acciones",
+      "usernameHandle": "@{username}",
+      "emailPlaceholder": "-",
+      "statusActive": "Activo",
+      "statusInactive": "Inactivo",
+      "editTooltip": "Editar",
+      "resetPasswordTooltip": "Restablecer contraseña",
+      "activateTooltip": "Activar",
+      "deactivateTooltip": "Desactivar",
+      "deleteTooltip": "Eliminar"
+    },
+    "empty": {
+      "title": "No se encontraron usuarios",
+      "adjustFilters": "Intente ajustar los filtros",
+      "getStarted": "Comience creando su primer usuario"
+    },
+    "create": {
+      "header": "Crear usuario",
+      "usernameLabel": "Nombre de usuario",
+      "usernamePlaceholder": "Introduzca el nombre de usuario",
+      "emailLabel": "Correo",
+      "emailPlaceholder": "Introduzca la dirección de correo",
+      "displayNameLabel": "Nombre para mostrar",
+      "displayNamePlaceholder": "Introduzca el nombre para mostrar",
+      "roleLabel": "Rol",
+      "roleAria": "Rol",
+      "cancel": "Cancelar",
+      "submit": "Crear"
+    },
+    "edit": {
+      "header": "Editar usuario",
+      "usernameLabel": "Nombre de usuario",
+      "usernameDisabledNote": "El nombre de usuario no se puede cambiar",
+      "emailLabel": "Correo",
+      "emailPlaceholder": "Introduzca la dirección de correo",
+      "displayNameLabel": "Nombre para mostrar",
+      "displayNamePlaceholder": "Introduzca el nombre para mostrar",
+      "roleLabel": "Rol",
+      "roleAria": "Rol",
+      "cancel": "Cancelar",
+      "submit": "Guardar cambios"
+    },
+    "passwordReset": {
+      "header": "Restablecer contraseña: {username}",
+      "successBanner": "Se ha restablecido la contraseña. Comparta esta contraseña temporal con el usuario.",
+      "temporaryPasswordLabel": "Contraseña temporal",
+      "copyTooltip": "Copiar al portapapeles",
+      "changeOnLoginInfo": "Se requerirá que el usuario cambie esta contraseña en su próximo inicio de sesión.",
+      "generateCheckboxLabel": "Generar contraseña aleatoria",
+      "manualPasswordLabel": "Contraseña manual",
+      "manualPasswordPlaceholder": "Introduzca la contraseña",
+      "manualPasswordHint": "La contraseña debe tener al menos 8 caracteres, con mayúscula, minúscula y un dígito.",
+      "mustChangeWarning": "Se requerirá que el usuario cambie su contraseña en el próximo inicio de sesión.",
+      "done": "Hecho",
+      "cancel": "Cancelar",
+      "submit": "Restablecer contraseña"
+    },
+    "toast": {
+      "errorSummary": "Error",
+      "validationErrorSummary": "Error de validación",
+      "validationUsernameRequired": "El nombre de usuario es obligatorio",
+      "validationPasswordRequired": "Introduzca una contraseña o elija generarla",
+      "createSuccessSummary": "Usuario creado",
+      "createSuccessDetail": "Se ha creado el usuario {username}",
+      "createFailedFallback": "No se pudo crear el usuario",
+      "updateSuccessSummary": "Usuario actualizado",
+      "updateSuccessDetail": "Se ha actualizado el usuario {username}",
+      "updateFailedFallback": "No se pudo actualizar el usuario",
+      "deleteSuccessSummary": "Usuario eliminado",
+      "deleteSuccessDetail": "Se ha eliminado el usuario {username}",
+      "deleteFailedFallback": "No se pudo eliminar el usuario",
+      "statusUpdateSuccessSummary": "Estado actualizado",
+      "statusActivatedDetail": "Se ha activado el usuario {username}",
+      "statusDeactivatedDetail": "Se ha desactivado el usuario {username}",
+      "statusFailedFallback": "No se pudo actualizar el estado del usuario",
+      "passwordResetSuccessSummary": "Contraseña restablecida",
+      "passwordResetGeneratedDetail": "Se ha generado una contraseña temporal. Cópiela antes de cerrar este diálogo.",
+      "passwordResetManualDetail": "Se ha restablecido la contraseña de {username}",
+      "passwordFailedFallback": "No se pudo restablecer la contraseña",
+      "copiedSummary": "Copiado",
+      "copiedDetail": "Contraseña copiada al portapapeles"
+    },
+    "confirm": {
+      "activateHeader": "Activar usuario",
+      "deactivateHeader": "Desactivar usuario",
+      "activateMessage": "¿Está seguro de que desea activar el usuario \"{username}\"?",
+      "deactivateMessage": "¿Está seguro de que desea desactivar el usuario \"{username}\"?",
+      "deleteHeader": "Eliminar usuario",
+      "deleteMessage": "¿Está seguro de que desea eliminar el usuario \"{username}\"? Esta acción no se puede deshacer."
+    }
+  },
+  "analytics": {
+    "title": "Analítica e informes",
+    "subtitle": "Estadísticas de uso y tablas de clasificación de la plataforma",
+    "loadFailed": "No se pudieron cargar los datos del panel",
+    "stats": {
+      "totalUsers": "Usuarios totales",
+      "labsCompleted": "Laboratorios completados",
+      "achievementsEarned": "Logros obtenidos",
+      "totalSessions": "Sesiones totales"
+    },
+    "leaderboard": {
+      "heading": "Clasificación",
+      "youTag": "Tú",
+      "userStats": "{labs} laboratorios • {achievements} logros",
+      "pointsSuffix": "puntos",
+      "totalUsers": "{count} usuarios en total",
+      "empty": "Sin datos de clasificación"
+    },
+    "activity": {
+      "heading": "Actividad reciente",
+      "empty": "Sin actividad reciente"
+    }
+  },
+  "systemHealth": {
+    "title": "Estado del sistema",
+    "subtitle": "Monitorear los componentes y el estado de los servicios",
+    "adminNotice": "Algunas métricas pueden estar limitadas. Inicie sesión como administrador para acceder por completo.",
+    "lastUpdated": "Última actualización: {when}",
+    "autoRefresh": "Actualización automática",
+    "loadFailed": "No se pudo conectar con el servidor API",
+    "overall": {
+      "healthy": "Todos los sistemas operativos",
+      "degraded": "Algunos servicios degradados",
+      "unhealthy": "Problemas detectados en el sistema",
+      "unknown": "Estado desconocido",
+      "servicesMonitored": "{count} servicios monitorizados"
+    },
+    "metrics": {
+      "activeSessions": "Sesiones activas",
+      "activePods": "Pods activos",
+      "labTemplates": "Plantillas de laboratorio",
+      "totalUsers": "Usuarios totales"
+    },
+    "service": {
+      "versionPrefix": "v{version}",
+      "latencyLabel": "Latencia",
+      "latencyPlaceholder": "-",
+      "latencySub1ms": "<1ms",
+      "latencyMs": "{ms}ms",
+      "stateLabel": "Estado",
+      "connectionsLabel": "Conexiones",
+      "connectionsValue": "{count} / {max}"
+    },
+    "empty": {
+      "title": "Sin datos de estado disponibles",
+      "body": "No se pudo obtener la información del estado del sistema",
+      "retry": "Reintentar"
+    }
+  },
+  "courseProgress": {
+    "breadcrumbProgress": "Progreso",
+    "labsCount": "{count} laboratorios",
+    "stats": {
+      "labsCompleteValue": "{completed}/{total}",
+      "labsCompleteLabel": "Laboratorios completados",
+      "pointsEarnedLabel": "Puntos obtenidos",
+      "timeSpentLabel": "Tiempo dedicado",
+      "totalDurationValue": "~{hours}h",
+      "totalDurationLabel": "Duración total"
+    },
+    "progressComplete": "Completado",
+    "labCompletionLabel": "Progreso de laboratorios",
+    "pointsProgressLabel": "Progreso de puntos",
+    "pointsProgressValue": "{earned}/{total}",
+    "labsHeading": "Laboratorios del curso",
+    "labObjectives": "{completed}/{total} objetivos",
+    "labPoints": "{earned}/{total} pts"
+  },
+  "proxmoxVms": {
+    "title": "VMs de Proxmox",
+    "subtitle": "Acceso directo a VMs en ejecución en Proxmox",
+    "runningHeading": "VMs en ejecución",
+    "vmIdentity": "VMID: {vmid} | Nodo: {node}",
+    "consoleButton": "Consola",
+    "menuNoVnc": "Consola noVNC",
+    "menuDownloadSpice": "Descargar archivo SPICE",
+    "loadingConsole": "Cargando consola {type} para {name}...",
+    "connectionFailedTitle": "Error de conexión",
+    "connectionFailedFallback": "No se pudo obtener acceso a la consola",
+    "retry": "Reintentar"
+  },
+  "certificates": {
+    "title": "Mis certificados",
+    "subtitle": "Vea y verifique sus certificados de finalización de ruta",
+    "loadFailed": "No se pudieron cargar los certificados. Inténtelo de nuevo.",
+    "tryAgain": "Reintentar",
+    "empty": {
+      "title": "Aún no hay certificados",
+      "body": "Complete una ruta de aprendizaje para ganar su primer certificado. Los certificados se otorgan cuando finaliza todos los módulos de una ruta.",
+      "browseAction": "Ver rutas"
+    },
+    "cardAria": "Ver certificado de {pathway}",
+    "scoreLabel": "Puntuación",
+    "pointsLabel": "Puntos",
+    "completedAt": "Completado {when}"
+  },
+  "verifyCertificate": {
+    "title": "Verificación de certificado",
+    "subtitle": "Verifique la autenticidad de un certificado de Kootenai",
+    "tryAgain": "Reintentar",
+    "errors": {
+      "noCode": "No se proporcionó código de verificación",
+      "loadFailed": "No se pudo verificar el certificado. Inténtelo de nuevo."
+    },
+    "notFound": {
+      "title": "Certificado no encontrado",
+      "body": "El código de verificación {code} no es válido o ha caducado."
+    },
+    "verifiedBadge": "Certificado verificado",
+    "certifies": "Se certifica que",
+    "hasCompleted": "ha completado con éxito la ruta",
+    "pointsEarnedLabel": "Puntos obtenidos",
+    "scoreLabel": "Puntuación",
+    "completedOn": "Completado el {when}",
+    "verificationCodeLabel": "Código de verificación",
+    "issuedOn": "Emitido el {when}",
+    "footerIssuedBy": "Este certificado fue emitido por Kootenai Platform"
+  },
+  "resetPassword": {
+    "subtitle": "Crear una nueva contraseña",
+    "success": {
+      "heading": "Contraseña restablecida correctamente",
+      "body": "Su contraseña se ha actualizado. Ahora puede iniciar sesión con su nueva contraseña.",
+      "goToLogin": "Ir al inicio de sesión"
+    },
+    "invalid": {
+      "heading": "Enlace de restablecimiento no válido",
+      "body": "Este enlace de restablecimiento no es válido o ha caducado. Solicite uno nuevo.",
+      "requestNew": "Solicitar un nuevo enlace"
+    },
+    "srForm": "Formulario de restablecimiento de contraseña",
+    "formAria": "Formulario de restablecimiento de contraseña",
+    "newPasswordLabel": "Nueva contraseña",
+    "newPasswordPlaceholder": "Introduzca la nueva contraseña",
+    "requiredMarker": "*",
+    "requiredHint": "(obligatorio)",
+    "showPasswordAria": "Mostrar contraseña",
+    "hidePasswordAria": "Ocultar contraseña",
+    "strength": {
+      "weak": "Débil",
+      "fair": "Regular",
+      "strong": "Fuerte",
+      "aria": "Fortaleza de la contraseña: {label}",
+      "ariaUnevaluated": "Sin evaluar",
+      "srAnnounce": "Fortaleza de la contraseña: {label}"
+    },
+    "requirements": {
+      "aria": "Requisitos de la contraseña",
+      "met": "(cumplido)",
+      "notMet": "(no cumplido)",
+      "number": "Un número"
+    },
+    "confirmLabel": "Confirmar nueva contraseña",
+    "confirmPlaceholder": "Confirme su contraseña",
+    "mismatchError": "Las contraseñas no coinciden",
+    "resetting": "Restableciendo...",
+    "submit": "Restablecer contraseña",
+    "resettingAria": "Restableciendo la contraseña, por favor espere",
+    "submitAria": "Restablecer contraseña",
+    "submitSrAnnounce": "Restableciendo la contraseña, por favor espere",
+    "backToLogin": "Volver al inicio de sesión",
+    "validation": {
+      "fillFields": "Por favor, complete todos los campos correctamente",
+      "mismatchField": "Las contraseñas no coinciden"
+    },
+    "errors": {
+      "expired": "No se pudo restablecer la contraseña. Es posible que el enlace haya caducado.",
+      "generic": "No se pudo restablecer la contraseña. Inténtelo de nuevo."
+    }
+  },
+  "passwordRequirements": {
+    "minLength": "Al menos 8 caracteres",
+    "hasUppercase": "Una letra mayúscula",
+    "hasLowercase": "Una letra minúscula",
+    "hasDigit": "Un dígito"
+  },
+  "changePassword": {
+    "title": "Cambiar contraseña",
+    "mustChangeNotice": "Debe cambiar su contraseña antes de continuar",
+    "subtitle": "Actualice la contraseña de su cuenta",
+    "successMessage": "¡Contraseña cambiada correctamente!",
+    "genericError": "No se pudo cambiar la contraseña",
+    "fields": {
+      "currentLabel": "Contraseña actual",
+      "currentPlaceholder": "Introduzca la contraseña actual",
+      "newLabel": "Nueva contraseña",
+      "newPlaceholder": "Introduzca la nueva contraseña",
+      "confirmLabel": "Confirmar nueva contraseña",
+      "confirmPlaceholder": "Confirme la nueva contraseña",
+      "mismatchError": "Las contraseñas no coinciden"
+    },
+    "submit": "Cambiar contraseña",
+    "cancel": "Cancelar"
+  },
+  "forgotPassword": {
+    "subtitle": "Restablezca su contraseña",
+    "emailRequired": "Por favor, introduzca su dirección de correo",
+    "success": {
+      "heading": "Revise su correo",
+      "body": "Si existe una cuenta para {email}, le hemos enviado instrucciones para restablecer su contraseña.",
+      "spamHint": "¿No recibió el correo? Revise su carpeta de spam o inténtelo de nuevo.",
+      "tryAnother": "Probar con otro correo",
+      "backToLogin": "Volver al inicio de sesión"
+    },
+    "form": {
+      "intro": "Introduzca la dirección de correo asociada a su cuenta y le enviaremos un enlace para restablecer su contraseña.",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "tu@example.com",
+      "sending": "Enviando...",
+      "submit": "Enviar enlace de restablecimiento",
+      "backToLogin": "Volver al inicio de sesión"
+    }
+  },
+  "settings": {
+    "title": "Configuración",
+    "savedMessage": "¡Configuración guardada correctamente!",
+    "saveFailed": "No se pudo guardar la configuración. Inténtelo de nuevo.",
+    "accountHeading": "Cuenta",
+    "displayNameLabel": "Nombre para mostrar",
+    "displayNamePlaceholder": "Su nombre para mostrar",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "tu@email.com",
+    "emailHint": "Contacte a un administrador para cambiar su correo electrónico",
+    "changePasswordAction": "Cambiar contraseña",
+    "appearanceHeading": "Apariencia",
+    "themeLabel": "Tema",
+    "themeAria": "Tema",
+    "themeOptions": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    },
+    "lightAria": "Tema claro",
+    "darkAria": "Tema oscuro",
+    "notificationsHeading": "Notificaciones",
+    "notifications": {
+      "emailTitle": "Notificaciones por correo",
+      "emailDescription": "Recibir actualizaciones sobre su cuenta por correo electrónico",
+      "achievementTitle": "Alertas de logros",
+      "achievementDescription": "Recibir notificaciones cuando gane nuevos logros",
+      "progressTitle": "Recordatorios de progreso",
+      "progressDescription": "Recibir recordatorios para continuar su aprendizaje"
+    },
+    "organizationHeading": "Organización",
+    "orgRoleLabel": "Rol: {role}",
+    "orgMemberFallback": "Miembro",
+    "orgSettingsAction": "Configuración de la organización",
+    "saveAction": "Guardar configuración"
+  },
+  "profile": {
+    "title": "Mi perfil",
+    "fallbackName": "Usuario",
+    "memberSinceLabel": "Miembro desde",
+    "organizationLabel": "Organización",
+    "changePasswordAction": "Cambiar contraseña",
+    "progressHeading": "Progreso de aprendizaje",
+    "stats": {
+      "totalPoints": "Puntos totales",
+      "achievements": "Logros",
+      "enrollments": "Inscripciones",
+      "completed": "Completadas"
+    },
+    "enrollments": {
+      "heading": "Inscripciones activas",
+      "empty": "Sin inscripciones activas. ¡Comience una ruta de aprendizaje!",
+      "browseAction": "Ver rutas",
+      "unknownPathway": "Ruta desconocida",
+      "completedTag": "Completada",
+      "inProgressTag": "En progreso",
+      "percentLabel": "{percent}% completada",
+      "pointsLabel": "{points} puntos"
+    },
+    "achievements": {
+      "heading": "Logros recientes",
+      "empty": "Aún no hay logros. ¡Complete laboratorios para ganar insignias!",
+      "pointsSuffix": "{points} pts",
+      "viewAllAction": "Ver todos los logros"
+    },
+    "roles": {
+      "admin": "Administrador",
+      "instructor": "Instructor",
+      "student": "Estudiante"
+    }
+  },
+  "editLab": {
+    "title": "Editar laboratorio",
+    "subtitle": "Modifique la configuración de la plantilla del laboratorio",
+    "loadingAria": "Cargando datos del laboratorio",
+    "loadFailed": "No se pudo cargar el laboratorio. Inténtelo de nuevo.",
+    "saveFailed": "No se pudo actualizar el laboratorio. Inténtelo de nuevo.",
+    "accessDenied": {
+      "summary": "Acceso denegado",
+      "detail": "No tiene permisos para editar este laboratorio"
+    },
+    "toast": {
+      "updatedSummary": "Laboratorio actualizado",
+      "updatedDetail": "«{name}» se ha actualizado correctamente"
+    },
+    "isActiveLabel": "Laboratorio activo",
+    "reviewHeading": "Revisar y guardar",
+    "save": "Guardar cambios"
+  },
+  "createLab": {
+    "title": "Crear laboratorio",
+    "subtitle": "Construya una plantilla de laboratorio con VMs y objetivos calificados",
+    "steps": {
+      "basicInfo": "Información básica",
+      "vms": "VMs",
+      "objectives": "Objetivos",
+      "questions": "Preguntas",
+      "review": "Revisión"
+    },
+    "accessDenied": {
+      "summary": "Acceso denegado",
+      "detail": "Debe ser instructor o administrador para crear laboratorios"
+    },
+    "basic": {
+      "heading": "Información básica",
+      "nameLabel": "Nombre del laboratorio",
+      "namePlaceholder": "p. ej., Fundamentos de Linux",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "Lo que los estudiantes aprenderán en este laboratorio",
+      "difficultyLabel": "Dificultad",
+      "durationLabel": "Duración (minutos)",
+      "platformLabel": "Plataforma",
+      "versionLabel": "Versión",
+      "versionPlaceholder": "1.0.0",
+      "thresholdLabel": "Umbral de aprobación (%)",
+      "visibilityLabel": "Visibilidad",
+      "tagsLabel": "Etiquetas",
+      "tagsPlaceholder": "Agregar una etiqueta",
+      "addTagAria": "Agregar etiqueta",
+      "publishLabel": "Publicar el laboratorio inmediatamente"
+    },
+    "vmsStep": {
+      "heading": "Máquinas virtuales",
+      "intro": "Agregue las VMs que los estudiantes usarán en este laboratorio.",
+      "addHeading": "Agregar VM",
+      "addAction": "Agregar VM",
+      "nameLabel": "Nombre de la VM *",
+      "namePlaceholder": "p. ej., student-vm",
+      "templateLabel": "Plantilla",
+      "removeAria": "Eliminar VM {name}",
+      "cpuLabel": "Núcleos de CPU",
+      "memoryLabel": "Memoria (MB)",
+      "diskLabel": "Disco (GB)",
+      "wazuhLabel": "Habilitar el agente Wazuh para el monitoreo de objetivos",
+      "snapshotsLabel": "Snapshots",
+      "addSnapshot": "Agregar Snapshot",
+      "snapshotNamePlaceholder": "Nombre del snapshot",
+      "snapshotNameAria": "Nombre del snapshot {index}",
+      "snapshotDescriptionPlaceholder": "Descripción",
+      "snapshotDescriptionAria": "Descripción del snapshot {index}",
+      "snapshotDefaultTitle": "Establecer como predeterminado",
+      "snapshotDefaultAria": "Snapshot predeterminado",
+      "snapshotSetDefaultAria": "Establecer como snapshot predeterminado",
+      "snapshotRemoveAria": "Eliminar snapshot",
+      "empty": "Aún no hay VMs. Agregue al menos una VM para continuar."
+    },
+    "objectivesStep": {
+      "heading": "Objetivos y calificación",
+      "intro": "Defina los objetivos que los estudiantes deben completar. Cada objetivo tiene activadores que detectan la finalización.",
+      "addHeading": "Agregar objetivo",
+      "addAction": "Agregar objetivo",
+      "descriptionLabel": "Descripción *",
+      "descriptionPlaceholder": "p. ej., Crear un directorio llamado 'mywork'",
+      "pointsLabel": "Puntos",
+      "requiresVmHint": "Agregue al menos una VM primero para crear objetivos.",
+      "pointsTag": "{points} pts",
+      "hintLabel": "Pista (mostrada a los estudiantes)",
+      "hintPlaceholder": "Pista opcional",
+      "moveUpAria": "Mover objetivo hacia arriba",
+      "moveDownAria": "Mover objetivo hacia abajo",
+      "removeAria": "Eliminar objetivo",
+      "triggersLabel": "Activadores",
+      "addTrigger": "Agregar activador",
+      "triggerTypePlaceholder": "Tipo de activador",
+      "triggerTypeAria": "Tipo del activador {index}",
+      "targetPlaceholder": "VM objetivo",
+      "targetAria": "VM objetivo del activador {index}",
+      "removeTriggerAria": "Eliminar activador",
+      "filePathPlaceholder": "Ruta del archivo (p. ej., /home/student/mywork)",
+      "filePathAria": "Ruta del archivo",
+      "fileContainsPlaceholder": "El archivo debe contener este texto",
+      "fileContainsAria": "Contenido del archivo a coincidir",
+      "commandPlaceholder": "Patrón de comando (p. ej., ls.*mywork)",
+      "servicePlaceholder": "Nombre del servicio (p. ej., nginx)",
+      "patternAria": "Patrón a coincidir",
+      "empty": "Aún no hay objetivos. Agregue al menos un objetivo para continuar.",
+      "summary": "Puntos de objetivos:"
+    },
+    "questionsStep": {
+      "heading": "Preguntas (opcional)",
+      "intro": "Agregue preguntas que los estudiantes deben responder según su exploración de la VM. Las preguntas son opcionales, pero proporcionan evaluación adicional más allá de los puntos de control automatizados.",
+      "addHeading": "Agregar pregunta",
+      "addAction": "Agregar pregunta",
+      "descriptionLabel": "Pregunta *",
+      "descriptionPlaceholder": "p. ej., ¿Qué usuario es dueño de /etc/passwd?",
+      "typeLabel": "Tipo",
+      "pointsLabel": "Puntos",
+      "pointsTag": "{points} pts",
+      "typeText": "Texto",
+      "typeMc": "Opción múltiple",
+      "typeMcShort": "OM",
+      "typeRowLabel": "Tipo:",
+      "typeRowAria": "Tipo de la pregunta {index}",
+      "moveUpAria": "Mover pregunta hacia arriba",
+      "moveDownAria": "Mover pregunta hacia abajo",
+      "duplicateTitle": "Duplicar",
+      "duplicateAria": "Duplicar pregunta",
+      "removeAria": "Eliminar pregunta",
+      "hintLabel": "Pista (mostrada a los estudiantes a petición)",
+      "hintPlaceholder": "Pista opcional",
+      "validationLabel": "Validación:",
+      "validationAria": "Tipo de validación de la pregunta {index}",
+      "caseSensitiveLabel": "Distinguir mayúsculas",
+      "expectedAnswerLabel": "Respuesta esperada *",
+      "regexPatternLabel": "Patrón regex *",
+      "expectedAnswerPlaceholder": "La respuesta correcta",
+      "regexPlaceholder": "p. ej., ^root$",
+      "multiLabel": "Permitir varias respuestas",
+      "addOption": "Agregar opción",
+      "optionPlaceholder": "Opción {id}",
+      "optionAria": "Texto de la opción {id}",
+      "removeOptionAria": "Eliminar opción",
+      "correctHint": "Marque las casillas para indicar las respuestas correctas. Al menos una opción debe estar marcada como correcta.",
+      "dependenciesLabel": "Dependencias (la pregunta se desbloquea después de completarlas)",
+      "dependenciesPlaceholder": "Sin dependencias",
+      "dependenciesAria": "Dependencias de la pregunta {index}",
+      "empty": "Aún no hay preguntas. Las preguntas son opcionales: puede continuar sin agregar ninguna.",
+      "pointsSummary": "Puntos de preguntas:",
+      "totalSummary": "Total:"
+    },
+    "review": {
+      "heading": "Revisar y crear",
+      "stats": {
+        "vms": "VMs",
+        "objectives": "Objetivos",
+        "questions": "Preguntas",
+        "totalPoints": "Puntos totales",
+        "duration": "Duración",
+        "durationValue": "{count}m"
+      },
+      "versionFormat": "v{version}",
+      "passTag": "{value}% para aprobar",
+      "vmsHeading": "Máquinas virtuales",
+      "vmSpecs": "{cpu} CPU, {memory}MB de RAM, {disk}GB de disco",
+      "vmSnapshotSuffix": "{count} snapshots",
+      "objectivesHeading": "Objetivos ({points} pts)",
+      "questionsHeading": "Preguntas ({points} pts)",
+      "statusNotice": {
+        "asActive": "El laboratorio se creará como activo.",
+        "asDraft": "El laboratorio se creará como borrador.",
+        "orgVisible": "Será visible para su organización.",
+        "privateVisible": "Será privado para usted."
+      }
+    },
+    "nav": {
+      "back": "Atrás",
+      "cancel": "Cancelar",
+      "next": "Siguiente",
+      "createLab": "Crear laboratorio"
+    },
+    "toasts": {
+      "createdSummary": "Laboratorio creado",
+      "createdDetail": "\"{name}\" se ha creado correctamente"
+    },
+    "errors": {
+      "createFailed": "No se pudo crear el laboratorio. Inténtelo de nuevo."
+    },
+    "required": "*"
+  },
+  "labTemplateMgmt": {
+    "accessDenied": "Acceso denegado. Se requieren privilegios de administrador.",
+    "title": "Gestión de plantillas de laboratorio",
+    "subtitle": "Cree, edite y gestione plantillas de laboratorio",
+    "actions": {
+      "importLab": "Importar laboratorio",
+      "newTemplate": "Nueva plantilla",
+      "createTemplate": "Crear plantilla"
+    },
+    "loadFailed": "No se pudieron cargar las plantillas de laboratorio",
+    "cardTags": {
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "versionFormat": "v{version}",
+      "noDescription": "Sin descripción"
+    },
+    "cardStats": {
+      "pointsValue": "{count} pts",
+      "durationValue": "{count}m",
+      "thresholdValue": "{value}%"
+    },
+    "cardTooltips": {
+      "history": "Historial de versiones",
+      "export": "Exportar YAML",
+      "viewSpec": "Ver especificación",
+      "edit": "Editar",
+      "deactivate": "Desactivar",
+      "activate": "Activar",
+      "delete": "Eliminar"
+    },
+    "cardFooter": {
+      "updatedAt": "Actualizado: {when}"
+    },
+    "empty": {
+      "title": "Sin plantillas de laboratorio",
+      "hint": "Comience creando su primera plantilla de laboratorio"
+    },
+    "spec": {
+      "loading": "Cargando...",
+      "empty": "No hay especificación disponible",
+      "loadFailed": "No se pudo cargar la especificación"
+    },
+    "toasts": {
+      "successSummary": "Éxito",
+      "errorSummary": "Error",
+      "createdDetail": "Plantilla de laboratorio creada correctamente",
+      "createFailedDetail": "No se pudo crear la plantilla",
+      "updatedDetail": "Plantilla de laboratorio actualizada correctamente",
+      "updateFailedDetail": "No se pudo actualizar la plantilla",
+      "deletedDetail": "Plantilla de laboratorio eliminada correctamente",
+      "deleteFailedDetail": "No se pudo eliminar la plantilla",
+      "statusChangedActive": "Plantilla de laboratorio activada",
+      "statusChangedInactive": "Plantilla de laboratorio desactivada",
+      "statusFailed": "No se pudo actualizar el estado de la plantilla",
+      "exportedSummary": "Exportado",
+      "exportedDetail": "YAML descargado",
+      "exportFailedDetail": "No se pudo exportar la plantilla",
+      "importedSummary": "Importado",
+      "importedDetail": "Plantilla de laboratorio importada correctamente",
+      "importFailedDetail": "No se pudo importar",
+      "restoredSummary": "Restaurado",
+      "restoredDetail": "Restaurado a la versión {number}",
+      "restoreFailedDetail": "No se pudo restaurar la versión"
+    },
+    "changeSummaryTemplate": "Restaurado a la versión {number}"
+  },
+  "labVersionHistory": {
+    "title": "Historial de versiones",
+    "loadFailed": "No se pudo cargar el historial de versiones",
+    "empty": {
+      "title": "Sin historial de versiones",
+      "hint": "Las versiones se crean automáticamente al editar una plantilla."
+    },
+    "versionsHeading": "Versiones",
+    "fields": {
+      "version": "Versión:",
+      "platform": "Plataforma:",
+      "difficulty": "Dificultad:",
+      "duration": "Duración:",
+      "durationValue": "{count}m",
+      "maxPoints": "Puntos máximos:",
+      "passThreshold": "Umbral de aprobación:",
+      "specHeading": "Especificación (JSON)"
+    },
+    "restoreAction": "Restaurar esta versión",
+    "selectHint": "Seleccione una versión para ver los detalles",
+    "restoreDialog": {
+      "header": "Restaurar versión",
+      "question": "¿Restaurar a la versión {number}?",
+      "notice": "El estado actual se guardará como una nueva versión antes de restaurar.",
+      "cancel": "Cancelar",
+      "submit": "Restaurar"
+    },
+    "toasts": {
+      "detailFailedSummary": "Error",
+      "detailFailedDetail": "No se pudieron cargar los detalles de la versión",
+      "restoredSummary": "Restaurado",
+      "restoredDetail": "Restaurado a la versión {number}",
+      "restoreFailedSummary": "Error",
+      "restoreFailedDetail": "No se pudo restaurar la versión"
+    },
+    "changeSummaryTemplate": "Restaurado a la versión {number}"
+  },
+  "labProgress": {
+    "breadcrumbProgress": "Progreso",
+    "estimatedMinutes": "Est. {count} min",
+    "timeSpentMinutes": "{count} min dedicados",
+    "progressComplete": "Completado",
+    "pointsEarned": "Puntos obtenidos",
+    "objectivesHeading": "Objetivos",
+    "objectivesCompleted": "{completed} de {total} completados",
+    "hint": {
+      "heading": "¿Necesita ayuda con el objetivo actual?",
+      "workingOn": "Está trabajando en:",
+      "showHint": "Mostrar pista (-50 pts)"
+    },
+    "actions": {
+      "backToCourse": "Volver al curso",
+      "continueLab": "Continuar laboratorio"
+    }
+  },
+  "labDetail": {
+    "backLabel": "Volver a laboratorios",
+    "versionSubtitle": "Versión {version}",
+    "edit": "Editar",
+    "descriptionHeading": "Descripción",
+    "topicsHeading": "Temas",
+    "objectivesHeading": "Objetivos de aprendizaje",
+    "objectives": {
+      "core": "Comprender conceptos básicos y configuración",
+      "security": "Aplicar buenas prácticas de seguridad",
+      "handsOn": "Completar ejercicios prácticos con escenarios reales",
+      "assessments": "Validar el conocimiento mediante evaluaciones automáticas"
+    },
+    "quickInfo": {
+      "heading": "Detalles del laboratorio",
+      "duration": "Duración",
+      "platform": "Plataforma",
+      "maxPoints": "Puntos máximos",
+      "passThreshold": "Umbral de aprobación"
+    },
+    "launch": "Iniciar laboratorio",
+    "resources": {
+      "heading": "Requisitos de recursos",
+      "cpu": "CPU",
+      "memory": "Memoria",
+      "storage": "Almacenamiento",
+      "cpuValue": "{count} vCPUs",
+      "memoryValue": "{count} GB",
+      "storageValue": "{count} GB",
+      "hint": "Los recursos se asignan automáticamente al iniciar el laboratorio."
+    },
+    "notFound": {
+      "title": "Laboratorio no encontrado",
+      "browseAction": "Ver laboratorios"
+    },
+    "errors": {
+      "loadFailed": "No se pudieron cargar los detalles del laboratorio",
+      "mustBeLoggedIn": "Debe iniciar sesión para iniciar un laboratorio.",
+      "launchFailed": "No se pudo iniciar {name}. Inténtelo de nuevo."
+    }
+  },
+  "podControl": {
+    "cardTitle": "Control del Pod",
+    "retry": "Reintentar",
+    "errorLoadFailed": "No se pudo cargar el pod",
+    "actions": {
+      "startAll": "Iniciar todo",
+      "stopAll": "Detener todo",
+      "resetAll": "Restablecer todo"
+    },
+    "vmList": {
+      "heading": "Máquinas virtuales ({count})",
+      "empty": "No hay VMs en este pod",
+      "ipLine": "IP: {address}",
+      "snapshotLine": "Snapshot: {name}"
+    },
+    "vmActions": {
+      "startTooltip": "Iniciar VM",
+      "stopTooltip": "Detener VM",
+      "suspendTooltip": "Suspender VM",
+      "resumeTooltip": "Reanudar VM",
+      "consoleButton": "Consola",
+      "revertButton": "Revertir"
+    },
+    "confirm": {
+      "stopPod": {
+        "header": "Detener Pod",
+        "message": "¿Seguro que desea detener el pod? Las VMs se apagarán."
+      },
+      "resetAll": {
+        "header": "Restablecer todas las VMs",
+        "message": "¿Restablecer todas las VMs al estado inicial? Esto descartará los cambios."
+      },
+      "stopVm": {
+        "header": "Detener VM",
+        "message": "¿Detener la VM \"{name}\"? Esto apagará la VM."
+      }
+    },
+    "notifications": {
+      "startingPodTitle": "Iniciando Pod",
+      "startingPodMessage": "Iniciando todas las VMs...",
+      "startedPodTitle": "Pod iniciado",
+      "startedPodMessage": "Todas las VMs están en ejecución",
+      "stoppingPodTitle": "Deteniendo Pod",
+      "stoppingPodMessage": "Deteniendo todas las VMs...",
+      "stoppedPodTitle": "Pod detenido",
+      "stoppedPodMessage": "Todas las VMs se han detenido",
+      "resettingAllTitle": "Restableciendo VMs",
+      "resettingAllMessage": "Revirtiendo todas las VMs al estado inicial...",
+      "resetAllTitle": "VMs restablecidas",
+      "resetAllMessage": "Todas las VMs se revirtieron al estado inicial",
+      "suspendingTitle": "Suspendiendo",
+      "suspendingMessage": "Suspendiendo {name}...",
+      "suspendedTitle": "VM suspendida",
+      "suspendedMessage": "{name} está suspendida",
+      "resumingTitle": "Reanudando",
+      "resumingMessage": "Reanudando {name}...",
+      "resumedTitle": "VM reanudada",
+      "resumedMessage": "{name} está en ejecución",
+      "revertingTitle": "Revirtiendo",
+      "revertingMessage": "Revirtiendo {vm} a {snapshot}..."
+    },
+    "errors": {
+      "startPodFailed": "No se pudo iniciar el pod",
+      "stopPodFailed": "No se pudo detener el pod",
+      "resetAllFailed": "No se pudieron restablecer las VMs",
+      "startVmFailed": "No se pudo iniciar la VM {name}",
+      "startVmShort": "No se pudo iniciar {name}",
+      "stopVmFailed": "No se pudo detener la VM {name}",
+      "stopVmShort": "No se pudo detener {name}",
+      "suspendVmFailed": "No se pudo suspender la VM {name}",
+      "suspendVmShort": "No se pudo suspender {name}",
+      "resumeVmFailed": "No se pudo reanudar la VM {name}",
+      "resumeVmShort": "No se pudo reanudar {name}",
+      "revertFailed": "No se pudo revertir la VM",
+      "revertShort": "No se pudo revertir {name}"
+    },
+    "revertDialog": {
+      "header": "Revertir a Snapshot",
+      "intro": "Seleccione un snapshot para revertir {name}:",
+      "empty": "No hay snapshots disponibles",
+      "cancel": "Cancelar",
+      "submit": "Revertir"
+    }
+  },
+  "labCompletion": {
+    "cardTitle": "Finalización del laboratorio",
+    "progressGauge": {
+      "label": "Progreso"
+    },
+    "stats": {
+      "points": "Puntos",
+      "checkpoints": "Puntos de control"
+    },
+    "checkpoints": {
+      "heading": "Progreso de puntos de control",
+      "empty": "Aún no hay datos de puntos de control"
+    },
+    "passThreshold": {
+      "pre": "Umbral de aprobación: se requiere 70% para aprobar",
+      "label": "Umbral de aprobación"
+    },
+    "submit": {
+      "button": "Enviar laboratorio para calificación",
+      "disclaimer": "El envío finalizará su puntuación y no se puede deshacer."
+    },
+    "results": {
+      "congrats": "¡Felicidades!",
+      "notQuite": "Casi lo logras",
+      "pointsSummary": "{earned} / {max} puntos",
+      "passed": "APROBADO",
+      "failed": "NO APROBADO",
+      "checkpointsHeading": "Resultados de puntos de control",
+      "checkpointsCount": "({passed}/{total} aprobados)"
+    },
+    "module": {
+      "heading": "¡Módulo completado!",
+      "partOf": "Parte de {pathway}",
+      "unlocked": "¡{name} ya está desbloqueado!",
+      "pathwayCompleted": "¡Ruta completada!"
+    },
+    "achievementsHeading": "¡Logros desbloqueados!",
+    "submittedAt": "Enviado {when}",
+    "actions": {
+      "viewPod": "Ver Pod",
+      "done": "Listo"
+    },
+    "errorHeader": "El envío falló"
+  },
+  "questions": {
+    "cardTitle": "Preguntas",
+    "answeredCount": "{answered}/{total} respondidas",
+    "empty": "No hay preguntas para este laboratorio",
+    "pointsSummary": "{earned}/{total} puntos",
+    "answerPlaceholder": "Escriba su respuesta",
+    "submit": "Enviar respuesta",
+    "attempts": "Intentos: {count}",
+    "hint": {
+      "label": "Pista {level} de {total}",
+      "pointsDeducted": "{count} punto descontado por pistas | {count} puntos descontados por pistas",
+      "getNext": "Obtener pista {level}/{total}",
+      "allRevealed": "Todas las pistas reveladas"
+    }
+  },
+  "instructions": {
+    "headerTitle": "Instrucciones del laboratorio",
+    "fallbackSubtitle": "Guía paso a paso",
+    "loading": "Cargando instrucciones...",
+    "tryAgain": "Reintentar",
+    "loadFailed": "No se pudieron cargar las instrucciones del laboratorio",
+    "progressLabel": "Progreso",
+    "stepOfTotal": "Paso {current} de {total}",
+    "stepCounter": "{current} / {total}",
+    "sections": {
+      "overview": "Resumen del laboratorio",
+      "learningObjectives": "Objetivos de aprendizaje",
+      "prerequisites": "Requisitos previos",
+      "summary": "Resumen y próximos pasos",
+      "tips": "Consejos",
+      "resources": "Recursos adicionales"
+    },
+    "completedTag": "Completado",
+    "empty": {
+      "title": "No hay instrucciones disponibles para este laboratorio",
+      "hint": "Consulte la descripción del laboratorio para obtener guía"
+    },
+    "nav": {
+      "previous": "Anterior",
+      "next": "Siguiente"
+    }
+  },
+  "classroomSimulation": {
+    "header": {
+      "title": "Simulación de aula con IA",
+      "subtitle": "Simule una clase completa de estudiantes de IA con personalidades distintas",
+      "newAction": "Nueva simulación"
+    },
+    "setup": {
+      "heading": "Crear simulación",
+      "nameLabel": "Nombre de la simulación",
+      "nameAria": "Nombre de la simulación",
+      "namePlaceholder": "p. ej., Otoño 2026 - Introducción a la ciberseguridad",
+      "pathwayLabel": "ID de ruta (opcional)",
+      "pathwayAria": "ID de ruta (opcional)",
+      "pathwayPlaceholder": "UUID de la ruta de aprendizaje",
+      "personalityMixLabel": "Mezcla de personalidades de estudiantes ({total} en total)",
+      "highPerformersLabel": "Alto rendimiento",
+      "highPerformersAria": "Número de estudiantes de alto rendimiento",
+      "strugglingLabel": "Con dificultades",
+      "strugglingAria": "Número de estudiantes con dificultades",
+      "industryProLabel": "Profesionales del sector",
+      "industryProAria": "Número de profesionales del sector",
+      "enableCanvas": "Habilitar integración con Canvas",
+      "enableVmLabs": "Habilitar laboratorios VM",
+      "speedLabel": "Multiplicador de velocidad: {speed}×",
+      "speedAria": "Multiplicador de velocidad",
+      "cancel": "Cancelar",
+      "submit": "Crear simulación",
+      "creating": "Creando..."
+    },
+    "list": {
+      "heading": "Simulaciones",
+      "empty": "Aún no hay simulaciones. Cree una para empezar."
+    },
+    "detail": {
+      "placeholder": "Seleccione una simulación para ver los detalles"
+    },
+    "actions": {
+      "start": "Iniciar",
+      "pause": "Pausar",
+      "stop": "Detener",
+      "delete": "Eliminar"
+    },
+    "tabs": {
+      "students": "Estudiantes",
+      "feedback": "Comentarios"
+    },
+    "students": {
+      "heading": "Estudiantes de IA ({count})"
+    },
+    "feedback": {
+      "summary": {
+        "overallRating": "Valoración global",
+        "totalFeedback": "Comentarios totales",
+        "infraIssues": "Problemas de infra",
+        "labsReviewed": "Labs revisados"
+      },
+      "ratingOutOf": "{rating}/5",
+      "ratingDenominator": "/5",
+      "byCategory": "Por categoría",
+      "byLab": "Por laboratorio",
+      "entriesCount": "{count} entradas",
+      "reviewsCount": "{count} reseñas",
+      "filterAria": "Filtrar comentarios por tipo",
+      "filterAll": "Todos los tipos",
+      "empty": "Aún no hay comentarios. Ejecute una simulación con una ruta para generar comentarios.",
+      "checkpoints": "{passed}/{total} puntos de control",
+      "labRef": "Lab: {id}",
+      "durationMs": "{ms} ms"
+    },
+    "personality": {
+      "highPerformer": "Alto rendimiento",
+      "struggling": "Con dificultades",
+      "industryPro": "Profesional del sector"
+    },
+    "feedbackType": {
+      "labQuality": "Calidad del laboratorio",
+      "pathway": "Ruta",
+      "infrastructure": "Infraestructura",
+      "contentSuggestion": "Sugerencia de contenido"
+    },
+    "status": {
+      "pending": "Pendiente",
+      "running": "En ejecución",
+      "paused": "En pausa",
+      "completed": "Completada",
+      "failed": "Fallida"
+    }
+  },
+  "progressDashboard": {
+    "title": "Mi progreso",
+    "subtitle": "Siga su trayectoria de aprendizaje en todos los cursos y laboratorios",
+    "stats": {
+      "rankOf": "de {total}",
+      "totalPoints": "Puntos totales",
+      "badgesOf": "de {total} insignias",
+      "coursesOf": "de {total} cursos",
+      "labsOf": "de {total} laboratorios",
+      "labsCompletedLabel": "laboratorios completados",
+      "dayStreak": "Racha de días"
+    },
+    "overall": {
+      "heading": "Progreso general en la plataforma",
+      "pointsEarned": "{earned} / {max} puntos obtenidos",
+      "pointsEarnedUnknown": "{earned} puntos obtenidos",
+      "unavailable": "N/D"
+    },
+    "timeAnalytics": {
+      "heading": "Análisis de tiempo",
+      "periodAria": "Periodo de tiempo",
+      "periods": {
+        "week": "Últimos 7 días",
+        "month": "Últimos 30 días",
+        "all": "Todo el tiempo"
+      },
+      "summary": {
+        "hours": "{hours} h",
+        "minutesShort": "{minutes} min",
+        "totalTime": "Tiempo total",
+        "sessions": "Sesiones",
+        "avgSession": "Sesión media",
+        "longest": "Más larga",
+        "pointsPerMinute": "Pts/min",
+        "mostActive": "Más activo"
+      }
+    },
+    "charts": {
+      "dailyActivity": "Actividad diaria",
+      "topLabs": "Labs con más tiempo",
+      "weeklyTrend": "Tendencia semanal",
+      "empty": {
+        "daily": "No hay datos de actividad",
+        "lab": "No hay datos de laboratorios",
+        "weekly": "No hay datos semanales"
+      },
+      "dataset": {
+        "minutesSpent": "Minutos dedicados",
+        "timeSpentMin": "Tiempo (min)",
+        "timeMin": "Tiempo (min)",
+        "sessions": "Sesiones"
+      },
+      "axis": {
+        "minutes": "Minutos",
+        "sessions": "Sesiones"
+      },
+      "weekOf": "Semana del {date}"
+    },
+    "courses": {
+      "heading": "Progreso de cursos",
+      "viewAll": "Ver todos",
+      "empty": "No se ha inscrito en ningún curso. ¡Inicie una ruta de aprendizaje para seguir su progreso!",
+      "browsePathways": "Explorar rutas",
+      "labsProgress": "{completed}/{total} laboratorios",
+      "pointsShort": "{points} pts"
+    },
+    "achievements": {
+      "heading": "Logros",
+      "viewAllCount": "Ver todos ({unlocked}/{total})",
+      "empty": "¡Complete laboratorios y cursos para desbloquear logros!",
+      "recentlyUnlocked": "Desbloqueados recientemente",
+      "almostThere": "Casi lo consigue"
+    },
+    "leaderboardTitle": "Mejores participantes",
+    "platformStats": {
+      "heading": "Estadísticas de la plataforma",
+      "totalUsers": "Usuarios totales",
+      "activeLabs": "Laboratorios activos",
+      "labCompletions": "Completados",
+      "avgScore": "Puntuación media",
+      "percent": "{value}%"
+    }
+  },
+  "pathway": {
+    "prerequisites": {
+      "heading": "Requisitos previos"
+    },
+    "header": {
+      "featuredTag": "Destacado"
+    },
+    "wizard": {
+      "steps": {
+        "basicInfo": "Información básica",
+        "modules": "Módulos",
+        "labs": "Laboratorios",
+        "review": "Revisión"
+      },
+      "basicInfo": {
+        "heading": "Información básica",
+        "nameLabel": "Nombre de la ruta",
+        "namePlaceholder": "p. ej., Fundamentos de Linux",
+        "shortDescriptionLabel": "Descripción breve",
+        "shortDescriptionPlaceholder": "Resumen breve (se muestra en las tarjetas)",
+        "descriptionLabel": "Descripción completa",
+        "descriptionPlaceholder": "Descripción detallada de lo que lograrán los estudiantes",
+        "descriptionAria": "Descripción completa",
+        "difficultyLabel": "Dificultad",
+        "difficultyAria": "Dificultad",
+        "estimatedHoursLabel": "Horas estimadas",
+        "estimatedHoursPlaceholder": "p. ej., 10",
+        "visibilityLabel": "Visibilidad",
+        "visibilityAria": "Visibilidad",
+        "tagsLabel": "Etiquetas",
+        "tagInputPlaceholder": "Añadir una etiqueta"
+      },
+      "modules": {
+        "heading": "Módulos",
+        "description": "Organice su ruta en módulos. Cada módulo contiene laboratorios que los estudiantes completan juntos.",
+        "addHeading": "Añadir módulo",
+        "nameLabel": "Nombre del módulo *",
+        "namePlaceholder": "p. ej., Primeros pasos",
+        "unlockTypeLabel": "Tipo de desbloqueo",
+        "unlockTypeAria": "Tipo de desbloqueo",
+        "descriptionLabel": "Descripción",
+        "descriptionPlaceholder": "Descripción breve de este módulo",
+        "addAction": "Añadir módulo",
+        "labsCount": "{count} laboratorio(s)",
+        "emptyMessage": "Aún no se han añadido módulos. Añada al menos un módulo para continuar."
+      },
+      "labs": {
+        "heading": "Asignar laboratorios a los módulos",
+        "description": "Añada laboratorios a cada módulo. Los estudiantes completarán los laboratorios en el orden mostrado.",
+        "moduleLabsCount": "{count} laboratorio(s)",
+        "durationMinutes": "{count} min",
+        "pointsSuffix": "{count} pts",
+        "requiredCheckbox": "Obligatorio",
+        "selectPlaceholder": "Seleccione un laboratorio para añadir",
+        "selectAria": "Seleccione un laboratorio para añadir",
+        "emptyWarning": "Añada al menos un laboratorio a cualquier módulo para continuar."
+      },
+      "review": {
+        "heading": "Revisar y crear",
+        "statsModules": "Módulos",
+        "statsLabs": "Laboratorios",
+        "statsPoints": "Puntos totales",
+        "statsDuration": "Duración",
+        "durationFormat": "{hours}h",
+        "estimatedHoursTag": "{hours}h estimadas",
+        "modulesAndLabsHeading": "Módulos y laboratorios",
+        "requiredTag": "Obligatorio",
+        "noLabsNote": "Sin laboratorios asignados",
+        "draftMessage": "La ruta se creará como {draft}. Puede publicarla después de revisarla.",
+        "draftWord": "borrador"
+      }
+    },
+    "learningRoadmap": {
+      "heading": "Hoja de ruta de aprendizaje",
+      "legendCompleted": "Completado",
+      "legendInProgress": "En progreso",
+      "legendUnlocked": "Desbloqueado",
+      "legendLocked": "Bloqueado",
+      "listAria": "Módulos de aprendizaje",
+      "completeHeading": "¡Ruta completada!",
+      "completeBody": "¡Enhorabuena! Ha completado todos los módulos de esta ruta de aprendizaje."
+    },
+    "progressCard": {
+      "yourProgress": "Tu progreso",
+      "completedState": "¡Completado!",
+      "moduleCountProgress": "{completed} de {total} módulos completados",
+      "progressAria": "Progreso: {percent}%",
+      "statsModules": "Módulos",
+      "statsLabs": "Laboratorios",
+      "statsDuration": "Duración",
+      "statsPoints": "Puntos",
+      "viewCertificate": "Ver certificado",
+      "continueLearning": "Continuar aprendiendo",
+      "enrollNow": "Inscribirse",
+      "unenroll": "Cancelar inscripción de la ruta"
+    },
+    "certificateModal": {
+      "headerTitle": "Certificado de finalización",
+      "certifies": "Esto certifica que",
+      "achievement": "ha completado con éxito la ruta",
+      "pointsEarnedLabel": "Puntos obtenidos",
+      "scoreLabel": "Puntuación",
+      "completedOn": "Completado el {when}",
+      "verificationCode": "Código de verificación",
+      "copyAria": "Copiar URL de verificación",
+      "issuedOn": "Emitido el {when}",
+      "close": "Cerrar",
+      "print": "Imprimir certificado"
+    },
+    "card": {
+      "featured": "Destacado",
+      "draft": "Borrador",
+      "modulesLabel": "{count} módulos",
+      "moreTags": "+{count}",
+      "progressLabel": "Progreso",
+      "naDuration": "N/D",
+      "continueAction": "Continuar",
+      "enrollAction": "Inscribirse",
+      "viewProgress": "Ver progreso",
+      "details": "Detalles"
+    },
+    "roadmap": {
+      "legendCompleted": "Completado",
+      "legendInProgress": "En progreso",
+      "legendUnlocked": "Desbloqueado",
+      "legendLocked": "Bloqueado",
+      "badgeCompleted": "Completado",
+      "badgeInProgress": "En progreso",
+      "badgeStart": "Iniciar",
+      "badgeLocked": "Bloqueado",
+      "moduleHeader": "Módulo {number}: {name}",
+      "labsCount": "{count} laboratorios",
+      "pointsSuffix": "{count} pts"
+    },
+    "moduleCard": {
+      "badgeCompleted": "Completado",
+      "badgeInProgress": "En progreso",
+      "badgeStart": "Iniciar",
+      "badgeLocked": "Bloqueado",
+      "moduleHeader": "Módulo {number}: {name}",
+      "moduleAriaNumber": "Módulo {number}",
+      "labSingular": "{count} laboratorio",
+      "labPlural": "{count} laboratorios",
+      "pointsSuffix": "{count} pts",
+      "cardAria": "{name}. {status}. {labs}, {duration}, {points} puntos.",
+      "lockSequential": "Complete el módulo anterior para desbloquearlo",
+      "lockAllPrevious": "Complete todos los módulos anteriores para desbloquearlo",
+      "lockManual": "Requiere aprobación del instructor",
+      "lockDefault": "Complete los requisitos previos para desbloquearlo",
+      "labFallbackName": "Laboratorio",
+      "labDurationMin": "{count}min"
+    },
+    "edit": {
+      "title": "Editar ruta",
+      "subtitleLoading": "Cargando...",
+      "statusDraft": "Borrador",
+      "statusPublished": "Publicada",
+      "accessDeniedSummary": "Acceso denegado",
+      "accessDeniedDetail": "Debe ser instructor o administrador para editar rutas",
+      "loadFailed": "No se pudo cargar la ruta. Inténtelo de nuevo.",
+      "saveSuccessSummary": "Ruta actualizada",
+      "saveSuccessDetail": "Sus cambios se han guardado",
+      "saveFailedFallback": "No se pudieron guardar los cambios. Inténtelo de nuevo.",
+      "newTag": "Nuevo",
+      "emptyModules": "Aún no hay módulos. Añada al menos un módulo arriba.",
+      "cancel": "Cancelar",
+      "submit": "Guardar cambios",
+      "cancelDialog": {
+        "header": "Descartar cambios",
+        "message": "¿Seguro que desea descartar sus cambios?"
+      }
+    },
+    "create": {
+      "title": "Crear ruta",
+      "subtitle": "Construya una pista de aprendizaje estructurada con módulos y laboratorios",
+      "accessDeniedSummary": "Acceso denegado",
+      "accessDeniedDetail": "Debe ser instructor o administrador para crear rutas",
+      "labsLoadFailed": "No se pudieron cargar los laboratorios disponibles",
+      "createSuccessSummary": "Ruta creada",
+      "createSuccessDetail": "«{name}» se ha creado correctamente",
+      "createFailedFallback": "No se pudo crear la ruta. Inténtelo de nuevo.",
+      "unlockTypes": {
+        "sequential": "Secuencial",
+        "sequentialDescription": "El módulo anterior debe estar completado",
+        "allPrevious": "Todos los anteriores",
+        "allPreviousDescription": "Todos los módulos anteriores deben estar completados",
+        "manual": "Manual",
+        "manualDescription": "Requiere aprobación del instructor",
+        "always": "Siempre disponible",
+        "alwaysDescription": "El módulo está siempre desbloqueado"
+      },
+      "back": "Atrás",
+      "cancel": "Cancelar",
+      "next": "Siguiente",
+      "submit": "Crear ruta"
+    },
+    "interactive": {
+      "backAction": "Volver a rutas",
+      "breadcrumbList": "Rutas de aprendizaje",
+      "loadFailed": "No se pudieron cargar los detalles de la ruta. Inténtelo de nuevo más tarde.",
+      "enrollFailed": "No se pudo inscribir en esta ruta. Inténtelo de nuevo.",
+      "moduleLocked": "«{name}» está bloqueado. Complete primero los módulos anteriores.",
+      "labLocked": "Este laboratorio está bloqueado. Complete primero los módulos anteriores.",
+      "launchFailed": "No se pudo iniciar «{name}». Inténtelo de nuevo.",
+      "prerequisitesHeading": "Requisitos previos",
+      "roadmapHeading": "Hoja de ruta de aprendizaje",
+      "progressComplete": "Completo",
+      "progressModuleRatio": "{completed} de {total} módulos",
+      "statModules": "Módulos",
+      "statLabs": "Laboratorios",
+      "enrollNow": "Inscribirse",
+      "completedTag": "¡Completado!",
+      "difficultyNotSpecified": "Sin especificar",
+      "labDialog": {
+        "fallbackTitle": "Detalles del laboratorio",
+        "pointsSuffix": "{count} puntos",
+        "yourProgress": "Su progreso",
+        "passed": "Aprobado",
+        "notPassed": "No aprobado",
+        "bestScoreLine": "Mejor puntuación: ",
+        "bestScoreValue": "{score}/{total}",
+        "attemptsLine": "Intentos: ",
+        "attemptsValue": "{count}",
+        "notAttempted": "Aún no ha intentado este laboratorio.",
+        "requiredNote": "Obligatorio para completar este módulo",
+        "viewDetails": "Ver detalles",
+        "tryAgain": "Intentar de nuevo",
+        "startLab": "Iniciar laboratorio",
+        "enrollToStart": "Inscribirse para empezar"
+      }
+    },
+    "enrollment": {
+      "backAction": "Volver a rutas",
+      "breadcrumbList": "Rutas de aprendizaje",
+      "fallbackPathwayName": "Ruta de aprendizaje",
+      "loadFailed": "No se pudieron cargar los detalles de la inscripción. Inténtelo de nuevo más tarde.",
+      "launchFailed": "No se pudo iniciar {name}. Inténtelo de nuevo.",
+      "statusCompleted": "Completada",
+      "statusInProgress": "En progreso",
+      "statusEnrolled": "Inscrito",
+      "statusLocked": "Bloqueado",
+      "statusUnlocked": "Desbloqueado",
+      "overallProgress": "Progreso general",
+      "moduleProgressStat": "{completed}/{total} módulos",
+      "pointsStat": "{earned}/{total} puntos",
+      "enrolledSince": "Inscrito {when}",
+      "timeRemaining": "~{duration} restantes",
+      "continueLearning": "Continuar aprendiendo",
+      "nextLabFallback": "Siguiente laboratorio",
+      "pointsSuffix": "{count} pts",
+      "startLab": "Iniciar laboratorio",
+      "completedHeading": "¡Ruta completada!",
+      "completedBody": "Enhorabuena por completar todos los módulos.",
+      "pointsEarnedLine": "{points} puntos obtenidos",
+      "modulesHeading": "Módulos",
+      "moduleFallbackName": "Módulo {index}",
+      "moduleLabsCount": "{completed}/{total} laboratorios",
+      "modulePointsCount": "{earned}/{total} pts",
+      "labFallbackName": "Laboratorio",
+      "attemptsSingular": "{count} intento",
+      "attemptsPlural": "{count} intentos",
+      "labScore": "{score}/{total}",
+      "labScoreLabel": "puntos",
+      "viewDetails": "Ver detalles",
+      "retryLab": "Repetir laboratorio",
+      "startLabTooltip": "Iniciar laboratorio",
+      "emptyModuleLabs": "Aún no hay laboratorios en este módulo."
+    },
+    "detail": {
+      "backAction": "Volver a rutas",
+      "breadcrumbList": "Rutas de aprendizaje",
+      "draftTag": "Borrador",
+      "publishAction": "Publicar",
+      "editAction": "Editar",
+      "publishedToast": {
+        "summary": "Ruta publicada",
+        "detail": "«{name}» ya es visible para todos los usuarios"
+      },
+      "publishFailedToast": {
+        "summary": "Publicación fallida",
+        "fallback": "No se pudo publicar la ruta"
+      },
+      "emptyModules": "Aún no hay módulos disponibles.",
+      "unenrollDialog": {
+        "header": "Cancelar inscripción de la ruta",
+        "message": "¿Seguro que desea cancelar la inscripción? Su progreso se guardará y podrá volver a inscribirse más tarde.",
+        "accept": "Cancelar inscripción",
+        "reject": "Cancelar"
+      },
+      "certificateIssuedToast": {
+        "summary": "Certificado emitido",
+        "detail": "Se ha generado su certificado de finalización."
+      },
+      "certificateErrorToast": {
+        "summary": "Error de certificado",
+        "fallback": "No se pudo cargar el certificado"
+      }
+    },
+    "list": {
+      "title": "Rutas de aprendizaje",
+      "subtitle": "Pistas de aprendizaje estructuradas para dominar nuevas habilidades",
+      "countSummary": "{filtered} de {total} rutas",
+      "createAction": "Crear ruta",
+      "continueHeading": "Continuar aprendiendo",
+      "featuredHeading": "Rutas destacadas",
+      "unknownPathway": "Ruta desconocida",
+      "moduleProgress": "{completed}/{total} módulos",
+      "searchPlaceholder": "Buscar rutas por nombre, descripción o etiquetas...",
+      "searchAria": "Buscar rutas por nombre, descripción o etiquetas",
+      "difficultyAllPlaceholder": "Todas las dificultades",
+      "difficultyAria": "Filtrar por dificultad",
+      "myEnrollmentsAction": "Mis inscripciones",
+      "clearAction": "Limpiar",
+      "clearFiltersAction": "Limpiar filtros",
+      "allPathwaysHeading": "Todas las rutas",
+      "yourEnrollmentsHeading": "Sus inscripciones",
+      "statusCompleted": "Completada",
+      "statusInProgress": "En progreso",
+      "statusEnrolled": "Inscrito",
+      "statusAbandoned": "Pausada",
+      "errors": {
+        "loadFailed": "No se pudieron cargar las rutas de aprendizaje. Inténtelo de nuevo más tarde.",
+        "enrollFailed": "No se pudo inscribir en {name}. Inténtelo de nuevo."
+      },
+      "empty": {
+        "title": "No hay rutas de aprendizaje disponibles",
+        "body": "Vuelva más tarde o póngase en contacto con su administrador."
+      },
+      "noMatch": {
+        "title": "Ninguna ruta coincide con sus filtros",
+        "body": "Pruebe a ajustar sus criterios de búsqueda o filtrado."
+      }
+    }
+  }
+}

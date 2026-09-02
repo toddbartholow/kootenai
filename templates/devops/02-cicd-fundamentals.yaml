@@ -1,0 +1,201 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: CI/CD Pipeline Fundamentals
+  description: |
+    Learn Continuous Integration and Continuous Deployment concepts. Build automated
+    pipelines using GitHub Actions and understand testing, building, and deployment stages.
+  duration: 90m
+  difficulty: intermediate
+  tags:
+    - devops
+    - cicd
+    - github-actions
+    - automation
+    - pipelines
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      CI/CD (Continuous Integration/Continuous Deployment) automates the process of testing,
+      building, and deploying code. In this lab, you'll create automated pipelines that run
+      on every code change.
+    learning_objectives:
+      - Understand CI/CD concepts and benefits
+      - Create GitHub Actions workflows
+      - Configure automated testing pipelines
+      - Set up build and deployment stages
+      - Implement environment variables and secrets
+      - Create multi-job pipelines with dependencies
+    prerequisites:
+      - Git version control basics
+      - Basic understanding of YAML syntax
+      - Familiarity with testing concepts
+    steps:
+      - id: workflow-basics
+        title: Create Your First Workflow
+        content: |
+          Create a basic GitHub Actions workflow file.
+
+          ```yaml
+          # .github/workflows/ci.yml
+          name: CI Pipeline
+          on: [push, pull_request]
+          jobs:
+            test:
+              runs-on: ubuntu-latest
+              steps:
+                - uses: actions/checkout@v4
+                - name: Run tests
+                  run: echo "Running tests..."
+          ```
+      - id: testing-stage
+        title: Add Testing Stage
+        content: |
+          Configure automated tests to run on every push.
+      - id: build-stage
+        title: Add Build Stage
+        content: |
+          Create a build job that depends on passing tests.
+      - id: deploy-stage
+        title: Add Deployment Stage
+        content: |
+          Configure conditional deployment to different environments.
+      - id: secrets
+        title: Working with Secrets
+        content: |
+          Securely manage credentials and API keys in pipelines.
+    summary: |
+      You've built a complete CI/CD pipeline with testing, building, and deployment stages.
+    tips:
+      - Keep pipelines fast by parallelizing independent jobs
+      - Use caching to speed up repeated builds
+      - Fail fast - put quick tests first
+      - Always use secrets for sensitive data
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 101
+        subnet: 192.168.101.0/24
+        gateway: 192.168.101.1
+        dhcp: true
+
+  vms:
+    - name: dev-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 50
+      networks:
+        - segment: lab-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/.github
+        audit_commands: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: workflow-dir
+      description: Create the GitHub Actions workflow directory
+      points: 10
+      triggers:
+        - type: file_exists
+          target: dev-workstation
+          match:
+            path: /home/student/project/.github/workflows
+
+    - id: basic-workflow
+      description: Create a basic CI workflow file
+      points: 15
+      depends_on:
+        - workflow-dir
+      hints:
+        - level: 1
+          text: Create a .yml file in .github/workflows/
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/project/.github/workflows/ci.yml
+            contains: "on:"
+
+    - id: test-job
+      description: Configure a test job in the workflow
+      points: 20
+      depends_on:
+        - basic-workflow
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/project/.github/workflows/ci.yml
+            contains: "jobs:"
+
+    - id: checkout-action
+      description: Use the checkout action to get code
+      points: 15
+      depends_on:
+        - test-job
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/project/.github/workflows/ci.yml
+            contains: "actions/checkout"
+
+    - id: build-job
+      description: Add a build job that depends on tests
+      points: 20
+      depends_on:
+        - test-job
+      hints:
+        - level: 1
+          text: "Use 'needs: test' to create job dependencies"
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/project/.github/workflows/ci.yml
+            contains: "needs:"
+
+    - id: environment-vars
+      description: Configure environment variables
+      points: 10
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/project/.github/workflows/ci.yml
+            contains: "env:"
+
+    - id: conditional-deploy
+      description: Add conditional deployment based on branch
+      points: 10
+      hints:
+        - level: 1
+          text: "Use 'if: github.ref == refs/heads/main' for conditional execution"
+          penalty: 2
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/project/.github/workflows/ci.yml
+            regex: "if:.*github\\.(ref|event)"

@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: blue-team-incident-response
+  description: "Investigate a compromised network with pre-planted artifacts."
+  duration: 2h
+  difficulty: intermediate
+  tags:
+    - security
+    - dfir
+    - blue-team
+  version: "1.0.0"
+  author: "IRQ Studio"
+
+spec:
+  platform: proxmox
+  
+  network:
+    segments:
+      - name: corporate
+        vlan: 100
+        subnet: 192.168.1.0/24
+        gateway: 192.168.1.1
+        dhcp: false
+      
+      - name: dmz
+        vlan: 101
+        subnet: 192.168.2.0/24
+        gateway: 192.168.2.1
+        dhcp: false
+  
+  vms:
+    - name: analyst-workstation
+      template: rocky9-desktop-soc
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: corporate
+          ip: 192.168.1.10
+      snapshots:
+        - name: clean
+          description: "Fresh workstation"
+          default: true
+      startOnCreate: true
+    
+    - name: web-server
+      template: ubuntu22-server-lamp
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: dmz
+          ip: 192.168.2.10
+      snapshots:
+        - name: compromised
+          description: "Server with webshell planted"
+          default: true
+      startOnCreate: true
+    
+    - name: dc01
+      template: windows-server-2022-ad
+      resources:
+        cpu: 4
+        memory: 8192
+        disk: 60
+      networks:
+        - segment: corporate
+          ip: 192.168.1.1
+      snapshots:
+        - name: post-lateral-movement
+          description: "After attacker lateral movement"
+          default: true
+      startOnCreate: true

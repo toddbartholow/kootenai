@@ -1,0 +1,264 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: SOC Analyst Fundamentals
+  description: |
+    Learn the fundamentals of Security Operations Center (SOC) analysis. This lab
+    covers log analysis, SIEM basics, alert triage, and incident documentation.
+    You'll work with realistic security events and learn to distinguish true
+    positives from false positives.
+  duration: 90m
+  difficulty: beginner
+  tags:
+    - security
+    - soc
+    - siem
+    - log-analysis
+    - blue-team
+  version: "1.0.0"
+  author: Kootenai Team
+  category: cybersecurity
+  instructions:
+    overview: |
+      Security Operations Centers (SOCs) are the front line of cyber defense. As a SOC analyst,
+      you'll monitor security events, triage alerts, investigate incidents, and create detection
+      rules. This lab introduces the SIEM (Security Information and Event Management) workflow
+      using realistic security events.
+    learning_objectives:
+      - Navigate and query a SIEM dashboard
+      - Filter and prioritize security alerts by severity
+      - Identify brute force attacks in log data
+      - Extract Indicators of Compromise (IOCs)
+      - Create basic detection rules
+    prerequisites:
+      - Basic Linux command line familiarity
+      - Understanding of IP addresses and network basics
+      - No prior security experience required
+    steps:
+      - id: access-siem
+        title: Access the SIEM Dashboard
+        content: |
+          Connect to the SIEM server to begin your analysis.
+
+          ```bash
+          # Verify connectivity to the SIEM
+          curl -s http://10.20.0.5:5601/status | head -5
+
+          # Or open in browser
+          firefox http://10.20.0.5:5601 &
+          ```
+
+          The SIEM aggregates logs from multiple sources into a searchable interface.
+      - id: view-alerts
+        title: Navigate Security Alerts
+        content: |
+          Query the SIEM API for security alerts.
+
+          ```bash
+          # Query security alerts
+          curl -s http://10.20.0.5:5601/api/alerts | python3 -m json.tool
+
+          # Search for specific alert types
+          curl -s "http://10.20.0.5:5601/api/security/alerts?severity=high"
+          ```
+      - id: filter-severity
+        title: Filter High Severity Events
+        content: |
+          Focus on the most critical alerts first — this is alert triage.
+
+          ```bash
+          # Extract high severity events and save to file
+          curl -s http://10.20.0.5:5601/api/alerts | \
+            python3 -c "import sys,json; [print(a) for a in json.load(sys.stdin) if a.get('severity','') in ('high','critical')]" \
+            > ~/lab/high_severity_filtered.txt
+          ```
+
+          Triage priority: Critical > High > Medium > Low > Informational.
+      - id: investigate-brute-force
+        title: Identify a Brute Force Attack
+        content: |
+          Look for patterns indicating a brute force attack — multiple failed logins
+          from the same source IP in a short time window.
+
+          ```bash
+          # Search auth logs for failed logins
+          grep "Failed password" /var/log/auth.log | head -20
+
+          # Group by source IP to find attackers
+          grep "Failed password" /var/log/auth.log | \
+            grep -oP 'from \K[0-9.]+' | sort | uniq -c | sort -rn
+
+          # Document findings
+          echo "Attack type: brute force" > ~/lab/incident_report.txt
+          echo "Source IP: <attacker_ip>" >> ~/lab/incident_report.txt
+          echo "Target: SSH service" >> ~/lab/incident_report.txt
+          ```
+      - id: extract-iocs
+        title: Extract Indicators of Compromise
+        content: |
+          IOCs help other analysts and automated systems detect the same threat.
+
+          ```bash
+          # Create IOC file with attacker details
+          cat > ~/lab/iocs.txt << 'EOF'
+          # Indicators of Compromise
+          ## IP Addresses
+          - <attacker_ip> (brute force source)
+
+          ## Timestamps
+          - First seen: <timestamp>
+          - Last seen: <timestamp>
+
+          ## Targeted Accounts
+          - root, admin, user
+          EOF
+          ```
+      - id: create-rule
+        title: Create a Detection Rule
+        content: |
+          Write a detection rule that automatically flags this attack pattern.
+
+          ```yaml
+          # ~/lab/detection_rule.yaml
+          name: Brute Force SSH Detection
+          description: Triggers on multiple failed SSH logins
+          type: threshold
+          threshold:
+            count: 5
+            timeframe: 300  # 5 minutes
+          conditions:
+            - field: event.action
+              value: ssh_login_failed
+          severity: high
+          ```
+    summary: |
+      You've learned the SOC analyst workflow: accessing a SIEM, triaging alerts,
+      investigating brute force attacks, extracting IOCs, and creating detection rules.
+    tips:
+      - Always start with high-severity alerts during triage
+      - Document everything — timestamps, IPs, and actions taken
+      - Look for patterns across multiple log sources
+      - "False positives are normal — learn to distinguish them from real threats"
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: soc-network
+        vlan: 200
+        subnet: 10.20.0.0/24
+        gateway: 10.20.0.1
+        dhcp: false
+
+  vms:
+    - name: analyst-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/analyst
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: soc-network
+          ip: 10.20.0.10
+      snapshots:
+        - name: initial
+          description: Fresh analyst workstation with tools installed
+          default: true
+
+    - name: siem-server
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 4
+        memory: 8192
+        disk: 100
+      networks:
+        - segment: soc-network
+          ip: 10.20.0.5
+      snapshots:
+        - name: configured
+          description: SIEM with sample security events loaded
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: access-siem
+      description: Access the SIEM dashboard and verify connectivity
+      points: 10
+      hint: "Open a browser and navigate to http://10.20.0.5:5601"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: analyst-workstation
+          match:
+            pattern: "curl.*10.20.0.5|firefox.*10.20.0.5"
+
+    - id: view-alerts
+      description: Navigate to the security alerts dashboard
+      points: 10
+      hint: "Look for the Security or Alerts section in the SIEM interface"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: analyst-workstation
+          match:
+            pattern: "curl.*alerts|curl.*security"
+
+    - id: filter-high-severity
+      description: Filter alerts to show only high severity events
+      points: 15
+      hint: "Use the severity filter to show critical and high priority alerts"
+      order: 3
+      triggers:
+        - type: file_exists
+          target: analyst-workstation
+          match:
+            path: /home/analyst/lab/high_severity_filtered.txt
+
+    - id: identify-brute-force
+      description: Identify and document a brute force attack in the logs
+      points: 20
+      hint: "Look for multiple failed login attempts from the same source IP"
+      order: 4
+      triggers:
+        - type: file_content
+          target: analyst-workstation
+          match:
+            path: /home/analyst/lab/incident_report.txt
+            contains: "brute force"
+
+    - id: extract-iocs
+      description: Extract Indicators of Compromise (IOCs) from the attack
+      points: 20
+      hint: "Document the attacker IP, timestamps, and targeted accounts"
+      order: 5
+      triggers:
+        - type: file_exists
+          target: analyst-workstation
+          match:
+            path: /home/analyst/lab/iocs.txt
+
+    - id: create-detection-rule
+      description: Create a basic detection rule for the identified attack pattern
+      points: 25
+      hint: "Write a rule that triggers on multiple failed logins from same source"
+      order: 6
+      triggers:
+        - type: file_content
+          target: analyst-workstation
+          match:
+            path: /home/analyst/lab/detection_rule.yaml
+            contains: "threshold"

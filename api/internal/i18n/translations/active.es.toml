@@ -1,0 +1,2161 @@
+# Spanish (es) message catalog.
+#
+# Draft quality: machine-translated following the conventions in
+# docs/i18n/glossary.md, then lightly edited for consistency. Strings here
+# should be reviewed by a native-speaker Spanish SME with virtualization
+# and/or cyber-ed background before we advertise `es` publicly.
+#
+# Validation messages deliberately avoid gendered adjectives agreeing with
+# {{.Field}}: {{.Field}} is interpolated as a bare field name with no
+# article, which makes "debe ser válido/a" ambiguous. We use noun-phrase
+# constructions ("campo obligatorio", "formato no válido") instead — they
+# read naturally regardless of the underlying field's grammatical gender.
+
+[error.internal]
+other = "se produjo un error interno"
+
+[error.database]
+other = "no se pudo procesar la solicitud"
+
+[error.notFound]
+other = "recurso no encontrado"
+
+[error.unauthorized]
+other = "autenticación requerida"
+
+[error.forbidden]
+other = "acceso denegado"
+
+[error.badRequest]
+other = "solicitud no válida"
+
+[error.conflict]
+other = "el recurso ya existe"
+
+[error.validationFailed]
+other = "la validación ha fallado"
+
+[error.notImplemented]
+other = "esta operación aún no es compatible"
+
+# --- Auth ---
+
+[auth.errors.notConfigured]
+other = "autenticación no configurada"
+
+[auth.errors.invalidCredentials]
+other = "credenciales no válidas"
+
+[auth.errors.invalidToken]
+other = "token no válido"
+
+[auth.errors.tokenRevoked]
+other = "el token ha sido revocado"
+
+[auth.errors.invalidAuthorizationHeader]
+other = "encabezado de autorización no válido"
+
+[auth.errors.generateTokenFailed]
+other = "no se pudo generar el token"
+
+# --- Autenticación LDAP ---
+
+[auth.ldap.errors.connectionFailed]
+other = "no se pudo conectar al servidor de autenticación"
+
+[auth.ldap.errors.tlsRequired]
+other = "se requiere una conexión segura al servidor de autenticación"
+
+[auth.ldap.errors.searchFailed]
+other = "error en la búsqueda de autenticación"
+
+[auth.ldap.errors.userNotFound]
+other = "credenciales no válidas"
+
+[auth.ldap.errors.bindFailed]
+other = "credenciales no válidas"
+
+[auth.ldap.errors.provisionFailed]
+other = "no se pudo crear la cuenta de usuario"
+
+[auth.ldap.errors.notConfigured]
+other = "la autenticación LDAP no está configurada"
+
+[auth.ldap.errors.featureDisabled]
+other = "la autenticación LDAP requiere una licencia empresarial"
+
+[auth.errors.refreshTokenFailed]
+other = "no se pudo actualizar el token"
+
+[auth.errors.passwordRequired]
+other = "la contraseña es obligatoria"
+
+[auth.errors.userDatabaseUnavailable]
+other = "base de datos de usuarios no disponible"
+
+[auth.errors.loginFailed]
+other = "error al iniciar sesión"
+
+[auth.errors.notAuthenticated]
+other = "no autenticado"
+
+[auth.errors.logoutFailed]
+other = "no se pudo cerrar la sesión"
+
+[auth.errors.invalidRequestBody]
+other = "cuerpo de la solicitud no válido"
+
+[auth.errors.tokenRequired]
+other = "el token es obligatorio"
+
+[auth.errors.serviceUnavailable]
+other = "servicio de autenticación temporalmente no disponible"
+
+[auth.logoutSuccess]
+other = "sesión cerrada correctamente"
+
+# --- Validation ---
+
+[validation.required]
+other = "{{.Field}}: campo obligatorio"
+
+[validation.email]
+other = "{{.Field}}: formato de correo electrónico no válido"
+
+[validation.min]
+other = "{{.Field}} debe tener al menos {{.Param}} caracteres"
+
+[validation.max]
+other = "{{.Field}} debe tener como máximo {{.Param}} caracteres"
+
+[validation.uuid]
+other = "{{.Field}}: UUID no válido"
+
+[validation.oneof]
+other = "{{.Field}} debe ser uno de: {{.Param}}"
+
+[validation.gte]
+other = "{{.Field}} debe ser mayor o igual que {{.Param}}"
+
+[validation.lte]
+other = "{{.Field}} debe ser menor o igual que {{.Param}}"
+
+[validation.url]
+other = "{{.Field}}: URL no válida"
+
+[validation.generic]
+other = "{{.Field}} no pasó la validación: {{.Tag}}"
+
+[validation.bodyInvalidJSON]
+other = "JSON no válido"
+
+# --- Errores comunes de cuerpo/solicitud ---
+
+[error.invalidRequestBody]
+other = "cuerpo de solicitud no válido"
+
+# --- Ciclo de vida del pod ---
+
+[pod.errors.notFound]
+other = "pod no encontrado"
+
+[pod.errors.accessDenied]
+other = "acceso denegado"
+
+[pod.errors.accessDeniedToPod]
+other = "acceso denegado a este pod"
+
+[pod.errors.deletePermissionDenied]
+other = "no tiene permiso para eliminar este pod"
+
+[pod.errors.startPermissionDenied]
+other = "no tiene permiso para iniciar este pod"
+
+[pod.errors.stopPermissionDenied]
+other = "no tiene permiso para detener este pod"
+
+[pod.errors.snapshotNameRequired]
+other = "el nombre del snapshot es obligatorio"
+
+[pod.errors.labTemplateRepoNotConfigured]
+other = "repositorio de plantillas de laboratorio no configurado"
+
+[pod.errors.userRepoNotConfigured]
+other = "repositorio de usuarios no configurado"
+
+[pod.errors.asyncProvisioningNotConfigured]
+other = "aprovisionamiento asíncrono no configurado"
+
+[pod.errors.loadTemplateFailed]
+other = "no se pudo cargar la plantilla"
+
+[pod.errors.parseTemplateFailed]
+other = "no se pudo analizar la plantilla"
+
+[pod.errors.labTemplateNotFound]
+other = "plantilla de laboratorio no encontrada"
+
+[pod.errors.labTemplateInactive]
+other = "la plantilla de laboratorio no está activa"
+
+# --- Ciclo de vida de la sesión ---
+
+[session.errors.notFound]
+other = "sesión no encontrada"
+
+[session.errors.accessDenied]
+other = "acceso denegado"
+
+[session.errors.repositoryUnavailable]
+other = "repositorio de sesiones no disponible"
+
+[session.errors.labTemplateRequired]
+other = "labTemplate es obligatorio"
+
+[session.errors.podIdRequired]
+other = "podId es obligatorio"
+
+[session.errors.userIdRequired]
+other = "userId es obligatorio"
+
+[session.errors.activeExistsForPod]
+other = "ya existe una sesión activa para este pod"
+
+[session.errors.alreadySubmitted]
+other = "la sesión ya fue enviada"
+
+[session.errors.checkExistingFailed]
+other = "no se pudieron comprobar las sesiones existentes"
+
+[session.errors.cleanupStaleFailed]
+other = "no se pudieron limpiar las sesiones obsoletas"
+
+[session.errors.createFailed]
+other = "no se pudo crear la sesión"
+
+[session.errors.deleteFailed]
+other = "no se pudo eliminar la sesión"
+
+[session.errors.getFailed]
+other = "no se pudo obtener la sesión"
+
+[session.errors.listFailed]
+other = "no se pudieron listar las sesiones"
+
+[session.errors.submitFailed]
+other = "no se pudo enviar la sesión"
+
+[session.errors.progressUnavailable]
+other = "datos de progreso no disponibles"
+
+[session.errors.enrollmentAndModuleRequired]
+other = "se deben proporcionar juntos enrollmentId y moduleId"
+
+[session.errors.enrollmentNotFound]
+other = "inscripción no encontrada"
+
+[session.errors.enrollmentNotOwned]
+other = "la inscripción no pertenece al usuario"
+
+[session.errors.enrollmentVerifyFailed]
+other = "no se pudo verificar la inscripción"
+
+[session.errors.moduleNotFound]
+other = "módulo no encontrado"
+
+[session.errors.moduleVerifyFailed]
+other = "no se pudo verificar el módulo"
+
+[session.errors.moduleNotInPathway]
+other = "el módulo no pertenece a la ruta de la inscripción"
+
+[session.errors.maxAgeInvalid]
+other = "duración maxAge no válida (p. ej. 24h, 12h, 48h)"
+
+[session.errors.maxAgeTooSmall]
+other = "maxAge debe ser al menos 1h"
+
+# --- Plantillas de laboratorio ---
+
+[labTemplate.errors.notFound]
+other = "plantilla de laboratorio no encontrada"
+
+[labTemplate.errors.accessDenied]
+other = "acceso denegado"
+
+[labTemplate.errors.accessDeniedToTemplate]
+other = "acceso denegado a esta plantilla de laboratorio"
+
+[labTemplate.errors.repoNotConfigured]
+other = "repositorio de plantillas de laboratorio no configurado"
+
+[labTemplate.errors.permissionDenied]
+other = "permiso denegado"
+
+[labTemplate.errors.deletePermissionDenied]
+other = "no tiene permiso para eliminar esta plantilla de laboratorio"
+
+[labTemplate.errors.modifyPermissionDenied]
+other = "no tiene permiso para modificar esta plantilla de laboratorio"
+
+[labTemplate.errors.onlyAdminsCanCreateGlobal]
+other = "solo los administradores pueden crear plantillas de laboratorio globales"
+
+[labTemplate.errors.onlyAdminsCanSetGlobal]
+other = "solo los administradores pueden establecer la visibilidad a global"
+
+[labTemplate.errors.nameRequired]
+other = "el nombre es obligatorio"
+
+[labTemplate.errors.platformRequired]
+other = "la plataforma es obligatoria"
+
+[labTemplate.errors.specRequired]
+other = "la especificación es obligatoria"
+
+[labTemplate.errors.yamlRequired]
+other = "el YAML es obligatorio"
+
+[labTemplate.errors.versionRequired]
+other = "la versión es obligatoria"
+
+[labTemplate.errors.invalidSpec]
+other = "especificación de laboratorio no válida"
+
+[labTemplate.errors.invalidVersionNumber]
+other = "número de versión no válido"
+
+[labTemplate.errors.versionNotFound]
+other = "versión no encontrada"
+
+[labTemplate.errors.createFailed]
+other = "no se pudo crear la plantilla de laboratorio"
+
+[labTemplate.errors.updateFailed]
+other = "no se pudo actualizar la plantilla de laboratorio"
+
+[labTemplate.errors.deleteFailed]
+other = "no se pudo eliminar la plantilla de laboratorio"
+
+[labTemplate.errors.getFailed]
+other = "no se pudo obtener la plantilla de laboratorio"
+
+[labTemplate.errors.listFailed]
+other = "no se pudieron listar las plantillas de laboratorio"
+
+[labTemplate.errors.exportFailed]
+other = "no se pudo exportar la plantilla de laboratorio"
+
+[labTemplate.errors.parseFailed]
+other = "no se pudo analizar la plantilla de laboratorio"
+
+[labTemplate.errors.getVersionFailed]
+other = "no se pudo obtener la versión"
+
+[labTemplate.errors.listVersionsFailed]
+other = "no se pudieron listar las versiones"
+
+[labTemplate.errors.restoreVersionFailed]
+other = "no se pudo restaurar la versión"
+
+[labTemplate.errors.orgContextRequired]
+other = "se requiere contexto de organización para esta operación"
+
+# --- Rutas ---
+
+[pathway.errors.notFound]
+other = "ruta no encontrada"
+
+[pathway.errors.repoNotAvailable]
+other = "repositorio de rutas no disponible"
+
+[pathway.errors.nameRequired]
+other = "el nombre es obligatorio"
+
+[pathway.errors.slugConflict]
+other = "ya existe una ruta con este slug"
+
+[pathway.errors.createFailed]
+other = "no se pudo crear la ruta"
+
+[pathway.errors.updateFailed]
+other = "no se pudo actualizar la ruta"
+
+[pathway.errors.deleteFailed]
+other = "no se pudo eliminar la ruta"
+
+[pathway.errors.archiveFailed]
+other = "no se pudo archivar la ruta"
+
+[pathway.errors.publishFailed]
+other = "no se pudo publicar la ruta"
+
+[pathway.errors.getFailed]
+other = "no se pudo obtener la ruta"
+
+[pathway.errors.listFailed]
+other = "no se pudieron listar las rutas"
+
+[pathway.errors.statsFailed]
+other = "no se pudieron obtener las estadísticas de la ruta"
+
+[pathway.errors.moduleNotFound]
+other = "módulo no encontrado"
+
+[pathway.errors.moduleCreateFailed]
+other = "no se pudo crear el módulo"
+
+[pathway.errors.moduleUpdateFailed]
+other = "no se pudo actualizar el módulo"
+
+[pathway.errors.moduleDeleteFailed]
+other = "no se pudo eliminar el módulo"
+
+[pathway.errors.moduleGetFailed]
+other = "no se pudo obtener el módulo"
+
+[pathway.errors.moduleListFailed]
+other = "no se pudieron listar los módulos"
+
+[pathway.errors.moduleLabAddFailed]
+other = "no se pudo añadir el laboratorio al módulo"
+
+[pathway.errors.moduleLabRemoveFailed]
+other = "no se pudo eliminar el laboratorio del módulo"
+
+[pathway.errors.labTemplateIdRequired]
+other = "labTemplateId es obligatorio"
+
+[pathway.errors.enrollmentNotFound]
+other = "inscripción no encontrada"
+
+[pathway.errors.enrollmentRepoNotAvailable]
+other = "repositorio de inscripciones no disponible"
+
+[pathway.errors.enrollmentGetFailed]
+other = "no se pudo obtener la inscripción"
+
+[pathway.errors.enrollmentProgressFailed]
+other = "no se pudo obtener el progreso de la inscripción"
+
+[pathway.errors.enrollmentListFailed]
+other = "no se pudieron listar las inscripciones"
+
+[pathway.errors.adminOrInstructorRequired]
+other = "se requiere rol de administrador o instructor"
+
+[pathway.errors.authRequired]
+other = "autenticación requerida"
+
+# --- Guardias compartidas de autorización ---
+
+[authz.authRequired]
+other = "autenticación requerida"
+
+[authz.adminRequired]
+other = "se requiere acceso de administrador"
+
+[authz.accessDenied]
+other = "acceso denegado"
+
+# --- Seguridad / Wazuh ---
+
+[security.errors.wazuhNotConfigured]
+other = "monitoreo de salud de Wazuh no configurado"
+
+# --- Eventos ---
+
+[event.errors.readBodyFailed]
+other = "no se pudo leer el cuerpo de la solicitud"
+
+[event.errors.webhookValidationFailed]
+other = "falló la validación del webhook"
+
+[event.errors.invalidAlertFormat]
+other = "formato de alerta no válido"
+
+[event.errors.processAlertFailed]
+other = "no se pudo procesar la alerta"
+
+[event.errors.timestampOutOfRange]
+other = "marca de tiempo del evento fuera de rango"
+
+# --- Recomendaciones ---
+
+[recommendation.errors.getFailed]
+other = "no se pudieron obtener las recomendaciones"
+
+[recommendation.errors.serviceUnavailable]
+other = "servicio de recomendaciones no disponible"
+
+[recommendation.errors.nextLabFailed]
+other = "no se pudo obtener el siguiente laboratorio"
+
+[recommendation.errors.noNextLab]
+other = "no se encontró siguiente laboratorio o la ruta se completó"
+
+# --- Evaluación ---
+
+[assessment.errors.notFound]
+other = "evaluación no encontrada"
+
+[assessment.errors.runtimeNotConfigured]
+other = "entorno de evaluación no configurado"
+
+[assessment.errors.sessionNotFound]
+other = "sesión no encontrada"
+
+[assessment.errors.podNotFound]
+other = "pod no encontrado"
+
+[assessment.errors.deviceNotFound]
+other = "dispositivo no encontrado"
+
+# --- Panel ---
+
+[dashboard.errors.getDashboardFailed]
+other = "no se pudo obtener el panel"
+
+[dashboard.errors.getActivityFailed]
+other = "no se pudo obtener la actividad"
+
+[dashboard.errors.getLeaderboardFailed]
+other = "no se pudo obtener la tabla de clasificación"
+
+[dashboard.errors.getInsightsFailed]
+other = "no se pudieron obtener las perspectivas"
+
+# --- WebSocket ---
+
+[websocket.errors.invalidPod]
+other = "pod no válido"
+
+[websocket.errors.invalidSession]
+other = "sesión no válida"
+
+# --- Logros ---
+
+[achievement.errors.notFound]
+other = "logro no encontrado"
+
+[achievement.errors.repoNotAvailable]
+other = "repositorio de logros no disponible"
+
+[achievement.errors.serviceNotAvailable]
+other = "servicio de logros no disponible"
+
+[achievement.errors.getFailed]
+other = "no se pudo obtener el logro"
+
+[achievement.errors.summaryFailed]
+other = "no se pudo obtener el resumen de logros"
+
+[achievement.errors.recentFailed]
+other = "no se pudieron obtener los logros recientes"
+
+[achievement.errors.userFailed]
+other = "no se pudieron obtener los logros del usuario"
+
+[achievement.errors.listFailed]
+other = "no se pudieron listar los logros"
+
+# --- Consola (Proxmox SPICE/VNC) ---
+
+[console.errors.adminRequired]
+other = "se requiere acceso de administrador para operaciones directas de VM"
+
+[console.errors.invalidVmid]
+other = "vmid no válido: {{.Vmid}}"
+
+[console.errors.proxmoxNotConfigured]
+other = "host de Proxmox no configurado"
+
+[console.errors.spiceNotSupported]
+other = "la VM no admite la consola SPICE"
+
+# --- Certificados ---
+
+[certificate.errors.notFoundOrInvalidCode]
+other = "certificado no encontrado o código de verificación no válido"
+
+[certificate.errors.serviceNotAvailable]
+other = "servicio de certificados no disponible"
+
+[certificate.errors.enrollmentNotFound]
+other = "inscripción no encontrada"
+
+[certificate.errors.listFailed]
+other = "no se pudieron listar los certificados"
+
+[certificate.errors.verifyFailed]
+other = "no se pudo verificar el certificado"
+
+[certificate.errors.verifyEnrollmentFailed]
+other = "no se pudo verificar la inscripción"
+
+# --- Lanzamiento LTI / OIDC ---
+
+[lti.errors.notConfigured]
+other = "LTI no configurado"
+
+[lti.errors.parseFormFailed]
+other = "no se pudo analizar el formulario"
+
+[lti.errors.missingIdToken]
+other = "id_token ausente"
+
+[lti.errors.invalidLaunch]
+other = "lanzamiento LTI no válido"
+
+[lti.errors.missingOidcParams]
+other = "faltan parámetros OIDC requeridos"
+
+[lti.errors.initiateLoginFailed]
+other = "no se pudo iniciar el inicio de sesión"
+
+[lti.errors.authorizationError]
+other = "error de autorización: {{.Code}} - {{.Description}}"
+
+[lti.errors.invalidState]
+other = "parámetro de estado no válido"
+
+[lti.errors.invalidLaunchType]
+other = "tipo de solicitud de lanzamiento no válido"
+
+[lti.errors.tokenEndpointNotImplemented]
+other = "endpoint de token no implementado"
+
+# --- Enlaces profundos LTI ---
+
+[ltiDeeplink.errors.notConfigured]
+other = "enlace profundo no configurado"
+
+[ltiDeeplink.errors.repoNotConfigured]
+other = "repositorio LTI no configurado"
+
+[ltiDeeplink.errors.parseTokenFailed]
+other = "no se pudo analizar el token"
+
+[ltiDeeplink.errors.invalidTokenClaims]
+other = "claims de token no válidos"
+
+[ltiDeeplink.errors.missingDeeplinkSettings]
+other = "faltan ajustes de enlace profundo"
+
+[ltiDeeplink.errors.courseIdRequired]
+other = "courseId es obligatorio"
+
+[ltiDeeplink.errors.returnUrlRequired]
+other = "returnUrl es obligatorio"
+
+[ltiDeeplink.errors.templateIdRequired]
+other = "templateId es obligatorio"
+
+[ltiDeeplink.errors.templateNotFound]
+other = "plantilla no encontrada"
+
+[ltiDeeplink.errors.getTemplatesFailed]
+other = "no se pudieron obtener las plantillas"
+
+[ltiDeeplink.errors.listTemplatesFailed]
+other = "no se pudieron listar las plantillas"
+
+[ltiDeeplink.errors.saveAssignmentFailed]
+other = "no se pudo guardar la tarea"
+
+[ltiDeeplink.errors.buildResponseFailed]
+other = "no se pudo construir la respuesta"
+
+[ltiDeeplink.errors.instructorRequired]
+other = "solo los instructores pueden crear tareas"
+
+# --- Reservas ---
+
+[reservation.errors.notFound]
+other = "reserva no encontrada"
+
+[reservation.errors.labTemplateIdRequired]
+other = "labTemplateId es obligatorio"
+
+[reservation.errors.startTimeRequired]
+other = "startTime es obligatorio"
+
+[reservation.errors.startTimeInvalid]
+other = "formato de startTime no válido, use ISO 8601"
+
+[reservation.errors.startTimeMustBeFuture]
+other = "startTime debe ser en el futuro"
+
+[reservation.errors.startDateInvalid]
+other = "formato de startDate no válido, use YYYY-MM-DD"
+
+[reservation.errors.endDateInvalid]
+other = "formato de endDate no válido, use YYYY-MM-DD"
+
+[reservation.errors.durationMustBePositive]
+other = "durationMinutes debe ser positivo"
+
+[reservation.errors.noCapacity]
+other = "no hay capacidad disponible para la franja horaria seleccionada"
+
+[reservation.errors.cancelNotAuthorized]
+other = "no autorizado para cancelar esta reserva"
+
+[reservation.errors.viewNotAuthorized]
+other = "no autorizado para ver esta reserva"
+
+[reservation.errors.cannotCancel]
+other = "la reserva no se puede cancelar"
+
+[reservation.errors.createFailed]
+other = "no se pudo crear la reserva"
+
+[reservation.errors.cancelFailed]
+other = "no se pudo cancelar la reserva"
+
+[reservation.errors.checkAvailabilityFailed]
+other = "no se pudo comprobar la disponibilidad"
+
+[reservation.errors.getFailed]
+other = "no se pudo obtener la reserva"
+
+[reservation.errors.listFailed]
+other = "no se pudieron listar las reservas"
+
+# --- Simulación (estudiantes de prueba) ---
+
+[simulation.errors.serviceNotConfigured]
+other = "servicio de simulación no configurado"
+
+[simulation.errors.nameRequired]
+other = "el nombre es obligatorio"
+
+[simulation.errors.emailRequired]
+other = "el correo es obligatorio"
+
+[simulation.errors.userIdRequired]
+other = "userId es obligatorio"
+
+[simulation.errors.userIDRequired]
+other = "userID es obligatorio"
+
+[simulation.errors.pathwayIdRequired]
+other = "pathwayId es obligatorio"
+
+[simulation.errors.createTestStudentFailed]
+other = "no se pudo crear el estudiante de prueba"
+
+[simulation.errors.listTestStudentsFailed]
+other = "no se pudieron listar los estudiantes de prueba"
+
+[simulation.errors.getStudentProgressFailed]
+other = "no se pudo obtener el progreso del estudiante"
+
+[simulation.errors.resetStudentProgressFailed]
+other = "no se pudo restablecer el progreso del estudiante"
+
+# --- Simulaciones de aula ---
+
+[classroom.errors.runnerNotConfigured]
+other = "ejecutor de aula no configurado"
+
+[classroom.errors.serviceNotConfigured]
+other = "servicio de simulación de aula no configurado"
+
+[classroom.errors.nameRequired]
+other = "el nombre es obligatorio"
+
+[classroom.errors.simulationNotFound]
+other = "simulación no encontrada"
+
+[classroom.errors.studentNotFound]
+other = "estudiante no encontrado"
+
+[classroom.errors.createFailed]
+other = "no se pudo crear la simulación de aula"
+
+[classroom.errors.deleteFailed]
+other = "no se pudo eliminar la simulación"
+
+[classroom.errors.getFailed]
+other = "no se pudo obtener la simulación"
+
+[classroom.errors.listFailed]
+other = "no se pudieron listar las simulaciones"
+
+[classroom.errors.startFailed]
+other = "no se pudo iniciar la simulación"
+
+[classroom.errors.stopFailed]
+other = "no se pudo detener la simulación"
+
+[classroom.errors.pauseFailed]
+other = "no se pudo pausar la simulación"
+
+[classroom.errors.getStudentFailed]
+other = "no se pudo obtener el estudiante"
+
+[classroom.errors.listActivitiesFailed]
+other = "no se pudieron listar las actividades"
+
+[classroom.errors.listFeedbackFailed]
+other = "no se pudieron listar los comentarios"
+
+[classroom.errors.feedbackSummaryFailed]
+other = "no se pudo obtener el resumen de comentarios"
+
+# --- Licencias ---
+
+[license.errors.serviceNotConfigured]
+other = "servicio de licencias no configurado"
+
+[license.errors.adminRequired]
+other = "se requiere acceso de administrador"
+
+[license.errors.ownerRequired]
+other = "se requiere acceso de propietario"
+
+[license.errors.orgContextRequired]
+other = "se requiere contexto de organización"
+
+[license.errors.keyRequired]
+other = "la clave de licencia es obligatoria"
+
+[license.errors.invalidKey]
+other = "clave de licencia no válida"
+
+[license.errors.keyInUse]
+other = "la clave de licencia ya está en uso"
+
+[license.errors.noActiveLicense]
+other = "no se encontró una licencia activa"
+
+[license.errors.activateFailed]
+other = "no se pudo activar la licencia"
+
+[license.errors.deactivateFailed]
+other = "no se pudo desactivar la licencia"
+
+[license.errors.getFailed]
+other = "no se pudo obtener la licencia"
+
+[license.errors.validateFailed]
+other = "no se pudo validar la licencia"
+
+# --- Preguntas / pistas ---
+
+[question.errors.notFound]
+other = "pregunta no encontrada"
+
+[question.errors.checkpointNotFound]
+other = "punto de control no encontrado"
+
+[question.errors.checkpointHintNotAvailable]
+other = "seguimiento de pistas de punto de control no disponible"
+
+[question.errors.hintNotFound]
+other = "pista no encontrada"
+
+[question.errors.noHintsAvailable]
+other = "no hay pistas disponibles"
+
+[question.errors.noMoreHints]
+other = "no hay más pistas disponibles"
+
+[question.errors.prerequisitesNotMet]
+other = "no se cumplen los requisitos previos"
+
+[question.errors.sessionNotFound]
+other = "sesión no encontrada"
+
+[question.errors.sessionEnded]
+other = "la sesión ha finalizado"
+
+[question.errors.accessDenied]
+other = "acceso denegado"
+
+[question.errors.labTemplateNotFound]
+other = "plantilla de laboratorio no encontrada"
+
+[question.errors.parseTemplateFailed]
+other = "no se pudo analizar la plantilla"
+
+[question.errors.saveResponseFailed]
+other = "no se pudo guardar la respuesta"
+
+# --- Restablecimiento / cambio / configuración de contraseña ---
+
+[password.errors.userNotFound]
+other = "usuario no encontrado"
+
+[password.errors.userIdRequired]
+other = "el ID de usuario es obligatorio"
+
+[password.errors.tokenRequired]
+other = "el token es obligatorio"
+
+[password.errors.passwordRequired]
+other = "la contraseña es obligatoria"
+
+[password.errors.newPasswordRequired]
+other = "la nueva contraseña es obligatoria"
+
+[password.errors.currentPasswordRequired]
+other = "la contraseña actual es obligatoria"
+
+[password.errors.currentPasswordIncorrect]
+other = "la contraseña actual es incorrecta"
+
+[password.errors.eitherPasswordOrGenerate]
+other = "se requiere password o generatePassword"
+
+[password.errors.emailRequired]
+other = "el correo es obligatorio"
+
+[password.errors.invalidOrExpiredToken]
+other = "token de restablecimiento no válido o caducado"
+
+[password.errors.tokenAlreadyUsed]
+other = "este token de restablecimiento ya se ha usado"
+
+[password.errors.tokenExpired]
+other = "este token de restablecimiento ha caducado"
+
+[password.errors.verifyTokenFailed]
+other = "no se pudo verificar el token"
+
+[password.errors.changeFailed]
+other = "no se pudo cambiar la contraseña"
+
+[password.errors.resetFailed]
+other = "no se pudo restablecer la contraseña"
+
+[password.errors.setFailed]
+other = "no se pudo establecer la contraseña"
+
+[password.errors.updateFailed]
+other = "no se pudo actualizar la contraseña"
+
+[password.errors.generateFailed]
+other = "no se pudo generar la contraseña"
+
+[organization.errors.ownerAccessRequired]
+other = "se requiere acceso de propietario"
+
+[organization.errors.contextRequired]
+other = "se requiere contexto de organización"
+
+[organization.errors.repositoryNotConfigured]
+other = "el repositorio de organización no está configurado"
+
+[organization.errors.nameRequired]
+other = "el nombre es obligatorio"
+
+[organization.errors.userIdOrEmailRequired]
+other = "se requiere userId o correo electrónico"
+
+[organization.errors.slugAlreadyExists]
+other = "el slug de la organización ya existe"
+
+[organization.errors.userAlreadyMember]
+other = "el usuario ya es miembro"
+
+[organization.errors.userNotFound]
+other = "usuario no encontrado"
+
+[organization.errors.memberNotFound]
+other = "miembro no encontrado"
+
+[organization.errors.invalidOrExpiredInvitation]
+other = "invitación no válida o caducada"
+
+[organization.errors.cannotDeleteSystemOrg]
+other = "no se puede eliminar la organización del sistema"
+
+[organization.errors.cannotDemoteLastOwner]
+other = "no se puede degradar al último propietario"
+
+[organization.errors.cannotRemoveLastOwner]
+other = "no se puede eliminar al último propietario"
+
+[organization.errors.cannotRemoveOtherMembers]
+other = "no se puede eliminar a otros miembros"
+
+[organization.errors.onlyOwnerCanAssignAdminRoles]
+other = "solo el propietario puede asignar roles de administrador"
+
+[organization.errors.onlyOwnerCanDeactivate]
+other = "solo el propietario puede desactivar la organización"
+
+[organization.errors.onlyOwnerCanInviteAdmins]
+other = "solo el propietario puede invitar administradores"
+
+[organization.errors.onlyOwnerCanRemoveAdmins]
+other = "solo el propietario puede eliminar administradores"
+
+[organization.errors.createFailed]
+other = "no se pudo crear la organización"
+
+[organization.errors.updateFailed]
+other = "no se pudo actualizar la organización"
+
+[organization.errors.deleteFailed]
+other = "no se pudo eliminar la organización"
+
+[organization.errors.getFailed]
+other = "no se pudo obtener la organización"
+
+[organization.errors.listFailed]
+other = "no se pudieron listar las organizaciones"
+
+[organization.errors.inviteMemberFailed]
+other = "no se pudo invitar al miembro"
+
+[organization.errors.listMembersFailed]
+other = "no se pudieron listar los miembros"
+
+[organization.errors.removeMemberFailed]
+other = "no se pudo eliminar al miembro"
+
+[organization.errors.updateMemberFailed]
+other = "no se pudo actualizar al miembro"
+
+[user.errors.serviceUnavailable]
+other = "servicio de usuarios no disponible"
+
+[user.errors.notFound]
+other = "usuario no encontrado"
+
+[user.errors.idRequired]
+other = "se requiere el ID de usuario"
+
+[user.errors.usernameRequired]
+other = "el nombre de usuario es obligatorio"
+
+[user.errors.usernameAlreadyExists]
+other = "el nombre de usuario ya existe"
+
+[user.errors.emailAlreadyExists]
+other = "el correo electrónico ya existe"
+
+[user.errors.invalidRole]
+other = "rol no válido"
+
+[user.errors.invalidRoleDetail]
+other = "rol no válido: debe ser student, instructor o admin"
+
+[user.errors.cannotChangeOwnStatus]
+other = "no puede cambiar su propio estado"
+
+[user.errors.cannotDeleteOwnAccount]
+other = "no puede eliminar su propia cuenta"
+
+[user.errors.createFailed]
+other = "no se pudo crear el usuario"
+
+[user.errors.updateFailed]
+other = "no se pudo actualizar el usuario"
+
+[user.errors.updateRoleFailed]
+other = "no se pudo actualizar el rol"
+
+[user.errors.updateStatusFailed]
+other = "no se pudo actualizar el estado"
+
+[user.errors.deleteFailed]
+other = "no se pudo eliminar el usuario"
+
+[user.errors.getFailed]
+other = "no se pudo obtener el usuario"
+
+[user.errors.listFailed]
+other = "no se pudieron listar los usuarios"
+
+[rbac.errors.notConfigured]
+other = "RBAC no está configurado"
+
+[rbac.errors.contextRequired]
+other = "se requiere contexto de organización"
+
+[rbac.errors.roleIdRequired]
+other = "roleId es obligatorio"
+
+[rbac.errors.nameAndSlugRequired]
+other = "se requieren nombre y slug"
+
+[rbac.errors.roleNotFound]
+other = "rol no encontrado"
+
+[rbac.errors.sourceRoleNotFound]
+other = "rol de origen no encontrado"
+
+[rbac.errors.systemRolesCannotBeDeleted]
+other = "los roles del sistema no se pueden eliminar"
+
+[rbac.errors.systemRolesCannotBeModified]
+other = "los roles del sistema no se pueden modificar"
+
+[rbac.errors.cannotAssignHigherRole]
+other = "no se puede asignar un rol con prioridad igual o superior al suyo"
+
+[rbac.errors.cannotElevateOwnRole]
+other = "no puede elevar su propio rol"
+
+[rbac.errors.createFailed]
+other = "no se pudo crear el rol"
+
+[rbac.errors.updateFailed]
+other = "no se pudo actualizar el rol"
+
+[rbac.errors.deleteFailed]
+other = "no se pudo eliminar el rol"
+
+[rbac.errors.getFailed]
+other = "no se pudo obtener el rol"
+
+[rbac.errors.cloneFailed]
+other = "no se pudo clonar el rol"
+
+[rbac.errors.assignFailed]
+other = "no se pudo asignar el rol"
+
+[rbac.errors.revokeFailed]
+other = "no se pudo revocar el rol"
+
+[rbac.errors.listRolesFailed]
+other = "no se pudieron listar los roles"
+
+[rbac.errors.getUserRolesFailed]
+other = "no se pudieron obtener los roles del usuario"
+
+[rbac.errors.listPermissionsFailed]
+other = "no se pudieron listar los permisos"
+
+[rbac.errors.verifyPermissionsFailed]
+other = "no se pudieron verificar los permisos"
+
+[rbac.errors.setRolePermissionsFailed]
+other = "no se pudieron establecer los permisos del rol"
+
+[rbac.errors.setRolePermissionSetsFailed]
+other = "no se pudieron establecer los conjuntos de permisos del rol"
+
+[rbac.errors.updateRolePermissionsFailed]
+other = "no se pudieron actualizar los permisos del rol"
+
+[rbac.errors.updateRolePermissionSetsFailed]
+other = "no se pudieron actualizar los conjuntos de permisos del rol"
+
+[rbac.errors.copyPermissionsFailed]
+other = "no se pudieron copiar los permisos"
+
+[rbac.errors.copyPermissionSetsFailed]
+other = "no se pudieron copiar los conjuntos de permisos"
+
+[team.errors.repositoryNotConfigured]
+other = "el repositorio de equipos no está configurado"
+
+[team.errors.editionRequired]
+other = "la función de equipos requiere la edición Professional o Enterprise"
+
+[team.errors.nameRequired]
+other = "el nombre es obligatorio"
+
+[team.errors.userIdRequired]
+other = "userId es obligatorio"
+
+[team.errors.notFound]
+other = "equipo no encontrado"
+
+[team.errors.memberNotFound]
+other = "miembro del equipo no encontrado"
+
+[team.errors.slugAlreadyExists]
+other = "el slug del equipo ya existe"
+
+[team.errors.userAlreadyMember]
+other = "el usuario ya es miembro del equipo"
+
+[team.errors.userNotOrgMember]
+other = "el usuario no es miembro activo de esta organización"
+
+[team.errors.cannotDemoteLastLead]
+other = "no se puede degradar al último líder del equipo"
+
+[team.errors.cannotRemoveLastLead]
+other = "no se puede eliminar al último líder del equipo"
+
+[team.errors.instructorRequired]
+other = "se requiere acceso de instructor"
+
+[team.errors.leadOrAdminRequired]
+other = "se requiere acceso de líder del equipo o administrador"
+
+[team.errors.leadOrInstructorRequired]
+other = "se requiere acceso de líder del equipo o instructor"
+
+[team.errors.createFailed]
+other = "no se pudo crear el equipo"
+
+[team.errors.updateFailed]
+other = "no se pudo actualizar el equipo"
+
+[team.errors.deleteFailed]
+other = "no se pudo eliminar el equipo"
+
+[team.errors.getFailed]
+other = "no se pudo obtener el equipo"
+
+[team.errors.listFailed]
+other = "no se pudieron listar los equipos"
+
+[team.errors.addMemberFailed]
+other = "no se pudo añadir al miembro del equipo"
+
+[team.errors.removeMemberFailed]
+other = "no se pudo eliminar al miembro del equipo"
+
+[team.errors.updateMemberFailed]
+other = "no se pudo actualizar al miembro del equipo"
+
+[team.errors.listMembersFailed]
+other = "no se pudieron listar los miembros del equipo"
+
+[validation.empty]
+other = "{{.Field}} no puede estar vacío"
+
+[validation.maxLength]
+other = "{{.Field}} supera la longitud máxima de {{.Max}} caracteres"
+
+[validation.invalidPath]
+other = "{{.Field}} contiene secuencias de ruta no válidas"
+
+[validation.invalidIDFormat]
+other = "{{.Field}} debe ser un UUID válido o un nombre alfanumérico (letras, números, guiones bajos, guiones, puntos)"
+
+[validation.invalidNameFormat]
+other = "{{.Field}} debe comenzar con una letra o número y contener solo letras, números, guiones bajos, guiones o puntos"
+
+[validation.invalidVMID]
+other = "{{.Field}} debe ser un entero positivo"
+
+# --- Auth password strength ---
+
+[auth.password.tooShort]
+other = "la contraseña debe tener al menos {{.Min}} caracteres"
+
+[auth.password.noUppercase]
+other = "la contraseña debe contener al menos una letra mayúscula"
+
+[auth.password.noLowercase]
+other = "la contraseña debe contener al menos una letra minúscula"
+
+[auth.password.noDigit]
+other = "la contraseña debe contener al menos un dígito"
+
+[auth.password.required]
+other = "la contraseña es obligatoria"
+
+[rbac.errors.permissionBlocked]
+other = "el permiso \"{{.Permission}}\" no se puede asignar a roles personalizados"
+
+[rbac.errors.checkRoleLimitsFailed]
+other = "no se pudieron verificar los límites de roles"
+
+[rbac.errors.customRoleLimitReached]
+other = "se alcanzó el límite de roles personalizados para su edición"
+
+# --- LTI console browser errors (plaintext) ---
+
+[lti.console.errors.toolIssuerNotConfigured]
+other = "LTI ToolIssuer no está configurado (establezca LTI_TOOL_ISSUER)"
+
+[lti.console.errors.missingPodOrVmid]
+other = "Falta el parámetro podId o vmid"
+
+[lti.console.errors.invalidToken]
+other = "Token de consola no válido o caducado"
+
+[lti.console.errors.podRepoNotConfigured]
+other = "El repositorio de pods no está configurado"
+
+[lti.console.errors.loadPodFailed]
+other = "No se pudo cargar el pod"
+
+[lti.console.errors.podNotFoundOrEmpty]
+other = "Pod no encontrado o sin VMs"
+
+[lti.console.errors.internal]
+other = "Error interno"
+
+[lti.console.errors.missingHostHeader]
+other = "Falta la cabecera Host"
+
+[lti.console.errors.vncAccessFailed]
+other = "No se pudo obtener acceso VNC"
+
+# --- OAuth2 browser errors (plaintext) ---
+
+[oauth2.errors.providerIdRequired]
+other = "Se requiere el ID del proveedor"
+
+[oauth2.errors.initiateLoginFailed]
+other = "No se pudo iniciar el inicio de sesión"
+
+[oauth2.errors.missingCodeOrState]
+other = "Falta el código o el estado"
+
+[oauth2.errors.invalidRequestBody]
+other = "Cuerpo de solicitud no válido"
+
+[oauth2.errors.providerAndRefreshRequired]
+other = "Se requieren el proveedor y el token de actualización"
+
+[oauth2.errors.refreshTokenFailed]
+other = "No se pudo actualizar el token"
+
+[auth.errors.unsupportedLocale]
+other = "configuración regional no admitida"
+
+# --- labctl CLI (operator tool) ---
+# Traducciones opcionales para la CLI labctl. Por defecto imprime en inglés;
+# el usuario elige idioma con `--locale` o LANG. Véanse la incidencia #119 y
+# la ADR-0001 («las herramientas de operador siguen en inglés por defecto»).
+
+[labctl.usage.heading]
+other = "labctl - CLI de la plataforma Kootenai"
+
+[labctl.usage.usageLabel]
+other = "Uso:"
+
+[labctl.usage.pattern]
+other = "labctl <comando> [argumentos]"
+
+[labctl.usage.commandsLabel]
+other = "Comandos:"
+
+[labctl.usage.cmdServe]
+other = "Inicia el servidor de la API"
+
+[labctl.usage.cmdMigrate]
+other = "Ejecuta las migraciones de la base de datos"
+
+[labctl.usage.cmdVersion]
+other = "Muestra información de versión"
+
+[labctl.usage.cmdLab]
+other = "Gestiona las plantillas de laboratorio"
+
+[labctl.usage.cmdPod]
+other = "Gestiona los pods de laboratorio (instancias)"
+
+[labctl.usage.cmdSnapshot]
+other = "Gestiona las instantáneas de VM"
+
+[labctl.usage.cmdSession]
+other = "Gestiona las sesiones de laboratorio"
+
+[labctl.usage.helpHint]
+other = "Utilice «labctl <comando> --help» para más información sobre un comando."
+
+[labctl.version.line]
+other = "labctl versión {{.Version}}"
+
+[labctl.version.commit]
+other = "Commit:      {{.Commit}}"
+
+[labctl.version.built]
+other = "Compilado:   {{.BuildTime}}"
+
+[labctl.version.goVersion]
+other = "Versión Go:  {{.GoVersion}}"
+
+[labctl.version.osArch]
+other = "SO/Arq.:     {{.OS}}/{{.Arch}}"
+
+[labctl.errors.prefix]
+other = "Error:"
+
+[labctl.errors.unknownCommand]
+other = "Comando {{.Group}} desconocido: {{.Command}}"
+
+[labctl.errors.requiresSubcommand]
+other = "Uso: labctl {{.Group}} <comando>"
+
+[labctl.lab.list.empty]
+other = "No se encontraron plantillas en {{.Dir}}"
+
+[labctl.lab.list.colName]
+other = "NOMBRE"
+
+[labctl.lab.list.colPlatform]
+other = "PLATAFORMA"
+
+[labctl.lab.list.colDifficulty]
+other = "DIFICULTAD"
+
+[labctl.lab.list.colCheckpoints]
+other = "PUNTOS DE CONTROL"
+
+[labctl.lab.list.colPoints]
+other = "PUNTOS"
+
+[labctl.lab.list.colDescription]
+other = "DESCRIPCIÓN"
+
+# --- Ayuda de subcomandos de labctl y sugerencias ---
+# Los bloques Usage son texto de ayuda multilínea y se mantienen como
+# una sola clave para que los traductores reciban el bloque completo
+# como unidad; los tokens de comando/flag NO se traducen (son las
+# cadenas literales que el operador escribe).
+
+[labctl.lab.usage]
+other = """Comandos de gestión de plantillas de laboratorio
+
+Uso:
+  labctl lab <comando> [opciones]
+
+Comandos:
+  list        Lista las plantillas de laboratorio disponibles
+  show        Muestra información detallada de una plantilla
+  validate    Valida un archivo de plantilla de laboratorio
+
+Ejemplos:
+  labctl lab list
+  labctl lab show security-onion-basics
+  labctl lab validate templates/new-lab.yaml"""
+
+[labctl.lab.hints.show]
+other = "Uso: labctl lab show <nombre-plantilla>"
+
+[labctl.lab.hints.validate]
+other = "Uso: labctl lab validate <archivo-plantilla>"
+
+[labctl.pod.usage]
+other = """Comandos de gestión de pods
+
+Uso:
+  labctl pod <comando> [opciones]
+
+Comandos:
+  list        Lista todos los pods
+  create      Crea un nuevo pod desde una plantilla
+  status      Muestra el estado detallado del pod
+  destroy     Destruye un pod
+  reset       Restablece el pod a una instantánea
+  reset-vm    Restablece una VM específica dentro del pod
+
+Ejemplos:
+  labctl pod list
+  labctl pod list --owner=student@example.com
+  labctl pod create --template=security-onion-basics --owner=student@example.com
+  labctl pod status abc123
+  labctl pod destroy abc123
+  labctl pod reset abc123 --snapshot=initial"""
+
+[labctl.pod.hints.create]
+other = "Uso: labctl pod create --template=<nombre> --owner=<propietario> [--duration=4h]"
+
+[labctl.pod.hints.status]
+other = "Uso: labctl pod status <id-pod>"
+
+[labctl.pod.hints.destroy]
+other = "Uso: labctl pod destroy <id-pod> [--force]"
+
+[labctl.pod.hints.reset]
+other = "Uso: labctl pod reset <id-pod> [--snapshot=<nombre>]"
+
+[labctl.pod.hints.resetVm]
+other = "Uso: labctl pod reset-vm <id-pod> <nombre-vm> [--snapshot=<nombre>]"
+
+[labctl.snapshot.usage]
+other = """Comandos de gestión de instantáneas
+
+Uso:
+  labctl snapshot <comando> [opciones]
+
+Comandos:
+  list        Lista todas las instantáneas de una VM
+  create      Crea una nueva instantánea
+  revert      Revierte la VM a una instantánea
+  delete      Elimina una instantánea
+
+Opciones (para todos los comandos):
+  --pod       ID del pod (obligatorio)
+  --vm        Nombre de la VM (obligatorio)
+
+Opciones (para create):
+  --name      Nombre de la instantánea (obligatorio)
+  --desc      Descripción de la instantánea
+  --ram       Incluir estado de RAM en la instantánea
+
+Opciones (para revert/delete):
+  --name      Nombre de la instantánea (obligatorio)
+
+Ejemplos:
+  labctl snapshot list --pod pod-123 --vm ubuntu-desktop
+  labctl snapshot create --pod pod-123 --vm ubuntu-desktop --name checkpoint1 --desc "Estado inicial"
+  labctl snapshot revert --pod pod-123 --vm ubuntu-desktop --name checkpoint1
+  labctl snapshot delete --pod pod-123 --vm ubuntu-desktop --name checkpoint1"""
+
+[labctl.snapshot.errors.podVmRequired]
+other = "Error: --pod y --vm son obligatorios"
+
+[labctl.snapshot.errors.podVmNameRequired]
+other = "Error: --pod, --vm y --name son obligatorios"
+
+[labctl.session.usage]
+other = """Comandos de gestión de sesiones de laboratorio
+
+Uso:
+  labctl session <comando> [opciones]
+
+Comandos:
+  list        Lista todas las sesiones
+  start       Inicia una nueva sesión
+  status      Muestra el estado detallado de la sesión
+  progress    Muestra la barra y el resumen de progreso
+  checkpoints Lista los detalles de los puntos de control
+  end         Finaliza una sesión
+
+Ejemplos:
+  labctl session list
+  labctl session list --active
+  labctl session start --pod=abc123 --user=student@example.com --template=security-onion-basics
+  labctl session status abc123
+  labctl session progress abc123
+  labctl session checkpoints abc123
+  labctl session end abc123"""
+
+[labctl.session.hints.start]
+other = "Uso: labctl session start --pod=<id> --user=<id> --template=<nombre>"
+
+[labctl.session.hints.status]
+other = "Uso: labctl session status <id-sesión>"
+
+[labctl.session.hints.progress]
+other = "Uso: labctl session progress <id-sesión>"
+
+[labctl.session.hints.checkpoints]
+other = "Uso: labctl session checkpoints <id-sesión>"
+
+[labctl.session.hints.end]
+other = "Uso: labctl session end <id-sesión>"
+
+[labctl.config.loaded]
+other = "Configuración cargada desde {{.Path}}"
+
+[labctl.config.parseWarning]
+other = "Advertencia: no se pudo leer {{.Path}}: {{.Err}}"
+
+[labctl.errors.setupLoggerFailed]
+other = "No se pudo inicializar el logger: {{.Err}}"
+
+# --- labctl lab show: vista detallada de plantilla ---
+
+[labctl.lab.show.templateHeading]
+other = "Plantilla de laboratorio: {{.Name}}"
+
+[labctl.lab.show.fieldDescription]
+other = "Descripción: {{.Value}}"
+
+[labctl.lab.show.fieldPlatform]
+other = "Plataforma:  {{.Value}}"
+
+[labctl.lab.show.fieldDifficulty]
+other = "Dificultad:  {{.Value}}"
+
+[labctl.lab.show.fieldDuration]
+other = "Duración:    {{.Value}}"
+
+[labctl.lab.show.fieldVersion]
+other = "Versión:     {{.Value}}"
+
+[labctl.lab.show.fieldAuthor]
+other = "Autor:       {{.Value}}"
+
+[labctl.lab.show.fieldTags]
+other = "Etiquetas:   {{.Value}}"
+
+[labctl.lab.show.networkHeading]
+other = "Topología de red:"
+
+[labctl.lab.show.networkLine]
+other = "  • {{.Name}} - VLAN {{.Vlan}}, {{.Subnet}}{{.Dhcp}}"
+
+[labctl.lab.show.networkDhcpSuffix]
+other = " (DHCP)"
+
+[labctl.lab.show.vmsHeading]
+other = "Máquinas virtuales:"
+
+[labctl.lab.show.vmName]
+other = "  • {{.Name}}"
+
+[labctl.lab.show.vmTemplate]
+other = "    Plantilla: {{.Template}}{{.Wazuh}}"
+
+[labctl.lab.show.vmWazuhSuffix]
+other = " [Wazuh]"
+
+[labctl.lab.show.vmResources]
+other = "    Recursos: {{.Cpu}} CPU, {{.Memory}} MB RAM"
+
+[labctl.lab.show.vmResourcesDiskSuffix]
+other = ", {{.Disk}} GB disco"
+
+[labctl.lab.show.vmNetwork]
+other = "    Red: {{.Segment}} ({{.Ip}})"
+
+[labctl.lab.show.vmNetworkDhcp]
+other = "DHCP"
+
+[labctl.lab.show.vmSnapshotsPrefix]
+other = "    Instantáneas: "
+
+[labctl.lab.show.checkpointsHeading]
+other = "Puntos de control ({{.Count}} en total, {{.Max}} puntos máx.):"
+
+[labctl.lab.show.passThreshold]
+other = "  Umbral para aprobar: {{.Pct}}%"
+
+[labctl.lab.show.hintsEnabled]
+other = "  Pistas: habilitadas"
+
+[labctl.lab.show.objectiveLine]
+other = "  {{.Number}}. [{{.Points}} pts] {{.Description}}{{.Required}}{{.Requires}}"
+
+[labctl.lab.show.requiredSuffix]
+other = " [OBLIGATORIO]"
+
+[labctl.lab.show.requiresSuffix]
+other = " (requiere: {{.Deps}})"
+
+[labctl.lab.show.triggerLine]
+other = "      → {{.Type}} en {{.Target}}"
+
+# --- labctl lab validate: salida ---
+
+[labctl.lab.validate.errorHeading]
+other = "La plantilla tiene {{.Count}} error(es) de validación:"
+
+[labctl.lab.validate.errorLine]
+other = "  • {{.Err}}"
+
+[labctl.lab.validate.validOk]
+other = "La plantilla «{{.Name}}» es válida"
+
+[labctl.lab.validate.okPlatform]
+other = "  Plataforma:  {{.Value}}"
+
+[labctl.lab.validate.okVms]
+other = "  VMs:         {{.Count}}"
+
+[labctl.lab.validate.okNetworks]
+other = "  Redes:       {{.Count}}"
+
+[labctl.lab.validate.okCheckpoints]
+other = "  Puntos ctrl.: {{.Count}} ({{.Max}} puntos máx.)"
+
+# --- labctl lab: errores de validación estructurados ---
+
+[labctl.lab.validationErrors.metadataNameRequired]
+other = "metadata.name es obligatorio"
+
+[labctl.lab.validationErrors.atLeastOneVm]
+other = "se requiere al menos una VM"
+
+[labctl.lab.validationErrors.vmNameRequired]
+other = "spec.vms[{{.Idx}}].name es obligatorio"
+
+[labctl.lab.validationErrors.duplicateVmName]
+other = "nombre de VM duplicado: {{.Name}}"
+
+[labctl.lab.validationErrors.vmTemplateRequired]
+other = "spec.vms[{{.Idx}}].template es obligatorio"
+
+[labctl.lab.validationErrors.cpuPositive]
+other = "spec.vms[{{.Idx}}].resources.cpu debe ser positivo"
+
+[labctl.lab.validationErrors.memoryPositive]
+other = "spec.vms[{{.Idx}}].resources.memory debe ser positivo"
+
+[labctl.lab.validationErrors.segmentNameRequired]
+other = "el nombre del segmento de red es obligatorio"
+
+[labctl.lab.validationErrors.duplicateSegment]
+other = "segmento de red duplicado: {{.Name}}"
+
+[labctl.lab.validationErrors.unknownSegment]
+other = "La VM {{.Vm}} hace referencia a un segmento de red desconocido: {{.Segment}}"
+
+[labctl.lab.validationErrors.objectiveIdRequired]
+other = "objectives[{{.Idx}}].id es obligatorio"
+
+[labctl.lab.validationErrors.duplicateCheckpoint]
+other = "ID de punto de control duplicado: {{.Id}}"
+
+[labctl.lab.validationErrors.pointsNegative]
+other = "objectives[{{.Idx}}].points no puede ser negativo"
+
+[labctl.lab.validationErrors.unknownDep]
+other = "el punto de control {{.Id}} depende de uno desconocido: {{.Dep}}"
+
+[labctl.lab.validationErrors.triggerTypeRequired]
+other = "objectives[{{.Idx}}].triggers[{{.T}}].type es obligatorio"
+
+[labctl.lab.validationErrors.triggerTargetRequired]
+other = "objectives[{{.Idx}}].triggers[{{.T}}].target es obligatorio"
+
+[labctl.lab.validationErrors.triggerUnknownVm]
+other = "objectives[{{.Idx}}].triggers[{{.T}}] hace referencia a una VM desconocida: {{.Vm}}"
+
+# --- labctl pod: salida de list/status/destroy/reset ---
+
+[labctl.pod.list.empty]
+other = "No se encontraron pods"
+
+[labctl.pod.list.colId]
+other = "ID"
+
+[labctl.pod.list.colTemplate]
+other = "PLANTILLA"
+
+[labctl.pod.list.colOwner]
+other = "PROPIETARIO"
+
+[labctl.pod.list.colStatus]
+other = "ESTADO"
+
+[labctl.pod.list.colPlatform]
+other = "PLATAFORMA"
+
+[labctl.pod.list.colVms]
+other = "VMs"
+
+[labctl.pod.list.colCreated]
+other = "CREADO"
+
+[labctl.pod.list.colExpires]
+other = "EXPIRA"
+
+[labctl.pod.list.expiresNever]
+other = "nunca"
+
+[labctl.pod.create.success]
+other = "Pod creado correctamente"
+
+[labctl.pod.create.idLine]
+other = "  ID:     {{.Id}}"
+
+[labctl.pod.create.statusLine]
+other = "  Estado: {{.Status}}"
+
+[labctl.pod.status.heading]
+other = "Pod: {{.Id}}"
+
+[labctl.pod.status.fieldTemplate]
+other = "Plantilla:   {{.Value}}"
+
+[labctl.pod.status.fieldOwner]
+other = "Propietario: {{.Value}}"
+
+[labctl.pod.status.fieldPlatform]
+other = "Plataforma:  {{.Value}}"
+
+[labctl.pod.status.fieldStatus]
+other = "Estado:      {{.Value}}"
+
+[labctl.pod.status.fieldCreated]
+other = "Creado:      {{.Value}}"
+
+[labctl.pod.status.expiresIn]
+other = "Expira:      {{.When}} (en {{.Remaining}})"
+
+[labctl.pod.status.expired]
+other = "Expira:      {{.When}} (EXPIRADO)"
+
+[labctl.pod.status.vmsHeading]
+other = "Máquinas virtuales:"
+
+[labctl.pod.status.vmColName]
+other = "  NOMBRE"
+
+[labctl.pod.status.vmColStatus]
+other = "ESTADO"
+
+[labctl.pod.status.vmColIp]
+other = "DIRECCIÓN IP"
+
+[labctl.pod.status.vmColPlatformId]
+other = "ID DE PLATAFORMA"
+
+[labctl.pod.status.vmColSnapshot]
+other = "INSTANTÁNEA"
+
+[labctl.pod.status.emptyPlaceholder]
+other = "-"
+
+[labctl.pod.status.networksHeading]
+other = "Redes:"
+
+[labctl.pod.status.networkLine]
+other = "  • {{.Name}} - VLAN {{.Vlan}}, {{.Subnet}}"
+
+[labctl.pod.destroy.initiated]
+other = "Destrucción del pod {{.Id}} iniciada"
+
+[labctl.pod.destroy.status]
+other = "Estado: {{.Status}}"
+
+[labctl.pod.reset.initiated]
+other = "Restablecimiento del pod {{.Id}} iniciado"
+
+[labctl.pod.reset.snapshotLine]
+other = "Instantánea: {{.Name}}"
+
+[labctl.pod.reset.status]
+other = "Estado: {{.Status}}"
+
+[labctl.pod.resetVm.initiated]
+other = "Restablecimiento de la VM {{.Name}} iniciado"
+
+[labctl.pod.resetVm.status]
+other = "Estado: {{.Status}}"
+
+# --- labctl session: salida de list/start/status/progress/checkpoints/end ---
+
+[labctl.session.list.empty]
+other = "No se encontraron sesiones"
+
+[labctl.session.list.colId]
+other = "ID"
+
+[labctl.session.list.colUser]
+other = "USUARIO"
+
+[labctl.session.list.colTemplate]
+other = "PLANTILLA"
+
+[labctl.session.list.colProgress]
+other = "PROGRESO"
+
+[labctl.session.list.colStatus]
+other = "ESTADO"
+
+[labctl.session.list.colStarted]
+other = "INICIADA"
+
+[labctl.session.list.colDuration]
+other = "DURACIÓN"
+
+[labctl.session.list.statusActive]
+other = "activa"
+
+[labctl.session.list.statusEnded]
+other = "finalizada"
+
+[labctl.session.list.statusPassed]
+other = "aprobada"
+
+[labctl.session.list.progressFormat]
+other = "{{.Earned}}/{{.Max}} ({{.Pct}}%)"
+
+[labctl.session.start.success]
+other = "Sesión iniciada correctamente"
+
+[labctl.session.start.idLine]
+other = "  ID de sesión: {{.Id}}"
+
+[labctl.session.start.statusLine]
+other = "  Estado:       {{.Status}}"
+
+[labctl.session.status.heading]
+other = "Sesión: {{.Id}}"
+
+[labctl.session.status.progressLine]
+other = "Progreso: [{{.Bar}}] {{.Pct}}%"
+
+[labctl.session.status.pointsLine]
+other = "Puntos:   {{.Earned}} / {{.Max}}"
+
+[labctl.session.status.checkpointsHeading]
+other = "Puntos de control:"
+
+[labctl.session.status.checkpointLine]
+other = "  {{.Icon}} [{{.Points}}] {{.Id}}{{.Timestamp}}"
+
+[labctl.session.status.completedAt]
+other = " (completado a las {{.When}})"
+
+[labctl.session.progress.barLine]
+other = "[{{.Bar}}] {{.Pct}}% ({{.Earned}}/{{.Max}} pts){{.Passed}}"
+
+[labctl.session.progress.passedSuffix]
+other = " APROBADO"
+
+[labctl.session.progress.summary]
+other = "Puntos de control: {{.Completed}} completados, {{.Pending}} pendientes"
+
+[labctl.session.progress.failedSuffix]
+other = ", {{.Count}} fallidos"
+
+[labctl.session.end.ended]
+other = "Sesión {{.Id}} finalizada"
+
+[labctl.session.end.status]
+other = "Estado: {{.Status}}"
+
+[labctl.session.checkpoints.empty]
+other = "Esta sesión no define ningún punto de control"
+
+[labctl.session.checkpoints.colStatus]
+other = "ESTADO"
+
+[labctl.session.checkpoints.colId]
+other = "ID"
+
+[labctl.session.checkpoints.colPoints]
+other = "PUNTOS"
+
+[labctl.session.checkpoints.colAttempts]
+other = "INTENTOS"
+
+[labctl.session.checkpoints.colCompleted]
+other = "COMPLETADO"
+
+[labctl.session.checkpoints.emptyPlaceholder]
+other = "-"
+
+# --- labctl snapshot: salida de list/create/revert/delete ---
+
+[labctl.snapshot.list.empty]
+other = "No se encontraron instantáneas para la VM {{.Vm}} en el pod {{.Pod}}"
+
+[labctl.snapshot.list.heading]
+other = "Instantáneas de la VM {{.Vm}} en el pod {{.Pod}}:"
+
+[labctl.snapshot.list.colName]
+other = "NOMBRE"
+
+[labctl.snapshot.list.colDescription]
+other = "DESCRIPCIÓN"
+
+[labctl.snapshot.list.colParent]
+other = "PADRE"
+
+[labctl.snapshot.list.emptyPlaceholder]
+other = "-"
+
+[labctl.snapshot.list.totalLine]
+other = "Total: {{.Count}} instantánea(s)"
+
+[labctl.snapshot.create.success]
+other = "Instantánea creada correctamente"
+
+[labctl.snapshot.create.vmLine]
+other = "  VM:           {{.Vm}}"
+
+[labctl.snapshot.create.snapshotLine]
+other = "  Instantánea:  {{.Name}}"
+
+[labctl.snapshot.create.statusLine]
+other = "  Estado:       {{.Status}}"
+
+[labctl.snapshot.revert.success]
+other = "VM revertida a la instantánea correctamente"
+
+[labctl.snapshot.revert.vmLine]
+other = "  VM:           {{.Vm}}"
+
+[labctl.snapshot.revert.snapshotLine]
+other = "  Instantánea:  {{.Name}}"
+
+[labctl.snapshot.revert.statusLine]
+other = "  Estado:       {{.Status}}"
+
+[labctl.snapshot.delete.success]
+other = "Instantánea eliminada correctamente"
+
+[labctl.snapshot.delete.vmLine]
+other = "  VM:           {{.Vm}}"
+
+[labctl.snapshot.delete.snapshotLine]
+other = "  Instantánea:  {{.Name}}"
+
+[labctl.snapshot.delete.statusLine]
+other = "  Estado:       {{.Status}}"
+
+# --- Plantillas de correo electrónico ---
+
+[email.passwordReset.subject]
+other = "[{{.AppName}}] Solicitud de restablecimiento de contraseña"
+
+[email.passwordReset.heading]
+other = "Solicitud de restablecimiento de contraseña"
+
+[email.passwordReset.greeting]
+other = "Hola {{.UserName}},"
+
+[email.passwordReset.greetingAnonymous]
+other = "Hola,"
+
+[email.passwordReset.body]
+other = "Recibimos una solicitud para restablecer tu contraseña. Haz clic en el botón de abajo para crear una nueva contraseña:"
+
+[email.passwordReset.buttonLabel]
+other = "Restablecer contraseña"
+
+[email.passwordReset.expiresIn]
+other = "Este enlace caducará en {{.ExpiresIn}}."
+
+[email.passwordReset.ignoreNotice]
+other = "Si no solicitaste un restablecimiento de contraseña, puedes ignorar este correo. Tu contraseña no cambiará."
+
+[email.passwordReset.linkFallback]
+other = "Si el botón no funciona, copia y pega este enlace en tu navegador:"
+
+[email.passwordReset.supportContact]
+other = "¿Necesitas ayuda? Contáctanos en {{.SupportEmail}}"
+
+[email.passwordReset.plain.body]
+other = "Recibimos una solicitud para restablecer la contraseña de tu cuenta de {{.AppName}}."
+
+[email.passwordReset.plain.linkPrompt]
+other = "Para restablecer tu contraseña, visita el siguiente enlace:"
+
+# --- Representación de certificados ---
+
+[certificate.render.completionDate]
+other = "{{.Day}} de {{.Month}} de {{.Year}}"
+
+[certificate.render.issuedDate]
+other = "{{.Day}} de {{.Month}} de {{.Year}}"
+
+# --- Endpoints de administración / métricas ---
+
+[admin.errors.bearerTokenRequired]
+other = "el endpoint de métricas requiere un token Bearer"
+
+[admin.errors.adminAccessRequired]
+other = "se requiere acceso de administrador"
+
+# --- Endpoints de monitorización de eventos ---
+
+[events.errors.notConfigured]
+other = "el repositorio de eventos no está configurado"
+
+[events.errors.queryFailed]
+other = "no se pudieron consultar los eventos"
+
+[events.errors.sessionEventsFailed]
+other = "no se pudieron obtener los eventos de la sesión"
+
+[events.errors.podEventsFailed]
+other = "no se pudieron obtener los eventos del Pod"
+
+# --- Endpoints de registro de auditoría ---
+
+[audit.errors.orgRequired]
+other = "se requiere el contexto de la organización"
+
+[audit.errors.notConfigured]
+other = "el registro de auditoría no está configurado"
+
+[audit.errors.invalidStartTime]
+other = "formato de start_time no válido, usa RFC3339"
+
+[audit.errors.invalidEndTime]
+other = "formato de end_time no válido, usa RFC3339"
+
+[audit.errors.invalidLimit]
+other = "parámetro limit no válido"
+
+[audit.errors.invalidOffset]
+other = "parámetro offset no válido"
+
+[audit.errors.queryFailed]
+other = "no se pudieron consultar los registros de auditoría"
+
+[audit.errors.getFailed]
+other = "no se pudo obtener la entrada de auditoría"
+
+[audit.errors.entryNotFound]
+other = "entrada de auditoría no encontrada"
+
+[audit.errors.invalidRequestBody]
+other = "cuerpo de solicitud no válido"
+
+[audit.errors.exportFailed]
+other = "no se pudieron exportar los registros de auditoría"
+
+# --- Endpoints de feature flags ---
+
+[features.errors.notConfigured]
+other = "el repositorio de funciones no está configurado"
+
+[features.errors.listFailed]
+other = "no se pudieron listar las funciones"
+
+[features.errors.orgRequired]
+other = "se requiere el contexto de la organización"
+
+[features.errors.idRequired]
+other = "se requiere el ID de la función"
+
+[features.errors.getFailed]
+other = "no se pudo obtener la función"
+
+[features.errors.notFound]
+other = "función no encontrada"
+
+[features.errors.invalidRequestBody]
+other = "cuerpo de solicitud no válido"
+
+[features.errors.setFailed]
+other = "no se pudo configurar la función"
+
+[features.errors.removeFailed]
+other = "no se pudo eliminar la anulación de la función"
+
+# --- Errores adicionales de creación de sesiones ---
+
+[sessions.errors.invalidLabTemplate]
+other = "plantilla de Lab no válida"
+
+# --- Errores adicionales de manejadores de certificados ---
+
+[certificate.errors.issueFailed]
+other = "no se pudo emitir el certificado"
+
+[certificate.errors.notCompleted]
+other = "la Pathway debe completarse antes de emitir el certificado"
+
+[certificate.errors.alreadyIssued]
+other = "el certificado ya ha sido emitido"
+
+[certificate.errors.getFailed]
+other = "no se pudo obtener el certificado"
+
+[certificate.errors.notFound]
+other = "certificado no encontrado"
+
+# --- Errores adicionales de manejadores de Pathway ---
+
+[pathway.errors.enrollFailed]
+other = "no se pudo inscribirse en la Pathway"
+
+[pathway.errors.unenrollFailed]
+other = "no se pudo cancelar la inscripción"
+
+[pathway.errors.notEnrolled]
+other = "no inscrito en esta Pathway"
+
+[pathway.errors.moduleUnlockFailed]
+other = "no se pudo desbloquear el módulo"
+
+[pathway.errors.moduleNotInPathway]
+other = "el módulo no pertenece a esta Pathway"
+
+[pathway.errors.unlockRequirementsFailed]
+other = "no se pudieron obtener los requisitos de desbloqueo"

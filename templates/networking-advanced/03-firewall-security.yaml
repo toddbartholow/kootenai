@@ -1,0 +1,365 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Network Firewall Configuration
+  description: |
+    Learn to configure and manage network firewalls. This lab covers iptables,
+    nftables, firewalld, and pfSense basics including NAT, port forwarding,
+    and creating security zones.
+  duration: 150m
+  difficulty: intermediate
+  tags:
+    - networking
+    - firewall
+    - security
+    - iptables
+    - pfsense
+    - nat
+  version: "1.0.0"
+  author: Kootenai Team
+  category: networking-advanced
+  instructions:
+    overview: |
+      Firewalls are the primary defense between network zones. This lab teaches iptables
+      configuration for a three-zone architecture: external (untrusted), internal (trusted),
+      and DMZ (semi-trusted). You'll configure default policies, NAT, port forwarding,
+      logging, and test your rules from the external network.
+    learning_objectives:
+      - Set default firewall policies (deny-all baseline)
+      - Allow established connections and specific services
+      - Configure NAT (MASQUERADE) for internal network
+      - Set up port forwarding (DNAT) to DMZ servers
+      - Isolate zones with targeted rules
+      - Enable logging and save rules persistently
+    prerequisites:
+      - Linux command line proficiency
+      - Basic networking (IP, ports, TCP/UDP)
+      - Understanding of network zones (internal, DMZ, external)
+    steps:
+      - id: default-policy
+        title: Set Default Drop Policy
+        content: |
+          Start with a deny-all baseline — only explicitly allowed traffic passes.
+
+          ```bash
+          # Set default policies to DROP
+          sudo iptables -P INPUT DROP
+          sudo iptables -P FORWARD DROP
+          sudo iptables -P OUTPUT ACCEPT
+
+          # Allow loopback (always needed)
+          sudo iptables -A INPUT -i lo -j ACCEPT
+          ```
+      - id: allow-established
+        title: Allow Established Connections
+        content: |
+          Allow return traffic for connections initiated from trusted zones.
+
+          ```bash
+          sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+          sudo iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+          ```
+      - id: allow-ssh
+        title: Allow SSH from Internal Only
+        content: |
+          Restrict SSH to the internal network for management.
+
+          ```bash
+          sudo iptables -A INPUT -s 192.168.100.0/24 -p tcp --dport 22 -j ACCEPT
+          ```
+
+          This blocks SSH from external and DMZ networks.
+      - id: configure-nat
+        title: Configure NAT for Internal Network
+        content: |
+          Allow internal hosts to access external networks via NAT.
+
+          ```bash
+          # Enable masquerading on the external interface
+          sudo iptables -t nat -A POSTROUTING -s 192.168.100.0/24 \
+            -o eth0 -j MASQUERADE
+
+          # Allow forwarding from internal to external
+          sudo iptables -A FORWARD -s 192.168.100.0/24 \
+            -o eth0 -j ACCEPT
+          ```
+      - id: port-forward
+        title: Port Forward to DMZ Web Server
+        content: |
+          Redirect incoming port 80 traffic to the DMZ web server.
+
+          ```bash
+          # DNAT: redirect external port 80 to DMZ server
+          sudo iptables -t nat -A PREROUTING -i eth0 -p tcp \
+            --dport 80 -j DNAT --to-destination 172.16.0.10:80
+
+          # Allow the forwarded traffic
+          sudo iptables -A FORWARD -d 172.16.0.10 -p tcp \
+            --dport 80 -j ACCEPT
+          ```
+      - id: dmz-isolation
+        title: Isolate DMZ from Internal
+        content: |
+          The DMZ should reach the internet but NOT the internal network.
+
+          ```bash
+          # Block DMZ to internal
+          sudo iptables -A FORWARD -s 172.16.0.0/24 \
+            -d 192.168.100.0/24 -j DROP
+
+          # Allow DMZ to external (for updates, etc.)
+          sudo iptables -A FORWARD -s 172.16.0.0/24 \
+            -o eth0 -j ACCEPT
+          ```
+      - id: logging
+        title: Enable Logging
+        content: |
+          Log dropped packets for monitoring and troubleshooting.
+
+          ```bash
+          # Log dropped INPUT packets
+          sudo iptables -A INPUT -j LOG --log-prefix "DROPPED-INPUT: " --log-level 4
+
+          # Log dropped FORWARD packets
+          sudo iptables -A FORWARD -j LOG --log-prefix "DROPPED-FWD: " --log-level 4
+
+          # View logs
+          sudo tail -f /var/log/syslog | grep "DROPPED"
+          ```
+      - id: save-rules
+        title: Save Rules Persistently
+        content: |
+          ```bash
+          # Save current rules
+          sudo iptables-save > /etc/iptables/rules.v4
+
+          # Or use netfilter-persistent
+          sudo netfilter-persistent save
+          ```
+      - id: test-rules
+        title: Test from External Network
+        content: |
+          Verify the firewall from the attacker's perspective.
+
+          ```bash
+          # From external-attacker machine:
+          nmap -sT 203.0.113.10 -p 22,80,443
+
+          # Port 80 should be open (forwarded to DMZ)
+          # Port 22 should be filtered (blocked from external)
+
+          # Document results
+          cat > ~/firewall_test_results.txt << 'EOF'
+          Firewall Test Results
+          Port 80: open (forwarded to DMZ web server)
+          Port 22: filtered (internal access only)
+          Port 443: filtered (not configured)
+          NAT: internal hosts can reach external
+          DMZ isolation: DMZ cannot reach internal
+          EOF
+          ```
+    summary: |
+      You've configured a three-zone firewall with iptables: default deny policies, NAT,
+      port forwarding to DMZ, zone isolation, logging, and persistent rules.
+    tips:
+      - Always start with a deny-all policy and add explicit allows
+      - "Order matters in iptables — rules are evaluated top to bottom"
+      - Test rules from every zone to verify they work as expected
+      - Back up rules before making changes with iptables-save
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: external
+        vlan: 700
+        subnet: 203.0.113.0/24
+        gateway: 203.0.113.1
+        dhcp: false
+      - name: internal
+        vlan: 701
+        subnet: 192.168.100.0/24
+        gateway: 192.168.100.1
+        dhcp: false
+      - name: dmz
+        vlan: 702
+        subnet: 172.16.0.0/24
+        gateway: 172.16.0.1
+        dhcp: false
+
+  vms:
+    - name: firewall
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/fwadmin
+          - /var/log
+          - /etc/iptables
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: external
+          ip: 203.0.113.10
+        - segment: internal
+          ip: 192.168.100.1
+        - segment: dmz
+          ip: 172.16.0.1
+      snapshots:
+        - name: initial
+          description: Ubuntu firewall with iptables ready
+          default: true
+
+    - name: internal-host
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: internal
+          ip: 192.168.100.10
+      snapshots:
+        - name: initial
+          description: Internal network workstation
+          default: true
+
+    - name: dmz-web
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: dmz
+          ip: 172.16.0.10
+      snapshots:
+        - name: web-server
+          description: Web server in DMZ
+          default: true
+
+    - name: external-attacker
+      template: kali-linux
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 40
+      networks:
+        - segment: external
+          ip: 203.0.113.100
+      snapshots:
+        - name: initial
+          description: External machine for testing
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: default-policy
+      description: Set default iptables policy to DROP for INPUT and FORWARD
+      points: 10
+      hint: "Use 'iptables -P INPUT DROP' and similar for FORWARD"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: firewall
+          match:
+            pattern: "iptables -P.*DROP"
+
+    - id: allow-established
+      description: Allow established and related connections
+      points: 10
+      hint: "Use -m state --state ESTABLISHED,RELATED"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: firewall
+          match:
+            pattern: "iptables.*ESTABLISHED"
+
+    - id: allow-ssh
+      description: Allow SSH access to the firewall from internal network only
+      points: 10
+      hint: "Use -s 192.168.100.0/24 to restrict source"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: firewall
+          match:
+            pattern: "iptables.*--dport 22.*-j ACCEPT"
+
+    - id: configure-nat
+      description: Configure NAT for internal network internet access
+      points: 15
+      hint: "Use MASQUERADE in POSTROUTING chain"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: firewall
+          match:
+            pattern: "iptables.*MASQUERADE|iptables.*SNAT"
+
+    - id: port-forward
+      description: Configure port forwarding to DMZ web server
+      points: 15
+      hint: "Use DNAT in PREROUTING chain to redirect port 80"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: firewall
+          match:
+            pattern: "iptables.*DNAT.*172.16.0.10"
+
+    - id: dmz-rules
+      description: Configure rules to isolate DMZ (can't reach internal)
+      points: 15
+      hint: "Block traffic from DMZ to internal network"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: firewall
+          match:
+            pattern: "iptables.*-s 172.16.*192.168.*DROP"
+
+    - id: logging
+      description: Enable logging for dropped packets
+      points: 10
+      hint: "Use -j LOG --log-prefix before DROP rules"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: firewall
+          match:
+            pattern: "iptables.*-j LOG"
+
+    - id: save-rules
+      description: Save iptables rules for persistence
+      points: 5
+      hint: "Use iptables-save or netfilter-persistent"
+      order: 8
+      triggers:
+        - type: command_executed
+          target: firewall
+          match:
+            pattern: "iptables-save|netfilter-persistent"
+
+    - id: test-rules
+      description: Test firewall rules from external and document results
+      points: 10
+      hint: "Use nmap from external machine to verify rules"
+      order: 9
+      triggers:
+        - type: file_exists
+          target: firewall
+          match:
+            path: /home/fwadmin/firewall_test_results.txt

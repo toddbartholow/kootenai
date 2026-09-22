@@ -1,0 +1,283 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Docker Mastery
+  description: |
+    Master containerization with Docker. Learn to pull images, run containers, manage
+    volumes and networking, build custom images with Dockerfiles, and orchestrate
+    multi-container applications with Docker Compose.
+  duration: 90m
+  difficulty: intermediate
+  tags:
+    - devops
+    - docker
+    - containers
+    - dockerfile
+    - compose
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Docker revolutionized software deployment by packaging applications into lightweight,
+      portable containers. In this lab, you'll learn to work with Docker images and containers,
+      build custom images, and orchestrate multi-container applications.
+    learning_objectives:
+      - Pull and manage Docker images
+      - Run containers with port mapping and volumes
+      - Build custom images with Dockerfiles
+      - Use multi-stage builds for optimized images
+      - Orchestrate services with Docker Compose
+      - Understand container networking
+    prerequisites:
+      - Basic Linux command line skills
+      - Understanding of processes and networking basics
+    steps:
+      - id: pull-image
+        title: Pull a Docker Image
+        content: |
+          Docker images are the blueprints for containers. Pull your first image from Docker Hub.
+
+          ```bash
+          # Pull the official nginx image
+          docker pull nginx:latest
+
+          # List downloaded images
+          docker images
+          ```
+
+          The `docker images` command shows all locally available images with their tags and sizes.
+      - id: run-container
+        title: Run Your First Container
+        content: |
+          Start a container from the nginx image with port mapping.
+
+          ```bash
+          # Run nginx with port mapping (host:container)
+          docker run -d --name my-web -p 8080:80 nginx:latest
+
+          # Verify it's running
+          docker ps
+
+          # Test the web server
+          curl http://localhost:8080
+          ```
+
+          The `-d` flag runs in detached mode, `--name` assigns a name, and `-p` maps ports.
+      - id: volumes
+        title: Working with Volumes
+        content: |
+          Volumes persist data beyond container lifecycles.
+
+          ```bash
+          # Create a volume mount
+          mkdir -p ~/web-content
+          echo "<h1>Hello Docker</h1>" > ~/web-content/index.html
+
+          docker run -d --name web-vol \
+            -p 8081:80 \
+            -v ~/web-content:/usr/share/nginx/html:ro \
+            nginx:latest
+          ```
+      - id: dockerfile
+        title: Build a Custom Image
+        content: |
+          Create a Dockerfile to build your own image.
+
+          ```dockerfile
+          # Dockerfile
+          FROM python:3.11-slim
+          WORKDIR /app
+          COPY requirements.txt .
+          RUN pip install --no-cache-dir -r requirements.txt
+          COPY . .
+          EXPOSE 5000
+          CMD ["python", "app.py"]
+          ```
+
+          Build with: `docker build -t my-app:v1 .`
+      - id: multi-stage
+        title: Multi-Stage Builds
+        content: |
+          Reduce image size by separating build and runtime stages.
+
+          ```dockerfile
+          # Build stage
+          FROM golang:1.21 AS builder
+          WORKDIR /app
+          COPY . .
+          RUN go build -o server .
+
+          # Runtime stage
+          FROM alpine:latest
+          COPY --from=builder /app/server /server
+          CMD ["/server"]
+          ```
+      - id: compose
+        title: Docker Compose
+        content: |
+          Define and run multi-container applications.
+
+          ```yaml
+          # compose.yaml
+          services:
+            web:
+              build: .
+              ports:
+                - "5000:5000"
+            redis:
+              image: redis:alpine
+              volumes:
+                - redis-data:/data
+          volumes:
+            redis-data:
+          ```
+
+          Run with: `docker compose up -d`
+    summary: |
+      You've mastered Docker fundamentals including images, containers, volumes,
+      Dockerfiles, multi-stage builds, and Docker Compose orchestration.
+    tips:
+      - Always tag your images with meaningful version numbers
+      - Use .dockerignore to exclude unnecessary files from builds
+      - Prefer multi-stage builds to minimize image size
+      - Use named volumes for persistent data
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 132
+        subnet: 192.168.132.0/24
+        gateway: 192.168.132.1
+        dhcp: true
+
+  vms:
+    - name: dev-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 50
+      networks:
+        - segment: lab-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/docker-lab
+        audit_commands: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: pull-image
+      description: Pull the nginx Docker image from Docker Hub
+      points: 10
+      hints:
+        - level: 1
+          text: "Use 'docker pull nginx:latest' to download the image"
+          penalty: 2
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "docker pull nginx"
+
+    - id: run-container
+      description: Run an nginx container with port 8080 mapped to port 80
+      points: 15
+      depends_on:
+        - pull-image
+      hints:
+        - level: 1
+          text: "Use 'docker run -d -p 8080:80 nginx' to map ports"
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "docker run.*-p.*8080:80.*nginx"
+
+    - id: volume-mount
+      description: Run a container with a volume mount using the -v flag
+      points: 15
+      hints:
+        - level: 1
+          text: "Use 'docker run -v /host/path:/container/path image'"
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "docker run.*-v"
+
+    - id: create-dockerfile
+      description: Create a Dockerfile for a custom application
+      points: 20
+      hints:
+        - level: 1
+          text: "Create a file named 'Dockerfile' with FROM, COPY, and CMD instructions"
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/docker-lab/Dockerfile
+            contains: "FROM"
+
+    - id: build-image
+      description: Build a Docker image from your Dockerfile
+      points: 15
+      depends_on:
+        - create-dockerfile
+      hints:
+        - level: 1
+          text: "Use 'docker build -t my-app:v1 .' in the directory with the Dockerfile"
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "docker build.*-t"
+
+    - id: multi-stage-build
+      description: Create a multi-stage Dockerfile with a build and runtime stage
+      points: 20
+      hints:
+        - level: 1
+          text: "Use 'FROM image AS builder' for the build stage, then 'FROM image' and 'COPY --from=builder'"
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/docker-lab/Dockerfile.multi
+            regex: "FROM.*AS.*builder"
+
+    - id: compose-up
+      description: Create a compose.yaml and start services with docker compose up
+      points: 20
+      hints:
+        - level: 1
+          text: "Create compose.yaml with services defined, then run 'docker compose up -d'"
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: dev-workstation
+          match:
+            path: /home/student/docker-lab/compose.yaml
+            contains: "services:"
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "docker compose up"

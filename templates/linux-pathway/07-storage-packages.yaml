@@ -1,0 +1,364 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Storage & Package Management
+  description: |
+    Learn Linux storage management including disk partitioning, filesystems,
+    and mounting. Master package management with apt/dpkg on Debian-based
+    systems. Understand LVM basics for flexible storage.
+  duration: 90m
+  difficulty: advanced
+  tags:
+    - linux
+    - advanced
+    - storage
+    - partitions
+    - filesystems
+    - apt
+    - packages
+    - lvm
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Storage management and package management are core sysadmin skills. In this lab,
+      you'll learn to inspect disks and partitions, manage filesystems and mount points,
+      use the apt package manager, and explore LVM basics.
+    learning_objectives:
+      - Inspect disk layout with lsblk, df, du, and fdisk
+      - Manage packages with apt (update, install, remove, upgrade)
+      - Understand mounting and /etc/fstab
+      - Explore LVM physical volumes, volume groups, and logical volumes
+    prerequisites:
+      - Services & System Management (systemctl, sudo)
+      - File Mastery (permissions, ownership)
+    steps:
+      - id: disk-info
+        title: Disk Information
+        content: |
+          Inspect the system's storage layout.
+
+          ```bash
+          # List block devices (disks and partitions)
+          lsblk
+
+          # Check filesystem disk space usage
+          df -h
+
+          # Check directory sizes
+          sudo du -sh /var/*
+
+          # List partition tables
+          sudo fdisk -l
+          ```
+      - id: package-management
+        title: Package Management with apt
+        content: |
+          Install, update, and remove software packages.
+
+          ```bash
+          # Update package cache
+          sudo apt update
+
+          # Search for a package
+          apt search htop
+
+          # Install a package
+          sudo apt install htop -y
+
+          # Show package info
+          apt show htop
+
+          # List installed packages
+          dpkg -l
+
+          # Remove a package
+          sudo apt remove htop -y
+
+          # Simulate a full upgrade
+          sudo apt upgrade -s
+          ```
+      - id: mounting
+        title: Mounting Filesystems
+        content: |
+          Mount storage devices to access their contents.
+
+          ```bash
+          # View currently mounted filesystems
+          mount
+          findmnt
+
+          # Create a mount point
+          sudo mkdir -p /mnt/data
+
+          # View permanent mounts
+          cat /etc/fstab
+          ```
+
+          The /etc/fstab file defines which filesystems are mounted automatically at boot.
+      - id: lvm-basics
+        title: LVM Basics
+        content: |
+          Logical Volume Manager provides flexible storage management.
+
+          ```bash
+          # List physical volumes
+          sudo pvs
+
+          # List volume groups
+          sudo vgs
+
+          # List logical volumes
+          sudo lvs
+          ```
+
+          LVM layers: Physical Volumes (PV) -> Volume Groups (VG) -> Logical Volumes (LV).
+    summary: |
+      You've learned to inspect disks, manage packages, work with mount points,
+      and explore LVM — the essential storage and software management skills.
+    tips:
+      - Always run `sudo apt update` before installing new packages
+      - Use `df -h` for human-readable sizes and `du -sh` for directory summaries
+      - Never modify /etc/fstab without a backup — a bad entry can prevent boot
+      - LVM allows resizing volumes without unmounting (with ext4/xfs)
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 100
+        subnet: 10.10.100.0/24
+        gateway: 10.10.100.1
+        dhcp: false
+
+  vms:
+    - name: linux-vm
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /etc/fstab
+          - /mnt
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 30
+      additionalDisks:
+        - size: 5
+          name: practice-disk
+      networks:
+        - segment: lab-network
+          ip: 10.10.100.10
+      snapshots:
+        - name: initial
+          description: Fresh Ubuntu with additional practice disk
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Disk information
+    - id: list-disks
+      description: List all block devices (disks) on the system
+      points: 10
+      hint: "Use 'lsblk' to list block devices"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "^lsblk$"
+
+    - id: disk-space
+      description: Check disk space usage on all mounted filesystems
+      points: 10
+      hint: "Use 'df -h' for human-readable disk usage"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "df.*-h"
+
+    - id: disk-usage
+      description: Check directory sizes in /var using du
+      points: 10
+      hint: "Use 'sudo du -sh /var/*' for summary of each directory"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "du.*-s.*/var"
+
+    - id: fdisk-list
+      description: List partition tables using fdisk
+      points: 10
+      hint: "Use 'sudo fdisk -l' to list all partitions"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo fdisk -l"
+
+    # Package management - apt
+    - id: update-cache
+      description: Update the package cache
+      points: 10
+      hint: "Use 'sudo apt update' to refresh package lists"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo apt update"
+
+    - id: search-package
+      description: Search for packages containing 'htop'
+      points: 10
+      hint: "Use 'apt search htop'"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "apt search htop"
+
+    - id: install-package
+      description: Install the htop package
+      points: 15
+      hint: "Use 'sudo apt install htop -y'"
+      order: 7
+      triggers:
+        - type: package
+          target: linux-vm
+          match:
+            package: htop
+            state: installed
+
+    - id: package-info
+      description: Show detailed information about the htop package
+      points: 10
+      hint: "Use 'apt show htop'"
+      depends_on:
+        - install-package
+      order: 8
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "apt show htop"
+
+    - id: list-installed
+      description: List all installed packages
+      points: 10
+      hint: "Use 'dpkg -l' or 'apt list --installed'"
+      order: 9
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "(dpkg -l|apt list --installed)"
+
+    - id: remove-package
+      description: Remove the htop package
+      points: 10
+      hint: "Use 'sudo apt remove htop -y'"
+      depends_on:
+        - install-package
+      order: 10
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo apt remove htop"
+
+    - id: upgrade-system
+      description: Upgrade all packages (simulation only with -s)
+      points: 10
+      hint: "Use 'sudo apt upgrade -s' for simulation"
+      order: 11
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo apt upgrade"
+
+    # Mounting
+    - id: view-mounts
+      description: View currently mounted filesystems
+      points: 10
+      hint: "Use 'mount' or 'cat /etc/mtab' or 'findmnt'"
+      order: 12
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "(^mount$|findmnt|cat /etc/mtab)"
+
+    - id: create-mount-point
+      description: Create a mount point directory /mnt/data
+      points: 10
+      hint: "Use 'sudo mkdir -p /mnt/data'"
+      order: 13
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /mnt/data
+
+    - id: view-fstab
+      description: View the filesystem table (/etc/fstab)
+      points: 10
+      hint: "Use 'cat /etc/fstab' to view permanent mounts"
+      order: 14
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "cat /etc/fstab"
+
+    # LVM basics
+    - id: lvm-pvs
+      description: Display physical volumes using pvs command
+      points: 15
+      hint: "Use 'sudo pvs' to list physical volumes"
+      order: 15
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo pvs"
+
+    - id: lvm-vgs
+      description: Display volume groups using vgs command
+      points: 15
+      hint: "Use 'sudo vgs' to list volume groups"
+      order: 16
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo vgs"
+
+    - id: lvm-lvs
+      description: Display logical volumes using lvs command
+      points: 15
+      hint: "Use 'sudo lvs' to list logical volumes"
+      order: 17
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo lvs"

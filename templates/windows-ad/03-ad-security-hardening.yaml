@@ -1,0 +1,169 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Active Directory Security Hardening
+  description: |
+    Learn to secure Active Directory environments against common attacks.
+    This lab covers privileged access management, Kerberos security,
+    attack detection, and implementing Microsoft security baselines.
+  duration: 150m
+  difficulty: advanced
+  tags:
+    - windows
+    - active-directory
+    - security
+    - hardening
+    - kerberos
+    - privileged-access
+  version: "1.0.0"
+  author: Kootenai Team
+  category: windows-ad
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: secure-ad-network
+        vlan: 302
+        subnet: 10.32.0.0/24
+        gateway: 10.32.0.1
+        dhcp: false
+
+  vms:
+    - name: dc01
+      template: windows-server-2022-ad
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - C:\Windows\System32\winevt\Logs
+          - C:\Windows\SYSVOL
+          - C:\Windows\NTDS
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 4
+        memory: 8192
+        disk: 80
+      networks:
+        - segment: secure-ad-network
+          ip: 10.32.0.10
+      snapshots:
+        - name: baseline
+          description: AD configured with baseline settings
+          default: true
+
+    - name: admin-workstation
+      template: windows-10-enterprise
+      wazuhAgent: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 60
+      networks:
+        - segment: secure-ad-network
+          ip: 10.32.0.50
+      snapshots:
+        - name: domain-joined
+          description: Privileged Admin Workstation (PAW)
+          default: true
+
+    - name: attacker-kali
+      template: kali-linux
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: secure-ad-network
+          ip: 10.32.0.200
+      snapshots:
+        - name: attack-tools
+          description: Kali with AD attack tools (for testing defenses)
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: audit-privileged
+      description: Audit and document all privileged accounts and groups
+      points: 10
+      hint: "Use Get-ADGroupMember for Domain Admins, Enterprise Admins, etc."
+      order: 1
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Get-ADGroupMember.*Admin"
+
+    - id: implement-tiering
+      description: Implement administrative tier model with dedicated admin accounts
+      points: 20
+      hint: "Create separate admin accounts for Tier 0 (DCs), Tier 1 (Servers), Tier 2 (Workstations)"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "New-ADUser.*T0|New-ADUser.*Admin"
+
+    - id: configure-laps
+      description: Deploy and configure Local Administrator Password Solution (LAPS)
+      points: 20
+      hint: "Install LAPS, extend schema, configure GPO for password management"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Update-AdmPwdADSchema|LAPS"
+
+    - id: enable-auditing
+      description: Enable advanced security auditing for credential access
+      points: 15
+      hint: "Configure audit policies for logon events, credential validation, Kerberos"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "auditpol|Audit Policy"
+
+    - id: protected-users
+      description: Add sensitive accounts to Protected Users group
+      points: 15
+      hint: "Protected Users group provides additional Kerberos protections"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Add-ADGroupMember.*Protected Users"
+
+    - id: detect-kerberoast
+      description: Configure detection for Kerberoasting attacks
+      points: 15
+      hint: "Monitor for Event ID 4769 with RC4 encryption requests"
+      order: 6
+      triggers:
+        - type: file_content
+          target: dc01
+          match:
+            path: C:\lab\kerberoast_detection.ps1
+            contains: "4769"
+
+    - id: test-defenses
+      description: Verify security controls by attempting common AD attacks
+      points: 15
+      hint: "Use Kali to attempt attacks and verify they are blocked/detected"
+      order: 7
+      triggers:
+        - type: file_exists
+          target: admin-workstation
+          match:
+            path: C:\lab\security_validation_report.txt

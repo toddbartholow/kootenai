@@ -1,0 +1,3342 @@
+basePath: /api/v1
+definitions:
+  github_com_toddbartholow_kootenai_api_internal_auth.User:
+    properties:
+      defaultOrgId:
+        type: string
+      email:
+        type: string
+      iat:
+        type: integer
+      id:
+        type: string
+      name:
+        type: string
+      roles:
+        items:
+          type: string
+        type: array
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_certificate.Certificate:
+    properties:
+      certificateUrl:
+        type: string
+      completedAt:
+        type: string
+      earnedPoints:
+        type: integer
+      enrollmentId:
+        type: string
+      expiresAt:
+        type: string
+      id:
+        type: string
+      isValid:
+        type: boolean
+      issuedAt:
+        type: string
+      maxPoints:
+        type: integer
+      pathwayId:
+        type: string
+      pathwayName:
+        type: string
+      percentage:
+        type: number
+      userEmail:
+        type: string
+      userId:
+        type: string
+      userName:
+        type: string
+      verificationCode:
+        type: string
+      verificationUrl:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.AchievementInfo:
+    properties:
+      description:
+        type: string
+      earnedAt:
+        type: string
+      iconUrl:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      points:
+        type: integer
+      tier:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.AchievementsInfo:
+    properties:
+      recentAchievements:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.AchievementInfo'
+        type: array
+      totalAvailable:
+        type: integer
+      totalEarned:
+        type: integer
+      totalPoints:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.ActivityData:
+    properties:
+      activities:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.ActivityItem'
+        type: array
+      hasMore:
+        type: boolean
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.ActivityItem:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      metadata:
+        additionalProperties: {}
+        type: object
+      timestamp:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.DashboardData:
+    properties:
+      achievements:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.AchievementsInfo'
+      enrolledPathways:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.PathwayInfo'
+        type: array
+      recentSessions:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.SessionInfo'
+        type: array
+      recommendedNext:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.Recommendation'
+        type: array
+      stats:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.StatsInfo'
+      user:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.UserInfo'
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.InsightsData:
+    properties:
+      skills:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.SkillProficiency'
+        type: array
+      streakCalendar:
+        additionalProperties:
+          type: integer
+        type: object
+      strengths:
+        items:
+          type: string
+        type: array
+      weaknesses:
+        items:
+          type: string
+        type: array
+      weeklyTime:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.WeeklyTimeEntry'
+        type: array
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.LeaderboardData:
+    properties:
+      currentUser:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.LeaderboardEntry'
+      entries:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.LeaderboardEntry'
+        type: array
+      totalUsers:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.LeaderboardEntry:
+    properties:
+      achievementCount:
+        type: integer
+      displayName:
+        type: string
+      isCurrentUser:
+        type: boolean
+      labsCompleted:
+        type: integer
+      rank:
+        type: integer
+      totalPoints:
+        type: integer
+      userId:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.PathwayInfo:
+    properties:
+      completedModules:
+        type: integer
+      currentModule:
+        type: string
+      description:
+        type: string
+      enrolledAt:
+        type: string
+      iconUrl:
+        type: string
+      id:
+        type: string
+      lastActivityAt:
+        type: string
+      name:
+        type: string
+      percentage:
+        type: number
+      slug:
+        type: string
+      status:
+        type: string
+      totalModules:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.Recommendation:
+    properties:
+      action:
+        type: string
+      description:
+        type: string
+      difficulty:
+        type: string
+      labId:
+        type: string
+      moduleId:
+        type: string
+      pathwayId:
+        type: string
+      priority:
+        type: integer
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.SessionInfo:
+    properties:
+      durationMinutes:
+        type: integer
+      earnedPoints:
+        type: integer
+      endedAt:
+        type: string
+      id:
+        type: string
+      labName:
+        type: string
+      labTemplateId:
+        type: string
+      maxPoints:
+        type: integer
+      passed:
+        type: boolean
+      startedAt:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.SkillProficiency:
+    properties:
+      avgScore:
+        type: number
+      labsCompleted:
+        type: integer
+      proficiency:
+        type: number
+      tag:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.StatsInfo:
+    properties:
+      averageScore:
+        type: number
+      bestStreak:
+        type: integer
+      currentStreak:
+        type: integer
+      pathwaysCompleted:
+        type: integer
+      pathwaysInProgress:
+        type: integer
+      totalLabsCompleted:
+        type: integer
+      totalTimeSpentMins:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.UserInfo:
+    properties:
+      currentRank:
+        type: string
+      displayName:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      totalPoints:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_dashboard.WeeklyTimeEntry:
+    properties:
+      minutes:
+        type: integer
+      week:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_models.AuditEntry:
+    properties:
+      action:
+        type: string
+      actorId:
+        type: string
+      actorType:
+        description: user, system, api
+        type: string
+      details:
+        type: object
+      id:
+        type: integer
+      ipAddress:
+        type: string
+      resourceId:
+        type: string
+      resourceType:
+        type: string
+      timestamp:
+        type: string
+      userAgent:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_models.Edition:
+    enum:
+    - community
+    - professional
+    - enterprise
+    type: string
+    x-enum-varnames:
+    - EditionCommunity
+    - EditionProfessional
+    - EditionEnterprise
+  github_com_toddbartholow_kootenai_api_internal_models.LabVisibility:
+    enum:
+    - global
+    - organization
+    - private
+    type: string
+    x-enum-varnames:
+    - LabVisibilityGlobal
+    - LabVisibilityOrganization
+    - LabVisibilityPrivate
+  github_com_toddbartholow_kootenai_api_internal_models.LicenseStatus:
+    enum:
+    - pending
+    - valid
+    - expired
+    - revoked
+    type: string
+    x-enum-varnames:
+    - LicenseStatusPending
+    - LicenseStatusValid
+    - LicenseStatusExpired
+    - LicenseStatusRevoked
+  github_com_toddbartholow_kootenai_api_internal_models.Platform:
+    enum:
+    - proxmox
+    - cloudstack
+    - any
+    type: string
+    x-enum-varnames:
+    - PlatformProxmox
+    - PlatformCloudStack
+    - PlatformAny
+  github_com_toddbartholow_kootenai_api_internal_models.Pod:
+    properties:
+      createdAt:
+        type: string
+      expiresAt:
+        type: string
+      id:
+        type: string
+      labTemplate:
+        description: Human-readable template name (for display)
+        type: string
+      labTemplateId:
+        description: UUID referencing lab_templates.id
+        type: string
+      metadata:
+        additionalProperties:
+          type: string
+        type: object
+      name:
+        description: Human-readable name (e.g., "cryptic-waddling-rain")
+        type: string
+      networks:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.PodNetwork'
+        type: array
+      organizationId:
+        description: Multi-tenancy fields
+        type: string
+      owner:
+        description: Human-readable owner name (for display)
+        type: string
+      ownerId:
+        description: UUID referencing users.id
+        type: string
+      platform:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Platform'
+      status:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.PodStatus'
+      teamId:
+        type: string
+      vms:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.PodVM'
+        type: array
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_models.PodNetwork:
+    properties:
+      gateway:
+        type: string
+      name:
+        type: string
+      netmask:
+        type: string
+      platformId:
+        type: string
+      state:
+        description: for health checks
+        type: string
+      subnet:
+        type: string
+      type:
+        description: isolated, shared, l2
+        type: string
+      vlan:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_models.PodStatus:
+    enum:
+    - provisioning
+    - running
+    - stopped
+    - error
+    - destroying
+    - destroyed
+    type: string
+    x-enum-varnames:
+    - PodStatusProvisioning
+    - PodStatusRunning
+    - PodStatusStopped
+    - PodStatusError
+    - PodStatusDestroying
+    - PodStatusDestroyed
+  github_com_toddbartholow_kootenai_api_internal_models.PodVM:
+    properties:
+      currentSnapshot:
+        type: string
+      ipAddress:
+        type: string
+      name:
+        type: string
+      node:
+        type: string
+      platform:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Platform'
+      platformId:
+        type: string
+      status:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_models.Session:
+    properties:
+      canvasAssignmentId:
+        type: string
+      canvasCourseId:
+        type: string
+      canvasUserId:
+        type: string
+      dueAt:
+        type: string
+      earnedPoints:
+        type: integer
+      endedAt:
+        type: string
+      enrollmentId:
+        description: Pathway tracking fields
+        type: string
+      gradeSyncError:
+        type: string
+      gradeSyncedAt:
+        type: string
+      id:
+        type: string
+      labTemplateId:
+        type: string
+      ltiAssignmentId:
+        description: LTI deep linking
+        type: string
+      maxPoints:
+        type: integer
+      metadata:
+        additionalProperties:
+          type: string
+        type: object
+      moduleId:
+        type: string
+      organizationId:
+        description: Multi-tenancy fields
+        type: string
+      passed:
+        type: boolean
+      passingThreshold:
+        type: integer
+      percentage:
+        type: number
+      podId:
+        type: string
+      startedAt:
+        type: string
+      status:
+        description: active, paused, completed, submitted, expired
+        type: string
+      teamId:
+        type: string
+      userId:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_recommendation.LabRecommendation:
+    properties:
+      difficulty:
+        type: string
+      durationMinutes:
+        type: integer
+      labDescription:
+        type: string
+      labName:
+        type: string
+      labSlug:
+        type: string
+      labTemplateId:
+        type: string
+      maxPoints:
+        type: integer
+      moduleId:
+        type: string
+      moduleName:
+        type: string
+      pathwayId:
+        description: Context for pathway-based recommendations
+        type: string
+      pathwayName:
+        type: string
+      priority:
+        description: Lower is higher priority
+        type: integer
+      reason:
+        type: string
+      type:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_recommendation.RecommendationType'
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_recommendation.PathwayRecommendation:
+    properties:
+      coverImageUrl:
+        type: string
+      description:
+        type: string
+      difficulty:
+        type: string
+      estimatedHours:
+        type: integer
+      icon:
+        type: string
+      labCount:
+        type: integer
+      moduleCount:
+        type: integer
+      pathwayId:
+        type: string
+      pathwayName:
+        type: string
+      pathwaySlug:
+        type: string
+      priority:
+        type: integer
+      reason:
+        type: string
+      type:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_recommendation.RecommendationType'
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_recommendation.RecommendationType:
+    enum:
+    - next_in_pathway
+    - continue_progress
+    - new_pathway
+    - similar_difficulty
+    - popular
+    type: string
+    x-enum-varnames:
+    - TypeNextInPathway
+    - TypeContinueProgress
+    - TypeNewPathway
+    - TypeSimilarDifficulty
+    - TypePopular
+  github_com_toddbartholow_kootenai_api_internal_recommendation.RecommendationsResponse:
+    properties:
+      labs:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_recommendation.LabRecommendation'
+        type: array
+      pathways:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_recommendation.PathwayRecommendation'
+        type: array
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.CurrentUserResponse:
+    properties:
+      user:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_auth.User'
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse:
+    properties:
+      error:
+        example: invalid credentials
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.EventStatsResponse:
+    properties:
+      checkpointsMatched:
+        type: integer
+      checkpointsPassed:
+        type: integer
+      eventsByType:
+        additionalProperties:
+          format: int64
+          type: integer
+        type: object
+      eventsThisHour:
+        type: integer
+      eventsToday:
+        type: integer
+      generatedAt:
+        type: string
+      pendingEvents:
+        type: integer
+      processedEvents:
+        type: integer
+      totalEvents:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.EventSummary:
+    properties:
+      description:
+        type: string
+      eventType:
+        type: string
+      id:
+        type: integer
+      matchedCheckpoints:
+        items:
+          type: string
+        type: array
+      podId:
+        type: string
+      processed:
+        type: boolean
+      ruleId:
+        type: string
+      ruleLevel:
+        type: integer
+      sessionId:
+        type: string
+      timestamp:
+        type: string
+      vmName:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.EventsResponse:
+    properties:
+      count:
+        type: integer
+      events:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.EventSummary'
+        type: array
+      limit:
+        type: integer
+      offset:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.HealthCheck:
+    properties:
+      circuitState:
+        description: Additional fields for circuit breaker status
+        type: string
+      error:
+        description: Error message if unhealthy
+        type: string
+      failures:
+        description: Failure count
+        type: integer
+      lastFailure:
+        description: Last failure timestamp
+        type: string
+      latencyMs:
+        description: Check latency in milliseconds
+        type: integer
+      status:
+        description: healthy, unhealthy, not_configured
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.HealthResponse:
+    properties:
+      checks:
+        additionalProperties:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.HealthCheck'
+        description: Individual dependency checks
+        type: object
+      status:
+        description: healthy, degraded, unhealthy
+        type: string
+      uptime:
+        description: Server uptime
+        type: string
+      version:
+        description: API version
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.LoginRequest:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      password:
+        example: Password123!
+        type: string
+    required:
+    - email
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.LoginResponse:
+    properties:
+      mustChangePassword:
+        example: false
+        type: boolean
+      token:
+        example: eyJhbGciOiJIUzI1NiIs...
+        type: string
+      user:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_auth.User'
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.LogoutResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.PreferredLocaleRequest:
+    properties:
+      preferredLocale:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.RefreshTokenRequest:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIs...
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.RefreshTokenResponse:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIs...
+        type: string
+      user:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_auth.User'
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server.WebhookValidatorStatus:
+    properties:
+      allowedIps:
+        items:
+          type: string
+        type: array
+      allowedIpsCount:
+        type: integer
+      enabled:
+        type: boolean
+      rateLimitPerMinute:
+        type: integer
+      requireSignature:
+        type: boolean
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_audit.ExportRequest:
+    properties:
+      endTime:
+        type: string
+      format:
+        description: '"json" or "csv"'
+        type: string
+      startTime:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_audit.ListResponse:
+    properties:
+      entries:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.AuditEntry'
+        type: array
+      limit:
+        type: integer
+      offset:
+        type: integer
+      totalCount:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_dashboards.DailyTimeStats:
+    properties:
+      date:
+        type: string
+      sessionCount:
+        type: integer
+      timeMinutes:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_dashboards.ErrorResponse:
+    properties:
+      error:
+        example: invalid credentials
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_dashboards.LabTimeStats:
+    properties:
+      averageMinutes:
+        type: integer
+      bestScore:
+        type: number
+      labId:
+        type: string
+      labName:
+        type: string
+      labSlug:
+        type: string
+      sessionCount:
+        type: integer
+      totalMinutes:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_dashboards.TimeAnalyticsResponse:
+    properties:
+      averageSessionMinutes:
+        type: integer
+      dailyBreakdown:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.DailyTimeStats'
+        type: array
+      labBreakdown:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.LabTimeStats'
+        type: array
+      longestSessionMinutes:
+        type: integer
+      period:
+        type: string
+      sessionCount:
+        type: integer
+      stats:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.TimeStats'
+      totalTimeMinutes:
+        type: integer
+      userId:
+        type: string
+      weeklyTrend:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.WeeklyTimeStats'
+        type: array
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_dashboards.TimeStats:
+    properties:
+      averageScore:
+        type: number
+      bestStreak:
+        type: integer
+      currentStreak:
+        type: integer
+      mostActiveDay:
+        type: string
+      pointsPerMinute:
+        type: number
+      totalLabsCompleted:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_dashboards.WeeklyTimeStats:
+    properties:
+      sessionCount:
+        type: integer
+      timeMinutes:
+        type: integer
+      weekStart:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_labs.LabResponse:
+    properties:
+      category:
+        type: string
+      checkpoints:
+        items:
+          type: object
+        type: array
+      createdAt:
+        type: string
+      createdBy:
+        description: |-
+          The web client gates the edit action on this, so omitting it locked
+          creators out of their own labs.
+        type: string
+      description:
+        type: string
+      difficulty:
+        type: string
+      durationMinutes:
+        type: integer
+      id:
+        type: string
+      isActive:
+        type: boolean
+      maxPoints:
+        type: integer
+      name:
+        type: string
+      organizationId:
+        description: Both written only when the record has them.
+        type: string
+      passThreshold:
+        type: integer
+      platform:
+        allOf:
+        - $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Platform'
+        description: Typed rather than plain string so generated clients keep the
+          enum.
+      slug:
+        type: string
+      spec:
+        type: object
+      tags:
+        items:
+          type: string
+        type: array
+      updatedAt:
+        type: string
+      version:
+        type: string
+      visibility:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.LabVisibility'
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_labs.LabSummary:
+    properties:
+      category:
+        type: string
+      createdAt:
+        type: string
+      createdBy:
+        description: |-
+          The web client gates the edit action on this, so omitting it locked
+          creators out of their own labs.
+        type: string
+      description:
+        type: string
+      difficulty:
+        type: string
+      durationMinutes:
+        type: integer
+      id:
+        type: string
+      isActive:
+        type: boolean
+      maxPoints:
+        type: integer
+      name:
+        type: string
+      organizationId:
+        description: Both written only when the record has them.
+        type: string
+      passThreshold:
+        type: integer
+      platform:
+        allOf:
+        - $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Platform'
+        description: Typed rather than plain string so generated clients keep the
+          enum.
+      slug:
+        type: string
+      tags:
+        items:
+          type: string
+        type: array
+      updatedAt:
+        type: string
+      version:
+        type: string
+      visibility:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.LabVisibility'
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_labs.ListLabsResponse:
+    properties:
+      count:
+        type: integer
+      labs:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_labs.LabSummary'
+        type: array
+      pagination:
+        allOf:
+        - $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.PaginationMeta'
+        description: Always written, so not omitempty.
+      total:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_organizations.ActivateLicenseRequest:
+    properties:
+      licenseKey:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_organizations.ErrorResponse:
+    properties:
+      error:
+        example: invalid credentials
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_organizations.LicenseResponse:
+    properties:
+      daysRemaining:
+        type: integer
+      edition:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Edition'
+      expiresAt:
+        type: string
+      features:
+        items:
+          type: string
+        type: array
+      id:
+        type: string
+      isActive:
+        type: boolean
+      isValid:
+        type: boolean
+      issuedAt:
+        type: string
+      lastValidatedAt:
+        type: string
+      maskedKey:
+        type: string
+      maxPods:
+        type: integer
+      maxStorageGb:
+        type: integer
+      maxUsers:
+        type: integer
+      validationStatus:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.LicenseStatus'
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_pods.AsyncPodResponse:
+    properties:
+      message:
+        example: Pod provisioning started
+        type: string
+      podId:
+        example: abc123-def456
+        type: string
+      requestId:
+        example: req-789xyz
+        type: string
+      status:
+        example: provisioning
+        type: string
+      subject:
+        example: labs.pods.abc123.provision
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_pods.CreatePodRequest:
+    properties:
+      labTemplate:
+        example: linux-basics-101
+        type: string
+      owner:
+        example: jsmith
+        type: string
+    required:
+    - labTemplate
+    - owner
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_pods.ListPodsResponse:
+    properties:
+      pods:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Pod'
+        type: array
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_pods.TopologyNetworkSegment:
+    properties:
+      dhcp:
+        type: boolean
+      gateway:
+        type: string
+      name:
+        type: string
+      subnet:
+        type: string
+      vlan:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_pods.TopologyResponse:
+    properties:
+      labTemplate:
+        type: string
+      podId:
+        type: string
+      segments:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_pods.TopologyNetworkSegment'
+        type: array
+      vms:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_pods.TopologyVM'
+        type: array
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_pods.TopologyVM:
+    properties:
+      ipAddress:
+        type: string
+      name:
+        type: string
+      networks:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_pods.TopologyVMNetwork'
+        type: array
+      platformId:
+        type: string
+      resources:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_pods.TopologyVMResources'
+      status:
+        type: string
+      template:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_pods.TopologyVMNetwork:
+    properties:
+      ip:
+        type: string
+      segment:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_pods.TopologyVMResources:
+    properties:
+      cpu:
+        type: integer
+      disk:
+        type: integer
+      memory:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse:
+    properties:
+      error:
+        example: invalid credentials
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_serverutil.PaginationMeta:
+    properties:
+      hasMore:
+        type: boolean
+      limit:
+        type: integer
+      offset:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_sessions.ListSessionsResponse:
+    properties:
+      pagination:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.PaginationMeta'
+      sessions:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Session'
+        type: array
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_sessions.SessionStartedResponse:
+    properties:
+      agentStatus: {}
+      maxPoints:
+        type: integer
+      sessionId:
+        type: string
+      status:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_server_sessions.createSessionRequest:
+    properties:
+      canvasAssignmentId:
+        type: string
+      canvasCourseId:
+        type: string
+      canvasUserId:
+        type: string
+      enrollmentId:
+        description: Pathway context — optional, links session to pathway progress.
+        type: string
+      labTemplate:
+        type: string
+      moduleId:
+        type: string
+      podId:
+        type: string
+      userId:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_version.Info:
+    properties:
+      arch:
+        type: string
+      build_time:
+        type: string
+      commit:
+        type: string
+      edition:
+        type: string
+      go_version:
+        type: string
+      os:
+        type: string
+      version:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_wazuh.AgentHealthState:
+    properties:
+      agentId:
+        type: string
+      consecutiveMisses:
+        type: integer
+      disconnectCount:
+        type: integer
+      disconnectedAt:
+        type: string
+      errorMessage:
+        type: string
+      lastEvent:
+        type: string
+      lastSeen:
+        type: string
+      podId:
+        type: string
+      reconnectedAt:
+        type: string
+      status:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_wazuh.AgentStatus'
+      vmName:
+        type: string
+    type: object
+  github_com_toddbartholow_kootenai_api_internal_wazuh.AgentStatus:
+    enum:
+    - active
+    - disconnected
+    - never_connected
+    - pending
+    type: string
+    x-enum-varnames:
+    - AgentStatusActive
+    - AgentStatusDisconnected
+    - AgentStatusNeverConnected
+    - AgentStatusPending
+  github_com_toddbartholow_kootenai_api_internal_wazuh.HealthSummary:
+    properties:
+      activeAgents:
+        type: integer
+      disconnectedAgents:
+        type: integer
+      neverConnected:
+        type: integer
+      pendingAgents:
+        type: integer
+      totalAgents:
+        type: integer
+    type: object
+  internal_server.CurrentUserResponse:
+    properties:
+      user:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_auth.User'
+    type: object
+  internal_server.ErrorResponse:
+    properties:
+      error:
+        example: invalid credentials
+        type: string
+    type: object
+  internal_server.EventStatsResponse:
+    properties:
+      checkpointsMatched:
+        type: integer
+      checkpointsPassed:
+        type: integer
+      eventsByType:
+        additionalProperties:
+          format: int64
+          type: integer
+        type: object
+      eventsThisHour:
+        type: integer
+      eventsToday:
+        type: integer
+      generatedAt:
+        type: string
+      pendingEvents:
+        type: integer
+      processedEvents:
+        type: integer
+      totalEvents:
+        type: integer
+    type: object
+  internal_server.EventSummary:
+    properties:
+      description:
+        type: string
+      eventType:
+        type: string
+      id:
+        type: integer
+      matchedCheckpoints:
+        items:
+          type: string
+        type: array
+      podId:
+        type: string
+      processed:
+        type: boolean
+      ruleId:
+        type: string
+      ruleLevel:
+        type: integer
+      sessionId:
+        type: string
+      timestamp:
+        type: string
+      vmName:
+        type: string
+    type: object
+  internal_server.EventsResponse:
+    properties:
+      count:
+        type: integer
+      events:
+        items:
+          $ref: '#/definitions/internal_server.EventSummary'
+        type: array
+      limit:
+        type: integer
+      offset:
+        type: integer
+    type: object
+  internal_server.HealthCheck:
+    properties:
+      circuitState:
+        description: Additional fields for circuit breaker status
+        type: string
+      error:
+        description: Error message if unhealthy
+        type: string
+      failures:
+        description: Failure count
+        type: integer
+      lastFailure:
+        description: Last failure timestamp
+        type: string
+      latencyMs:
+        description: Check latency in milliseconds
+        type: integer
+      status:
+        description: healthy, unhealthy, not_configured
+        type: string
+    type: object
+  internal_server.HealthResponse:
+    properties:
+      checks:
+        additionalProperties:
+          $ref: '#/definitions/internal_server.HealthCheck'
+        description: Individual dependency checks
+        type: object
+      status:
+        description: healthy, degraded, unhealthy
+        type: string
+      uptime:
+        description: Server uptime
+        type: string
+      version:
+        description: API version
+        type: string
+    type: object
+  internal_server.LoginRequest:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      password:
+        example: Password123!
+        type: string
+    required:
+    - email
+    type: object
+  internal_server.LoginResponse:
+    properties:
+      mustChangePassword:
+        example: false
+        type: boolean
+      token:
+        example: eyJhbGciOiJIUzI1NiIs...
+        type: string
+      user:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_auth.User'
+    type: object
+  internal_server.LogoutResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  internal_server.PreferredLocaleRequest:
+    properties:
+      preferredLocale:
+        type: string
+    type: object
+  internal_server.RefreshTokenRequest:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIs...
+        type: string
+    type: object
+  internal_server.RefreshTokenResponse:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIs...
+        type: string
+      user:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_auth.User'
+    type: object
+  internal_server.WebhookValidatorStatus:
+    properties:
+      allowedIps:
+        items:
+          type: string
+        type: array
+      allowedIpsCount:
+        type: integer
+      enabled:
+        type: boolean
+      rateLimitPerMinute:
+        type: integer
+      requireSignature:
+        type: boolean
+    type: object
+  internal_server_audit.ExportRequest:
+    properties:
+      endTime:
+        type: string
+      format:
+        description: '"json" or "csv"'
+        type: string
+      startTime:
+        type: string
+    type: object
+  internal_server_audit.ListResponse:
+    properties:
+      entries:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.AuditEntry'
+        type: array
+      limit:
+        type: integer
+      offset:
+        type: integer
+      totalCount:
+        type: integer
+    type: object
+  internal_server_dashboards.DailyTimeStats:
+    properties:
+      date:
+        type: string
+      sessionCount:
+        type: integer
+      timeMinutes:
+        type: integer
+    type: object
+  internal_server_dashboards.ErrorResponse:
+    properties:
+      error:
+        example: invalid credentials
+        type: string
+    type: object
+  internal_server_dashboards.LabTimeStats:
+    properties:
+      averageMinutes:
+        type: integer
+      bestScore:
+        type: number
+      labId:
+        type: string
+      labName:
+        type: string
+      labSlug:
+        type: string
+      sessionCount:
+        type: integer
+      totalMinutes:
+        type: integer
+    type: object
+  internal_server_dashboards.TimeAnalyticsResponse:
+    properties:
+      averageSessionMinutes:
+        type: integer
+      dailyBreakdown:
+        items:
+          $ref: '#/definitions/internal_server_dashboards.DailyTimeStats'
+        type: array
+      labBreakdown:
+        items:
+          $ref: '#/definitions/internal_server_dashboards.LabTimeStats'
+        type: array
+      longestSessionMinutes:
+        type: integer
+      period:
+        type: string
+      sessionCount:
+        type: integer
+      stats:
+        $ref: '#/definitions/internal_server_dashboards.TimeStats'
+      totalTimeMinutes:
+        type: integer
+      userId:
+        type: string
+      weeklyTrend:
+        items:
+          $ref: '#/definitions/internal_server_dashboards.WeeklyTimeStats'
+        type: array
+    type: object
+  internal_server_dashboards.TimeStats:
+    properties:
+      averageScore:
+        type: number
+      bestStreak:
+        type: integer
+      currentStreak:
+        type: integer
+      mostActiveDay:
+        type: string
+      pointsPerMinute:
+        type: number
+      totalLabsCompleted:
+        type: integer
+    type: object
+  internal_server_dashboards.WeeklyTimeStats:
+    properties:
+      sessionCount:
+        type: integer
+      timeMinutes:
+        type: integer
+      weekStart:
+        type: string
+    type: object
+  internal_server_labs.LabResponse:
+    properties:
+      category:
+        type: string
+      checkpoints:
+        items:
+          type: object
+        type: array
+      createdAt:
+        type: string
+      createdBy:
+        description: |-
+          The web client gates the edit action on this, so omitting it locked
+          creators out of their own labs.
+        type: string
+      description:
+        type: string
+      difficulty:
+        type: string
+      durationMinutes:
+        type: integer
+      id:
+        type: string
+      isActive:
+        type: boolean
+      maxPoints:
+        type: integer
+      name:
+        type: string
+      organizationId:
+        description: Both written only when the record has them.
+        type: string
+      passThreshold:
+        type: integer
+      platform:
+        allOf:
+        - $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Platform'
+        description: Typed rather than plain string so generated clients keep the
+          enum.
+      slug:
+        type: string
+      spec:
+        type: object
+      tags:
+        items:
+          type: string
+        type: array
+      updatedAt:
+        type: string
+      version:
+        type: string
+      visibility:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.LabVisibility'
+    type: object
+  internal_server_labs.LabSummary:
+    properties:
+      category:
+        type: string
+      createdAt:
+        type: string
+      createdBy:
+        description: |-
+          The web client gates the edit action on this, so omitting it locked
+          creators out of their own labs.
+        type: string
+      description:
+        type: string
+      difficulty:
+        type: string
+      durationMinutes:
+        type: integer
+      id:
+        type: string
+      isActive:
+        type: boolean
+      maxPoints:
+        type: integer
+      name:
+        type: string
+      organizationId:
+        description: Both written only when the record has them.
+        type: string
+      passThreshold:
+        type: integer
+      platform:
+        allOf:
+        - $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Platform'
+        description: Typed rather than plain string so generated clients keep the
+          enum.
+      slug:
+        type: string
+      tags:
+        items:
+          type: string
+        type: array
+      updatedAt:
+        type: string
+      version:
+        type: string
+      visibility:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.LabVisibility'
+    type: object
+  internal_server_labs.ListLabsResponse:
+    properties:
+      count:
+        type: integer
+      labs:
+        items:
+          $ref: '#/definitions/internal_server_labs.LabSummary'
+        type: array
+      pagination:
+        allOf:
+        - $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.PaginationMeta'
+        description: Always written, so not omitempty.
+      total:
+        type: integer
+    type: object
+  internal_server_organizations.ActivateLicenseRequest:
+    properties:
+      licenseKey:
+        type: string
+    type: object
+  internal_server_organizations.ErrorResponse:
+    properties:
+      error:
+        example: invalid credentials
+        type: string
+    type: object
+  internal_server_organizations.LicenseResponse:
+    properties:
+      daysRemaining:
+        type: integer
+      edition:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Edition'
+      expiresAt:
+        type: string
+      features:
+        items:
+          type: string
+        type: array
+      id:
+        type: string
+      isActive:
+        type: boolean
+      isValid:
+        type: boolean
+      issuedAt:
+        type: string
+      lastValidatedAt:
+        type: string
+      maskedKey:
+        type: string
+      maxPods:
+        type: integer
+      maxStorageGb:
+        type: integer
+      maxUsers:
+        type: integer
+      validationStatus:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.LicenseStatus'
+    type: object
+  internal_server_pods.AsyncPodResponse:
+    properties:
+      message:
+        example: Pod provisioning started
+        type: string
+      podId:
+        example: abc123-def456
+        type: string
+      requestId:
+        example: req-789xyz
+        type: string
+      status:
+        example: provisioning
+        type: string
+      subject:
+        example: labs.pods.abc123.provision
+        type: string
+    type: object
+  internal_server_pods.CreatePodRequest:
+    properties:
+      labTemplate:
+        example: linux-basics-101
+        type: string
+      owner:
+        example: jsmith
+        type: string
+    required:
+    - labTemplate
+    - owner
+    type: object
+  internal_server_pods.ListPodsResponse:
+    properties:
+      pods:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Pod'
+        type: array
+    type: object
+  internal_server_pods.TopologyNetworkSegment:
+    properties:
+      dhcp:
+        type: boolean
+      gateway:
+        type: string
+      name:
+        type: string
+      subnet:
+        type: string
+      vlan:
+        type: integer
+    type: object
+  internal_server_pods.TopologyResponse:
+    properties:
+      labTemplate:
+        type: string
+      podId:
+        type: string
+      segments:
+        items:
+          $ref: '#/definitions/internal_server_pods.TopologyNetworkSegment'
+        type: array
+      vms:
+        items:
+          $ref: '#/definitions/internal_server_pods.TopologyVM'
+        type: array
+    type: object
+  internal_server_pods.TopologyVM:
+    properties:
+      ipAddress:
+        type: string
+      name:
+        type: string
+      networks:
+        items:
+          $ref: '#/definitions/internal_server_pods.TopologyVMNetwork'
+        type: array
+      platformId:
+        type: string
+      resources:
+        $ref: '#/definitions/internal_server_pods.TopologyVMResources'
+      status:
+        type: string
+      template:
+        type: string
+    type: object
+  internal_server_pods.TopologyVMNetwork:
+    properties:
+      ip:
+        type: string
+      segment:
+        type: string
+    type: object
+  internal_server_pods.TopologyVMResources:
+    properties:
+      cpu:
+        type: integer
+      disk:
+        type: integer
+      memory:
+        type: integer
+    type: object
+  internal_server_sessions.ListSessionsResponse:
+    properties:
+      pagination:
+        $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.PaginationMeta'
+      sessions:
+        items:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Session'
+        type: array
+    type: object
+  internal_server_sessions.SessionStartedResponse:
+    properties:
+      agentStatus: {}
+      maxPoints:
+        type: integer
+      sessionId:
+        type: string
+      status:
+        type: string
+    type: object
+  internal_server_sessions.createSessionRequest:
+    properties:
+      canvasAssignmentId:
+        type: string
+      canvasCourseId:
+        type: string
+      canvasUserId:
+        type: string
+      enrollmentId:
+        description: Pathway context — optional, links session to pathway progress.
+        type: string
+      labTemplate:
+        type: string
+      moduleId:
+        type: string
+      podId:
+        type: string
+      userId:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: Project repository
+    url: https://github.com/toddbartholow/kootenai
+  description: |-
+    API for the Kootenai cybersecurity education platform
+    Orchestrates lab environments across Proxmox and CloudStack
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  title: Kootenai API
+  version: "1.0"
+paths:
+  /activity:
+    get:
+      consumes:
+      - application/json
+      description: Get the activity feed for the authenticated user
+      parameters:
+      - description: 'Maximum number of activity items (default: 20)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.ActivityData'
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Activity Feed
+      tags:
+      - dashboard
+  /analytics/time:
+    get:
+      consumes:
+      - application/json
+      description: Get time-spent analytics for the authenticated user
+      parameters:
+      - description: 'Aggregation period (default: month)'
+        in: query
+        name: period
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.TimeAnalyticsResponse'
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Time Analytics
+      tags:
+      - dashboard
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user with email and password
+      parameters:
+      - description: Login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.LoginResponse'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "503":
+          description: Auth not configured
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+      summary: Login
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      description: Logout the current user and invalidate their JWT token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully logged out
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.LogoutResponse'
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Logout
+      tags:
+      - auth
+  /auth/me:
+    get:
+      description: Get the currently authenticated user's information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.CurrentUserResponse'
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Current User
+      tags:
+      - auth
+  /auth/me/preferred-locale:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Locale preference
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.PreferredLocaleRequest'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update preferred locale
+      tags:
+      - auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresh an existing JWT token. The old token is blacklisted upon
+        successful refresh.
+      parameters:
+      - description: Token to refresh
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.RefreshTokenResponse'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "401":
+          description: Invalid token
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "503":
+          description: Auth not configured
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+      summary: Refresh Token
+      tags:
+      - auth
+  /certificates:
+    get:
+      description: Get all certificates for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: certificates and count
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List User Certificates
+      tags:
+      - certificates
+  /certificates/verify/{code}:
+    get:
+      description: Verify a certificate using its verification code (public endpoint)
+      parameters:
+      - description: Verification Code
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_certificate.Certificate'
+        "404":
+          description: Certificate not found or invalid code
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+      summary: Verify Certificate
+      tags:
+      - certificates
+  /dashboard:
+    get:
+      consumes:
+      - application/json
+      description: Get aggregated dashboard data for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.DashboardData'
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Dashboard
+      tags:
+      - dashboard
+  /dashboard/insights:
+    get:
+      consumes:
+      - application/json
+      description: Get learning insights for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.InsightsData'
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Learning Insights
+      tags:
+      - dashboard
+  /enrollments/{enrollmentID}/certificate:
+    get:
+      description: Get a completion certificate for a pathway enrollment
+      parameters:
+      - description: Enrollment ID
+        in: path
+        name: enrollmentID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_certificate.Certificate'
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "404":
+          description: Certificate not found
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Certificate
+      tags:
+      - certificates
+    post:
+      consumes:
+      - application/json
+      description: Issue a completion certificate for a pathway enrollment
+      parameters:
+      - description: Enrollment ID
+        in: path
+        name: enrollmentID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_certificate.Certificate'
+        "400":
+          description: Pathway not completed or certificate already issued
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "404":
+          description: Enrollment not found
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Issue Certificate
+      tags:
+      - certificates
+  /events:
+    get:
+      consumes:
+      - application/json
+      description: Get recent events with optional filtering by type, pod, session
+      parameters:
+      - description: Maximum number of events (default 50, max 500)
+        in: query
+        name: limit
+        type: integer
+      - description: Offset for pagination
+        in: query
+        name: offset
+        type: integer
+      - description: Filter by event type (syscheck, audit, auth, ssh)
+        in: query
+        name: eventType
+        type: string
+      - description: Filter by pod ID
+        in: query
+        name: podId
+        type: string
+      - description: Filter by session ID
+        in: query
+        name: sessionId
+        type: string
+      - description: Filter by VM name
+        in: query
+        name: vmName
+        type: string
+      - description: Start time (RFC3339 format)
+        in: query
+        name: start
+        type: string
+      - description: End time (RFC3339 format)
+        in: query
+        name: end
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_server.EventsResponse'
+      summary: List events
+      tags:
+      - events
+  /events/pod/{podID}:
+    get:
+      description: Get all events for a specific pod
+      parameters:
+      - description: Pod ID
+        in: path
+        name: podID
+        required: true
+        type: string
+      - description: Maximum number of events (default 100)
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_server.EventsResponse'
+      summary: Get pod events
+      tags:
+      - events
+  /events/session/{sessionID}:
+    get:
+      description: Get all events for a specific session
+      parameters:
+      - description: Session ID
+        in: path
+        name: sessionID
+        required: true
+        type: string
+      - description: Maximum number of events (default 100)
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_server.EventsResponse'
+      summary: Get session events
+      tags:
+      - events
+  /events/stats:
+    get:
+      description: Get aggregated statistics about events
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_server.EventStatsResponse'
+      summary: Get event statistics
+      tags:
+      - events
+  /health:
+    get:
+      description: |-
+        Simple liveness check - returns OK if server is running.
+        SERVED AT THE HOST ROOT, not under the /api/v1 basePath shown above -- Swagger 2.0 cannot express a per-path basePath, so the path below reads as /api/v1/... but the real URL omits that prefix.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Server is healthy
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Basic health check
+      tags:
+      - health
+  /health/live:
+    get:
+      description: |-
+        Simple liveness probe for Kubernetes - confirms server is running.
+        SERVED AT THE HOST ROOT, not under the /api/v1 basePath shown above -- Swagger 2.0 cannot express a per-path basePath, so the path below reads as /api/v1/... but the real URL omits that prefix.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Server is alive
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Kubernetes liveness probe
+      tags:
+      - health
+  /health/ready:
+    get:
+      description: |-
+        Full readiness check that verifies all dependencies (database, NATS, Redis, Proxmox) and returns their status with latency measurements.
+        SERVED AT THE HOST ROOT, not under the /api/v1 basePath shown above -- Swagger 2.0 cannot express a per-path basePath, so the path below reads as /api/v1/... but the real URL omits that prefix.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: All dependencies healthy
+          schema:
+            $ref: '#/definitions/internal_server.HealthResponse'
+        "503":
+          description: One or more dependencies unhealthy (degraded state)
+          schema:
+            $ref: '#/definitions/internal_server.HealthResponse'
+      summary: Readiness check with dependency status
+      tags:
+      - health
+  /labs:
+    get:
+      consumes:
+      - application/json
+      description: Get all lab templates, optionally filtered by platform or active
+        status
+      parameters:
+      - description: Filter by platform (proxmox, cloudstack)
+        in: query
+        name: platform
+        type: string
+      - description: 'Filter by active status (default: true)'
+        in: query
+        name: active
+        type: boolean
+      - description: Filter by visibility (global, organization, private)
+        in: query
+        name: visibility
+        type: string
+      - description: Show all labs (admin only, bypasses org filtering)
+        in: query
+        name: all
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_labs.ListLabsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "503":
+          description: Lab template repository not configured
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List Lab Templates
+      tags:
+      - labs
+  /labs/{labID}:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information about a specific lab template
+      parameters:
+      - description: Lab template ID or name
+        in: path
+        name: labID
+        required: true
+        type: string
+      - description: Include full lab specification
+        in: query
+        name: include_spec
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_labs.LabResponse'
+        "400":
+          description: Invalid lab ID
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "404":
+          description: Lab template not found
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "503":
+          description: Lab template repository not configured
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Lab Template
+      tags:
+      - labs
+  /leaderboard:
+    get:
+      consumes:
+      - application/json
+      description: Get the platform leaderboard
+      parameters:
+      - description: 'Number of entries to return, max 100 (default: 10)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_dashboard.LeaderboardData'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Leaderboard
+      tags:
+      - dashboard
+  /organizations/{orgID}/audit:
+    get:
+      consumes:
+      - application/json
+      description: Returns audit log entries for the organization, filtered by optional
+        query parameters
+      parameters:
+      - description: Organization ID
+        in: path
+        name: orgID
+        required: true
+        type: string
+      - description: Filter by actor ID
+        in: query
+        name: actor
+        type: string
+      - description: Filter by action type
+        in: query
+        name: action
+        type: string
+      - description: Filter by resource type
+        in: query
+        name: resource_type
+        type: string
+      - description: Filter by resource ID
+        in: query
+        name: resource_id
+        type: string
+      - description: Filter by start time (RFC3339)
+        in: query
+        name: start_time
+        type: string
+      - description: Filter by end time (RFC3339)
+        in: query
+        name: end_time
+        type: string
+      - description: Maximum number of entries (default 50, max 500)
+        in: query
+        name: limit
+        type: integer
+      - description: Offset for pagination
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_audit.ListResponse'
+        "400":
+          description: Invalid parameters
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden - requires admin role
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: List audit log entries
+      tags:
+      - Audit
+  /organizations/{orgID}/audit/{entryID}:
+    get:
+      consumes:
+      - application/json
+      description: Returns a single audit log entry by ID
+      parameters:
+      - description: Organization ID
+        in: path
+        name: orgID
+        required: true
+        type: string
+      - description: Audit entry ID
+        in: path
+        name: entryID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.AuditEntry'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden - requires admin role
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Entry not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get audit log entry
+      tags:
+      - Audit
+  /organizations/{orgID}/audit/export:
+    post:
+      consumes:
+      - application/json
+      description: Exports audit log entries for the specified time range
+      parameters:
+      - description: Organization ID
+        in: path
+        name: orgID
+        required: true
+        type: string
+      - description: Export parameters
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_audit.ExportRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.AuditEntry'
+            type: array
+        "400":
+          description: Invalid parameters
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden - requires admin role
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Export audit logs
+      tags:
+      - Audit
+  /organizations/{orgId}/license:
+    delete:
+      consumes:
+      - application/json
+      description: Deactivates the current license for the organization
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+        "404":
+          description: No active license
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Deactivate license
+      tags:
+      - licenses
+    get:
+      consumes:
+      - application/json
+      description: Returns the current active license for the organization
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_server_organizations.LicenseResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+        "404":
+          description: No active license
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get organization license
+      tags:
+      - licenses
+    post:
+      consumes:
+      - application/json
+      description: Activates a new license key for the organization
+      parameters:
+      - description: License key
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_server_organizations.ActivateLicenseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_server_organizations.LicenseResponse'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+        "409":
+          description: License already in use
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Activate license
+      tags:
+      - licenses
+  /organizations/{orgId}/license/validate:
+    post:
+      consumes:
+      - application/json
+      description: Validates the current license against the license server
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_server_organizations.LicenseResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+        "404":
+          description: No active license
+          schema:
+            $ref: '#/definitions/internal_server_organizations.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Validate license
+      tags:
+      - licenses
+  /pathways/{pathwayID}/next-lab:
+    get:
+      description: Get the next recommended lab to complete in a specific pathway
+      parameters:
+      - description: Pathway ID or slug
+        in: path
+        name: pathwayID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_recommendation.LabRecommendation'
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: '#/definitions/internal_server.ErrorResponse'
+        "404":
+          description: No next lab found or not enrolled
+          schema:
+            $ref: '#/definitions/internal_server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Next Lab in Pathway
+      tags:
+      - recommendations
+  /pods:
+    get:
+      description: Get all pods, optionally filtered by owner
+      parameters:
+      - description: Filter by owner username
+        in: query
+        name: owner
+        type: string
+      - description: Filter by platform (proxmox, cloudstack)
+        in: query
+        name: platform
+        type: string
+      - description: Show all pods (admin only, bypasses org filtering)
+        in: query
+        name: all
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_server_pods.ListPodsResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List Pods
+      tags:
+      - pods
+    post:
+      consumes:
+      - application/json
+      description: Create a new pod from a lab template
+      parameters:
+      - description: Pod creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_server_pods.CreatePodRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Pod'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "404":
+          description: Template not found
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create Pod
+      tags:
+      - pods
+  /pods/{podID}:
+    delete:
+      description: Destroy a pod and its resources
+      parameters:
+      - description: Pod ID
+        in: path
+        name: podID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "404":
+          description: Pod not found
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Pod
+      tags:
+      - pods
+    get:
+      description: Get detailed information about a specific pod
+      parameters:
+      - description: Pod ID
+        in: path
+        name: podID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_models.Pod'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "404":
+          description: Pod not found
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Pod
+      tags:
+      - pods
+  /pods/{podID}/topology:
+    get:
+      description: Get network topology visualization data for a pod
+      parameters:
+      - description: Pod ID
+        in: path
+        name: podID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_server_pods.TopologyResponse'
+        "404":
+          description: Pod or template not found
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Pod Topology
+      tags:
+      - pods
+  /pods/async:
+    post:
+      consumes:
+      - application/json
+      description: Create a new pod asynchronously from a lab template. Returns immediately
+        with pod ID and NATS subject for status updates.
+      parameters:
+      - description: Pod creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_server_pods.CreatePodRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/internal_server_pods.AsyncPodResponse'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "404":
+          description: Template not found
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "503":
+          description: Async provisioning not available
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create Pod (Async)
+      tags:
+      - pods
+  /ready:
+    get:
+      description: |-
+        Full readiness check that verifies all dependencies (database, NATS, Redis, Proxmox) and returns their status with latency measurements.
+        SERVED AT THE HOST ROOT, not under the /api/v1 basePath shown above -- Swagger 2.0 cannot express a per-path basePath, so the path below reads as /api/v1/... but the real URL omits that prefix.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: All dependencies healthy
+          schema:
+            $ref: '#/definitions/internal_server.HealthResponse'
+        "503":
+          description: One or more dependencies unhealthy (degraded state)
+          schema:
+            $ref: '#/definitions/internal_server.HealthResponse'
+      summary: Readiness check with dependency status
+      tags:
+      - health
+  /recommendations:
+    get:
+      description: Get personalized lab and pathway recommendations for the authenticated
+        user
+      parameters:
+      - description: 'Maximum number of recommendations per category (default: 5)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_recommendation.RecommendationsResponse'
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: '#/definitions/internal_server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Recommendations
+      tags:
+      - recommendations
+  /security/agents:
+    get:
+      consumes:
+      - application/json
+      description: Returns health status for all monitored Wazuh agents
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: List all agent health states
+      tags:
+      - security
+  /security/agents/{agentID}:
+    get:
+      consumes:
+      - application/json
+      description: Returns health status for a specific Wazuh agent
+      parameters:
+      - description: Agent ID
+        in: path
+        name: agentID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_wazuh.AgentHealthState'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get agent health by ID
+      tags:
+      - security
+  /security/agents/disconnected:
+    get:
+      consumes:
+      - application/json
+      description: Returns all agents currently in disconnected state
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get disconnected agents
+      tags:
+      - security
+  /security/agents/pod/{podID}:
+    get:
+      consumes:
+      - application/json
+      description: Returns health status for all Wazuh agents in a specific pod
+      parameters:
+      - description: Pod ID
+        in: path
+        name: podID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get agent health for a pod
+      tags:
+      - security
+  /security/agents/summary:
+    get:
+      consumes:
+      - application/json
+      description: Returns aggregated health summary for all monitored agents
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_wazuh.HealthSummary'
+      summary: Get agent health summary
+      tags:
+      - security
+  /security/webhook/status:
+    get:
+      consumes:
+      - application/json
+      description: Returns configuration status of the Wazuh webhook validator
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_server.WebhookValidatorStatus'
+      summary: Get webhook validator status
+      tags:
+      - security
+  /sessions:
+    get:
+      consumes:
+      - application/json
+      description: List lab sessions visible to the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_server_sessions.ListSessionsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List Lab Sessions
+      tags:
+      - sessions
+    post:
+      consumes:
+      - application/json
+      description: Start a new lab session for the authenticated user
+      parameters:
+      - description: Pod, user and lab template to start a session for
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_server_sessions.createSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/internal_server_sessions.SessionStartedResponse'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "409":
+          description: An active session already exists for this pod
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_serverutil.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create Lab Session
+      tags:
+      - sessions
+  /users/{userID}/analytics/time:
+    get:
+      consumes:
+      - application/json
+      description: Get time-spent analytics for a specific user. Callers may read
+        their own; reading another user's requires admin or instructor.
+      parameters:
+      - description: User ID
+        in: path
+        name: userID
+        required: true
+        type: string
+      - description: 'Aggregation period (default: month)'
+        in: query
+        name: period
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.TimeAnalyticsResponse'
+        "401":
+          description: Not authenticated
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.ErrorResponse'
+        "403":
+          description: Admin or instructor required
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_server_dashboards.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get User Time Analytics
+      tags:
+      - dashboard
+  /version:
+    get:
+      description: |-
+        Returns the version, git commit and build time embedded at link time.
+        SERVED AT THE HOST ROOT, not under the /api/v1 basePath shown above -- Swagger 2.0 cannot express a per-path basePath, so the path below reads as /api/v1/... but the real URL omits that prefix.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Build metadata
+          schema:
+            $ref: '#/definitions/github_com_toddbartholow_kootenai_api_internal_version.Info'
+      summary: Build version
+      tags:
+      - health
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    description: 'JWT Bearer token. Format: "Bearer {token}"'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

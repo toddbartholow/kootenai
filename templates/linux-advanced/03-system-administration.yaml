@@ -1,0 +1,165 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Linux System Administration
+  description: |
+    Advanced Linux system administration skills. Learn system monitoring,
+    performance tuning, cron scheduling, log management, backup strategies,
+    and system hardening best practices.
+  duration: 150m
+  difficulty: advanced
+  tags:
+    - linux
+    - sysadmin
+    - monitoring
+    - performance
+    - hardening
+  version: "1.0.0"
+  author: Kootenai Team
+  category: linux-advanced
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: admin-network
+        vlan: 502
+        subnet: 10.52.0.0/24
+        gateway: 10.52.0.1
+        dhcp: false
+
+  vms:
+    - name: admin-server
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/sysadmin
+          - /var/log
+          - /etc
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: admin-network
+          ip: 10.52.0.10
+      snapshots:
+        - name: initial
+          description: Ubuntu server with admin tools installed
+          default: true
+
+    - name: web-server
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: admin-network
+          ip: 10.52.0.20
+      snapshots:
+        - name: running-services
+          description: Web server for monitoring practice
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: system-monitoring
+      description: Use monitoring tools to assess system health
+      points: 10
+      hint: "Use top, htop, vmstat, iostat to check system resources"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: admin-server
+          match:
+            pattern: "top|htop|vmstat|iostat"
+
+    - id: disk-analysis
+      description: Analyze disk usage and identify large files
+      points: 10
+      hint: "Use df, du, and ncdu to analyze disk space"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: admin-server
+          match:
+            pattern: "df|du -|ncdu"
+
+    - id: process-management
+      description: Identify and manage resource-intensive processes
+      points: 10
+      hint: "Use ps, nice, renice, and kill commands"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: admin-server
+          match:
+            pattern: "ps aux|nice|renice"
+
+    - id: schedule-cron
+      description: Create cron jobs for automated tasks
+      points: 15
+      hint: "Use crontab -e to edit cron schedule"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: admin-server
+          match:
+            pattern: "crontab"
+
+    - id: log-rotation
+      description: Configure log rotation with logrotate
+      points: 15
+      hint: "Create logrotate config in /etc/logrotate.d/"
+      order: 5
+      triggers:
+        - type: file_exists
+          target: admin-server
+          match:
+            path: /etc/logrotate.d/custom-app
+
+    - id: centralized-logging
+      description: Configure rsyslog to send logs to central server
+      points: 15
+      hint: "Edit /etc/rsyslog.conf to forward logs via UDP/TCP"
+      order: 6
+      triggers:
+        - type: file_content
+          target: web-server
+          match:
+            path: /etc/rsyslog.conf
+            contains: "@@10.52.0.10"
+
+    - id: backup-script
+      description: Create and test a backup script with rsync
+      points: 15
+      hint: "Use rsync with appropriate flags for incremental backup"
+      order: 7
+      triggers:
+        - type: file_exists
+          target: admin-server
+          match:
+            path: /home/sysadmin/scripts/backup.sh
+
+    - id: security-hardening
+      description: Implement basic security hardening measures
+      points: 10
+      hint: "Disable root SSH, configure firewall, remove unused services"
+      order: 8
+      triggers:
+        - type: command_executed
+          target: admin-server
+          match:
+            pattern: "ufw enable|iptables|fail2ban"

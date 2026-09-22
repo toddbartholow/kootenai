@@ -1,0 +1,382 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Database Design
+  description: |
+    Learn database design principles including entity-relationship modeling,
+    normalization through 3NF, schema creation, indexing strategies, and
+    query optimization through proper design.
+  duration: 75m
+  difficulty: intermediate
+  tags:
+    - database
+    - design
+    - normalization
+    - erd
+    - schema
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Good database design is the foundation of every reliable application. This lab covers
+      entity-relationship modeling, normalization (1NF through 3NF), translating designs into
+      SQL DDL, defining constraints and relationships, indexing for performance, and
+      recognizing common anti-patterns.
+    learning_objectives:
+      - Identify entities, attributes, and relationships from requirements
+      - Normalize tables through 1NF, 2NF, and 3NF
+      - Write CREATE TABLE statements with proper constraints
+      - Define primary keys, foreign keys, and unique constraints
+      - Create indexes to support common query patterns
+      - Recognize and fix common design anti-patterns
+    prerequisites:
+      - Completion of SQL Fundamentals
+      - Basic understanding of relational databases
+    steps:
+      - id: identify-entities
+        title: Identify Entities and Relationships
+        content: |
+          Start by analyzing requirements and identifying the core entities.
+
+          **Scenario**: Design a database for a university course registration system.
+          - Students enroll in courses
+          - Courses are taught by instructors
+          - Each course has multiple sections per semester
+          - Students receive grades for completed courses
+
+          ```sql
+          -- Start by listing your entities
+          -- Students, Courses, Instructors, Sections, Enrollments
+
+          -- Document the relationships
+          -- Student --(enrolls in)--> Section (many-to-many)
+          -- Instructor --(teaches)--> Section (one-to-many)
+          -- Course --(has)--> Section (one-to-many)
+
+          -- Create a design notes file
+          \! cat > ~/lab/design_notes.txt << 'EOF'
+          Entities: Students, Courses, Instructors, Sections, Enrollments
+          Relationships:
+            Student <-> Section: many-to-many (via Enrollments)
+            Instructor -> Section: one-to-many
+            Course -> Section: one-to-many
+          EOF
+          ```
+      - id: create-unnormalized
+        title: Start with Unnormalized Data
+        content: |
+          Create an unnormalized table to see why normalization matters.
+
+          ```sql
+          CREATE DATABASE designlab;
+          \c designlab
+
+          -- Unnormalized "flat" table (bad design)
+          CREATE TABLE registrations_flat (
+              student_id INT,
+              student_name VARCHAR(100),
+              student_email VARCHAR(100),
+              course_code VARCHAR(10),
+              course_name VARCHAR(100),
+              instructor_name VARCHAR(100),
+              instructor_email VARCHAR(100),
+              semester VARCHAR(20),
+              section_number INT,
+              grade CHAR(2)
+          );
+
+          -- Insert sample data showing redundancy
+          INSERT INTO registrations_flat VALUES
+          (1, 'Alice Smith', 'alice@univ.edu', 'CS101', 'Intro to CS',
+           'Dr. Brown', 'brown@univ.edu', 'Fall 2024', 1, 'A'),
+          (1, 'Alice Smith', 'alice@univ.edu', 'MATH201', 'Calculus II',
+           'Dr. Jones', 'jones@univ.edu', 'Fall 2024', 1, 'B+'),
+          (2, 'Bob Lee', 'bob@univ.edu', 'CS101', 'Intro to CS',
+           'Dr. Brown', 'brown@univ.edu', 'Fall 2024', 1, 'B');
+
+          -- Notice: student and course data is repeated
+          SELECT * FROM registrations_flat;
+          ```
+      - id: normalize-tables
+        title: Normalize to 3NF
+        content: |
+          Break the flat table into properly normalized tables.
+
+          ```sql
+          -- 1NF: Atomic values, unique rows (already satisfied)
+          -- 2NF: Remove partial dependencies
+          -- 3NF: Remove transitive dependencies
+
+          CREATE TABLE students (
+              student_id SERIAL PRIMARY KEY,
+              name VARCHAR(100) NOT NULL,
+              email VARCHAR(100) UNIQUE NOT NULL
+          );
+
+          CREATE TABLE instructors (
+              instructor_id SERIAL PRIMARY KEY,
+              name VARCHAR(100) NOT NULL,
+              email VARCHAR(100) UNIQUE NOT NULL
+          );
+
+          CREATE TABLE courses (
+              course_id SERIAL PRIMARY KEY,
+              course_code VARCHAR(10) UNIQUE NOT NULL,
+              course_name VARCHAR(100) NOT NULL
+          );
+
+          CREATE TABLE sections (
+              section_id SERIAL PRIMARY KEY,
+              course_id INT NOT NULL REFERENCES courses(course_id),
+              instructor_id INT NOT NULL REFERENCES instructors(instructor_id),
+              semester VARCHAR(20) NOT NULL,
+              section_number INT NOT NULL,
+              UNIQUE (course_id, semester, section_number)
+          );
+
+          CREATE TABLE enrollments (
+              enrollment_id SERIAL PRIMARY KEY,
+              student_id INT NOT NULL REFERENCES students(student_id),
+              section_id INT NOT NULL REFERENCES sections(section_id),
+              grade CHAR(2),
+              enrolled_at TIMESTAMP DEFAULT NOW(),
+              UNIQUE (student_id, section_id)
+          );
+          ```
+      - id: add-constraints
+        title: Define Constraints and Checks
+        content: |
+          Add validation constraints to enforce data integrity.
+
+          ```sql
+          -- Add CHECK constraints
+          ALTER TABLE enrollments
+            ADD CONSTRAINT valid_grade
+            CHECK (grade IN ('A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-',
+                             'D+', 'D', 'D-', 'F', 'W', 'I'));
+
+          ALTER TABLE sections
+            ADD CONSTRAINT valid_section_number
+            CHECK (section_number > 0 AND section_number <= 99);
+
+          -- Add NOT NULL where appropriate
+          ALTER TABLE enrollments
+            ALTER COLUMN enrolled_at SET NOT NULL;
+
+          -- Verify constraints
+          \d enrollments
+          \d sections
+
+          -- Test constraint (should fail)
+          INSERT INTO enrollments (student_id, section_id, grade)
+          VALUES (1, 1, 'Z');
+          ```
+      - id: create-indexes
+        title: Create Indexes for Performance
+        content: |
+          Add indexes to support common query patterns.
+
+          ```sql
+          -- Populate with sample data first
+          INSERT INTO students (name, email) VALUES
+            ('Alice Smith', 'alice@univ.edu'),
+            ('Bob Lee', 'bob@univ.edu'),
+            ('Carol Davis', 'carol@univ.edu');
+
+          INSERT INTO instructors (name, email) VALUES
+            ('Dr. Brown', 'brown@univ.edu'),
+            ('Dr. Jones', 'jones@univ.edu');
+
+          INSERT INTO courses (course_code, course_name) VALUES
+            ('CS101', 'Intro to Computer Science'),
+            ('MATH201', 'Calculus II'),
+            ('CS301', 'Databases');
+
+          INSERT INTO sections (course_id, instructor_id, semester, section_number) VALUES
+            (1, 1, 'Fall 2024', 1),
+            (2, 2, 'Fall 2024', 1),
+            (3, 1, 'Fall 2024', 1);
+
+          INSERT INTO enrollments (student_id, section_id, grade) VALUES
+            (1, 1, 'A'), (1, 2, 'B+'), (2, 1, 'B'), (3, 3, NULL);
+
+          -- Index for looking up enrollments by student
+          CREATE INDEX idx_enrollments_student ON enrollments(student_id);
+
+          -- Index for finding sections by semester
+          CREATE INDEX idx_sections_semester ON sections(semester);
+
+          -- Index for course lookups by code
+          CREATE INDEX idx_courses_code ON courses(course_code);
+
+          -- Verify with EXPLAIN
+          EXPLAIN ANALYZE
+          SELECT s.name, c.course_code, e.grade
+          FROM enrollments e
+          JOIN students s ON s.student_id = e.student_id
+          JOIN sections sec ON sec.section_id = e.section_id
+          JOIN courses c ON c.course_id = sec.course_id
+          WHERE s.student_id = 1;
+          ```
+      - id: detect-antipatterns
+        title: Identify and Fix Anti-Patterns
+        content: |
+          Recognize common database design mistakes.
+
+          ```sql
+          -- Anti-pattern 1: Storing comma-separated values
+          -- BAD:
+          CREATE TABLE bad_courses (
+              id SERIAL PRIMARY KEY,
+              name VARCHAR(100),
+              prerequisites TEXT  -- 'CS101,CS201,MATH101'
+          );
+
+          -- GOOD: Use a junction table
+          CREATE TABLE course_prerequisites (
+              course_id INT REFERENCES courses(course_id),
+              prereq_id INT REFERENCES courses(course_id),
+              PRIMARY KEY (course_id, prereq_id)
+          );
+
+          -- Anti-pattern 2: Using VARCHAR for everything
+          -- BAD: grade VARCHAR(255)
+          -- GOOD: grade CHAR(2) with CHECK constraint
+
+          -- Anti-pattern 3: No foreign keys
+          -- Always define FK relationships for referential integrity
+
+          -- Document your findings
+          \! cat > ~/lab/antipatterns.txt << 'EOF'
+          Common Anti-Patterns Found:
+          1. Comma-separated values -> Use junction tables
+          2. Missing foreign keys -> Always define FK constraints
+          3. Over-wide columns -> Use appropriate types and sizes
+          4. Missing indexes on FK columns -> Index foreign keys
+          5. No CHECK constraints -> Validate data at DB level
+          EOF
+          ```
+    summary: |
+      You've learned database design: ER modeling, normalization through 3NF,
+      constraint definition, indexing strategies, and anti-pattern recognition.
+    tips:
+      - Always start with requirements analysis before creating tables
+      - Normalize to 3NF first, then denormalize only where performance demands it
+      - Every foreign key column should have an index
+      - Use CHECK constraints to enforce business rules at the database level
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: db-network
+        vlan: 123
+        subnet: 192.168.123.0/24
+        gateway: 192.168.123.1
+        dhcp: true
+
+  vms:
+    - name: db-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: db-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/lab
+        audit_commands: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: identify-entities
+      description: Identify entities and relationships from requirements
+      points: 10
+      hints:
+        - level: 1
+          text: "List the main nouns (Students, Courses, etc.) and their relationships"
+          penalty: 2
+      triggers:
+        - type: file_exists
+          target: db-workstation
+          match:
+            path: /home/student/lab/design_notes.txt
+
+    - id: create-unnormalized
+      description: Create an unnormalized table showing data redundancy
+      points: 10
+      hints:
+        - level: 1
+          text: "Create a flat table with all columns combined"
+          penalty: 2
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "CREATE TABLE registrations_flat"
+
+    - id: normalize-tables
+      description: Normalize the design into separate tables (3NF)
+      points: 25
+      hints:
+        - level: 1
+          text: "Split into Students, Courses, Instructors, Sections, and Enrollments tables"
+          penalty: 5
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "CREATE TABLE students|CREATE TABLE enrollments"
+
+    - id: add-constraints
+      description: Add CHECK constraints and validate data integrity
+      points: 15
+      hints:
+        - level: 1
+          text: "Use ALTER TABLE ... ADD CONSTRAINT ... CHECK (...)"
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "ADD CONSTRAINT.*CHECK"
+
+    - id: create-indexes
+      description: Create indexes for common query patterns
+      points: 20
+      hints:
+        - level: 1
+          text: "Use CREATE INDEX on foreign key columns and frequently queried fields"
+          penalty: 4
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "CREATE INDEX"
+
+    - id: detect-antipatterns
+      description: Document common database design anti-patterns
+      points: 20
+      hints:
+        - level: 1
+          text: "Look for comma-separated values, missing FKs, and over-wide columns"
+          penalty: 4
+      triggers:
+        - type: file_exists
+          target: db-workstation
+          match:
+            path: /home/student/lab/antipatterns.txt

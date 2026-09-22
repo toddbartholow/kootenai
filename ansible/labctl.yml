@@ -1,0 +1,98 @@
+---
+# Ansible playbook for managing labctl API container
+# Usage: ansible-playbook -i inventory.yml labctl.yml --tags deploy --ask-become-pass
+#
+# Tags:
+#   deploy  - Full deploy (sync files, build, restart)
+#   sync    - Sync local api/ directory to infra VM
+#   build   - Build Docker image only
+#   restart - Restart container only
+#   status  - Check container status
+#   logs    - View container logs
+
+- name: Manage labctl API container
+  hosts: infra
+
+  vars:
+    labctl_repo: /home/labadmin/kootenai
+    deploy_dir: "{{ labctl_repo }}/deploy"
+    api_dir: "{{ labctl_repo }}/api"
+    container_name: kootenai-api
+    local_api_dir: "{{ playbook_dir }}/../api"
+
+  tasks:
+    - name: Sync api directory from local machine
+      ansible.posix.synchronize:
+        src: "{{ local_api_dir }}/"
+        dest: "{{ api_dir }}/"
+        delete: no
+        use_ssh_args: yes
+        rsync_opts:
+          - "--exclude=bin"
+          - "--exclude=.git"
+          - "--exclude=coverage.out"
+      become: false
+      delegate_to: localhost
+      tags: [deploy, sync]
+
+    - name: Build API Docker image
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        services:
+          - api
+        build: always
+        state: present
+      become: true
+      tags: [deploy, build]
+
+    - name: Restart API container
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        services:
+          - api
+        state: restarted
+      become: true
+      tags: [deploy, restart]
+
+    - name: Start API container
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        services:
+          - api
+        state: present
+      become: true
+      tags: [start]
+
+    - name: Stop API container
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        services:
+          - api
+        state: stopped
+      become: true
+      tags: [stop, never]
+
+    - name: Check API container status
+      community.docker.docker_container_info:
+        name: "{{ container_name }}"
+      become: true
+      register: api_status
+      tags: [status]
+
+    - name: Display container status
+      debug:
+        msg: "API container is {{ api_status.container.State.Status | default('not running') }} (Health: {{ api_status.container.State.Health.Status | default('unknown') }})"
+      tags: [status]
+
+    - name: View API logs
+      command: docker logs --tail 50 {{ container_name }}
+      become: true
+      register: api_logs
+      changed_when: false
+      tags: [logs, never]
+
+    - name: Display API logs
+      debug:
+        msg: "{{ api_logs.stdout_lines }}"
+      when: api_logs is defined
+      tags: [logs, never]

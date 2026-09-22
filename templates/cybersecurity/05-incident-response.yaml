@@ -1,0 +1,294 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Incident Response and Forensics
+  description: |
+    Practice incident response procedures on a compromised system. Learn to
+    preserve evidence, analyze malware artifacts, create timelines, and
+    document findings following industry-standard DFIR methodologies.
+  duration: 180m
+  difficulty: advanced
+  tags:
+    - security
+    - dfir
+    - forensics
+    - incident-response
+    - malware
+    - blue-team
+  version: "1.0.0"
+  author: Kootenai Team
+  category: cybersecurity
+  instructions:
+    overview: |
+      Incident response is the structured approach to handling security breaches. You'll
+      practice the DFIR (Digital Forensics and Incident Response) workflow: preserving evidence,
+      creating forensic images, building timelines, analyzing malware artifacts, and writing
+      incident reports following industry-standard methodologies.
+    learning_objectives:
+      - Create forensic images to preserve evidence
+      - Build event timelines using log analysis tools
+      - Identify Indicators of Compromise on Linux systems
+      - Perform basic static malware analysis
+      - Analyze Windows registry for persistence mechanisms
+      - Write comprehensive incident reports
+    prerequisites:
+      - Linux command line proficiency
+      - Basic understanding of Windows OS
+      - Completion of SOC Analyst Fundamentals recommended
+    steps:
+      - id: preserve-evidence
+        title: Preserve Forensic Evidence
+        content: |
+          The first rule of incident response: preserve evidence before investigation.
+
+          ```bash
+          # Create forensic image of a disk
+          sudo dd if=/dev/sdb of=/cases/evidence/disk_image.dd bs=4M status=progress
+
+          # Calculate hash for integrity verification
+          md5sum /cases/evidence/disk_image.dd > /cases/evidence/disk_image.md5
+          sha256sum /cases/evidence/disk_image.dd > /cases/evidence/disk_image.sha256
+          ```
+
+          Chain of custody: document who accessed evidence and when.
+      - id: build-timeline
+        title: Create an Event Timeline
+        content: |
+          Build a timeline of events around the incident.
+
+          ```bash
+          # Use log2timeline/plaso to create a super timeline
+          log2timeline.py /cases/timeline.plaso /cases/evidence/disk_image.dd
+
+          # Convert to CSV for analysis
+          psort.py -o l2tcsv /cases/timeline.plaso -w /cases/timeline.csv
+
+          # Search for events around the incident timeframe
+          grep "2026-02" /cases/timeline.csv | head -50
+          ```
+      - id: linux-iocs
+        title: Identify Linux IOCs
+        content: |
+          Search the compromised Linux system for signs of compromise.
+
+          ```bash
+          # Check for suspicious processes
+          ps aux | grep -v "^\[" > /cases/processes.txt
+
+          # Look for unusual network connections
+          ss -tulpn > /cases/network_connections.txt
+
+          # Check for recently modified files
+          find / -mtime -7 -type f 2>/dev/null | head -50 > /cases/recent_files.txt
+
+          # Check crontab for persistence
+          crontab -l 2>/dev/null > /cases/crontabs.txt
+
+          # Document findings
+          echo "IOCs found: malicious cron job, suspicious process" > /cases/linux_iocs.txt
+          ```
+      - id: analyze-malware
+        title: Static Malware Analysis
+        content: |
+          Analyze suspicious files without executing them.
+
+          ```bash
+          # Check file type
+          file /cases/evidence/suspicious_binary
+
+          # Extract readable strings
+          strings /cases/evidence/suspicious_binary | grep -i "http\|password\|exec" \
+            > /cases/malware_strings.txt
+
+          # Calculate hash for lookup
+          md5sum /cases/evidence/suspicious_binary
+          sha256sum /cases/evidence/suspicious_binary
+          ```
+      - id: registry-analysis
+        title: Analyze Windows Registry
+        content: |
+          Check the Windows registry for persistence mechanisms.
+
+          ```bash
+          # Mount Windows image and extract registry
+          # Analyze with regripper
+          regripper -r /cases/evidence/SYSTEM -p compname
+          regripper -r /cases/evidence/SOFTWARE -p run
+
+          # Look for auto-start entries
+          echo "persistence mechanism found in Run key" > /cases/registry_findings.txt
+          ```
+      - id: write-report
+        title: Write Incident Report
+        content: |
+          Create a comprehensive incident report documenting your findings.
+
+          ```bash
+          cat > /cases/incident_report.md << 'EOF'
+          # Incident Report
+
+          ## Executive Summary
+          A compromised Linux server and Windows workstation were analyzed.
+
+          ## Timeline
+          - [Date] Initial compromise via SSH brute force
+          - [Date] Malware deployed
+          - [Date] Lateral movement to Windows host
+
+          ## Indicators of Compromise
+          - Suspicious binary: [hash]
+          - C2 server: [IP]
+          - Persistence: cron job, registry Run key
+
+          ## Recommendations
+          1. Rotate all credentials
+          2. Block C2 IP at firewall
+          3. Re-image compromised systems
+          EOF
+          ```
+    summary: |
+      You've practiced the full incident response lifecycle: evidence preservation,
+      timeline creation, IOC identification, malware analysis, and report writing.
+    tips:
+      - Never investigate on the live system — always work on forensic copies
+      - Hash everything to maintain evidence integrity
+      - Document your actions with timestamps for chain of custody
+      - Use the NIST SP 800-61 framework for structured incident handling
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: ir-network
+        vlan: 204
+        subnet: 10.24.0.0/24
+        gateway: 10.24.0.1
+        dhcp: false
+
+  vms:
+    - name: forensics-workstation
+      template: sift-workstation
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/sansforensics
+          - /var/log
+          - /cases
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 4
+        memory: 8192
+        disk: 100
+      networks:
+        - segment: ir-network
+          ip: 10.24.0.10
+      snapshots:
+        - name: initial
+          description: SIFT workstation with forensics tools
+          default: true
+
+    - name: compromised-server
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 40
+      networks:
+        - segment: ir-network
+          ip: 10.24.0.50
+      snapshots:
+        - name: compromised
+          description: Server with planted malware and attack artifacts
+          default: true
+
+    - name: compromised-workstation
+      template: windows-10-enterprise
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 60
+      networks:
+        - segment: ir-network
+          ip: 10.24.0.51
+      snapshots:
+        - name: post-infection
+          description: Windows workstation post-malware infection
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: preserve-evidence
+      description: Create forensic images of compromised systems
+      points: 15
+      hint: "Use dd, dc3dd, or FTK Imager to create bit-for-bit copies"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: forensics-workstation
+          match:
+            pattern: "dd.*if=|dc3dd|ftk"
+
+    - id: timeline-creation
+      description: Create a timeline of system events around the incident
+      points: 20
+      hint: "Use log2timeline/plaso to create a super timeline"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: forensics-workstation
+          match:
+            pattern: "log2timeline|plaso"
+
+    - id: identify-ioc
+      description: Identify Indicators of Compromise on the Linux server
+      points: 20
+      hint: "Check for suspicious processes, network connections, and files"
+      order: 3
+      triggers:
+        - type: file_content
+          target: forensics-workstation
+          match:
+            path: /cases/linux_iocs.txt
+            contains: "malicious"
+
+    - id: analyze-malware
+      description: Perform basic static analysis on suspicious files
+      points: 20
+      hint: "Use strings, file, md5sum, and VirusTotal for initial analysis"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: forensics-workstation
+          match:
+            pattern: "strings.*suspicious|file.*malware"
+
+    - id: registry-analysis
+      description: Analyze Windows registry for persistence mechanisms
+      points: 15
+      hint: "Check Run keys, Services, and Scheduled Tasks in registry"
+      order: 5
+      triggers:
+        - type: file_content
+          target: forensics-workstation
+          match:
+            path: /cases/registry_findings.txt
+            contains: "persistence"
+
+    - id: incident-report
+      description: Create a comprehensive incident report
+      points: 10
+      hint: "Include executive summary, timeline, IOCs, and recommendations"
+      order: 6
+      triggers:
+        - type: file_exists
+          target: forensics-workstation
+          match:
+            path: /cases/incident_report.md

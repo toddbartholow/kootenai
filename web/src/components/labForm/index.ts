@@ -1,0 +1,5 @@
+export { default as LabStepBasicInfo } from './LabStepBasicInfo.vue'
+export { default as LabStepVMs } from './LabStepVMs.vue'
+export { default as LabStepObjectives } from './LabStepObjectives.vue'
+export { default as LabStepQuestions } from './LabStepQuestions.vue'
+export { default as LabStepReview } from './LabStepReview.vue'

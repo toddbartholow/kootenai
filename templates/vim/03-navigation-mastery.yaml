@@ -1,0 +1,205 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: "Navigation Mastery"
+  description: |
+    Level up your Vim navigation skills with advanced movement commands. Learn to
+    jump across screens, search within files, use marks to bookmark locations, and
+    navigate by line numbers. These skills will dramatically speed up your editing.
+  duration: 35m
+  difficulty: intermediate
+  tags: [vim, editor, linux, text-editing, intermediate]
+  version: "1.0.0"
+  author: Kootenai Team
+  category: vim
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: vim-lab-net
+        vlan: 200
+        subnet: 10.20.200.0/24
+        gateway: 10.20.200.1
+        dhcp: false
+
+  vms:
+    - name: vim-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /tmp/vim-exercises
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: vim-lab-net
+          ip: 10.20.200.10
+      snapshots:
+        - name: initial
+          description: Ubuntu with large exercise files for navigation practice
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Screen Movement
+    - id: screen-forward
+      description: "Move forward one screen using Ctrl-f"
+      points: 10
+      hint: "Ctrl-f moves forward (down) one full screen"
+      order: 1
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/screen-nav.txt
+            contains: "SCREEN_FORWARD_COMPLETE"
+
+    - id: screen-backward
+      description: "Move backward one screen using Ctrl-b"
+      points: 10
+      hint: "Ctrl-b moves backward (up) one full screen"
+      order: 2
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/screen-nav.txt
+            contains: "SCREEN_BACKWARD_COMPLETE"
+
+    - id: half-screen
+      description: "Move half screen using Ctrl-d and Ctrl-u"
+      points: 10
+      hint: "Ctrl-d = half page down, Ctrl-u = half page up"
+      order: 3
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/screen-nav.txt
+            contains: "HALF_SCREEN_COMPLETE"
+
+    # Line Navigation
+    - id: goto-line
+      description: "Jump to a specific line number using :<number> or <number>G"
+      points: 10
+      hint: "Type :42 or 42G to jump to line 42"
+      order: 4
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/line-jump.txt
+            contains: "LINE_JUMP_COMPLETE"
+
+    - id: goto-top-bottom
+      description: "Jump to top (gg) and bottom (G) of file"
+      points: 10
+      hint: "gg = first line, G = last line"
+      order: 5
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/top-bottom.txt
+            contains: "TOP_BOTTOM_COMPLETE"
+
+    # Search
+    - id: search-forward
+      description: "Search forward using /"
+      points: 15
+      hint: "Type / followed by your search term, then Enter"
+      order: 6
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/search.txt
+            contains: "SEARCH_FORWARD_COMPLETE"
+
+    - id: search-backward
+      description: "Search backward using ?"
+      points: 10
+      hint: "Type ? followed by your search term to search backward"
+      order: 7
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/search.txt
+            contains: "SEARCH_BACKWARD_COMPLETE"
+
+    - id: search-next-prev
+      description: "Navigate search results with n and N"
+      points: 10
+      hint: "n = next match, N = previous match"
+      order: 8
+      required: true
+      depends_on: [search-forward]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/search.txt
+            contains: "SEARCH_NAV_COMPLETE"
+
+    # Marks
+    - id: set-mark
+      description: "Set a mark using m followed by a letter"
+      points: 10
+      hint: "ma sets mark 'a' at current position. Use a-z for local marks."
+      order: 9
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/marks.txt
+            contains: "MARK_SET_COMPLETE"
+
+    - id: jump-to-mark
+      description: "Jump to a mark using ' or `"
+      points: 10
+      hint: "'a jumps to line of mark a, `a jumps to exact position"
+      order: 10
+      required: true
+      depends_on: [set-mark]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/marks.txt
+            contains: "MARK_JUMP_COMPLETE"
+
+    # Bonus
+    - id: search-word-under-cursor
+      description: "Search for word under cursor using * and #"
+      points: 5
+      hint: "* searches forward for word under cursor, # searches backward"
+      order: 11
+      required: false
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/search.txt
+            contains: "CURSOR_SEARCH_COMPLETE"

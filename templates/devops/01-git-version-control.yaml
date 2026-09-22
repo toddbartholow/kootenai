@@ -1,0 +1,221 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Git Version Control
+  description: |
+    Master Git version control from basics to advanced workflows. Learn commits, branches,
+    merging, rebasing, and collaborative workflows including pull requests and code review.
+  duration: 60m
+  difficulty: beginner
+  tags:
+    - devops
+    - git
+    - version-control
+    - collaboration
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Git is the most widely used version control system in software development. In this lab,
+      you'll learn to track changes, work with branches, and collaborate with others using Git.
+    learning_objectives:
+      - Initialize and configure Git repositories
+      - Create commits with meaningful messages
+      - Work with branches for parallel development
+      - Merge and rebase branches
+      - Resolve merge conflicts
+      - Use Git for collaboration (remotes, pull requests)
+    prerequisites:
+      - Basic command line navigation
+      - Text editor familiarity
+    steps:
+      - id: init-repo
+        title: Initialize a Repository
+        content: |
+          Create a new Git repository and make your first commits.
+
+          ```bash
+          mkdir my-project && cd my-project
+          git init
+          git config user.name "Your Name"
+          git config user.email "you@example.com"
+          ```
+      - id: basic-commits
+        title: Making Commits
+        content: |
+          Learn to stage changes and create meaningful commits.
+
+          ```bash
+          echo "# My Project" > README.md
+          git add README.md
+          git commit -m "Initial commit: Add README"
+          ```
+      - id: branching
+        title: Working with Branches
+        content: |
+          Create and switch between branches for parallel development.
+
+          ```bash
+          git branch feature/new-feature
+          git checkout feature/new-feature
+          # Or in one command:
+          git checkout -b feature/another-feature
+          ```
+      - id: merging
+        title: Merging Changes
+        content: |
+          Combine work from different branches using merge.
+
+          ```bash
+          git checkout main
+          git merge feature/new-feature
+          ```
+      - id: conflicts
+        title: Resolving Conflicts
+        content: |
+          Handle merge conflicts when Git can't auto-merge.
+      - id: remotes
+        title: Working with Remotes
+        content: |
+          Push and pull changes to/from remote repositories.
+    summary: |
+      You've learned the fundamentals of Git version control including commits, branches,
+      merging, and remote collaboration.
+    tips:
+      - Write clear, descriptive commit messages
+      - Commit often with small, focused changes
+      - Use branches for features and fixes
+      - Always pull before pushing to avoid conflicts
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 100
+        subnet: 192.168.100.0/24
+        gateway: 192.168.100.1
+        dhcp: true
+
+  vms:
+    - name: dev-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: lab-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/.gitconfig
+        audit_commands: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: git-init
+      description: Initialize a Git repository
+      points: 10
+      hints:
+        - level: 1
+          text: Use 'git init' to create a new repository
+          penalty: 2
+      triggers:
+        - type: file_exists
+          target: dev-workstation
+          match:
+            path: /home/student/my-project/.git/config
+
+    - id: git-config
+      description: Configure Git user name and email
+      points: 10
+      hints:
+        - level: 1
+          text: Use 'git config user.name' and 'git config user.email'
+          penalty: 2
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "git config.*user\\.(name|email)"
+
+    - id: first-commit
+      description: Create your first commit
+      points: 15
+      depends_on:
+        - git-init
+      hints:
+        - level: 1
+          text: Stage files with 'git add' then commit with 'git commit -m "message"'
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "git commit"
+
+    - id: create-branch
+      description: Create and switch to a new branch
+      points: 15
+      depends_on:
+        - first-commit
+      hints:
+        - level: 1
+          text: Use 'git checkout -b branch-name' to create and switch in one command
+          penalty: 3
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "git (checkout -b|branch)"
+
+    - id: branch-commit
+      description: Make a commit on the new branch
+      points: 15
+      depends_on:
+        - create-branch
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "git commit"
+
+    - id: merge-branch
+      description: Merge the feature branch back to main
+      points: 20
+      depends_on:
+        - branch-commit
+      hints:
+        - level: 1
+          text: Switch to main with 'git checkout main', then 'git merge branch-name'
+          penalty: 4
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "git merge"
+
+    - id: view-log
+      description: View the commit history
+      points: 15
+      hints:
+        - level: 1
+          text: Use 'git log' to see commit history
+          penalty: 2
+      triggers:
+        - type: command_executed
+          target: dev-workstation
+          match:
+            pattern: "git log"

@@ -1,0 +1,248 @@
+<!doctype html><html lang=en dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-tutorials/first-lab" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.2"><title data-rh=true>Tutorial: Your First Lab | Kootenai Platform</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true property=og:image content=https://toddbartholow.github.io/kootenai/img/social-card.svg /><meta data-rh=true name=twitter:image content=https://toddbartholow.github.io/kootenai/img/social-card.svg /><meta data-rh=true property=og:url content=https://toddbartholow.github.io/kootenai/docs/tutorials/first-lab /><meta data-rh=true property=og:locale content=en /><meta data-rh=true name=docusaurus_locale content=en /><meta data-rh=true name=docsearch:language content=en /><meta data-rh=true name=docusaurus_version content=current /><meta data-rh=true name=docusaurus_tag content=docs-default-current /><meta data-rh=true name=docsearch:version content=current /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-current /><meta data-rh=true property=og:title content="Tutorial: Your First Lab | Kootenai Platform"/><meta data-rh=true name=description content="This tutorial walks you through the complete lifecycle of a lab - from creating a pod to completing objectives and submitting your work."/><meta data-rh=true property=og:description content="This tutorial walks you through the complete lifecycle of a lab - from creating a pod to completing objectives and submitting your work."/><link data-rh=true rel=icon href=/kootenai/img/favicon.svg /><link data-rh=true rel=canonical href=https://toddbartholow.github.io/kootenai/docs/tutorials/first-lab /><link data-rh=true rel=alternate href=https://toddbartholow.github.io/kootenai/docs/tutorials/first-lab hreflang=en /><link data-rh=true rel=alternate href=https://toddbartholow.github.io/kootenai/docs/tutorials/first-lab hreflang=x-default /><script data-rh=true type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://toddbartholow.github.io/kootenai/docs/tutorials/first-lab","name":"Tutorial: Your First Lab","position":1}]}</script><link rel=stylesheet href=/kootenai/assets/css/styles.530fd213.css /><script src=/kootenai/assets/js/runtime~main.9695ab47.js defer></script><script src=/kootenai/assets/js/main.942c174d.js defer></script></head><body><svg style="display: none;"><defs>
+<symbol id=theme-svg-external-link viewBox="0 0 24 24"><path fill=currentColor d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme-717")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id=__docusaurus><link rel=preload as=image href=/kootenai/img/logo.svg /><div role=region aria-label="Skip to main content"><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>Skip to main content</a></div><nav aria-label=Main class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/kootenai/><div class=navbar__logo><img src=/kootenai/img/logo.svg alt="Kootenai Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"/><img src=/kootenai/img/logo.svg alt="Kootenai Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"/></div><b class="navbar__title text--truncate">Kootenai</b></a><a aria-current=page class="navbar__item navbar__link navbar__link--active" href=/kootenai/docs/>Guides</a><a class="navbar__item navbar__link" href=/kootenai/docs/api/reference>API</a><a class="navbar__item navbar__link" href=/kootenai/docs/admin/production-deployment>Admin</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href=https://github.com/toddbartholow/kootenai target=_blank rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class=sidebarViewport_aRkj><div class=sidebar_njMd><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/kootenai/docs/><span class=linkLabel_WmDU>Kootenai Platform</span></a><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=true href=/kootenai/docs/getting-started><span class=categoryLinkLabel_W154>Getting Started</span></a></div><ul class=menu__list><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/getting-started><span class=linkLabel_WmDU>Getting Started</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/quickstart-demo><span class=linkLabel_WmDU>Quick Start: Demo Mode (5 Minutes)</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/guides/prerequisites><span class=linkLabel_WmDU>Prerequisites</span></a></ul><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role=button aria-expanded=true href=/kootenai/docs/guides/overview><span class=categoryLinkLabel_W154>User Guide</span></a></div><ul class=menu__list><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/guides/overview><span class=linkLabel_WmDU>Platform Overview</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current=page tabindex=0 href=/kootenai/docs/tutorials/first-lab><span class=linkLabel_WmDU>Tutorial: Your First Lab</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/guides/working-with-pods><span class=linkLabel_WmDU>Working with Pods</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/guides/sessions-progress><span class=linkLabel_WmDU>Sessions & Progress</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/achievement-system><span class=linkLabel_WmDU>Achievement and Badge System</span></a></ul><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=false href=/kootenai/docs/instructor/guide><span class=categoryLinkLabel_W154>Instructor Guide</span></a></div><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=false href=/kootenai/docs/guides/classroom-simulation><span class=categoryLinkLabel_W154>Simulation</span></a></div><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/kootenai/docs/glossary><span class=linkLabel_WmDU>Glossary</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/kootenai/docs/enterprise><span class=linkLabel_WmDU>Enterprise Edition</span></a></ul></nav></div></div></aside><main class=docMainContainer_TBSr><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class=docItemContainer_Djhp><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label=Breadcrumbs><ul class=breadcrumbs><li class=breadcrumbs__item><a aria-label="Home page" class=breadcrumbs__link href=/kootenai/><svg viewBox="0 0 24 24" class=breadcrumbHomeIcon_YNFT><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill=currentColor /></svg></a><li class=breadcrumbs__item><span class=breadcrumbs__link>User Guide</span><li class="breadcrumbs__item breadcrumbs__item--active"><span class=breadcrumbs__link>Tutorial: Your First Lab</span></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Tutorial: Your First Lab</h1></header>
+<p>This tutorial walks you through the complete lifecycle of a lab - from creating a pod to completing objectives and submitting your work.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=prerequisites>Prerequisites<a href=#prerequisites class=hash-link aria-label="Direct link to Prerequisites" title="Direct link to Prerequisites" translate=no>​</a></h2>
+<ul>
+<li class="">Kootenai platform running (see <a class="" href=/kootenai/docs/quickstart-demo>Quick Start</a>)</li>
+<li class="">Logged into the web interface</li>
+<li class="">(For real VMs) Proxmox connected with lab templates loaded</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=overview>Overview<a href=#overview class=hash-link aria-label="Direct link to Overview" title="Direct link to Overview" translate=no>​</a></h2>
+<p>The lab workflow has 5 steps:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">1. Browse Lab Catalog → 2. Create Pod → 3. Start Session → 4. Complete Objectives → 5. Submit</span><br/></div></code></pre></div></div>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=step-1-browse-the-lab-catalog>Step 1: Browse the Lab Catalog<a href=#step-1-browse-the-lab-catalog class=hash-link aria-label="Direct link to Step 1: Browse the Lab Catalog" title="Direct link to Step 1: Browse the Lab Catalog" translate=no>​</a></h2>
+<ol>
+<li class="">
+<p>Click <strong>"Lab Catalog"</strong> in the sidebar (or navigate to <code>/labs</code>)</p>
+</li>
+<li class="">
+<p>You'll see available labs with:</p>
+<ul>
+<li class="">Name and description</li>
+<li class="">Difficulty level (Beginner, Intermediate, Advanced)</li>
+<li class="">Duration estimate</li>
+<li class="">Points available</li>
+</ul>
+</li>
+<li class="">
+<p>Click on a lab to see details:</p>
+<ul>
+<li class="">Learning objectives</li>
+<li class="">Prerequisites</li>
+<li class="">VM configuration</li>
+<li class="">Checkpoint requirements</li>
+</ul>
+</li>
+</ol>
+<p><strong>Example</strong>: Let's use "Linux Foundations" - a beginner lab teaching basic commands.</p>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=step-2-create-a-pod>Step 2: Create a Pod<a href=#step-2-create-a-pod class=hash-link aria-label="Direct link to Step 2: Create a Pod" title="Direct link to Step 2: Create a Pod" translate=no>​</a></h2>
+<p>A <strong>Pod</strong> is your personal instance of the lab - isolated VMs just for you.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=from-the-lab-detail-page>From the Lab Detail Page:<a href=#from-the-lab-detail-page class=hash-link aria-label="Direct link to From the Lab Detail Page:" title="Direct link to From the Lab Detail Page:" translate=no>​</a></h3>
+<ol>
+<li class="">
+<p>Click the <strong>"Start Lab"</strong> button</p>
+</li>
+<li class="">
+<p>The system will:</p>
+<ul>
+<li class="">Clone VM templates</li>
+<li class="">Configure networking</li>
+<li class="">Set up your isolated environment</li>
+</ul>
+</li>
+<li class="">
+<p>Wait for provisioning (1-3 minutes for real VMs, instant in demo mode)</p>
+</li>
+<li class="">
+<p>Status will change from "Provisioning" → "Running"</p>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=what-gets-created>What Gets Created:<a href=#what-gets-created class=hash-link aria-label="Direct link to What Gets Created:" title="Direct link to What Gets Created:" translate=no>​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">Pod: linux-foundations-abc123</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">├── VM: student-vm (Ubuntu 22.04)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">│   ├── IP: 10.0.100.10</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">│   └── Status: Running</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">└── Network: VLAN 100 (10.0.100.0/24)</span><br/></div></code></pre></div></div>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=step-3-start-a-session>Step 3: Start a Session<a href=#step-3-start-a-session class=hash-link aria-label="Direct link to Step 3: Start a Session" title="Direct link to Step 3: Start a Session" translate=no>​</a></h2>
+<p>A <strong>Session</strong> tracks your progress, time, and earned points.</p>
+<ol>
+<li class="">
+<p>From your pod, click <strong>"Start Session"</strong></p>
+</li>
+<li class="">
+<p>A timer begins counting your lab time</p>
+</li>
+<li class="">
+<p>The sidebar shows:</p>
+<ul>
+<li class="">Session timer</li>
+<li class="">Checkpoint progress (0/X completed)</li>
+<li class="">Current points (0/100)</li>
+</ul>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=session-states>Session States:<a href=#session-states class=hash-link aria-label="Direct link to Session States:" title="Direct link to Session States:" translate=no>​</a></h3>
+<table><thead><tr><th>State<th>Meaning<tbody><tr><td>Active<td>You're working on the lab<tr><td>Ended<td>Session stopped, not graded<tr><td>Graded<td>Submitted and scored</table>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=step-4-access-the-vm-console>Step 4: Access the VM Console<a href=#step-4-access-the-vm-console class=hash-link aria-label="Direct link to Step 4: Access the VM Console" title="Direct link to Step 4: Access the VM Console" translate=no>​</a></h2>
+<p>Now you need to connect to your VM to complete objectives.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=option-a-web-console-recommended>Option A: Web Console (Recommended)<a href=#option-a-web-console-recommended class=hash-link aria-label="Direct link to Option A: Web Console (Recommended)" title="Direct link to Option A: Web Console (Recommended)" translate=no>​</a></h3>
+<ol>
+<li class="">
+<p>Click the <strong>"Console"</strong> tab in your session view</p>
+</li>
+<li class="">
+<p>Select your VM (e.g., "student-vm")</p>
+</li>
+<li class="">
+<p>Click <strong>"Open Console"</strong></p>
+</li>
+<li class="">
+<p>A VNC viewer opens in your browser</p>
+</li>
+<li class="">
+<p>Log in with credentials from the lab instructions:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">Username: student</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">Password: student123</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=option-b-ssh-access>Option B: SSH Access<a href=#option-b-ssh-access class=hash-link aria-label="Direct link to Option B: SSH Access" title="Direct link to Option B: SSH Access" translate=no>​</a></h3>
+<p>If the VM has an accessible IP:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>ssh</span><span class="token plain"> student@10.0.100.10</span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token comment" style=color:#999988;font-style:italic># Password: student123</span><br/></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=console-tips>Console Tips:<a href=#console-tips class=hash-link aria-label="Direct link to Console Tips:" title="Direct link to Console Tips:" translate=no>​</a></h3>
+<ul>
+<li class=""><strong>Ctrl+Alt+Delete</strong>: Send to VM (not your computer)</li>
+<li class=""><strong>Paste</strong>: Right-click or Shift+Insert</li>
+<li class=""><strong>Full Screen</strong>: Click the expand icon</li>
+<li class=""><strong>Refresh</strong>: If display freezes, click refresh</li>
+</ul>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=step-5-complete-objectives>Step 5: Complete Objectives<a href=#step-5-complete-objectives class=hash-link aria-label="Direct link to Step 5: Complete Objectives" title="Direct link to Step 5: Complete Objectives" translate=no>​</a></h2>
+<p>Each lab has <strong>checkpoints</strong> (objectives) worth points. The system automatically detects completion.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=example-objectives>Example Objectives:<a href=#example-objectives class=hash-link aria-label="Direct link to Example Objectives:" title="Direct link to Example Objectives:" translate=no>​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=objective-1-create-a-file-25-points>Objective 1: Create a File (25 points)<a href=#objective-1-create-a-file-25-points class=hash-link aria-label="Direct link to Objective 1: Create a File (25 points)" title="Direct link to Objective 1: Create a File (25 points)" translate=no>​</a></h4>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic># In the VM terminal:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>touch</span><span class="token plain"> ~/hello.txt</span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token builtin class-name">echo</span><span class="token plain"> </span><span class="token string" style=color:#e3116c>"Hello Kootenai"</span><span class="token plain"> </span><span class="token operator" style=color:#393A34>></span><span class="token plain"> ~/hello.txt</span><br/></div></code></pre></div></div>
+<p><strong>How it's detected</strong>: The Wazuh agent monitors file creation and reports to the platform.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=objective-2-install-a-package-25-points>Objective 2: Install a Package (25 points)<a href=#objective-2-install-a-package-25-points class=hash-link aria-label="Direct link to Objective 2: Install a Package (25 points)" title="Direct link to Objective 2: Install a Package (25 points)" translate=no>​</a></h4>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>sudo</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>apt</span><span class="token plain"> update</span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>sudo</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>apt</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>install</span><span class="token plain"> </span><span class="token parameter variable" style=color:#36acaa>-y</span><span class="token plain"> cowsay</span><br/></div></code></pre></div></div>
+<p><strong>How it's detected</strong>: Package installation events are captured.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=objective-3-create-a-user-25-points>Objective 3: Create a User (25 points)<a href=#objective-3-create-a-user-25-points class=hash-link aria-label="Direct link to Objective 3: Create a User (25 points)" title="Direct link to Objective 3: Create a User (25 points)" translate=no>​</a></h4>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>sudo</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>useradd</span><span class="token plain"> </span><span class="token parameter variable" style=color:#36acaa>-m</span><span class="token plain"> labuser</span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>sudo</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>passwd</span><span class="token plain"> labuser</span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token comment" style=color:#999988;font-style:italic># Enter password twice</span><br/></div></code></pre></div></div>
+<p><strong>How it's detected</strong>: User creation events are monitored.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=objective-4-run-a-command-25-points>Objective 4: Run a Command (25 points)<a href=#objective-4-run-a-command-25-points class=hash-link aria-label="Direct link to Objective 4: Run a Command (25 points)" title="Direct link to Objective 4: Run a Command (25 points)" translate=no>​</a></h4>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">cowsay </span><span class="token string" style=color:#e3116c>"I completed the lab!"</span><br/></div></code></pre></div></div>
+<p><strong>How it's detected</strong>: Command execution is logged.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=watching-progress>Watching Progress:<a href=#watching-progress class=hash-link aria-label="Direct link to Watching Progress:" title="Direct link to Watching Progress:" translate=no>​</a></h3>
+<p>As you complete objectives, the sidebar updates in real-time:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">Checkpoints: 2/4 completed</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">Points: 50/100</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">Progress: ████████░░░░░░ 50%</span><br/></div></code></pre></div></div>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=step-6-submit-your-work>Step 6: Submit Your Work<a href=#step-6-submit-your-work class=hash-link aria-label="Direct link to Step 6: Submit Your Work" title="Direct link to Step 6: Submit Your Work" translate=no>​</a></h2>
+<p>When you've completed objectives (or want to end the session):</p>
+<ol>
+<li class="">
+<p>Click the <strong>"Submit"</strong> button in the session view</p>
+</li>
+<li class="">
+<p>Review the submission dialog:</p>
+<ul>
+<li class="">Points earned</li>
+<li class="">Checkpoints completed</li>
+<li class="">Pass/fail status</li>
+</ul>
+</li>
+<li class="">
+<p>Click <strong>"Confirm Submit"</strong></p>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=grading>Grading:<a href=#grading class=hash-link aria-label="Direct link to Grading:" title="Direct link to Grading:" translate=no>​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">Your Score: 75/100 (75%)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">Pass Threshold: 70%</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">Status: PASSED</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">Checkpoints:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">[PASS] Create a file (25 pts)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">[PASS] Install package (25 pts)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">[PASS] Create user (25 pts)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">[FAIL] Run command (0 pts)</span><br/></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=what-happens-after-submit>What Happens After Submit:<a href=#what-happens-after-submit class=hash-link aria-label="Direct link to What Happens After Submit:" title="Direct link to What Happens After Submit:" translate=no>​</a></h3>
+<ol>
+<li class=""><strong>Session locks</strong> - No more changes</li>
+<li class=""><strong>Grade recorded</strong> - Stored in your history</li>
+<li class=""><strong>Achievements checked</strong> - You might earn badges!</li>
+<li class=""><strong>Pod remains</strong> - You can review (but not change progress)</li>
+</ol>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=step-7-claim-achievements>Step 7: Claim Achievements<a href=#step-7-claim-achievements class=hash-link aria-label="Direct link to Step 7: Claim Achievements" title="Direct link to Step 7: Claim Achievements" translate=no>​</a></h2>
+<p>After submitting, check if you earned any achievements:</p>
+<ol>
+<li class="">
+<p>A notification appears if you earned something new</p>
+</li>
+<li class="">
+<p>Go to <strong>"Achievements"</strong> in the sidebar</p>
+</li>
+<li class="">
+<p>New achievements show with celebration animation</p>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=example-achievements>Example Achievements:<a href=#example-achievements class=hash-link aria-label="Direct link to Example Achievements:" title="Direct link to Example Achievements:" translate=no>​</a></h3>
+<table><thead><tr><th>Achievement<th>Requirement<th>Points<tbody><tr><td>First Steps<td>Complete 1 lab<td>10<tr><td>Quick Learner<td>Complete lab under time limit<td>25<tr><td>Perfect Score<td>Get 100% on any lab<td>50</table>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=step-8-clean-up>Step 8: Clean Up<a href=#step-8-clean-up class=hash-link aria-label="Direct link to Step 8: Clean Up" title="Direct link to Step 8: Clean Up" translate=no>​</a></h2>
+<p>When you're done:</p>
+<ol>
+<li class="">
+<p><strong>End Session</strong> (if not submitted): Click "End Session"</p>
+</li>
+<li class="">
+<p><strong>Delete Pod</strong>: Click "Delete Pod" to free resources</p>
+<ul>
+<li class="">VMs are destroyed</li>
+<li class="">Network is released</li>
+<li class="">Cannot be undone!</li>
+</ul>
+</li>
+<li class="">
+<p>Or <strong>Keep Pod</strong>: Leave running to continue later</p>
+<ul>
+<li class="">Note: Pods may auto-expire after 2-24 hours</li>
+</ul>
+</li>
+</ol>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=troubleshooting>Troubleshooting<a href=#troubleshooting class=hash-link aria-label="Direct link to Troubleshooting" title="Direct link to Troubleshooting" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=pod-stuck-in-provisioning>"Pod stuck in Provisioning"<a href=#pod-stuck-in-provisioning class=hash-link aria-label='Direct link to "Pod stuck in Provisioning"' title='Direct link to "Pod stuck in Provisioning"' translate=no>​</a></h3>
+<ul>
+<li class="">Wait 2-3 minutes for real VMs</li>
+<li class="">Check Proxmox connectivity: <code>curl http://localhost:8080/ready</code></li>
+<li class="">View logs: <code>docker compose logs api</code></li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=console-wont-connect>"Console won't connect"<a href=#console-wont-connect class=hash-link aria-label='Direct link to "Console won&apos;t connect"' title='Direct link to "Console won&apos;t connect"' translate=no>​</a></h3>
+<ul>
+<li class="">Ensure VM is in "Running" state</li>
+<li class="">Try refreshing the page</li>
+<li class="">Check browser console for WebSocket errors</li>
+<li class="">Verify Proxmox VNC proxy is accessible</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=checkpoint-not-completing>"Checkpoint not completing"<a href=#checkpoint-not-completing class=hash-link aria-label='Direct link to "Checkpoint not completing"' title='Direct link to "Checkpoint not completing"' translate=no>​</a></h3>
+<ul>
+<li class="">Ensure you're in the correct VM</li>
+<li class="">Check exact syntax (case-sensitive paths)</li>
+<li class="">Wait 10-30 seconds for detection</li>
+<li class="">Some checkpoints have dependencies</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=cant-log-into-vm>"Can't log into VM"<a href=#cant-log-into-vm class=hash-link aria-label='Direct link to "Can&apos;t log into VM"' title='Direct link to "Can&apos;t log into VM"' translate=no>​</a></h3>
+<ul>
+<li class="">Check lab instructions for correct credentials</li>
+<li class="">Try default: <code>student</code> / <code>student123</code></li>
+<li class="">Some labs use: <code>root</code> / <code>toor</code></li>
+</ul>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=next-steps>Next Steps<a href=#next-steps class=hash-link aria-label="Direct link to Next Steps" title="Direct link to Next Steps" translate=no>​</a></h2>
+<p>Now that you've completed your first lab:</p>
+<ol>
+<li class=""><strong>Try more labs</strong>: Browse the catalog for your skill level</li>
+<li class=""><strong>Follow a pathway</strong>: Structured learning tracks</li>
+<li class=""><strong>Earn achievements</strong>: Collect badges and points</li>
+<li class=""><strong>Create your own lab</strong>: See <a class="" href=/kootenai/docs/lab-templates/template-creation-guide>Lab Template Guide</a></li>
+</ol>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=quick-reference>Quick Reference<a href=#quick-reference class=hash-link aria-label="Direct link to Quick Reference" title="Direct link to Quick Reference" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=keyboard-shortcuts-in-console>Keyboard Shortcuts (in Console)<a href=#keyboard-shortcuts-in-console class=hash-link aria-label="Direct link to Keyboard Shortcuts (in Console)" title="Direct link to Keyboard Shortcuts (in Console)" translate=no>​</a></h3>
+<table><thead><tr><th>Shortcut<th>Action<tbody><tr><td>Ctrl+Alt+Delete<td>Send to VM<tr><td>Shift+Insert<td>Paste<tr><td>F11<td>Toggle fullscreen</table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=common-commands>Common Commands<a href=#common-commands class=hash-link aria-label="Direct link to Common Commands" title="Direct link to Common Commands" translate=no>​</a></h3>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic># Check your progress from VM</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token builtin class-name">echo</span><span class="token plain"> </span><span class="token string" style=color:#e3116c>"Check the web UI for live progress"</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token comment" style=color:#999988;font-style:italic># Find files you need to create</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>cat</span><span class="token plain"> /home/student/objectives.txt</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token comment" style=color:#999988;font-style:italic># Get hints</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>cat</span><span class="token plain"> /home/student/hints.txt</span><br/></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=status-icons>Status Icons<a href=#status-icons class=hash-link aria-label="Direct link to Status Icons" title="Direct link to Status Icons" translate=no>​</a></h3>
+<table><thead><tr><th>Indicator<th>Meaning<tbody><tr><td>Green<td>Running/Healthy<tr><td>Amber<td>Provisioning/Pending<tr><td>Red<td>Stopped/Error<tr><td>Check mark<td>Checkpoint Complete<tr><td>○<td>Checkpoint Pending</table></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href=https://github.com/toddbartholow/kootenai/tree/main/docusaurus/docs/tutorials/first-lab.md target=_blank rel="noopener noreferrer" class=theme-edit-this-page><svg fill=currentColor height=20 width=20 viewBox="0 0 40 40" class=iconEdit_Z9Sw aria-hidden=true><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"/></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href=/kootenai/docs/guides/overview><div class=pagination-nav__sublabel>Previous</div><div class=pagination-nav__label>Platform Overview</div></a><a class="pagination-nav__link pagination-nav__link--next" href=/kootenai/docs/guides/working-with-pods><div class=pagination-nav__sublabel>Next</div><div class=pagination-nav__label>Working with Pods</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#prerequisites class="table-of-contents__link toc-highlight">Prerequisites</a><li><a href=#overview class="table-of-contents__link toc-highlight">Overview</a><li><a href=#step-1-browse-the-lab-catalog class="table-of-contents__link toc-highlight">Step 1: Browse the Lab Catalog</a><li><a href=#step-2-create-a-pod class="table-of-contents__link toc-highlight">Step 2: Create a Pod</a><ul><li><a href=#from-the-lab-detail-page class="table-of-contents__link toc-highlight">From the Lab Detail Page:</a><li><a href=#what-gets-created class="table-of-contents__link toc-highlight">What Gets Created:</a></ul><li><a href=#step-3-start-a-session class="table-of-contents__link toc-highlight">Step 3: Start a Session</a><ul><li><a href=#session-states class="table-of-contents__link toc-highlight">Session States:</a></ul><li><a href=#step-4-access-the-vm-console class="table-of-contents__link toc-highlight">Step 4: Access the VM Console</a><ul><li><a href=#option-a-web-console-recommended class="table-of-contents__link toc-highlight">Option A: Web Console (Recommended)</a><li><a href=#option-b-ssh-access class="table-of-contents__link toc-highlight">Option B: SSH Access</a><li><a href=#console-tips class="table-of-contents__link toc-highlight">Console Tips:</a></ul><li><a href=#step-5-complete-objectives class="table-of-contents__link toc-highlight">Step 5: Complete Objectives</a><ul><li><a href=#example-objectives class="table-of-contents__link toc-highlight">Example Objectives:</a><li><a href=#watching-progress class="table-of-contents__link toc-highlight">Watching Progress:</a></ul><li><a href=#step-6-submit-your-work class="table-of-contents__link toc-highlight">Step 6: Submit Your Work</a><ul><li><a href=#grading class="table-of-contents__link toc-highlight">Grading:</a><li><a href=#what-happens-after-submit class="table-of-contents__link toc-highlight">What Happens After Submit:</a></ul><li><a href=#step-7-claim-achievements class="table-of-contents__link toc-highlight">Step 7: Claim Achievements</a><ul><li><a href=#example-achievements class="table-of-contents__link toc-highlight">Example Achievements:</a></ul><li><a href=#step-8-clean-up class="table-of-contents__link toc-highlight">Step 8: Clean Up</a><li><a href=#troubleshooting class="table-of-contents__link toc-highlight">Troubleshooting</a><ul><li><a href=#pod-stuck-in-provisioning class="table-of-contents__link toc-highlight">"Pod stuck in Provisioning"</a><li><a href=#console-wont-connect class="table-of-contents__link toc-highlight">"Console won't connect"</a><li><a href=#checkpoint-not-completing class="table-of-contents__link toc-highlight">"Checkpoint not completing"</a><li><a href=#cant-log-into-vm class="table-of-contents__link toc-highlight">"Can't log into VM"</a></ul><li><a href=#next-steps class="table-of-contents__link toc-highlight">Next Steps</a><li><a href=#quick-reference class="table-of-contents__link toc-highlight">Quick Reference</a><ul><li><a href=#keyboard-shortcuts-in-console class="table-of-contents__link toc-highlight">Keyboard Shortcuts (in Console)</a><li><a href=#common-commands class="table-of-contents__link toc-highlight">Common Commands</a><li><a href=#status-icons class="table-of-contents__link toc-highlight">Status Icons</a></ul></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Documentation</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/kootenai/docs/getting-started>Getting Started</a><li class=footer__item><a class=footer__link-item href=/kootenai/docs/guides/overview>User Guide</a><li class=footer__item><a class=footer__link-item href=/kootenai/docs/api/reference>API Reference</a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Project</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://github.com/toddbartholow/kootenai target=_blank rel="noopener noreferrer" class=footer__link-item>GitHub (archived)<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=footer__copyright>Copyright © 2026 Kootenai Project. Built with Docusaurus.</div></div></div></footer></div></body>

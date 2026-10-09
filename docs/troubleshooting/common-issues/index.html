@@ -1,0 +1,428 @@
+<!doctype html><html lang=en dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-troubleshooting/common-issues" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.2"><title data-rh=true>Common Issues | Kootenai Platform</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true property=og:image content=https://toddbartholow.github.io/kootenai/img/social-card.svg /><meta data-rh=true name=twitter:image content=https://toddbartholow.github.io/kootenai/img/social-card.svg /><meta data-rh=true property=og:url content=https://toddbartholow.github.io/kootenai/docs/troubleshooting/common-issues /><meta data-rh=true property=og:locale content=en /><meta data-rh=true name=docusaurus_locale content=en /><meta data-rh=true name=docsearch:language content=en /><meta data-rh=true name=docusaurus_version content=current /><meta data-rh=true name=docusaurus_tag content=docs-default-current /><meta data-rh=true name=docsearch:version content=current /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-current /><meta data-rh=true property=og:title content="Common Issues | Kootenai Platform"/><meta data-rh=true name=description content="Troubleshooting guide for common Kootenai problems"/><meta data-rh=true property=og:description content="Troubleshooting guide for common Kootenai problems"/><link data-rh=true rel=icon href=/kootenai/img/favicon.svg /><link data-rh=true rel=canonical href=https://toddbartholow.github.io/kootenai/docs/troubleshooting/common-issues /><link data-rh=true rel=alternate href=https://toddbartholow.github.io/kootenai/docs/troubleshooting/common-issues hreflang=en /><link data-rh=true rel=alternate href=https://toddbartholow.github.io/kootenai/docs/troubleshooting/common-issues hreflang=x-default /><script data-rh=true type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://toddbartholow.github.io/kootenai/docs/troubleshooting/common-issues","name":"Common Issues","position":1}]}</script><link rel=stylesheet href=/kootenai/assets/css/styles.530fd213.css /><script src=/kootenai/assets/js/runtime~main.9695ab47.js defer></script><script src=/kootenai/assets/js/main.942c174d.js defer></script></head><body><svg style="display: none;"><defs>
+<symbol id=theme-svg-external-link viewBox="0 0 24 24"><path fill=currentColor d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme-717")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id=__docusaurus><link rel=preload as=image href=/kootenai/img/logo.svg /><div role=region aria-label="Skip to main content"><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>Skip to main content</a></div><nav aria-label=Main class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/kootenai/><div class=navbar__logo><img src=/kootenai/img/logo.svg alt="Kootenai Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"/><img src=/kootenai/img/logo.svg alt="Kootenai Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"/></div><b class="navbar__title text--truncate">Kootenai</b></a><a class="navbar__item navbar__link" href=/kootenai/docs/>Guides</a><a class="navbar__item navbar__link" href=/kootenai/docs/api/reference>API</a><a aria-current=page class="navbar__item navbar__link navbar__link--active" href=/kootenai/docs/admin/production-deployment>Admin</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href=https://github.com/toddbartholow/kootenai target=_blank rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class=sidebarViewport_aRkj><div class=sidebar_njMd><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=true href=/kootenai/docs/admin/production-deployment><span class=categoryLinkLabel_W154>Deployment</span></a></div><ul class=menu__list><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/admin/production-deployment><span class=linkLabel_WmDU>Production Deployment Guide</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/admin/proxmox-setup><span class=linkLabel_WmDU>Proxmox Setup Guide</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/admin/proxmox-vm-templates><span class=linkLabel_WmDU>Proxmox VM Templates Setup Guide</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/admin/scaling><span class=linkLabel_WmDU>Scaling Kootenai</span></a></ul><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=false href=/kootenai/docs/admin/canvas-lms-integration><span class=categoryLinkLabel_W154>Integrations</span></a></div><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=false href=/kootenai/docs/architecture/overview><span class=categoryLinkLabel_W154>Architecture</span></a></div><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=false href=/kootenai/docs/reference/database-schema><span class=categoryLinkLabel_W154>Database</span></a></div><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=false href=/kootenai/docs/development/mage><span class=categoryLinkLabel_W154>Development</span></a></div><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=false href=/kootenai/docs/lab-templates/template-creation-guide><span class=categoryLinkLabel_W154>Templates</span></a></div><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role=button aria-expanded=true href=/kootenai/docs/troubleshooting/common-issues><span class=categoryLinkLabel_W154>Troubleshooting</span></a></div><ul class=menu__list><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current=page tabindex=0 href=/kootenai/docs/troubleshooting/common-issues><span class=linkLabel_WmDU>Common Issues</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/troubleshooting/lti-vnc-console><span class=linkLabel_WmDU>LTI VNC Console Troubleshooting Guide</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/kootenai/docs/troubleshooting/wazuh-syscheck-parsing-fix><span class=linkLabel_WmDU>Wazuh Syscheck Alert Parsing Fix</span></a></ul></ul></nav></div></div></aside><main class=docMainContainer_TBSr><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class=docItemContainer_Djhp><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label=Breadcrumbs><ul class=breadcrumbs><li class=breadcrumbs__item><a aria-label="Home page" class=breadcrumbs__link href=/kootenai/><svg viewBox="0 0 24 24" class=breadcrumbHomeIcon_YNFT><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill=currentColor /></svg></a><li class=breadcrumbs__item><span class=breadcrumbs__link>Troubleshooting</span><li class="breadcrumbs__item breadcrumbs__item--active"><span class=breadcrumbs__link>Common Issues</span></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Common Issues</h1></header>
+<p>This guide covers frequently encountered issues and their solutions.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=quick-diagnostics>Quick Diagnostics<a href=#quick-diagnostics class=hash-link aria-label="Direct link to Quick Diagnostics" title="Direct link to Quick Diagnostics" translate=no>​</a></h2>
+<p>Run the diagnostic tool to check system health:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic># Install labtest</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token builtin class-name">cd</span><span class="token plain"> tools/labtest </span><span class="token operator" style=color:#393A34>&&</span><span class="token plain"> pip </span><span class="token function" style=color:#d73a49>install</span><span class="token plain"> </span><span class="token parameter variable" style=color:#36acaa>-e</span><span class="token plain"> </span><span class="token builtin class-name">.</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token comment" style=color:#999988;font-style:italic># Run diagnostics</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">labtest diagnose</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">labtest health</span><br/></div></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=api-issues>API Issues<a href=#api-issues class=hash-link aria-label="Direct link to API Issues" title="Direct link to API Issues" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=api-returns-401-unauthorized>API Returns 401 Unauthorized<a href=#api-returns-401-unauthorized class=hash-link aria-label="Direct link to API Returns 401 Unauthorized" title="Direct link to API Returns 401 Unauthorized" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">All API calls fail with 401</li>
+<li class="">"invalid token" or "token expired" errors</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Check token expiration</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic># Decode JWT to check expiry</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token builtin class-name">echo</span><span class="token plain"> </span><span class="token variable" style=color:#36acaa>$TOKEN</span><span class="token plain"> </span><span class="token operator" style=color:#393A34>|</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>cut</span><span class="token plain"> -d</span><span class="token string" style=color:#e3116c>'.'</span><span class="token plain"> </span><span class="token parameter variable" style=color:#36acaa>-f2</span><span class="token plain"> </span><span class="token operator" style=color:#393A34>|</span><span class="token plain"> base64 </span><span class="token parameter variable" style=color:#36acaa>-d</span><span class="token plain"> </span><span class="token operator file-descriptor important" style=color:#393A34>2</span><span class="token operator" style=color:#393A34>></span><span class="token plain">/dev/null </span><span class="token operator" style=color:#393A34>|</span><span class="token plain"> jq .exp</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Verify JWT secret matches</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic># On infra VM</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>grep</span><span class="token plain"> JWT_SECRET ~/kootenai/deploy/.env</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>For demo mode</strong>, ensure no Authorization header is sent</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic># Demo mode only works WITHOUT auth header</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>curl</span><span class="token plain"> http://</span><span class="token operator" style=color:#393A34>&lt;</span><span class="token plain">INFRA_VM_IP</span><span class="token operator" style=color:#393A34>></span><span class="token plain">:8080/api/v1/labs</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=api-returns-500-internal-server-error>API Returns 500 Internal Server Error<a href=#api-returns-500-internal-server-error class=hash-link aria-label="Direct link to API Returns 500 Internal Server Error" title="Direct link to API Returns 500 Internal Server Error" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">Intermittent 500 errors</li>
+<li class="">"database connection" errors in logs</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Check database connectivity</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> </span><span class="token builtin class-name">exec</span><span class="token plain"> kootenai-api pg_isready </span><span class="token parameter variable" style=color:#36acaa>-h</span><span class="token plain"> postgres </span><span class="token parameter variable" style=color:#36acaa>-U</span><span class="token plain"> labadmin</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Check API logs</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> logs kootenai-api </span><span class="token parameter variable" style=color:#36acaa>--tail</span><span class="token plain"> </span><span class="token number" style=color:#36acaa>100</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Restart API container</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token builtin class-name">cd</span><span class="token plain"> ~/kootenai/deploy</span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> compose restart api</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=api-container-keeps-restarting>API Container Keeps Restarting<a href=#api-container-keeps-restarting class=hash-link aria-label="Direct link to API Container Keeps Restarting" title="Direct link to API Container Keeps Restarting" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">Container status shows "Restarting"</li>
+<li class="">Health checks failing</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Check logs for startup errors</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> logs kootenai-api </span><span class="token operator file-descriptor important" style=color:#393A34>2</span><span class="token operator" style=color:#393A34>></span><span class="token file-descriptor important">&1</span><span class="token plain"> </span><span class="token operator" style=color:#393A34>|</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>head</span><span class="token plain"> </span><span class="token parameter variable" style=color:#36acaa>-50</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Common causes:</strong></p>
+<ul>
+<li class="">Missing environment variables</li>
+<li class="">Database migration failures</li>
+<li class="">Port conflicts</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Verify dependencies are healthy</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> compose </span><span class="token function" style=color:#d73a49>ps</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token comment" style=color:#999988;font-style:italic># Ensure postgres and nats show "healthy"</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=database-issues>Database Issues<a href=#database-issues class=hash-link aria-label="Direct link to Database Issues" title="Direct link to Database Issues" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=migration-failures>Migration Failures<a href=#migration-failures class=hash-link aria-label="Direct link to Migration Failures" title="Direct link to Migration Failures" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">"migration failed" errors on startup</li>
+<li class="">Schema version mismatch</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Check migration status</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">mage db:status</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Run pending migrations</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">mage db:migrate</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>For stuck migrations</strong>, check the schema_migrations table:</p>
+<div class="language-sql codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-sql codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token keyword" style=color:#00009f>SELECT</span><span class="token plain"> </span><span class="token operator" style=color:#393A34>*</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>FROM</span><span class="token plain"> schema_migrations </span><span class="token keyword" style=color:#00009f>ORDER</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>BY</span><span class="token plain"> version </span><span class="token keyword" style=color:#00009f>DESC</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>LIMIT</span><span class="token plain"> </span><span class="token number" style=color:#36acaa>5</span><span class="token punctuation" style=color:#393A34>;</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=connection-pool-exhausted>Connection Pool Exhausted<a href=#connection-pool-exhausted class=hash-link aria-label="Direct link to Connection Pool Exhausted" title="Direct link to Connection Pool Exhausted" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">"too many connections" errors</li>
+<li class="">Slow API responses</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Check active connections</strong></p>
+<div class="language-sql codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-sql codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token keyword" style=color:#00009f>SELECT</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>count</span><span class="token punctuation" style=color:#393A34>(</span><span class="token operator" style=color:#393A34>*</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>FROM</span><span class="token plain"> pg_stat_activity </span><span class="token keyword" style=color:#00009f>WHERE</span><span class="token plain"> datname </span><span class="token operator" style=color:#393A34>=</span><span class="token plain"> </span><span class="token string" style=color:#e3116c>'kootenai'</span><span class="token punctuation" style=color:#393A34>;</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Increase pool size</strong> in <code>.env</code>:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">DATABASE_MAX_CONNECTIONS=50</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Restart API to reset connections</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> compose restart api</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=pod-issues>Pod Issues<a href=#pod-issues class=hash-link aria-label="Direct link to Pod Issues" title="Direct link to Pod Issues" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=pod-stuck-in-provisioning>Pod Stuck in "Provisioning"<a href=#pod-stuck-in-provisioning class=hash-link aria-label='Direct link to Pod Stuck in "Provisioning"' title='Direct link to Pod Stuck in "Provisioning"' translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">Pod status never changes to "running"</li>
+<li class="">Timeout errors after 5+ minutes</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Check Proxmox connectivity</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">mage proxmox:testConn</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Check Proxmox task status</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic># On Proxmox host</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">pvesh get /nodes/pve/tasks </span><span class="token parameter variable" style=color:#36acaa>--limit</span><span class="token plain"> </span><span class="token number" style=color:#36acaa>10</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Check API logs for Proxmox errors</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> logs kootenai-api </span><span class="token operator file-descriptor important" style=color:#393A34>2</span><span class="token operator" style=color:#393A34>></span><span class="token file-descriptor important">&1</span><span class="token plain"> </span><span class="token operator" style=color:#393A34>|</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>grep</span><span class="token plain"> </span><span class="token parameter variable" style=color:#36acaa>-i</span><span class="token plain"> proxmox</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Verify template exists</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">mage proxmox:listTemplates</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=pod-vms-not-starting>Pod VMs Not Starting<a href=#pod-vms-not-starting class=hash-link aria-label="Direct link to Pod VMs Not Starting" title="Direct link to Pod VMs Not Starting" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">Pod shows "running" but VMs are stopped</li>
+<li class="">Console shows "VM not found"</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Check VM status on Proxmox</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">pvesh get /nodes/pve/qemu</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Manually start VMs</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">qm start </span><span class="token operator" style=color:#393A34>&lt;</span><span class="token plain">vmid</span><span class="token operator" style=color:#393A34>></span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Check storage availability</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">pvesh get /nodes/pve/storage</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=cannot-connect-to-pod-console>Cannot Connect to Pod Console<a href=#cannot-connect-to-pod-console class=hash-link aria-label="Direct link to Cannot Connect to Pod Console" title="Direct link to Cannot Connect to Pod Console" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">VNC console shows black screen</li>
+<li class="">"Connection refused" errors</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Verify VM is running</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">qm status </span><span class="token operator" style=color:#393A34>&lt;</span><span class="token plain">vmid</span><span class="token operator" style=color:#393A34>></span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Check VNC port</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">qm config </span><span class="token operator" style=color:#393A34>&lt;</span><span class="token plain">vmid</span><span class="token operator" style=color:#393A34>></span><span class="token plain"> </span><span class="token operator" style=color:#393A34>|</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>grep</span><span class="token plain"> vnc</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Restart VM's display</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">qm </span><span class="token builtin class-name">set</span><span class="token plain"> </span><span class="token operator" style=color:#393A34>&lt;</span><span class="token plain">vmid</span><span class="token operator" style=color:#393A34>></span><span class="token plain"> </span><span class="token parameter variable" style=color:#36acaa>-vga</span><span class="token plain"> std</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">qm </span><span class="token function" style=color:#d73a49>reboot</span><span class="token plain"> </span><span class="token operator" style=color:#393A34>&lt;</span><span class="token plain">vmid</span><span class="token operator" style=color:#393A34>></span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=network-issues>Network Issues<a href=#network-issues class=hash-link aria-label="Direct link to Network Issues" title="Direct link to Network Issues" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=pods-cannot-reach-internet>Pods Cannot Reach Internet<a href=#pods-cannot-reach-internet class=hash-link aria-label="Direct link to Pods Cannot Reach Internet" title="Direct link to Pods Cannot Reach Internet" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">VMs can ping each other but not external IPs</li>
+<li class="">DNS resolution fails</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Check NAT configuration on Proxmox</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">iptables </span><span class="token parameter variable" style=color:#36acaa>-t</span><span class="token plain"> nat </span><span class="token parameter variable" style=color:#36acaa>-L</span><span class="token plain"> </span><span class="token parameter variable" style=color:#36acaa>-n</span><span class="token plain"> </span><span class="token operator" style=color:#393A34>|</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>grep</span><span class="token plain"> MASQUERADE</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Verify routing</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>ip</span><span class="token plain"> route show</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Check firewall rules</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">iptables </span><span class="token parameter variable" style=color:#36acaa>-L</span><span class="token plain"> FORWARD </span><span class="token parameter variable" style=color:#36acaa>-n</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=pods-cannot-communicate>Pods Cannot Communicate<a href=#pods-cannot-communicate class=hash-link aria-label="Direct link to Pods Cannot Communicate" title="Direct link to Pods Cannot Communicate" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">VMs in same pod can't ping each other</li>
+<li class="">VLAN isolation issues</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Verify VLAN assignment</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">qm config </span><span class="token operator" style=color:#393A34>&lt;</span><span class="token plain">vmid</span><span class="token operator" style=color:#393A34>></span><span class="token plain"> </span><span class="token operator" style=color:#393A34>|</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>grep</span><span class="token plain"> net</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Check bridge configuration</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">brctl show</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Verify network isolation settings</strong> in lab template</p>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=web-ui-issues>Web UI Issues<a href=#web-ui-issues class=hash-link aria-label="Direct link to Web UI Issues" title="Direct link to Web UI Issues" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=page-shows-blank-or-loading-forever>Page Shows Blank or Loading Forever<a href=#page-shows-blank-or-loading-forever class=hash-link aria-label="Direct link to Page Shows Blank or Loading Forever" title="Direct link to Page Shows Blank or Loading Forever" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">White screen after login</li>
+<li class="">Spinner never stops</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Check browser console</strong> (F12) for JavaScript errors</p>
+</li>
+<li class="">
+<p><strong>Clear browser cache</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">Ctrl+Shift+Delete → Clear cached images and files</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Verify API is accessible</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>curl</span><span class="token plain"> http://</span><span class="token operator" style=color:#393A34>&lt;</span><span class="token plain">INFRA_VM_IP</span><span class="token operator" style=color:#393A34>></span><span class="token plain">:8080/health</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=login-redirects-to-error-page>Login Redirects to Error Page<a href=#login-redirects-to-error-page class=hash-link aria-label="Direct link to Login Redirects to Error Page" title="Direct link to Login Redirects to Error Page" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">OAuth callback fails</li>
+<li class="">"Invalid state" errors</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Clear cookies and try again</strong></p>
+</li>
+<li class="">
+<p><strong>Verify redirect URLs</strong> in OAuth configuration</p>
+</li>
+<li class="">
+<p><strong>Check time synchronization</strong> (JWT validation fails with clock skew)</p>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=real-time-updates-not-working>Real-time Updates Not Working<a href=#real-time-updates-not-working class=hash-link aria-label="Direct link to Real-time Updates Not Working" title="Direct link to Real-time Updates Not Working" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">Progress doesn't update automatically</li>
+<li class="">Must refresh to see changes</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Check WebSocket connection</strong> in browser DevTools → Network → WS</p>
+</li>
+<li class="">
+<p><strong>Verify NATS is running</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> logs kootenai-nats</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Check for WebSocket proxy issues</strong> in nginx configuration</p>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=canvas-lti-issues>Canvas LTI Issues<a href=#canvas-lti-issues class=hash-link aria-label="Direct link to Canvas LTI Issues" title="Direct link to Canvas LTI Issues" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=invalid-audience-error>"Invalid Audience" Error<a href=#invalid-audience-error class=hash-link aria-label='Direct link to "Invalid Audience" Error' title='Direct link to "Invalid Audience" Error' translate=no>​</a></h3>
+<p><strong>Cause:</strong> Wrong <code>CANVAS_CLIENT_ID</code> in configuration</p>
+<p><strong>Solution:</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic># Get correct client ID</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> compose </span><span class="token builtin class-name">exec</span><span class="token plain"> </span><span class="token parameter variable" style=color:#36acaa>-T</span><span class="token plain"> web rails runner </span><span class="token string" style=color:#e3116c>'dk = DeveloperKey.find(2); puts dk.global_id'</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token comment" style=color:#999988;font-style:italic># Use this value (e.g., 10000000000002) as CANVAS_CLIENT_ID</span><br/></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=512-bit-keys-are-insecure>"512-bit Keys Are Insecure"<a href=#512-bit-keys-are-insecure class=hash-link aria-label='Direct link to "512-bit Keys Are Insecure"' title='Direct link to "512-bit Keys Are Insecure"' translate=no>​</a></h3>
+<p><strong>Cause:</strong> Canvas has old RSA keys</p>
+<p><strong>Solution:</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic># Regenerate Canvas RSA keys</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> compose </span><span class="token builtin class-name">exec</span><span class="token plain"> </span><span class="token parameter variable" style=color:#36acaa>-T</span><span class="token plain"> web rails runner </span><span class="token string" style=color:#e3116c>'</span><br/></div><div class=token-line style=color:#393A34><span class="token string" style=color:#e3116c>  proxy = DynamicSettings.kv_proxy("lti-keys", tree: :store)</span><br/></div><div class=token-line style=color:#393A34><span class="token string" style=color:#e3116c>  3.times.map { |i| ["jwk-#{%w[past present future][i]}.json", CanvasSecurity::RSAKeyPair.new.to_jwk.to_json] }.to_h</span><br/></div><div class=token-line style=color:#393A34><span class="token string" style=color:#e3116c>    .then { |keys| proxy.set_keys(keys, global: true) }</span><br/></div><div class=token-line style=color:#393A34><span class="token string" style=color:#e3116c>  DynamicSettings.reset_cache!</span><br/></div><div class=token-line style=color:#393A34><span class="token string" style=color:#e3116c>'</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> compose restart web</span><br/></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=frame-embedding-blocked>Frame Embedding Blocked<a href=#frame-embedding-blocked class=hash-link aria-label="Direct link to Frame Embedding Blocked" title="Direct link to Frame Embedding Blocked" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">CSP "frame-ancestors" error</li>
+<li class="">Kootenai won't load in Canvas iframe</li>
+</ul>
+<p><strong>Solution:</strong>
+Set correct domain in Canvas configuration:</p>
+<div class="language-yaml codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-yaml codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic># canvas-lms/config/domain.yml</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token key atrule" style=color:#00a4db>domain</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"> </span><span class="token string" style=color:#e3116c>"localhost"</span><span class="token plain">  </span><span class="token comment" style=color:#999988;font-style:italic># For local development</span><br/></div></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=wazuhcheckpoint-issues>Wazuh/Checkpoint Issues<a href=#wazuhcheckpoint-issues class=hash-link aria-label="Direct link to Wazuh/Checkpoint Issues" title="Direct link to Wazuh/Checkpoint Issues" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=checkpoints-not-detected>Checkpoints Not Detected<a href=#checkpoints-not-detected class=hash-link aria-label="Direct link to Checkpoints Not Detected" title="Direct link to Checkpoints Not Detected" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">Completed tasks don't register</li>
+<li class="">Progress stays at 0%</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Verify Wazuh agent is running</strong> in VM</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">systemctl status wazuh-agent</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Check syscheck configuration</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>cat</span><span class="token plain"> /var/ossec/etc/ossec.conf </span><span class="token operator" style=color:#393A34>|</span><span class="token plain"> </span><span class="token function" style=color:#d73a49>grep</span><span class="token plain"> </span><span class="token parameter variable" style=color:#36acaa>-A5</span><span class="token plain"> syscheck</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Verify monitored paths</strong> match checkpoint triggers</p>
+</li>
+<li class="">
+<p><strong>Check Wazuh manager logs</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> logs wazuh-manager </span><span class="token parameter variable" style=color:#36acaa>--tail</span><span class="token plain"> </span><span class="token number" style=color:#36acaa>100</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=delayed-checkpoint-updates>Delayed Checkpoint Updates<a href=#delayed-checkpoint-updates class=hash-link aria-label="Direct link to Delayed Checkpoint Updates" title="Direct link to Delayed Checkpoint Updates" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">Checkpoints take minutes to register</li>
+<li class="">Inconsistent detection timing</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Reduce syscheck interval</strong> in ossec.conf:</p>
+<div class="language-xml codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-xml codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token tag punctuation" style=color:#393A34>&lt;</span><span class="token tag" style=color:#00009f>syscheck</span><span class="token tag punctuation" style=color:#393A34>></span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token tag punctuation" style=color:#393A34>&lt;</span><span class="token tag" style=color:#00009f>frequency</span><span class="token tag punctuation" style=color:#393A34>></span><span class="token plain">60</span><span class="token tag punctuation" style=color:#393A34>&lt;/</span><span class="token tag" style=color:#00009f>frequency</span><span class="token tag punctuation" style=color:#393A34>></span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token tag punctuation" style=color:#393A34>&lt;/</span><span class="token tag" style=color:#00009f>syscheck</span><span class="token tag punctuation" style=color:#393A34>></span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Force immediate scan</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">/var/ossec/bin/agent_control </span><span class="token parameter variable" style=color:#36acaa>-r</span><span class="token plain"> </span><span class="token parameter variable" style=color:#36acaa>-a</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=docker-issues>Docker Issues<a href=#docker-issues class=hash-link aria-label="Direct link to Docker Issues" title="Direct link to Docker Issues" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=container-not-reflecting-code-changes>Container Not Reflecting Code Changes<a href=#container-not-reflecting-code-changes class=hash-link aria-label="Direct link to Container Not Reflecting Code Changes" title="Direct link to Container Not Reflecting Code Changes" translate=no>​</a></h3>
+<p><strong>Solution:</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic># Rebuild container</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> compose build api</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token comment" style=color:#999988;font-style:italic># Force recreate</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> compose up </span><span class="token parameter variable" style=color:#36acaa>-d</span><span class="token plain"> --force-recreate api</span><br/></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=disk-space-issues>Disk Space Issues<a href=#disk-space-issues class=hash-link aria-label="Direct link to Disk Space Issues" title="Direct link to Disk Space Issues" translate=no>​</a></h3>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li class="">"No space left on device" errors</li>
+<li class="">Container creation fails</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Clean unused images</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> system prune </span><span class="token parameter variable" style=color:#36acaa>-a</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Check disk usage</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> system </span><span class="token function" style=color:#d73a49>df</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Remove old volumes</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> volume prune</span><br/></div></code></pre></div></div>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=performance-issues>Performance Issues<a href=#performance-issues class=hash-link aria-label="Direct link to Performance Issues" title="Direct link to Performance Issues" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=slow-api-responses>Slow API Responses<a href=#slow-api-responses class=hash-link aria-label="Direct link to Slow API Responses" title="Direct link to Slow API Responses" translate=no>​</a></h3>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Check database query performance</strong></p>
+<div class="language-sql codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-sql codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token keyword" style=color:#00009f>SELECT</span><span class="token plain"> query</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> mean_time</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> calls</span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>FROM</span><span class="token plain"> pg_stat_statements</span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>ORDER</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>BY</span><span class="token plain"> mean_time </span><span class="token keyword" style=color:#00009f>DESC</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>LIMIT</span><span class="token plain"> </span><span class="token number" style=color:#36acaa>10</span><span class="token punctuation" style=color:#393A34>;</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Add database indexes</strong> for slow queries</p>
+</li>
+<li class="">
+<p><strong>Enable connection pooling</strong></p>
+</li>
+<li class="">
+<p><strong>Check for N+1 query patterns</strong> in logs</p>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=high-memory-usage>High Memory Usage<a href=#high-memory-usage class=hash-link aria-label="Direct link to High Memory Usage" title="Direct link to High Memory Usage" translate=no>​</a></h3>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li class="">
+<p><strong>Check container memory</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> stats</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Adjust container limits</strong> in docker-compose.yml:</p>
+<div class="language-yaml codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-yaml codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token key atrule" style=color:#00a4db>deploy</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token key atrule" style=color:#00a4db>resources</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token key atrule" style=color:#00a4db>limits</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">      </span><span class="token key atrule" style=color:#00a4db>memory</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"> 512M</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Check for memory leaks</strong> in API logs</p>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=if-none-of-this-resolves-it>If none of this resolves it<a href=#if-none-of-this-resolves-it class=hash-link aria-label="Direct link to If none of this resolves it" title="Direct link to If none of this resolves it" translate=no>​</a></h2>
+<p>This repository is archived. Issues and pull requests are closed, so there is no one to
+escalate to — the remaining steps are diagnostic.</p>
+<ol>
+<li class="">
+<p><strong>Collect the full picture</strong></p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">labtest diagnose </span><span class="token operator" style=color:#393A34>></span><span class="token plain"> diagnostics.txt</span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token function" style=color:#d73a49>docker</span><span class="token plain"> compose logs </span><span class="token operator" style=color:#393A34>></span><span class="token plain"> docker-logs.txt</span><br/></div></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Read the failure directly.</strong> <code>labtest diagnose</code> reports which of the API, database
+and NATS are actually reachable, which narrows most problems to one container.</p>
+</li>
+<li class="">
+<p><strong>Work from the source.</strong> The code is Apache 2.0 and the test suites run locally
+(<code>mage test:all</code>), so a fork can be patched in place. That is the only path left.</p>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=related-documentation>Related Documentation<a href=#related-documentation class=hash-link aria-label="Direct link to Related Documentation" title="Direct link to Related Documentation" translate=no>​</a></h2>
+<ul>
+<li class=""><a class="" href=/kootenai/docs/troubleshooting/lti-vnc-console>LTI & VNC Troubleshooting</a></li>
+<li class=""><a class="" href=/kootenai/docs/troubleshooting/wazuh-syscheck-parsing-fix>Wazuh Syscheck Fix</a></li>
+<li class=""><a class="" href=/kootenai/docs/admin/production-deployment>Production Deployment</a></li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-tags-row"><div class=col><b>Tags:</b><ul class="tags_jXut padding--none margin-left--sm"><li class=tag_QGVx><a rel=tag class="tag_zVej tagRegular_sFm0" href=/kootenai/docs/tags/troubleshooting>troubleshooting</a><li class=tag_QGVx><a rel=tag class="tag_zVej tagRegular_sFm0" href=/kootenai/docs/tags/faq>faq</a><li class=tag_QGVx><a rel=tag class="tag_zVej tagRegular_sFm0" href=/kootenai/docs/tags/errors>errors</a></ul></div></div><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href=https://github.com/toddbartholow/kootenai/tree/main/docusaurus/docs/troubleshooting/common-issues.md target=_blank rel="noopener noreferrer" class=theme-edit-this-page><svg fill=currentColor height=20 width=20 viewBox="0 0 40 40" class=iconEdit_Z9Sw aria-hidden=true><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"/></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href=/kootenai/docs/lab-templates/examples><div class=pagination-nav__sublabel>Previous</div><div class=pagination-nav__label>Example Templates</div></a><a class="pagination-nav__link pagination-nav__link--next" href=/kootenai/docs/troubleshooting/lti-vnc-console><div class=pagination-nav__sublabel>Next</div><div class=pagination-nav__label>LTI VNC Console Troubleshooting Guide</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#quick-diagnostics class="table-of-contents__link toc-highlight">Quick Diagnostics</a><li><a href=#api-issues class="table-of-contents__link toc-highlight">API Issues</a><ul><li><a href=#api-returns-401-unauthorized class="table-of-contents__link toc-highlight">API Returns 401 Unauthorized</a><li><a href=#api-returns-500-internal-server-error class="table-of-contents__link toc-highlight">API Returns 500 Internal Server Error</a><li><a href=#api-container-keeps-restarting class="table-of-contents__link toc-highlight">API Container Keeps Restarting</a></ul><li><a href=#database-issues class="table-of-contents__link toc-highlight">Database Issues</a><ul><li><a href=#migration-failures class="table-of-contents__link toc-highlight">Migration Failures</a><li><a href=#connection-pool-exhausted class="table-of-contents__link toc-highlight">Connection Pool Exhausted</a></ul><li><a href=#pod-issues class="table-of-contents__link toc-highlight">Pod Issues</a><ul><li><a href=#pod-stuck-in-provisioning class="table-of-contents__link toc-highlight">Pod Stuck in "Provisioning"</a><li><a href=#pod-vms-not-starting class="table-of-contents__link toc-highlight">Pod VMs Not Starting</a><li><a href=#cannot-connect-to-pod-console class="table-of-contents__link toc-highlight">Cannot Connect to Pod Console</a></ul><li><a href=#network-issues class="table-of-contents__link toc-highlight">Network Issues</a><ul><li><a href=#pods-cannot-reach-internet class="table-of-contents__link toc-highlight">Pods Cannot Reach Internet</a><li><a href=#pods-cannot-communicate class="table-of-contents__link toc-highlight">Pods Cannot Communicate</a></ul><li><a href=#web-ui-issues class="table-of-contents__link toc-highlight">Web UI Issues</a><ul><li><a href=#page-shows-blank-or-loading-forever class="table-of-contents__link toc-highlight">Page Shows Blank or Loading Forever</a><li><a href=#login-redirects-to-error-page class="table-of-contents__link toc-highlight">Login Redirects to Error Page</a><li><a href=#real-time-updates-not-working class="table-of-contents__link toc-highlight">Real-time Updates Not Working</a></ul><li><a href=#canvas-lti-issues class="table-of-contents__link toc-highlight">Canvas LTI Issues</a><ul><li><a href=#invalid-audience-error class="table-of-contents__link toc-highlight">"Invalid Audience" Error</a><li><a href=#512-bit-keys-are-insecure class="table-of-contents__link toc-highlight">"512-bit Keys Are Insecure"</a><li><a href=#frame-embedding-blocked class="table-of-contents__link toc-highlight">Frame Embedding Blocked</a></ul><li><a href=#wazuhcheckpoint-issues class="table-of-contents__link toc-highlight">Wazuh/Checkpoint Issues</a><ul><li><a href=#checkpoints-not-detected class="table-of-contents__link toc-highlight">Checkpoints Not Detected</a><li><a href=#delayed-checkpoint-updates class="table-of-contents__link toc-highlight">Delayed Checkpoint Updates</a></ul><li><a href=#docker-issues class="table-of-contents__link toc-highlight">Docker Issues</a><ul><li><a href=#container-not-reflecting-code-changes class="table-of-contents__link toc-highlight">Container Not Reflecting Code Changes</a><li><a href=#disk-space-issues class="table-of-contents__link toc-highlight">Disk Space Issues</a></ul><li><a href=#performance-issues class="table-of-contents__link toc-highlight">Performance Issues</a><ul><li><a href=#slow-api-responses class="table-of-contents__link toc-highlight">Slow API Responses</a><li><a href=#high-memory-usage class="table-of-contents__link toc-highlight">High Memory Usage</a></ul><li><a href=#if-none-of-this-resolves-it class="table-of-contents__link toc-highlight">If none of this resolves it</a><li><a href=#related-documentation class="table-of-contents__link toc-highlight">Related Documentation</a></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Documentation</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/kootenai/docs/getting-started>Getting Started</a><li class=footer__item><a class=footer__link-item href=/kootenai/docs/guides/overview>User Guide</a><li class=footer__item><a class=footer__link-item href=/kootenai/docs/api/reference>API Reference</a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Project</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://github.com/toddbartholow/kootenai target=_blank rel="noopener noreferrer" class=footer__link-item>GitHub (archived)<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=footer__copyright>Copyright © 2026 Kootenai Project. Built with Docusaurus.</div></div></div></footer></div></body>

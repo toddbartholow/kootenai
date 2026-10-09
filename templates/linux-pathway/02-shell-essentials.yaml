@@ -1,0 +1,295 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Shell Essentials
+  description: |
+    Master essential shell concepts including PATH, environment variables,
+    I/O redirection, pipes, and sudo. These skills form the foundation
+    for effective command-line work in Linux.
+  duration: 45m
+  difficulty: beginner
+  tags:
+    - linux
+    - beginner
+    - shell
+    - environment
+    - redirection
+    - pipes
+    - sudo
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      The shell is your primary interface to the Linux operating system. In this lab,
+      you'll learn how environment variables control your shell behavior, how to redirect
+      input and output, chain commands with pipes, and use sudo for elevated privileges.
+    learning_objectives:
+      - View and set environment variables
+      - Redirect standard output and standard error to files
+      - Chain commands using pipes for powerful data processing
+      - Understand and use sudo for administrative tasks
+    prerequisites:
+      - Linux Foundations (navigating the filesystem, basic commands)
+      - Familiarity with a text editor (nano or vim)
+    steps:
+      - id: env-variables
+        title: Environment Variables
+        content: |
+          Environment variables store configuration that programs use at runtime.
+
+          ```bash
+          # View your PATH (where the shell looks for commands)
+          echo $PATH
+
+          # View all environment variables
+          env
+
+          # Create and export a variable
+          export MYVAR=hello
+          echo $MYVAR
+          ```
+
+          The `export` keyword makes the variable available to child processes.
+      - id: output-redirection
+        title: Output Redirection
+        content: |
+          Redirect command output to files instead of the terminal.
+
+          ```bash
+          # Redirect stdout to a file (overwrites)
+          ls -l /etc > etc-contents.txt
+
+          # Append to a file (doesn't overwrite)
+          date >> etc-contents.txt
+
+          # Redirect stderr to a file
+          ls /nonexistent 2> errors.txt
+          ```
+
+          `>` overwrites, `>>` appends, `2>` redirects error output.
+      - id: pipes
+        title: Using Pipes
+        content: |
+          Pipes connect the output of one command to the input of another.
+
+          ```bash
+          # Search for 'root' in passwd
+          cat /etc/passwd | grep root
+
+          # Count lines in a file
+          cat /etc/passwd | wc -l
+
+          # Chain multiple commands
+          ls /usr/bin | grep zip | wc -l
+          ```
+
+          Each `|` creates a pipeline, passing data left to right.
+      - id: sudo
+        title: Elevated Privileges with sudo
+        content: |
+          Some operations require root (administrator) privileges.
+
+          ```bash
+          # View a protected file
+          sudo cat /etc/shadow
+
+          # Check who you are as root
+          sudo whoami
+          ```
+
+          `sudo` runs a single command as root. Use it carefully.
+    summary: |
+      You've mastered essential shell concepts including environment variables, I/O
+      redirection, pipes for chaining commands, and sudo for administrative tasks.
+    tips:
+      - Use `echo $VARIABLE` to check any environment variable's value
+      - Combine redirection and pipes for powerful data processing
+      - Always use the least privilege needed — only use sudo when required
+      - Add custom variables to ~/.bashrc to persist across sessions
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 100
+        subnet: 10.10.100.0/24
+        gateway: 10.10.100.1
+        dhcp: false
+
+  vms:
+    - name: linux-vm
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /etc/environment
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: lab-network
+          ip: 10.10.100.10
+      snapshots:
+        - name: initial
+          description: Fresh Ubuntu installation
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Environment Variables
+    - id: view-path
+      description: Display your current PATH environment variable
+      points: 10
+      hint: "Use 'echo $PATH' to display the PATH variable"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "echo.*\\$PATH"
+
+    - id: view-all-env
+      description: Display all environment variables
+      points: 10
+      hint: "Use 'env' or 'printenv' to show all environment variables"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "^(env|printenv)$"
+
+    - id: set-variable
+      description: Create an environment variable called MYVAR with value 'hello'
+      points: 10
+      hint: "Use 'export MYVAR=hello' to set and export the variable"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "export MYVAR=hello"
+
+    - id: view-myvar
+      description: Display the value of your MYVAR variable
+      points: 10
+      hint: "Use 'echo $MYVAR' to display the value"
+      depends_on:
+        - set-variable
+      order: 4
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "echo.*\\$MYVAR"
+
+    # I/O Redirection
+    - id: redirect-output
+      description: Redirect the output of 'ls -l /etc' to a file called 'etc-contents.txt'
+      points: 15
+      hint: "Use 'ls -l /etc > etc-contents.txt' to redirect output"
+      order: 5
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/student/etc-contents.txt
+        - type: file_content
+          target: linux-vm
+          match:
+            path: /home/student/etc-contents.txt
+            pattern: "^-|^d"
+
+    - id: append-output
+      description: Append the current date to 'etc-contents.txt' using >>
+      points: 10
+      hint: "Use 'date >> etc-contents.txt' to append without overwriting"
+      depends_on:
+        - redirect-output
+      order: 6
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "date.*>>.*etc-contents"
+
+    - id: redirect-errors
+      description: Redirect error output from 'ls /nonexistent' to a file called 'errors.txt'
+      points: 10
+      hint: "Use '2>' to redirect stderr: 'ls /nonexistent 2> errors.txt'"
+      order: 7
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/student/errors.txt
+
+    # Pipes
+    - id: pipe-grep
+      description: Use a pipe to search for 'root' in /etc/passwd
+      points: 10
+      hint: "Use 'cat /etc/passwd | grep root' or 'grep root /etc/passwd'"
+      order: 8
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "(cat /etc/passwd.*\\|.*grep root|grep root /etc/passwd)"
+
+    - id: pipe-count
+      description: Count the number of lines in /etc/passwd using wc
+      points: 10
+      hint: "Use 'cat /etc/passwd | wc -l' or 'wc -l /etc/passwd'"
+      order: 9
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "wc.*-l.*/etc/passwd|cat /etc/passwd.*\\|.*wc.*-l"
+
+    - id: pipe-chain
+      description: List files in /usr/bin, filter for 'zip', and count them
+      points: 15
+      hint: "Chain commands: 'ls /usr/bin | grep zip | wc -l'"
+      order: 10
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ls.*/usr/bin.*\\|.*grep.*zip.*\\|.*wc"
+
+    # Sudo
+    - id: view-root-file
+      description: View the contents of /etc/shadow using sudo
+      points: 10
+      hint: "Use 'sudo cat /etc/shadow' - this file requires root privileges"
+      order: 11
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo.*cat.*/etc/shadow"
+
+    - id: sudo-whoami
+      description: Run 'whoami' as root using sudo
+      points: 10
+      hint: "Use 'sudo whoami' to see who you are when running as root"
+      order: 12
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo whoami"

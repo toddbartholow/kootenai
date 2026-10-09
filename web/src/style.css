@@ -1,0 +1,300 @@
+@import 'tailwindcss';
+@import 'primeicons/primeicons.css';
+
+/* Enable class-based dark mode (using .dark on html element) */
+@variant dark (&:where(.dark, .dark *));
+
+/* PrimeVue severity variants - based on data-p-severity attribute */
+@variant p-secondary (&[data-p-severity="secondary"]);
+@variant p-success (&[data-p-severity="success"]);
+@variant p-danger (&[data-p-severity="danger"]);
+@variant p-error (&[data-p-severity="error"]);
+@variant p-warn (&[data-p-severity="warn"]);
+@variant p-info (&[data-p-severity="info"]);
+@variant p-contrast (&[data-p-severity="contrast"]);
+@variant p-custom (&[data-p-custom]);
+@variant p-text (&[data-p~="text"]);
+@variant p-outlined (&[data-p~="outlined"]);
+@variant p-raised (&[data-p~="raised"]);
+@variant p-rounded (&[data-p~="rounded"]);
+@variant p-small (&[data-p~="small"]);
+@variant p-large (&[data-p~="large"]);
+@variant p-icon-only (&[data-p~="icon-only"]);
+@variant p-vertical (&[data-p~="vertical"]);
+@variant p-fluid (&[data-p~="fluid"]);
+@variant p-right (&[data-p-icon-pos="right"]);
+@variant p-bottom (&[data-p-icon-pos="bottom"]);
+
+@theme {
+  --color-primary-50: oklch(0.97 0.02 250);
+  --color-primary-100: oklch(0.93 0.04 250);
+  --color-primary-200: oklch(0.86 0.08 250);
+  --color-primary-300: oklch(0.76 0.12 250);
+  --color-primary-400: oklch(0.64 0.16 250);
+  --color-primary-500: oklch(0.55 0.18 250);
+  --color-primary-600: oklch(0.47 0.16 250);
+  --color-primary-700: oklch(0.4 0.14 250);
+  --color-primary-800: oklch(0.34 0.11 250);
+  --color-primary-900: oklch(0.27 0.08 250);
+  --color-primary-950: oklch(0.2 0.06 250);
+
+  /* Accent -- the fourth semantic hue: above red on the difficulty ramp, and
+     used for achievement tiers and audit events. Deliberately plum (hue 330)
+     rather than Tailwind's default violet/indigo band, which reads as a colour
+     nobody picked. */
+  --color-accent-50: oklch(0.97 0.02 330);
+  --color-accent-100: oklch(0.94 0.04 330);
+  --color-accent-200: oklch(0.88 0.08 330);
+  --color-accent-300: oklch(0.79 0.12 330);
+  --color-accent-400: oklch(0.68 0.17 330);
+  --color-accent-500: oklch(0.58 0.19 330);
+  --color-accent-600: oklch(0.5 0.18 330);
+  --color-accent-700: oklch(0.42 0.15 330);
+  --color-accent-800: oklch(0.35 0.12 330);
+  --color-accent-900: oklch(0.28 0.09 330);
+  --color-accent-950: oklch(0.21 0.06 330);
+
+  /* Radius scale by role, tighter than Tailwind's defaults. The stock scale
+     plus a habit of reaching for rounded-xl makes every surface read as
+     maximally rounded; this keeps cards architectural and leaves rounded-full
+     for things that are actually circular. */
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.1875rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.375rem;
+  --radius-xl: 0.5rem;
+  --radius-2xl: 0.625rem;
+  --radius-3xl: 0.75rem;
+  --radius-4xl: 1rem;
+
+  --color-surface-0: oklch(1 0 0);
+  --color-surface-50: oklch(0.98 0 0);
+  --color-surface-100: oklch(0.96 0 0);
+  --color-surface-200: oklch(0.92 0 0);
+  --color-surface-300: oklch(0.87 0 0);
+  --color-surface-400: oklch(0.71 0 0);
+  --color-surface-500: oklch(0.55 0 0);
+  --color-surface-600: oklch(0.43 0 0);
+  --color-surface-700: oklch(0.37 0 0);
+  --color-surface-800: oklch(0.27 0 0);
+  --color-surface-900: oklch(0.2 0 0);
+  --color-surface-950: oklch(0.13 0 0);
+}
+
+/* GitHub-inspired dark theme
+   Key insight: Cards should be LIGHTER than page background for clear separation
+   GitHub colors: page=#0d1117, card=#161b22, border=#30363d, muted=#7d8590, text=#e6edf3
+
+   IMPORTANT: Keep same semantic meaning as light mode:
+   - surface-0 = lightest (white in light, bright text in dark)
+   - surface-950 = darkest (near-black in light, page bg in dark)
+   - This allows dark:bg-surface-900 to be dark, dark:text-surface-100 to be bright */
+.dark {
+  --color-surface-0: oklch(0.97 0 0); /* Brightest - primary text (#e6edf3) */
+  --color-surface-50: oklch(0.93 0 0); /* Very bright - headings */
+  --color-surface-100: oklch(0.87 0 0); /* Bright - secondary headings */
+  --color-surface-200: oklch(0.8 0 0); /* Tertiary text */
+  --color-surface-300: oklch(0.7 0 0); /* Secondary text */
+  --color-surface-400: oklch(0.6 0 0); /* Muted text (#7d8590) - WCAG AA */
+  --color-surface-500: oklch(0.5 0 0); /* Disabled text, placeholders */
+  --color-surface-600: oklch(0.38 0 0); /* Strong borders, dividers */
+  --color-surface-700: oklch(0.3 0 0); /* Borders (#30363d) */
+  --color-surface-800: oklch(0.24 0 0); /* Elevated surfaces, hover states */
+  --color-surface-900: oklch(0.2 0 0); /* Card background (#161b22) */
+  --color-surface-950: oklch(0.14 0 0); /* Page background - darkest (#0d1117) */
+}
+
+/* ============================================
+   ACCESSIBILITY UTILITIES
+   ============================================ */
+
+/* Screen reader only - visually hidden but accessible to assistive technology */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Show on focus - for skip links and similar */
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Skip link styling */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-primary-600);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 0 0 0.5rem 0;
+  transition: top 0.2s ease-in-out;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
+/* Ensure focus is always visible */
+*:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* Remove default outline but keep for keyboard users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  .text-surface-400,
+  .text-surface-500 {
+    color: oklch(0.3 0 0);
+  }
+
+  .dark .text-surface-400,
+  .dark .text-surface-500 {
+    color: oklch(0.85 0 0);
+  }
+}
+
+/* ============================================
+   RTL UTILITIES
+   See docs/architecture/adr/0004-rtl-support.md
+   ============================================ */
+
+/* Mirror direction-sensitive iconography (chevrons, back/forward arrows,
+   step-progress arrows) when the active locale is RTL. Apply .rtl-mirror
+   to the glyph itself; never to glyphs whose meaning is direction-neutral
+   (search, gear, avatar, checkmark, warning, globe). */
+[dir='rtl'] .rtl-mirror {
+  transform: scaleX(-1);
+}
+
+/* ============================================
+   TOUCH TARGET UTILITIES
+   ============================================ */
+
+/* Minimum touch target size (44x44px per WCAG 2.1 Level AAA) */
+.touch-target {
+  position: relative;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* For inline elements that need larger touch targets */
+.touch-target-inline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Ensure buttons and interactive elements have minimum touch size on mobile */
+@media (pointer: coarse) {
+  button:not(.p-button-icon-only),
+  [role='button'],
+  a.router-link,
+  input[type='checkbox'] + label,
+  input[type='radio'] + label {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Ensure icon buttons have adequate touch size */
+  .p-button-icon-only {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* ============================================
+   TOAST DARK MODE FIXES
+   PrimeVue Toast in unstyled mode uses data-p-severity attribute
+   but doesn't add default PrimeVue classes. Target via data attribute only.
+   ============================================ */
+
+/* Info severity - blue border */
+.dark [data-p-severity='info'],
+:root.dark [data-p-severity='info'],
+html.dark [data-p-severity='info'] {
+  background-color: oklch(0.24 0 0) !important; /* surface-800 */
+  border-color: #3b82f6 !important; /* blue-500 */
+}
+
+/* Success severity - green border */
+.dark [data-p-severity='success'],
+:root.dark [data-p-severity='success'],
+html.dark [data-p-severity='success'] {
+  background-color: oklch(0.24 0 0) !important; /* surface-800 */
+  border-color: #22c55e !important; /* green-500 */
+}
+
+/* Warning severity - yellow border */
+.dark [data-p-severity='warn'],
+:root.dark [data-p-severity='warn'],
+html.dark [data-p-severity='warn'] {
+  background-color: oklch(0.24 0 0) !important; /* surface-800 */
+  border-color: #eab308 !important; /* yellow-500 */
+}
+
+/* Error severity - red border */
+.dark [data-p-severity='error'],
+:root.dark [data-p-severity='error'],
+html.dark [data-p-severity='error'] {
+  background-color: oklch(0.24 0 0) !important; /* surface-800 */
+  border-color: #ef4444 !important; /* red-500 */
+}
+
+/* Secondary severity */
+.dark [data-p-severity='secondary'],
+:root.dark [data-p-severity='secondary'],
+html.dark [data-p-severity='secondary'] {
+  background-color: oklch(0.24 0 0) !important;
+  border-color: oklch(0.37 0 0) !important; /* surface-700 */
+}
+
+/* Contrast severity */
+.dark [data-p-severity='contrast'],
+:root.dark [data-p-severity='contrast'],
+html.dark [data-p-severity='contrast'] {
+  background-color: oklch(0.97 0 0) !important; /* surface-0 in dark */
+  border-color: oklch(0.87 0 0) !important;
+}

@@ -1,0 +1,355 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: VLANs and Layer 2 Switching
+  description: |
+    Learn VLAN configuration and Layer 2 switching concepts. This lab covers
+    VLAN creation, trunk ports, inter-VLAN routing, STP basics, and
+    troubleshooting switch-related issues.
+  duration: 120m
+  difficulty: intermediate
+  tags:
+    - networking
+    - vlan
+    - switching
+    - stp
+    - layer2
+  version: "1.0.0"
+  author: Kootenai Team
+  category: networking-advanced
+  instructions:
+    overview: |
+      VLANs (Virtual LANs) segment a physical network into isolated broadcast domains.
+      This lab covers VLAN creation with Open vSwitch, trunk port configuration,
+      VLAN isolation verification, and inter-VLAN routing using a router-on-a-stick setup.
+    learning_objectives:
+      - Create an OVS bridge for Layer 2 switching
+      - Add ports with VLAN tags
+      - Configure trunk ports for multiple VLANs
+      - Verify VLAN isolation between segments
+      - Set up inter-VLAN routing with subinterfaces
+    prerequisites:
+      - Basic networking concepts (Ethernet, IP addressing)
+      - Linux command line familiarity
+      - Understanding of broadcast domains
+    steps:
+      - id: create-bridge
+        title: Create an OVS Bridge
+        content: |
+          Open vSwitch (OVS) is a software switch that supports VLANs.
+
+          ```bash
+          # Create a new bridge
+          sudo ovs-vsctl add-br lab-switch
+
+          # Verify
+          sudo ovs-vsctl show
+          ```
+      - id: add-ports
+        title: Add Ports with VLAN Tags
+        content: |
+          Assign ports to specific VLANs using the tag option.
+
+          ```bash
+          # Add port for VLAN 10
+          sudo ovs-vsctl add-port lab-switch eth1 tag=10
+
+          # Add port for VLAN 20
+          sudo ovs-vsctl add-port lab-switch eth2 tag=20
+
+          # Add port for VLAN 30
+          sudo ovs-vsctl add-port lab-switch eth3 tag=30
+
+          # Verify port assignments
+          sudo ovs-vsctl list-ports lab-switch
+          ```
+      - id: create-vlans
+        title: Configure VLANs
+        content: |
+          Verify VLAN tags are properly assigned to each port.
+
+          ```bash
+          # Set VLAN tags (if modifying existing ports)
+          sudo ovs-vsctl set port eth1 tag=10
+          sudo ovs-vsctl set port eth2 tag=20
+          sudo ovs-vsctl set port eth3 tag=30
+
+          # View detailed port info
+          sudo ovs-vsctl list port eth1
+          ```
+      - id: configure-trunk
+        title: Configure a Trunk Port
+        content: |
+          A trunk port carries traffic for multiple VLANs using 802.1Q tagging.
+
+          ```bash
+          # Create a trunk port allowing VLANs 10, 20, and 30
+          sudo ovs-vsctl add-port lab-switch trunk0 \
+            trunks=10,20,30
+
+          # Verify trunk configuration
+          sudo ovs-vsctl get port trunk0 trunks
+          ```
+      - id: verify-isolation
+        title: Verify VLAN Isolation
+        content: |
+          Hosts in different VLANs should NOT be able to communicate.
+
+          ```bash
+          # From host-vlan10, try to ping host-vlan20
+          ping -c 3 -W 2 10.10.20.10
+
+          # Document the result
+          echo "Ping to VLAN 20 from VLAN 10: unreachable" > ~/vlan_isolation_test.txt
+          echo "VLAN isolation is working correctly" >> ~/vlan_isolation_test.txt
+          ```
+      - id: intervlan-routing
+        title: Inter-VLAN Routing
+        content: |
+          Use subinterfaces (router-on-a-stick) to route between VLANs.
+
+          ```bash
+          # Create VLAN subinterfaces on the router
+          sudo ip link add link eth0 name eth0.10 type vlan id 10
+          sudo ip link add link eth0 name eth0.20 type vlan id 20
+          sudo ip link add link eth0 name eth0.30 type vlan id 30
+
+          # Assign IP addresses (act as gateway for each VLAN)
+          sudo ip addr add 10.10.10.1/24 dev eth0.10
+          sudo ip addr add 10.10.20.1/24 dev eth0.20
+          sudo ip addr add 10.10.30.1/24 dev eth0.30
+
+          # Bring interfaces up
+          sudo ip link set eth0.10 up
+          sudo ip link set eth0.20 up
+          sudo ip link set eth0.30 up
+
+          # Enable forwarding
+          sudo sysctl -w net.ipv4.ip_forward=1
+          ```
+      - id: verify-intervlan
+        title: Verify Inter-VLAN Communication
+        content: |
+          After routing is configured, VLANs can communicate through the router.
+
+          ```bash
+          # From host-vlan10, ping host-vlan20 through the router
+          ping -c 3 10.10.20.10
+          ```
+      - id: document
+        title: Document the Topology
+        content: |
+          ```bash
+          cat > ~/vlan_documentation.txt << 'EOF'
+          VLAN Topology
+          =============
+          VLAN 10: 10.10.10.0/24 (Engineering)
+          VLAN 20: 10.10.20.0/24 (Sales)
+          VLAN 30: 10.10.30.0/24 (Management)
+
+          Gateway: switch-sim (router-on-a-stick)
+          Trunk: trunk0 carrying VLANs 10, 20, 30
+          EOF
+          ```
+    summary: |
+      You've created VLANs with Open vSwitch, verified isolation between segments,
+      configured trunk ports, and set up inter-VLAN routing with subinterfaces.
+    tips:
+      - VLANs reduce broadcast traffic and improve security through segmentation
+      - Trunk ports carry multiple VLANs using 802.1Q tagging
+      - Always verify isolation before enabling inter-VLAN routing
+      - Document VLAN assignments for troubleshooting
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: mgmt-vlan
+        vlan: 1
+        subnet: 192.168.1.0/24
+        gateway: 192.168.1.1
+        dhcp: false
+      - name: vlan-10
+        vlan: 10
+        subnet: 10.10.10.0/24
+        gateway: 10.10.10.1
+        dhcp: false
+      - name: vlan-20
+        vlan: 20
+        subnet: 10.10.20.0/24
+        gateway: 10.10.20.1
+        dhcp: false
+      - name: vlan-30
+        vlan: 30
+        subnet: 10.10.30.0/24
+        gateway: 10.10.30.1
+        dhcp: false
+
+  vms:
+    - name: switch-sim
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/netadmin
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: mgmt-vlan
+          ip: 192.168.1.10
+        - segment: vlan-10
+          ip: 10.10.10.1
+        - segment: vlan-20
+          ip: 10.10.20.1
+        - segment: vlan-30
+          ip: 10.10.30.1
+      snapshots:
+        - name: initial
+          description: Ubuntu with Open vSwitch installed
+          default: true
+
+    - name: host-vlan10
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: vlan-10
+          ip: 10.10.10.10
+      snapshots:
+        - name: initial
+          description: Client in VLAN 10
+          default: true
+
+    - name: host-vlan20
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: vlan-20
+          ip: 10.10.20.10
+      snapshots:
+        - name: initial
+          description: Client in VLAN 20
+          default: true
+
+    - name: host-vlan30
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: vlan-30
+          ip: 10.10.30.10
+      snapshots:
+        - name: initial
+          description: Client in VLAN 30
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: create-bridge
+      description: Create an OVS bridge for VLAN switching
+      points: 10
+      hint: "Use 'ovs-vsctl add-br' to create a bridge"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: switch-sim
+          match:
+            pattern: "ovs-vsctl add-br"
+
+    - id: add-ports
+      description: Add ports to the bridge with VLAN tags
+      points: 15
+      hint: "Use 'ovs-vsctl add-port' with tag option"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: switch-sim
+          match:
+            pattern: "ovs-vsctl add-port"
+
+    - id: create-vlans
+      description: Configure VLANs 10, 20, and 30 on the switch
+      points: 15
+      hint: "Set VLAN tags on ports using ovs-vsctl"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: switch-sim
+          match:
+            pattern: "ovs-vsctl.*tag="
+
+    - id: configure-trunk
+      description: Configure a trunk port allowing multiple VLANs
+      points: 15
+      hint: "Use trunks option to allow multiple VLANs"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: switch-sim
+          match:
+            pattern: "ovs-vsctl.*trunks="
+
+    - id: verify-isolation
+      description: Verify VLAN isolation (hosts in different VLANs cannot ping)
+      points: 10
+      hint: "Ping between hosts in different VLANs should fail"
+      order: 5
+      triggers:
+        - type: file_content
+          target: host-vlan10
+          match:
+            path: /home/student/vlan_isolation_test.txt
+            contains: "unreachable"
+
+    - id: intervlan-routing
+      description: Configure inter-VLAN routing using a router-on-a-stick
+      points: 20
+      hint: "Configure subinterfaces on the router for each VLAN"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: switch-sim
+          match:
+            pattern: "ip link.*vlan|vconfig"
+
+    - id: verify-intervlan
+      description: Verify hosts can communicate across VLANs after routing
+      points: 10
+      hint: "Ping from VLAN 10 to VLAN 20 should succeed"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: host-vlan10
+          match:
+            pattern: "ping.*10.10.20"
+
+    - id: document-topology
+      description: Document the VLAN topology and configuration
+      points: 5
+      hint: "Include VLAN IDs, IP ranges, and port assignments"
+      order: 8
+      triggers:
+        - type: file_exists
+          target: switch-sim
+          match:
+            path: /home/netadmin/vlan_documentation.txt

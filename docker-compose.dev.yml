@@ -1,0 +1,126 @@
+# Kootenai Platform - Docker Compose
+#
+# This file provides the infrastructure services needed for local development.
+# For production deployment, see deploy/docker-compose.yml
+#
+# Quick Start:
+#   1. Copy deploy/.env.example to .env and adjust if needed
+#      (there is no repo-root .env.example)
+#   2. Start services: docker compose up -d
+#   3. Run the API:    cd api && go run ./cmd/labctl serve
+#   4. Run the web UI: cd web && npm run dev
+#
+# Commands:
+#   docker compose up -d          # Start PostgreSQL and NATS
+#   docker compose down           # Stop services
+#   docker compose logs -f        # View logs
+#   docker compose down -v        # Stop and DELETE all data
+
+services:
+  # ============================================================================
+  # PostgreSQL Database
+  # ============================================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: labctl-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-labctl}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-<DB_PASSWORD>}
+      POSTGRES_DB: ${DATABASE_NAME:-labctl}
+    ports:
+      - "${DATABASE_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER:-labctl} -d ${DATABASE_NAME:-labctl}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ============================================================================
+  # NATS with JetStream (Message Queue & Event Streaming)
+  # ============================================================================
+  nats:
+    image: nats:2.10-alpine
+    container_name: labctl-nats
+    restart: unless-stopped
+    command: ["--jetstream", "--store_dir=/data", "-m", "8222"]
+    ports:
+      - "${NATS_PORT:-4222}:4222"      # Client connections
+      - "${NATS_HTTP_PORT:-8222}:8222" # HTTP monitoring
+    volumes:
+      - nats_data:/data
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8222/healthz"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+# =============================================================================
+# Optional: Full Stack (uncomment to run API and Web in containers)
+# =============================================================================
+#  api:
+#    build:
+#      context: ./api
+#      dockerfile: Dockerfile
+#    container_name: labctl-api
+#    restart: unless-stopped
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
+#      nats:
+#        condition: service_healthy
+#    environment:
+#      DATABASE_HOST: postgres
+#      DATABASE_PORT: 5432
+#      DATABASE_USER: ${DATABASE_USER:-labctl}
+#      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-<DB_PASSWORD>}
+#      DATABASE_NAME: ${DATABASE_NAME:-labctl}
+#      NATS_URL: nats://nats:4222
+#      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+#    ports:
+#      - "${API_PORT:-8080}:8080"
+#    volumes:
+#      - ./templates:/app/templates:ro
+#      - ./config:/app/config:ro
+#
+#  web:
+#    build:
+#      context: ./web
+#      dockerfile: Dockerfile
+#    container_name: labctl-web
+#    restart: unless-stopped
+#    depends_on:
+#      - api
+#    ports:
+#      - "${WEB_PORT:-3000}:80"
+#    environment:
+#      API_URL: http://api:8080
+
+# =============================================================================
+# Development Tools (run with: docker compose --profile tools up -d)
+# =============================================================================
+  adminer:
+    image: adminer:latest
+    container_name: labctl-adminer
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8081:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    profiles:
+      - tools
+
+volumes:
+  postgres_data:
+    name: labctl_postgres_data
+  nats_data:
+    name: labctl_nats_data
+
+networks:
+  default:
+    name: labctl_network

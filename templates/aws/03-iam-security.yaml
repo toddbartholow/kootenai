@@ -1,0 +1,160 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: AWS IAM and Security
+  description: |
+    Master AWS Identity and Access Management for secure cloud operations.
+    Learn to create users, groups, roles, policies, and implement
+    least-privilege access following AWS security best practices.
+  duration: 120m
+  difficulty: intermediate
+  tags:
+    - aws
+    - cloud
+    - iam
+    - security
+    - policies
+    - roles
+  version: "1.0.0"
+  author: Kootenai Team
+  category: aws
+
+spec:
+  platform: cloudstack
+
+  network:
+    segments:
+      - name: iam-lab-network
+        vlan: 402
+        subnet: 10.42.0.0/24
+        gateway: 10.42.0.1
+        dhcp: true
+
+  vms:
+    - name: aws-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: iam-lab-network
+          ip: 10.42.0.10
+      snapshots:
+        - name: initial
+          description: Workstation with AWS CLI configured
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: create-groups
+      description: Create IAM groups for Developers, Operations, and Admins
+      points: 10
+      hint: "Use 'aws iam create-group --group-name GroupName'"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws iam create-group"
+
+    - id: create-policy
+      description: Create a custom IAM policy for S3 read-only access
+      points: 15
+      hint: "Write policy JSON and use 'aws iam create-policy'"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws iam create-policy"
+
+    - id: attach-policies
+      description: Attach appropriate AWS managed policies to groups
+      points: 15
+      hint: "Use attach-group-policy with appropriate policy ARNs"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws iam attach-group-policy"
+
+    - id: create-users
+      description: Create IAM users and add them to appropriate groups
+      points: 10
+      hint: "Create users and use add-user-to-group"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws iam create-user"
+
+    - id: create-role
+      description: Create an IAM role for EC2 instances
+      points: 15
+      hint: "Role needs trust policy allowing EC2 to assume it"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws iam create-role"
+
+    - id: instance-profile
+      description: Create instance profile and attach role for EC2 use
+      points: 10
+      hint: "Instance profiles allow EC2 instances to assume IAM roles"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws iam create-instance-profile"
+
+    - id: enable-mfa
+      description: Enable MFA for a user account
+      points: 10
+      hint: "Use virtual MFA device for lab purposes"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws iam enable-mfa-device|create-virtual-mfa-device"
+
+    - id: password-policy
+      description: Configure account password policy
+      points: 10
+      hint: "Set minimum length, complexity requirements, and expiration"
+      order: 8
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws iam update-account-password-policy"
+
+    - id: test-permissions
+      description: Verify users have correct permissions using policy simulator
+      points: 5
+      hint: "Use IAM policy simulator or test with actual API calls"
+      order: 9
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws iam simulate|aws sts get-caller-identity"

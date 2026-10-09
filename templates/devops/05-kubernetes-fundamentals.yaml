@@ -1,0 +1,310 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Kubernetes Fundamentals
+  description: |
+    Get started with Kubernetes container orchestration. Learn pods, deployments,
+    services, and basic cluster management.
+  duration: 120m
+  difficulty: intermediate
+  tags:
+    - devops
+    - kubernetes
+    - k8s
+    - containers
+    - orchestration
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Kubernetes is the leading container orchestration platform. This lab teaches
+      you to deploy, scale, and manage containerized applications on Kubernetes.
+    learning_objectives:
+      - Understand Kubernetes architecture
+      - Create and manage Pods
+      - Deploy applications with Deployments
+      - Expose services with Service resources
+      - Configure applications with ConfigMaps and Secrets
+      - Perform rolling updates
+    prerequisites:
+      - Docker container fundamentals
+      - Basic YAML syntax
+      - Command line proficiency
+    steps:
+      - id: k8s-architecture
+        title: Kubernetes Architecture
+        content: |
+          Understanding the components of a Kubernetes cluster.
+
+          **Control Plane:**
+          - API Server: Entry point for cluster operations
+          - Scheduler: Places pods on nodes
+          - Controller Manager: Maintains desired state
+          - etcd: Cluster state storage
+
+          **Worker Nodes:**
+          - kubelet: Manages containers on the node
+          - kube-proxy: Handles networking
+          - Container Runtime: Runs containers (containerd, Docker)
+      - id: pods
+        title: Working with Pods
+        content: |
+          Pods are the smallest deployable units in Kubernetes.
+
+          ```yaml
+          # pod.yaml
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: nginx-pod
+            labels:
+              app: nginx
+          spec:
+            containers:
+            - name: nginx
+              image: nginx:latest
+              ports:
+              - containerPort: 80
+          ```
+
+          ```bash
+          kubectl apply -f pod.yaml
+          kubectl get pods
+          kubectl describe pod nginx-pod
+          kubectl logs nginx-pod
+          ```
+      - id: deployments
+        title: Deployments for Scaling
+        content: |
+          Deployments manage replica sets and rolling updates.
+
+          ```yaml
+          # deployment.yaml
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: nginx-deployment
+          spec:
+            replicas: 3
+            selector:
+              matchLabels:
+                app: nginx
+            template:
+              metadata:
+                labels:
+                  app: nginx
+              spec:
+                containers:
+                - name: nginx
+                  image: nginx:latest
+                  ports:
+                  - containerPort: 80
+          ```
+      - id: services
+        title: Services for Networking
+        content: |
+          Services provide stable networking for pods.
+
+          ```yaml
+          # service.yaml
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: nginx-service
+          spec:
+            selector:
+              app: nginx
+            ports:
+            - port: 80
+              targetPort: 80
+            type: ClusterIP  # or NodePort, LoadBalancer
+          ```
+      - id: configmaps-secrets
+        title: ConfigMaps and Secrets
+        content: |
+          Externalize configuration from container images.
+
+          ```yaml
+          # configmap.yaml
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: app-config
+          data:
+            DATABASE_HOST: "postgres.default.svc"
+            LOG_LEVEL: "info"
+          ```
+      - id: rolling-updates
+        title: Rolling Updates
+        content: |
+          Update applications with zero downtime.
+
+          ```bash
+          # Update the image
+          kubectl set image deployment/nginx-deployment nginx=nginx:1.21
+
+          # Watch the rollout
+          kubectl rollout status deployment/nginx-deployment
+
+          # Rollback if needed
+          kubectl rollout undo deployment/nginx-deployment
+          ```
+    summary: |
+      You've learned Kubernetes fundamentals including pods, deployments, services,
+      configuration management, and rolling updates.
+    tips:
+      - Use namespaces to organize resources
+      - Always set resource limits on containers
+      - Use liveness and readiness probes
+      - Label everything for easy selection
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: k8s-network
+        vlan: 140
+        subnet: 192.168.140.0/24
+        gateway: 192.168.140.1
+        dhcp: true
+
+  vms:
+    - name: k8s-control
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 4
+        memory: 8192
+        disk: 60
+      networks:
+        - segment: k8s-network
+          ip: 192.168.140.10
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/k8s-labs
+        audit_commands: true
+
+    - name: k8s-worker-1
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: k8s-network
+          ip: 192.168.140.11
+      startOnCreate: true
+
+    - name: k8s-worker-2
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: k8s-network
+          ip: 192.168.140.12
+      startOnCreate: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: kubectl-access
+      description: Verify kubectl can access the cluster
+      points: 10
+      triggers:
+        - type: command_executed
+          target: k8s-control
+          match:
+            pattern: "kubectl (get|cluster-info)"
+
+    - id: create-pod
+      description: Create a pod using a YAML manifest
+      points: 15
+      hints:
+        - level: 1
+          text: Create a pod.yaml file and apply with kubectl apply -f
+          penalty: 3
+      triggers:
+        - type: file_exists
+          target: k8s-control
+          match:
+            path: /home/student/k8s-labs/pod.yaml
+
+    - id: run-pod
+      description: Run the pod and verify it's running
+      points: 10
+      depends_on:
+        - create-pod
+      triggers:
+        - type: command_executed
+          target: k8s-control
+          match:
+            pattern: "kubectl apply.*pod"
+
+    - id: create-deployment
+      description: Create a deployment with 3 replicas
+      points: 20
+      hints:
+        - level: 1
+          text: Use kind Deployment and spec.replicas 3
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: k8s-control
+          match:
+            path: /home/student/k8s-labs/deployment.yaml
+            contains: "replicas:"
+
+    - id: expose-service
+      description: Create a service to expose the deployment
+      points: 15
+      hints:
+        - level: 1
+          text: Use kind Service with a selector matching deployment labels
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: k8s-control
+          match:
+            path: /home/student/k8s-labs/service.yaml
+            contains: "selector:"
+
+    - id: configmap
+      description: Create a ConfigMap for application config
+      points: 10
+      triggers:
+        - type: file_content
+          target: k8s-control
+          match:
+            path: /home/student/k8s-labs/configmap.yaml
+            contains: "ConfigMap"
+
+    - id: rolling-update
+      description: Perform a rolling update on the deployment
+      points: 10
+      triggers:
+        - type: command_executed
+          target: k8s-control
+          match:
+            pattern: "kubectl (set image|rollout)"
+
+    - id: verify-replicas
+      description: Verify all replicas are running
+      points: 10
+      triggers:
+        - type: active_check
+          target: k8s-control
+          script: |
+            #!/bin/bash
+            ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 "${VM_IP}" \
+              'ready=$(kubectl get deployment -o jsonpath="{.items[0].status.readyReplicas}" 2>/dev/null); [ "$ready" -ge 3 ]'

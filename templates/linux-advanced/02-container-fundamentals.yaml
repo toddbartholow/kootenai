@@ -1,0 +1,162 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Container Fundamentals with Docker
+  description: |
+    Learn containerization with Docker. This lab covers container basics,
+    building images with Dockerfiles, container networking, volumes,
+    and Docker Compose for multi-container applications.
+  duration: 150m
+  difficulty: intermediate
+  tags:
+    - linux
+    - docker
+    - containers
+    - devops
+    - microservices
+  version: "1.0.0"
+  author: Kootenai Team
+  category: linux-advanced
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: container-network
+        vlan: 501
+        subnet: 10.51.0.0/24
+        gateway: 10.51.0.1
+        dhcp: false
+
+  vms:
+    - name: docker-host
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /var/log
+          - /var/lib/docker
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 4
+        memory: 8192
+        disk: 60
+      networks:
+        - segment: container-network
+          ip: 10.51.0.10
+      snapshots:
+        - name: initial
+          description: Ubuntu with Docker installed and configured
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: verify-docker
+      description: Verify Docker installation and run hello-world
+      points: 10
+      hint: "Run 'docker run hello-world' to verify installation"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: docker-host
+          match:
+            pattern: "docker run hello-world"
+
+    - id: pull-image
+      description: Pull the nginx image from Docker Hub
+      points: 10
+      hint: "Use 'docker pull nginx' to download the image"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: docker-host
+          match:
+            pattern: "docker pull nginx"
+
+    - id: run-container
+      description: Run nginx container with port mapping
+      points: 10
+      hint: "Use 'docker run -d -p 8080:80 nginx'"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: docker-host
+          match:
+            pattern: "docker run.*-p.*nginx"
+
+    - id: create-dockerfile
+      description: Create a Dockerfile for a custom web application
+      points: 20
+      hint: "Use FROM, COPY, EXPOSE, and CMD instructions"
+      order: 4
+      triggers:
+        - type: file_content
+          target: docker-host
+          match:
+            path: /home/student/app/Dockerfile
+            contains: "FROM"
+
+    - id: build-image
+      description: Build a custom Docker image from your Dockerfile
+      points: 15
+      hint: "Use 'docker build -t myapp:v1 .'"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: docker-host
+          match:
+            pattern: "docker build"
+
+    - id: container-volume
+      description: Create and use a Docker volume for persistent data
+      points: 15
+      hint: "Use 'docker volume create' and '-v' flag with run"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: docker-host
+          match:
+            pattern: "docker volume create|docker run.*-v"
+
+    - id: container-network
+      description: Create a custom Docker network and connect containers
+      points: 15
+      hint: "Use 'docker network create' and '--network' flag"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: docker-host
+          match:
+            pattern: "docker network create"
+
+    - id: compose-file
+      description: Create a docker-compose.yml for multi-container app
+      points: 20
+      hint: "Define services for web and database containers"
+      order: 8
+      triggers:
+        - type: file_content
+          target: docker-host
+          match:
+            path: /home/student/app/docker-compose.yml
+            contains: "services:"
+
+    - id: compose-up
+      description: Deploy the application with docker-compose
+      points: 5
+      hint: "Run 'docker-compose up -d' to start services"
+      order: 9
+      triggers:
+        - type: command_executed
+          target: docker-host
+          match:
+            pattern: "docker-compose up|docker compose up"

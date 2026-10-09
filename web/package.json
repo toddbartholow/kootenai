@@ -38,7 +38,7 @@
     "@spice-project/spice-html5": "^0.2.1",
     "axios": "^1.15.2",
     "chart.js": "^4.4.7",
-    "dompurify": "3.4.14",
+    "dompurify": "3.4.16",
     "pinia": "^2.1.0",
     "pinia-plugin-persistedstate": "^3.2.3",
     "primeicons": "^7.0.0",

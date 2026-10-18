@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: base-linux-lab
+  description: Base template for Linux labs - provides common VM configuration
+  author: Kootenai Team
+  version: "1.0.0"
+  difficulty: beginner
+  duration: 60m
+  variables:
+    LAB_SUBNET: "10.0.0.0/24"
+    LAB_GATEWAY: "10.0.0.1"
+spec:
+  platform: proxmox
+  vms:
+    - name: student-vm
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 32
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home
+          - /etc
+        audit_commands: true
+  network:
+    segments:
+      - name: lab-network
+        subnet: ${LAB_SUBNET}
+        gateway: ${LAB_GATEWAY}
+        dhcp: false

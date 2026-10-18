@@ -1,0 +1,237 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Python for Security
+  description: |
+    Build security tools with Python. Learn to create port scanners, password tools,
+    encryption utilities, and basic exploitation scripts for authorized testing.
+  duration: 90m
+  difficulty: intermediate
+  tags:
+    - python
+    - security
+    - pentesting
+    - scripting
+    - cryptography
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Python is the go-to language for security professionals. This lab teaches you to build
+      practical security tools including network scanners, password utilities, and encryption
+      tools - all within an authorized testing environment.
+    learning_objectives:
+      - Build a port scanner using sockets
+      - Create password generation and validation tools
+      - Implement basic encryption with cryptography library
+      - Write log analysis scripts
+      - Build a simple vulnerability checker
+      - Understand responsible disclosure practices
+    prerequisites:
+      - Python fundamentals
+      - Basic networking concepts
+      - Understanding of security ethics
+    steps:
+      - id: port-scanner
+        title: Build a Port Scanner
+        content: |
+          Create a simple TCP port scanner.
+
+          ```python
+          import socket
+
+          def scan_port(host, port):
+              sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+              sock.settimeout(1)
+              result = sock.connect_ex((host, port))
+              sock.close()
+              return result == 0
+
+          # Scan common ports
+          common_ports = [22, 80, 443, 8080]
+          for port in common_ports:
+              if scan_port("target.local", port):
+                  print(f"Port {port} is open")
+          ```
+      - id: password-tools
+        title: Password Generation & Validation
+        content: |
+          Create secure password utilities.
+
+          ```python
+          import secrets
+          import string
+
+          def generate_password(length=16):
+              alphabet = string.ascii_letters + string.digits + string.punctuation
+              return ''.join(secrets.choice(alphabet) for _ in range(length))
+
+          def check_password_strength(password):
+              checks = {
+                  'length': len(password) >= 12,
+                  'uppercase': any(c.isupper() for c in password),
+                  'lowercase': any(c.islower() for c in password),
+                  'digit': any(c.isdigit() for c in password),
+                  'special': any(c in string.punctuation for c in password)
+              }
+              return checks
+          ```
+      - id: encryption
+        title: Basic Encryption
+        content: |
+          Implement file encryption using the cryptography library.
+
+          ```python
+          from cryptography.fernet import Fernet
+
+          # Generate and save key
+          key = Fernet.generate_key()
+
+          # Encrypt data
+          f = Fernet(key)
+          encrypted = f.encrypt(b"Secret message")
+          decrypted = f.decrypt(encrypted)
+          ```
+      - id: log-analysis
+        title: Log Analysis Script
+        content: |
+          Parse and analyze security logs for suspicious activity.
+      - id: hash-cracker
+        title: Educational Hash Analysis
+        content: |
+          Understand password hashing by building a dictionary checker.
+    summary: |
+      You've built practical security tools including scanners, password utilities,
+      and encryption tools. Remember to only use these skills ethically and with authorization.
+    tips:
+      - Always get written authorization before testing
+      - Use secrets module instead of random for security
+      - Never store passwords in plain text
+      - Document your tools with clear usage guidelines
+    resources:
+      - title: Python Cryptography Documentation
+        url: https://cryptography.io/
+      - title: OWASP Testing Guide
+        url: https://owasp.org/www-project-web-security-testing-guide/
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 115
+        subnet: 192.168.115.0/24
+        gateway: 192.168.115.1
+        dhcp: true
+
+  vms:
+    - name: security-workstation
+      template: kali-linux
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 50
+      networks:
+        - segment: lab-network
+          ip: 192.168.115.10
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/security-tools
+        audit_commands: true
+
+    - name: target-server
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 1
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: lab-network
+          ip: 192.168.115.20
+      startOnCreate: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: port-scanner
+      description: Create a working port scanner script
+      points: 20
+      hints:
+        - level: 1
+          text: Use socket.connect_ex() to check if a port is open
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: security-workstation
+          match:
+            path: /home/student/security-tools/port_scanner.py
+            contains: "socket"
+
+    - id: scan-target
+      description: Scan the target server for open ports
+      points: 15
+      depends_on:
+        - port-scanner
+      triggers:
+        - type: command_executed
+          target: security-workstation
+          match:
+            pattern: "python.*port_scanner"
+
+    - id: password-generator
+      description: Build a secure password generator
+      points: 15
+      hints:
+        - level: 1
+          text: Use the secrets module for cryptographically secure random choices
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: security-workstation
+          match:
+            path: /home/student/security-tools/password_tools.py
+            contains: "secrets"
+
+    - id: password-validator
+      description: Create a password strength checker
+      points: 15
+      triggers:
+        - type: file_content
+          target: security-workstation
+          match:
+            path: /home/student/security-tools/password_tools.py
+            regex: "def.*check.*password"
+
+    - id: encryption-script
+      description: Implement file encryption with Fernet
+      points: 20
+      hints:
+        - level: 1
+          text: Import from cryptography.fernet and use Fernet.generate_key()
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: security-workstation
+          match:
+            path: /home/student/security-tools/encryption.py
+            contains: "Fernet"
+
+    - id: log-parser
+      description: Create a log analysis script
+      points: 15
+      triggers:
+        - type: file_content
+          target: security-workstation
+          match:
+            path: /home/student/security-tools/log_analyzer.py
+            regex: "(open|read).*log"

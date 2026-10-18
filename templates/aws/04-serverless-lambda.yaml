@@ -1,0 +1,160 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: AWS Serverless with Lambda
+  description: |
+    Build serverless applications with AWS Lambda. Learn to create functions,
+    configure triggers, use API Gateway, work with DynamoDB, and implement
+    event-driven architectures.
+  duration: 120m
+  difficulty: intermediate
+  tags:
+    - aws
+    - cloud
+    - lambda
+    - serverless
+    - api-gateway
+    - dynamodb
+  version: "1.0.0"
+  author: Kootenai Team
+  category: aws
+
+spec:
+  platform: cloudstack
+
+  network:
+    segments:
+      - name: serverless-lab-network
+        vlan: 403
+        subnet: 10.43.0.0/24
+        gateway: 10.43.0.1
+        dhcp: true
+
+  vms:
+    - name: aws-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: serverless-lab-network
+          ip: 10.43.0.10
+      snapshots:
+        - name: initial
+          description: Workstation with AWS CLI and SAM CLI installed
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: create-role
+      description: Create an IAM execution role for Lambda
+      points: 10
+      hint: "Lambda needs AWSLambdaBasicExecutionRole for CloudWatch logs"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws iam create-role.*lambda"
+
+    - id: create-function
+      description: Create a Lambda function using Python
+      points: 15
+      hint: "Package code in ZIP and use create-function command"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws lambda create-function"
+
+    - id: test-function
+      description: Invoke the Lambda function and verify output
+      points: 10
+      hint: "Use 'aws lambda invoke --function-name FunctionName output.json'"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws lambda invoke"
+
+    - id: create-api
+      description: Create an API Gateway REST API
+      points: 15
+      hint: "Use 'aws apigateway create-rest-api'"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws apigateway create-rest-api"
+
+    - id: integrate-lambda
+      description: Integrate Lambda function with API Gateway
+      points: 15
+      hint: "Create resource, method, and Lambda integration"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws apigateway put-integration.*LAMBDA"
+
+    - id: deploy-api
+      description: Deploy the API to a stage
+      points: 10
+      hint: "Use create-deployment to make API accessible"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws apigateway create-deployment"
+
+    - id: create-dynamodb
+      description: Create a DynamoDB table for the application
+      points: 10
+      hint: "Use create-table with appropriate key schema"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws dynamodb create-table"
+
+    - id: update-lambda
+      description: Update Lambda to read/write from DynamoDB
+      points: 10
+      hint: "Add DynamoDB permissions and update function code"
+      order: 8
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws lambda update-function"
+
+    - id: test-api
+      description: Test the complete API endpoint
+      points: 5
+      hint: "Use curl to test the deployed API endpoint"
+      order: 9
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "curl.*execute-api"

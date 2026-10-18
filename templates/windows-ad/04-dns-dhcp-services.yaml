@@ -1,0 +1,188 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Windows DNS and DHCP Services
+  description: |
+    Configure and manage Windows DNS and DHCP services integrated with
+    Active Directory. Learn zone management, dynamic DNS, DHCP scopes,
+    reservations, and troubleshooting common issues.
+  duration: 90m
+  difficulty: intermediate
+  tags:
+    - windows
+    - dns
+    - dhcp
+    - networking
+    - active-directory
+  version: "1.0.0"
+  author: Kootenai Team
+  category: windows-ad
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: dns-dhcp-network
+        vlan: 303
+        subnet: 10.33.0.0/24
+        gateway: 10.33.0.1
+        dhcp: false
+
+  vms:
+    - name: dc01
+      template: windows-server-2022-ad
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - C:\Windows\System32\winevt\Logs
+          - C:\Windows\System32\dns
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 4
+        memory: 8192
+        disk: 80
+      networks:
+        - segment: dns-dhcp-network
+          ip: 10.33.0.10
+      snapshots:
+        - name: ad-ready
+          description: AD DS configured, DNS/DHCP roles installed
+          default: true
+
+    - name: member-server
+      template: windows-server-2022
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 60
+      networks:
+        - segment: dns-dhcp-network
+          ip: 10.33.0.20
+      snapshots:
+        - name: joined
+          description: Domain-joined server for additional services
+          default: true
+
+    - name: test-client
+      template: windows-10-enterprise
+      wazuhAgent: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 60
+      networks:
+        - segment: dns-dhcp-network
+          ip: dhcp
+      snapshots:
+        - name: initial
+          description: Windows 10 configured for DHCP
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: create-zone
+      description: Create a forward lookup zone for lab.local
+      points: 10
+      hint: "Use DNS Manager or Add-DnsServerPrimaryZone cmdlet"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Add-DnsServerPrimaryZone|dnsmgmt"
+
+    - id: create-reverse-zone
+      description: Create a reverse lookup zone for 10.33.0.0/24
+      points: 10
+      hint: "Reverse zones allow IP to hostname resolution"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Add-DnsServerPrimaryZone.*33.10.in-addr"
+
+    - id: add-records
+      description: Create A, CNAME, and MX records in the zone
+      points: 15
+      hint: "Use Add-DnsServerResourceRecord cmdlet"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Add-DnsServerResourceRecord"
+
+    - id: configure-dhcp
+      description: Create a DHCP scope for the network
+      points: 15
+      hint: "Define IP range, subnet mask, gateway, and DNS servers"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Add-DhcpServerv4Scope"
+
+    - id: dhcp-options
+      description: Configure DHCP options for DNS and gateway
+      points: 10
+      hint: "Set scope options for Router (003) and DNS Servers (006)"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Set-DhcpServerv4OptionValue"
+
+    - id: dhcp-reservation
+      description: Create a DHCP reservation for a specific client
+      points: 10
+      hint: "Reserve an IP based on client MAC address"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Add-DhcpServerv4Reservation"
+
+    - id: authorize-dhcp
+      description: Authorize the DHCP server in Active Directory
+      points: 10
+      hint: "Use Add-DhcpServerInDC cmdlet"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Add-DhcpServerInDC"
+
+    - id: test-client-config
+      description: Verify client receives correct IP and can resolve DNS names
+      points: 10
+      hint: "Check ipconfig and nslookup on the test client"
+      order: 8
+      triggers:
+        - type: command_executed
+          target: test-client
+          match:
+            pattern: "ipconfig|nslookup"
+
+    - id: troubleshoot-dns
+      description: Use DNS debugging tools to troubleshoot resolution
+      points: 10
+      hint: "Use nslookup, Resolve-DnsName, and DNS event logs"
+      order: 9
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Resolve-DnsName|Get-DnsServerDiagnostics"

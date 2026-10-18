@@ -1,0 +1,204 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: "Configuration & Customization"
+  description: |
+    Make Vim your own by learning to configure it. Create and customize your .vimrc
+    file, set essential options, create custom key mappings, and personalize the
+    appearance with color schemes. A well-configured Vim dramatically improves productivity.
+  duration: 45m
+  difficulty: advanced
+  tags: [vim, editor, linux, text-editing, advanced, configuration]
+  version: "1.0.0"
+  author: Kootenai Team
+  category: vim
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: vim-lab-net
+        vlan: 200
+        subnet: 10.20.200.0/24
+        gateway: 10.20.200.1
+        dhcp: false
+
+  vms:
+    - name: vim-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/.vimrc
+          - /tmp/vim-exercises
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: vim-lab-net
+          ip: 10.20.200.10
+      snapshots:
+        - name: initial
+          description: Ubuntu ready for Vim configuration
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Creating .vimrc
+    - id: create-vimrc
+      description: "Create a .vimrc configuration file"
+      points: 10
+      hint: "Create ~/.vimrc - this file is loaded every time Vim starts"
+      order: 1
+      required: true
+      triggers:
+        - type: file_exists
+          target: vim-workstation
+          match:
+            path: /home/student/.vimrc
+
+    # Essential Settings
+    - id: enable-line-numbers
+      description: "Enable line numbers with 'set number'"
+      points: 10
+      hint: "Add 'set number' to .vimrc for line numbers"
+      order: 2
+      required: true
+      depends_on: [create-vimrc]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /home/student/.vimrc
+            regex: "set\\s+(number|nu)"
+
+    - id: enable-syntax
+      description: "Enable syntax highlighting with 'syntax on'"
+      points: 10
+      hint: "Add 'syntax on' to enable syntax highlighting"
+      order: 3
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /home/student/.vimrc
+            contains: "syntax on"
+
+    - id: set-tabstop
+      description: "Configure tab settings (tabstop, shiftwidth, expandtab)"
+      points: 15
+      hint: "set tabstop=4 shiftwidth=4 expandtab - for 4-space tabs"
+      order: 4
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /home/student/.vimrc
+            regex: "set\\s+tabstop"
+
+    - id: enable-search-options
+      description: "Configure search: hlsearch, incsearch, ignorecase"
+      points: 10
+      hint: "set hlsearch incsearch ignorecase smartcase"
+      order: 5
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /home/student/.vimrc
+            regex: "set\\s+hlsearch"
+
+    # Key Mappings
+    - id: create-mapping
+      description: "Create a key mapping using map or noremap"
+      points: 15
+      hint: "nnoremap <leader>w :w<CR> maps leader+w to save"
+      order: 6
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /home/student/.vimrc
+            regex: "(n|v|i)?noremap"
+
+    - id: set-leader
+      description: "Set the leader key using 'let mapleader'"
+      points: 10
+      hint: "let mapleader = ',' or let mapleader = ' ' (space)"
+      order: 7
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /home/student/.vimrc
+            contains: "mapleader"
+
+    - id: escape-mapping
+      description: "Create an easier escape mapping (e.g., jk to Escape)"
+      points: 10
+      hint: "inoremap jk <Esc> - type jk quickly to exit insert mode"
+      order: 8
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /home/student/.vimrc
+            regex: "inoremap\\s+\\w+\\s+<Esc>"
+
+    # Appearance
+    - id: set-colorscheme
+      description: "Set a color scheme"
+      points: 10
+      hint: "colorscheme desert (or try: slate, elflord, industry)"
+      order: 9
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /home/student/.vimrc
+            contains: "colorscheme"
+
+    - id: set-cursorline
+      description: "Highlight the current line with 'set cursorline'"
+      points: 5
+      hint: "set cursorline highlights the line with cursor"
+      order: 10
+      required: false
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /home/student/.vimrc
+            contains: "cursorline"
+
+    # Practical Config
+    - id: backup-settings
+      description: "Configure backup and swap file locations"
+      points: 5
+      hint: "set nobackup noswapfile - or set backupdir and directory"
+      order: 11
+      required: false
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /home/student/.vimrc
+            regex: "set\\s+(no)?(backup|swapfile)"

@@ -1,0 +1,103 @@
+---
+# Ansible playbook for managing web container
+# Usage: ansible-playbook -i inventory.yml web.yml --tags deploy --ask-become-pass
+#
+# Tags:
+#   deploy  - Full deploy (sync files, build, restart)
+#   sync    - Sync local web/ directory to infra VM
+#   build   - Build Docker image only
+#   restart - Restart container only
+#   status  - Check container status
+#   logs    - View container logs
+
+- name: Manage Kootenai web container
+  hosts: infra
+
+  vars:
+    labctl_repo: /home/labadmin/kootenai
+    deploy_dir: "{{ labctl_repo }}/deploy"
+    web_dir: "{{ labctl_repo }}/web"
+    container_name: kootenai-web
+    local_web_dir: "{{ playbook_dir }}/../web"
+
+  tasks:
+    - name: Sync web directory from local machine
+      ansible.posix.synchronize:
+        src: "{{ local_web_dir }}/"
+        dest: "{{ web_dir }}/"
+        delete: no
+        use_ssh_args: yes
+        rsync_opts:
+          - "--exclude=node_modules"
+          - "--exclude=dist"
+          - "--exclude=.git"
+      become: false
+      delegate_to: localhost
+      tags: [deploy, sync]
+
+    - name: Build web Docker image
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        services:
+          - web
+        build: always
+        state: present
+        env_files:
+          - "{{ deploy_dir }}/.env"
+      become: true
+      environment:
+        COMPOSE_DOCKER_CLI_BUILD: "1"
+        DOCKER_BUILDKIT: "1"
+      tags: [deploy, build]
+
+    - name: Restart web container
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        services:
+          - web
+        state: restarted
+      become: true
+      tags: [deploy, restart]
+
+    - name: Start web container
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        services:
+          - web
+        state: present
+      become: true
+      tags: [start]
+
+    - name: Stop web container
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        services:
+          - web
+        state: stopped
+      become: true
+      tags: [stop, never]
+
+    - name: Check web container status
+      community.docker.docker_container_info:
+        name: "{{ container_name }}"
+      become: true
+      register: web_status
+      tags: [status]
+
+    - name: Display container status
+      debug:
+        msg: "Web container is {{ web_status.container.State.Status | default('not running') }} (Health: {{ web_status.container.State.Health.Status | default('unknown') }})"
+      tags: [status]
+
+    - name: View web logs
+      command: docker logs --tail 50 {{ container_name }}
+      become: true
+      register: web_logs
+      changed_when: false
+      tags: [logs, never]
+
+    - name: Display web logs
+      debug:
+        msg: "{{ web_logs.stdout_lines }}"
+      when: web_logs is defined
+      tags: [logs, never]

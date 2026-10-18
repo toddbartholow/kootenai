@@ -1,0 +1,82 @@
+# Binaries
+/api/bin/
+/api/labctl
+*.exe
+
+# Go
+*.test
+coverage.out
+api/coverage.out
+api/coverage.html
+api/cover.out
+api/coverage.tmp
+api/coverage_repos.out
+web/coverage/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node.js
+node_modules/
+dist/
+.vite/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config with secrets
+config/config.yaml
+*.env
+.env.*
+.env.local
+api/.env
+api/.env.*
+api/.env.local
+
+# SSL certificates and keys
+deploy/ssl/
+*.crt
+*.key
+*.pem
+
+# Logs
+*.log
+logs/
+
+# Security scan reports
+deploy/zap-data/
+tools/sectest/reports/
+tools/sectest/output/
+tools/sectest/sectest-results/
+
+# Database dumps (never commit)
+migration/export/*.sql
+migration/export/*.tar.gz
+
+# Build artifacts
+build/
+*.tar.gz
+.playwright-mcp/
+
+# Auto Claude data directory
+.auto-claude/
+
+# External tool repos (not submodules)
+tools/penpot/penpot-mcp/
+
+# CE publish redaction map: holds the literal values being scrubbed,
+# including a real Proxmox API token. Never commit it.
+.github/ce-publish/redaction-map.sed

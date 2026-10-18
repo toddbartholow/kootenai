@@ -1,0 +1,324 @@
+# Kootenai Platform - Security Tools (Optional)
+#
+# This docker-compose adds optional security scanning and vulnerability management tools.
+# Run alongside the main stack or standalone for local security testing.
+#
+# Quick Start:
+#   1. Start DefectDojo:
+#      docker compose -f docker-compose.security.yml up -d
+#
+#   2. Access DefectDojo at http://localhost:8081
+#      Default credentials: admin / (check logs for initial password)
+#
+#   3. Run ZAP scan and import results:
+#      docker compose -f docker-compose.security.yml run --rm zap-scan
+#
+# Usage with main stack:
+#   docker compose -f docker-compose.yml -f docker-compose.security.yml up -d
+#
+
+services:
+  # ============================================================================
+  # DefectDojo - Vulnerability Management Platform
+  # ============================================================================
+  # DefectDojo aggregates security findings from multiple scanners (ZAP, Trivy,
+  # govulncheck, etc.) into a single dashboard with deduplication and tracking.
+  #
+  # Features:
+  #   - Central dashboard for all security findings
+  #   - Trend tracking over time
+  #   - Deduplication of findings across scans
+  #   - JIRA/GitHub issue integration
+  #   - Import from ZAP, Trivy, SARIF, and many other formats
+  # ============================================================================
+
+  defectdojo-db:
+    image: postgres:16-alpine
+    container_name: defectdojo-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: defectdojo
+      POSTGRES_PASSWORD: ${DEFECTDOJO_DB_PASSWORD:?DEFECTDOJO_DB_PASSWORD is required}
+      POSTGRES_DB: defectdojo
+    volumes:
+      - defectdojo_db:/var/lib/postgresql/data
+    networks:
+      - security
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U defectdojo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  defectdojo-redis:
+    image: redis:7-alpine
+    container_name: defectdojo-redis
+    restart: unless-stopped
+    command: ["redis-server", "--requirepass", "${DEFECTDOJO_REDIS_PASSWORD:?DEFECTDOJO_REDIS_PASSWORD is required}"]
+    networks:
+      - security
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${DEFECTDOJO_REDIS_PASSWORD:?DEFECTDOJO_REDIS_PASSWORD is required}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  defectdojo:
+    image: defectdojo/defectdojo-django:2.31.0
+    platform: linux/amd64  # Required for Apple Silicon
+    container_name: defectdojo
+    restart: unless-stopped
+    depends_on:
+      defectdojo-db:
+        condition: service_healthy
+      defectdojo-redis:
+        condition: service_healthy
+    environment:
+      DD_DATABASE_ENGINE: django.db.backends.postgresql
+      DD_DATABASE_HOST: defectdojo-db
+      DD_DATABASE_PORT: "5432"
+      DD_DATABASE_NAME: defectdojo
+      DD_DATABASE_USER: defectdojo
+      DD_DATABASE_PASSWORD: ${DEFECTDOJO_DB_PASSWORD:?DEFECTDOJO_DB_PASSWORD is required}
+      DD_SECRET_KEY: ${DEFECTDOJO_SECRET_KEY:?DEFECTDOJO_SECRET_KEY is required}
+      DD_CREDENTIAL_AES_256_KEY: ${DEFECTDOJO_AES_KEY:?DEFECTDOJO_AES_KEY is required}
+      DD_CELERY_BROKER_URL: redis://:${DEFECTDOJO_REDIS_PASSWORD:?DEFECTDOJO_REDIS_PASSWORD is required}@defectdojo-redis:6379/0
+      DD_ALLOWED_HOSTS: "${DEFECTDOJO_ALLOWED_HOSTS:-localhost,defectdojo}"
+      DD_DEBUG: "False"
+      DD_SOCIAL_AUTH_SHOW_LOGIN_FORM: "True"
+      # GitHub integration (optional)
+      DD_SOCIAL_AUTH_GITHUB_KEY: ${GITHUB_CLIENT_ID:-}
+      DD_SOCIAL_AUTH_GITHUB_SECRET: ${GITHUB_CLIENT_SECRET:-}
+    expose:
+      - "8081"
+    volumes:
+      - defectdojo_media:/app/media
+    networks:
+      - security
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8081/api/v2/', timeout=5)"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 120s
+
+  defectdojo-nginx:
+    image: defectdojo/defectdojo-nginx:2.31.0
+    platform: linux/amd64  # Required for Apple Silicon
+    container_name: defectdojo-nginx
+    restart: unless-stopped
+    depends_on:
+      defectdojo:
+        condition: service_healthy
+    environment:
+      DD_UWSGI_HOST: defectdojo
+      DD_UWSGI_PORT: "3031"
+      NGINX_METRICS_ENABLED: "false"
+    ports:
+      - "${DEFECTDOJO_PORT:-8081}:8080"
+    volumes:
+      - defectdojo_media:/usr/share/nginx/html/media:ro
+    networks:
+      - security
+      - kootenai-external
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/static/jquery/dist/jquery.min.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  defectdojo-celery-beat:
+    image: defectdojo/defectdojo-django:2.31.0
+    platform: linux/amd64  # Required for Apple Silicon
+    container_name: defectdojo-celery-beat
+    restart: unless-stopped
+    depends_on:
+      defectdojo:
+        condition: service_healthy
+    command: celery --app=dojo beat --loglevel=INFO
+    environment:
+      DD_DATABASE_ENGINE: django.db.backends.postgresql
+      DD_DATABASE_HOST: defectdojo-db
+      DD_DATABASE_PORT: "5432"
+      DD_DATABASE_NAME: defectdojo
+      DD_DATABASE_USER: defectdojo
+      DD_DATABASE_PASSWORD: ${DEFECTDOJO_DB_PASSWORD:?DEFECTDOJO_DB_PASSWORD is required}
+      DD_SECRET_KEY: ${DEFECTDOJO_SECRET_KEY:?DEFECTDOJO_SECRET_KEY is required}
+      DD_CREDENTIAL_AES_256_KEY: ${DEFECTDOJO_AES_KEY:?DEFECTDOJO_AES_KEY is required}
+      DD_CELERY_BROKER_URL: redis://:${DEFECTDOJO_REDIS_PASSWORD:?DEFECTDOJO_REDIS_PASSWORD is required}@defectdojo-redis:6379/0
+    networks:
+      - security
+
+  defectdojo-celery-worker:
+    image: defectdojo/defectdojo-django:2.31.0
+    platform: linux/amd64  # Required for Apple Silicon
+    container_name: defectdojo-celery-worker
+    restart: unless-stopped
+    depends_on:
+      defectdojo:
+        condition: service_healthy
+    command: celery --app=dojo worker --loglevel=INFO --concurrency=2
+    environment:
+      DD_DATABASE_ENGINE: django.db.backends.postgresql
+      DD_DATABASE_HOST: defectdojo-db
+      DD_DATABASE_PORT: "5432"
+      DD_DATABASE_NAME: defectdojo
+      DD_DATABASE_USER: defectdojo
+      DD_DATABASE_PASSWORD: ${DEFECTDOJO_DB_PASSWORD:?DEFECTDOJO_DB_PASSWORD is required}
+      DD_SECRET_KEY: ${DEFECTDOJO_SECRET_KEY:?DEFECTDOJO_SECRET_KEY is required}
+      DD_CREDENTIAL_AES_256_KEY: ${DEFECTDOJO_AES_KEY:?DEFECTDOJO_AES_KEY is required}
+      DD_CELERY_BROKER_URL: redis://:${DEFECTDOJO_REDIS_PASSWORD:?DEFECTDOJO_REDIS_PASSWORD is required}@defectdojo-redis:6379/0
+    networks:
+      - security
+
+  defectdojo-initializer:
+    image: defectdojo/defectdojo-django:2.31.0
+    platform: linux/amd64  # Required for Apple Silicon
+    container_name: defectdojo-initializer
+    depends_on:
+      defectdojo-db:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py createsuperuser --noinput --username admin --email admin@localhost || true &&
+             echo 'DefectDojo initialized. Check logs for admin password or reset with: docker exec -it defectdojo python manage.py changepassword admin'"
+    environment:
+      DD_DATABASE_ENGINE: django.db.backends.postgresql
+      DD_DATABASE_HOST: defectdojo-db
+      DD_DATABASE_PORT: "5432"
+      DD_DATABASE_NAME: defectdojo
+      DD_DATABASE_USER: defectdojo
+      DD_DATABASE_PASSWORD: ${DEFECTDOJO_DB_PASSWORD:?DEFECTDOJO_DB_PASSWORD is required}
+      DD_SECRET_KEY: ${DEFECTDOJO_SECRET_KEY:?DEFECTDOJO_SECRET_KEY is required}
+      DD_CREDENTIAL_AES_256_KEY: ${DEFECTDOJO_AES_KEY:?DEFECTDOJO_AES_KEY is required}
+      DJANGO_SUPERUSER_PASSWORD: ${DEFECTDOJO_ADMIN_PASSWORD:?DEFECTDOJO_ADMIN_PASSWORD is required}
+    networks:
+      - security
+
+  # ============================================================================
+  # OWASP ZAP - Security Scanner (On-Demand)
+  # ============================================================================
+  # Run ZAP scans locally and optionally import results to DefectDojo.
+  #
+  # Usage:
+  #   # Quick scan against local API
+  #   docker compose -f docker-compose.security.yml run --rm zap-scan
+  #
+  #   # Full scan with custom target
+  #   docker compose -f docker-compose.security.yml run --rm -e ZAP_TARGET=http://<INFRA_IP>:8080 zap-scan
+  #
+  #   # Just start ZAP UI (accessible at http://localhost:8090)
+  #   docker compose -f docker-compose.security.yml up -d zap
+  # ============================================================================
+
+  zap:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    container_name: zap
+    restart: "no"
+    command: zap-webswing.sh
+    ports:
+      - "${ZAP_PORT:-8090}:8080"
+      - "${ZAP_API_PORT:-8091}:8090"
+    volumes:
+      - zap_data:/zap/wrk
+    networks:
+      - security
+      - kootenai-external
+    profiles:
+      - zap-ui
+
+  zap-scan:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    container_name: zap-scan
+    restart: "no"
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        set -e
+        TARGET=$${ZAP_TARGET:-http://host.docker.internal:8080}
+        echo "=== OWASP ZAP API Scan ==="
+        echo "Target: $$TARGET"
+        echo ""
+
+        # Run API scan
+        zap-api-scan.py -t "$$TARGET/api/v1/" -f openapi \
+          -r /zap/wrk/zap-report.html \
+          -J /zap/wrk/zap-report.json \
+          -w /zap/wrk/zap-report.md \
+          -l WARN \
+          || true
+
+        echo ""
+        echo "=== Scan Complete ==="
+        echo "Reports saved to ./zap-data/"
+        echo "  - zap-report.html (Open in browser)"
+        echo "  - zap-report.json (Import to DefectDojo)"
+        echo "  - zap-report.md   (Markdown summary)"
+        echo ""
+        echo "To import to DefectDojo:"
+        echo "  1. Open http://localhost:8081"
+        echo "  2. Create a Product and Engagement"
+        echo "  3. Import Scan Results -> ZAP Scan"
+        echo "  4. Upload zap-data/zap-report.json"
+    volumes:
+      - zap_data:/zap/wrk
+    networks:
+      - security
+      - kootenai-external
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # ============================================================================
+  # Trivy - Container/Filesystem Scanner (On-Demand)
+  # ============================================================================
+  # Scan container images or the filesystem for vulnerabilities.
+  #
+  # Usage:
+  #   # Scan API image
+  #   docker compose -f docker-compose.security.yml run --rm trivy image kootenai-api:latest
+  #
+  #   # Scan filesystem
+  #   docker compose -f docker-compose.security.yml run --rm trivy fs /project
+  # ============================================================================
+
+  trivy:
+    image: aquasec/trivy:latest
+    container_name: trivy
+    restart: "no"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - trivy_cache:/root/.cache/
+      - ../:/project:ro
+    networks:
+      - security
+    profiles:
+      - trivy
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  defectdojo_db:
+    name: defectdojo-postgres-data
+  defectdojo_media:
+    name: defectdojo-media
+  zap_data:
+    name: zap-data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/zap-data
+  trivy_cache:
+    name: trivy-cache
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  security:
+    name: security-tools
+  kootenai-external:
+    external: true
+    name: kootenai-external

@@ -1,0 +1,149 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: AWS Cloud Fundamentals
+  description: |
+    Get started with Amazon Web Services. This lab covers AWS console navigation,
+    IAM basics, EC2 instance launching, S3 bucket creation, and understanding
+    AWS regions and availability zones.
+  duration: 90m
+  difficulty: beginner
+  tags:
+    - aws
+    - cloud
+    - ec2
+    - s3
+    - iam
+    - fundamentals
+  version: "1.0.0"
+  author: Kootenai Team
+  category: aws
+
+spec:
+  platform: cloudstack
+
+  network:
+    segments:
+      - name: aws-lab-network
+        vlan: 400
+        subnet: 10.40.0.0/24
+        gateway: 10.40.0.1
+        dhcp: true
+
+  vms:
+    - name: aws-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: aws-lab-network
+          ip: 10.40.0.10
+      snapshots:
+        - name: initial
+          description: Workstation with AWS CLI and credentials configured
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: configure-cli
+      description: Configure AWS CLI with credentials
+      points: 10
+      hint: "Run 'aws configure' and enter access key, secret key, and region"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws configure"
+
+    - id: list-regions
+      description: List all available AWS regions
+      points: 10
+      hint: "Use 'aws ec2 describe-regions'"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws ec2 describe-regions"
+
+    - id: create-keypair
+      description: Create an EC2 key pair for SSH access
+      points: 10
+      hint: "Use 'aws ec2 create-key-pair --key-name MyKeyPair'"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws ec2 create-key-pair"
+
+    - id: launch-ec2
+      description: Launch an EC2 instance using the AWS CLI
+      points: 20
+      hint: "Use 'aws ec2 run-instances' with AMI ID and instance type"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws ec2 run-instances"
+
+    - id: create-bucket
+      description: Create an S3 bucket with a unique name
+      points: 15
+      hint: "Use 'aws s3 mb s3://your-unique-bucket-name'"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws s3 mb|aws s3api create-bucket"
+
+    - id: upload-file
+      description: Upload a file to your S3 bucket
+      points: 10
+      hint: "Use 'aws s3 cp localfile s3://bucket-name/'"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws s3 cp"
+
+    - id: create-iam-user
+      description: Create an IAM user with programmatic access
+      points: 15
+      hint: "Use 'aws iam create-user' and 'aws iam create-access-key'"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws iam create-user"
+
+    - id: cleanup
+      description: Terminate EC2 instance and delete S3 bucket
+      points: 10
+      hint: "Always clean up resources to avoid charges"
+      order: 8
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws ec2 terminate-instances|aws s3 rb"

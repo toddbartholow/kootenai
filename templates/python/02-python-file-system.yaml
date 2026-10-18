@@ -1,0 +1,306 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Python File and System Operations
+  description: |
+    Learn to interact with the filesystem and operating system using Python. Master
+    file reading/writing, path manipulation with pathlib, directory traversal, CSV
+    and JSON handling, and running system commands with subprocess.
+  duration: 60m
+  difficulty: beginner
+  tags:
+    - python
+    - files
+    - filesystem
+    - csv
+    - json
+    - subprocess
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Python excels at file and system operations, making it ideal for IT automation.
+      In this lab, you'll learn to read and write files, navigate the filesystem with
+      pathlib, process CSV and JSON data, and execute system commands.
+    learning_objectives:
+      - Read and write text files using open() and context managers
+      - Navigate paths with pathlib
+      - Walk directory trees with os.walk
+      - Process CSV and JSON data
+      - Execute system commands with subprocess
+    prerequisites:
+      - Python Fundamentals (variables, functions, data structures)
+      - Basic Linux filesystem knowledge
+    steps:
+      - id: read-write
+        title: Reading and Writing Files
+        content: |
+          Use context managers for safe file handling.
+
+          ```python
+          # read_write.py
+          # Writing to a file
+          with open("output.txt", "w") as f:
+              f.write("Hello from Python!\n")
+              f.write("Line two\n")
+
+          # Reading a file
+          with open("output.txt", "r") as f:
+              content = f.read()
+              print(content)
+
+          # Reading line by line
+          with open("/etc/passwd", "r") as f:
+              for line in f:
+                  print(line.strip())
+          ```
+      - id: pathlib
+        title: Path Operations with pathlib
+        content: |
+          pathlib provides an object-oriented interface to filesystem paths.
+
+          ```python
+          # paths.py
+          from pathlib import Path
+
+          home = Path.home()
+          lab_dir = home / "python-labs"
+          lab_dir.mkdir(exist_ok=True)
+
+          # Check if path exists
+          print(f"Exists: {lab_dir.exists()}")
+          print(f"Is dir: {lab_dir.is_dir()}")
+
+          # List directory contents
+          for item in Path("/etc").iterdir():
+              print(item.name)
+          ```
+      - id: dir-walk
+        title: Directory Traversal
+        content: |
+          Walk directory trees to find and process files.
+
+          ```python
+          # dir_walk.py
+          import os
+
+          for root, dirs, files in os.walk("/var/log"):
+              level = root.replace("/var/log", "").count(os.sep)
+              indent = " " * 2 * level
+              print(f"{indent}{os.path.basename(root)}/")
+              for file in files:
+                  print(f"{indent}  {file}")
+          ```
+      - id: csv-processing
+        title: CSV Processing
+        content: |
+          Read and write structured data with the csv module.
+
+          ```python
+          # csv_process.py
+          import csv
+
+          # Write CSV
+          data = [
+              ["hostname", "ip", "status"],
+              ["web01", "192.168.1.10", "up"],
+              ["db01", "192.168.1.20", "up"],
+          ]
+          with open("servers.csv", "w", newline="") as f:
+              writer = csv.writer(f)
+              writer.writerows(data)
+
+          # Read CSV
+          with open("servers.csv", "r") as f:
+              reader = csv.DictReader(f)
+              for row in reader:
+                  print(f"{row['hostname']}: {row['ip']}")
+          ```
+      - id: json-handling
+        title: JSON Handling
+        content: |
+          Parse and generate JSON data.
+
+          ```python
+          # json_handle.py
+          import json
+
+          config = {
+              "server": "web01",
+              "port": 8080,
+              "features": ["logging", "auth"]
+          }
+
+          # Write JSON
+          with open("config.json", "w") as f:
+              json.dump(config, f, indent=2)
+
+          # Read JSON
+          with open("config.json", "r") as f:
+              loaded = json.load(f)
+              print(loaded["server"])
+          ```
+      - id: subprocess
+        title: Running System Commands
+        content: |
+          Execute shell commands from Python.
+
+          ```python
+          # sys_cmd.py
+          import subprocess
+
+          result = subprocess.run(
+              ["df", "-h"],
+              capture_output=True,
+              text=True
+          )
+          print(result.stdout)
+
+          # Check return code
+          if result.returncode == 0:
+              print("Command succeeded")
+          ```
+    summary: |
+      You've learned to manipulate files, navigate the filesystem, process structured
+      data formats, and execute system commands from Python.
+    tips:
+      - Always use `with` statements for file operations (auto-closes files)
+      - Prefer pathlib over os.path for new code
+      - Use json.dumps() for string output, json.dump() for file output
+      - Always use subprocess.run() instead of os.system()
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 111
+        subnet: 192.168.111.0/24
+        gateway: 192.168.111.1
+        dhcp: true
+
+  vms:
+    - name: python-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: lab-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/python-labs
+        audit_commands: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: read-file
+      description: Create a Python script that reads and prints a file's contents
+      points: 10
+      hints:
+        - level: 1
+          text: "Use open('filename', 'r') with a with statement, then .read()"
+          penalty: 2
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/read_write.py
+            contains: "open("
+
+    - id: write-file
+      description: Write data to a new file using Python
+      points: 15
+      hints:
+        - level: 1
+          text: "Use open('filename', 'w') and .write() to write content"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/read_write.py
+            regex: "open\\(.*w"
+
+    - id: pathlib-ops
+      description: Use pathlib to create a directory and check if paths exist
+      points: 15
+      hints:
+        - level: 1
+          text: "Import Path from pathlib, use .mkdir() and .exists()"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/paths.py
+            contains: "from pathlib import Path"
+
+    - id: dir-walk
+      description: Walk a directory tree using os.walk and print the structure
+      points: 15
+      hints:
+        - level: 1
+          text: "Use 'for root, dirs, files in os.walk(path):' to traverse"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/dir_walk.py
+            contains: "os.walk"
+
+    - id: csv-process
+      description: Read or write CSV data using the csv module
+      points: 15
+      hints:
+        - level: 1
+          text: "Import csv, use csv.writer() or csv.DictReader()"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/csv_process.py
+            contains: "import csv"
+
+    - id: json-handle
+      description: Parse and generate JSON data using the json module
+      points: 15
+      hints:
+        - level: 1
+          text: "Import json, use json.load()/json.dump() for files"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/json_handle.py
+            contains: "import json"
+
+    - id: subprocess-cmd
+      description: Execute a system command using subprocess.run()
+      points: 15
+      hints:
+        - level: 1
+          text: "Use subprocess.run(['command', 'arg'], capture_output=True, text=True)"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/sys_cmd.py
+            contains: "subprocess.run"

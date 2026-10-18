@@ -1,0 +1,206 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: "Essential Editing Commands"
+  description: |
+    Learn Vim's powerful editing commands that make text manipulation incredibly efficient.
+    Master the delete, yank (copy), put (paste), and change commands. Understand the
+    grammar of Vim commands: operator + motion. Learn to undo mistakes and repeat
+    actions with a single keystroke.
+  duration: 40m
+  difficulty: beginner
+  tags: [vim, editor, linux, text-editing, beginner]
+  version: "1.0.0"
+  author: Kootenai Team
+  category: vim
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: vim-lab-net
+        vlan: 200
+        subnet: 10.20.200.0/24
+        gateway: 10.20.200.1
+        dhcp: false
+
+  vms:
+    - name: vim-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /tmp/vim-exercises
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: vim-lab-net
+          ip: 10.20.200.10
+      snapshots:
+        - name: initial
+          description: Fresh Ubuntu with exercise files
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Delete Operations
+    - id: delete-character
+      description: "Delete a single character using x"
+      points: 10
+      hint: "Position cursor on the character and press 'x' to delete it"
+      order: 1
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/delete-char.txt
+            contains: "DELETE_CHAR_COMPLETE"
+
+    - id: delete-word
+      description: "Delete a word using dw"
+      points: 10
+      hint: "Position cursor at start of word, then press 'd' followed by 'w'"
+      order: 2
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/delete-word.txt
+            contains: "DELETE_WORD_COMPLETE"
+
+    - id: delete-line
+      description: "Delete an entire line using dd"
+      points: 10
+      hint: "Press 'dd' (d twice) to delete the entire current line"
+      order: 3
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/delete-line.txt
+            contains: "DELETE_LINE_COMPLETE"
+
+    - id: delete-to-end
+      description: "Delete from cursor to end of line using D or d$"
+      points: 10
+      hint: "Press 'D' or 'd$' to delete from cursor to end of line"
+      order: 4
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/delete-end.txt
+            contains: "DELETE_END_COMPLETE"
+
+    # Yank (Copy) and Put (Paste)
+    - id: yank-line
+      description: "Copy (yank) a line using yy"
+      points: 10
+      hint: "Press 'yy' to yank (copy) the current line"
+      order: 5
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/yank.txt
+            contains: "YANK_COMPLETE"
+
+    - id: put-text
+      description: "Paste (put) yanked text using p"
+      points: 10
+      hint: "Press 'p' to put (paste) after cursor, 'P' to put before cursor"
+      order: 6
+      required: true
+      depends_on: [yank-line]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/put.txt
+            contains: "PUT_COMPLETE"
+
+    # Change Command
+    - id: change-word
+      description: "Change a word using cw"
+      points: 10
+      hint: "'cw' deletes the word and puts you in Insert mode to type the replacement"
+      order: 7
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/change.txt
+            contains: "CHANGE_COMPLETE"
+
+    - id: change-line
+      description: "Change entire line using cc"
+      points: 10
+      hint: "'cc' clears the line and puts you in Insert mode"
+      order: 8
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/change-line.txt
+            contains: "CHANGE_LINE_COMPLETE"
+
+    # Undo and Redo
+    - id: undo-action
+      description: "Undo an action using u"
+      points: 10
+      hint: "Press 'u' to undo the last change. Press multiple times to undo more."
+      order: 9
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/undo.txt
+            contains: "UNDO_COMPLETE"
+
+    - id: redo-action
+      description: "Redo an undone action using Ctrl-r"
+      points: 10
+      hint: "Press Ctrl-r to redo an action you just undid"
+      order: 10
+      required: true
+      depends_on: [undo-action]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/redo.txt
+            contains: "REDO_COMPLETE"
+
+    # Repeat Command
+    - id: repeat-command
+      description: "Repeat the last command using the dot (.)"
+      points: 10
+      hint: "The '.' command repeats your last change. Very powerful!"
+      order: 11
+      required: false
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/repeat.txt
+            contains: "REPEAT_COMPLETE"

@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: network-security-intro
+  description: Introduction to network security - extends base-linux-lab
+  extends: base-linux-lab  # Inherits from base-linux-lab
+  author: Security Team
+  version: "1.0.0"
+  difficulty: intermediate
+  duration: 120m
+  tags:
+    - security
+    - networking
+  variables:
+    LAB_SUBNET: "192.168.100.0/24"  # Override default subnet
+    LAB_GATEWAY: "192.168.100.1"
+spec:
+  # Add additional VMs (student-vm is inherited from base)
+  vms:
+    - name: target-server
+      template: debian-11
+      resources:
+        cpu: 1
+        memory: 2048
+      networks:
+        - segment: lab-network
+          ip: 192.168.100.100
+  # Objectives are added (not replaced) when inheriting
+  objectives:
+    - id: scan-target
+      description: Successfully scan the target server
+      points: 20
+      hint: "Use nmap to discover open ports"
+      triggers:
+        - type: command_executed
+          target: student-vm
+          match:
+            pattern: nmap
+    - id: identify-vuln
+      description: Identify a vulnerability on the target
+      points: 30
+      triggers:
+        - type: file_content
+          target: student-vm
+          match:
+            path: /home/student/report.txt
+            contains: "CVE-"

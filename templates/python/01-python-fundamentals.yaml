@@ -1,0 +1,242 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Python Fundamentals
+  description: |
+    Start your Python journey with core programming concepts. Learn variables, data types,
+    control flow, functions, and basic data structures like lists and dictionaries.
+  duration: 60m
+  difficulty: beginner
+  tags:
+    - python
+    - programming
+    - scripting
+    - beginner
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Python is one of the most versatile and beginner-friendly programming languages.
+      This lab introduces core Python concepts that form the foundation for IT automation
+      and security scripting.
+    learning_objectives:
+      - Write and execute Python scripts
+      - Use variables and understand data types
+      - Control program flow with conditionals and loops
+      - Create and call functions
+      - Work with lists and dictionaries
+      - Handle basic input and output
+    prerequisites:
+      - Basic command line familiarity
+      - No prior programming experience required
+    steps:
+      - id: hello-python
+        title: Your First Python Script
+        content: |
+          Create and run a simple Python script.
+
+          ```python
+          # hello.py
+          print("Hello, Python!")
+          name = input("What is your name? ")
+          print(f"Welcome, {name}!")
+          ```
+
+          Run with: `python3 hello.py`
+      - id: variables
+        title: Variables and Data Types
+        content: |
+          Learn about Python's dynamic typing and common data types.
+
+          ```python
+          # Numbers
+          age = 25
+          temperature = 98.6
+
+          # Strings
+          name = "Alice"
+
+          # Booleans
+          is_admin = True
+
+          # Check types
+          print(type(age))  # <class 'int'>
+          ```
+      - id: control-flow
+        title: Control Flow
+        content: |
+          Use if statements and loops to control program execution.
+
+          ```python
+          # Conditionals
+          if age >= 18:
+              print("Adult")
+          else:
+              print("Minor")
+
+          # Loops
+          for i in range(5):
+              print(i)
+
+          while count > 0:
+              count -= 1
+          ```
+      - id: functions
+        title: Functions
+        content: |
+          Create reusable blocks of code with functions.
+
+          ```python
+          def greet(name):
+              return f"Hello, {name}!"
+
+          message = greet("Bob")
+          print(message)
+          ```
+      - id: data-structures
+        title: Lists and Dictionaries
+        content: |
+          Work with Python's built-in data structures.
+
+          ```python
+          # Lists
+          servers = ["web01", "db01", "app01"]
+          servers.append("cache01")
+
+          # Dictionaries
+          config = {
+              "host": "192.168.1.1",
+              "port": 8080,
+              "debug": True
+          }
+          print(config["host"])
+          ```
+    summary: |
+      You've learned Python fundamentals including variables, control flow, functions,
+      and data structures.
+    tips:
+      - Python uses indentation for code blocks (4 spaces)
+      - Use meaningful variable names
+      - f-strings make string formatting easy
+      - Lists are ordered and mutable; dictionaries map keys to values
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 110
+        subnet: 192.168.110.0/24
+        gateway: 192.168.110.1
+        dhcp: true
+
+  vms:
+    - name: python-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: lab-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/python-labs
+        audit_commands: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: hello-script
+      description: Create and run a hello world script
+      points: 10
+      hints:
+        - level: 1
+          text: Create hello.py with print("Hello, Python!")
+          penalty: 2
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/hello.py
+            contains: "print"
+
+    - id: run-script
+      description: Execute your Python script
+      points: 10
+      depends_on:
+        - hello-script
+      triggers:
+        - type: command_executed
+          target: python-workstation
+          match:
+            pattern: "python3?.*hello\\.py"
+
+    - id: variables-script
+      description: Create a script demonstrating variables
+      points: 15
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/variables.py
+            regex: "\\w+\\s*=\\s*.+"
+
+    - id: conditional-script
+      description: Write a script with if/else statements
+      points: 15
+      hints:
+        - level: 1
+          text: "Use if condition: and else: with proper indentation"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/conditionals.py
+            contains: "if"
+
+    - id: loop-script
+      description: Create a script with a for or while loop
+      points: 15
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/loops.py
+            regex: "(for|while)\\s+.+:"
+
+    - id: function-script
+      description: Define and call a function
+      points: 20
+      hints:
+        - level: 1
+          text: "Use def function_name(): to define a function"
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/functions.py
+            contains: "def "
+
+    - id: data-structures
+      description: Work with lists and dictionaries
+      points: 15
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/data_structures.py
+            regex: "(\\[|\\{)"

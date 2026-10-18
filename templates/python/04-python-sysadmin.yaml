@@ -1,0 +1,316 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Python for System Administration
+  description: |
+    Automate common system administration tasks with Python. Build log parsers,
+    configuration file editors, disk usage reporters, backup scripts, and service
+    monitors for real-world IT operations.
+  duration: 90m
+  difficulty: intermediate
+  tags:
+    - python
+    - sysadmin
+    - automation
+    - logging
+    - monitoring
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      System administrators spend much of their time on repetitive tasks. Python is the
+      perfect tool for automating these operations. In this lab, you'll build practical
+      scripts for log analysis, configuration management, monitoring, and backups.
+    learning_objectives:
+      - Parse and analyze log files
+      - Read and modify configuration files
+      - Monitor disk usage and system resources
+      - Create automated backup scripts
+      - Audit user accounts
+      - Monitor service status
+    prerequisites:
+      - File & System Operations (file I/O, subprocess)
+      - Basic Linux sysadmin concepts (logs, services, users)
+    steps:
+      - id: log-parser
+        title: Log File Parser
+        content: |
+          Parse system logs to extract useful information.
+
+          ```python
+          # log_parser.py
+          import re
+          from collections import Counter
+
+          errors = Counter()
+          with open("/var/log/syslog", "r") as f:
+              for line in f:
+                  if "error" in line.lower():
+                      # Extract the service name
+                      match = re.search(r'(\w+)\[\d+\]:', line)
+                      if match:
+                          errors[match.group(1)] += 1
+
+          print("Error counts by service:")
+          for service, count in errors.most_common(10):
+              print(f"  {service}: {count}")
+          ```
+      - id: config-editor
+        title: Configuration File Editor
+        content: |
+          Read and modify INI-style configuration files.
+
+          ```python
+          # config_editor.py
+          import configparser
+
+          config = configparser.ConfigParser()
+
+          # Create a config
+          config["server"] = {
+              "host": "0.0.0.0",
+              "port": "8080",
+              "debug": "false"
+          }
+          config["database"] = {
+              "host": "localhost",
+              "port": "5432",
+              "name": "appdb"
+          }
+
+          with open("app.conf", "w") as f:
+              config.write(f)
+
+          # Read and modify
+          config.read("app.conf")
+          config["server"]["debug"] = "true"
+          with open("app.conf", "w") as f:
+              config.write(f)
+          ```
+      - id: disk-reporter
+        title: Disk Usage Reporter
+        content: |
+          Generate disk usage reports with alerts.
+
+          ```python
+          # disk_report.py
+          import shutil
+          import os
+
+          def check_disk(path="/"):
+              usage = shutil.disk_usage(path)
+              total_gb = usage.total / (1024**3)
+              used_gb = usage.used / (1024**3)
+              free_gb = usage.free / (1024**3)
+              pct = (usage.used / usage.total) * 100
+              return total_gb, used_gb, free_gb, pct
+
+          total, used, free, pct = check_disk("/")
+          print(f"Disk Usage Report")
+          print(f"  Total: {total:.1f} GB")
+          print(f"  Used:  {used:.1f} GB ({pct:.1f}%)")
+          print(f"  Free:  {free:.1f} GB")
+          if pct > 80:
+              print("  WARNING: Disk usage above 80%!")
+          ```
+      - id: backup-script
+        title: Automated Backup Script
+        content: |
+          Create timestamped backups of important directories.
+
+          ```python
+          # backup.py
+          import shutil
+          import datetime
+          from pathlib import Path
+
+          source = Path.home() / "python-labs"
+          backup_dir = Path.home() / "backups"
+          backup_dir.mkdir(exist_ok=True)
+
+          timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+          backup_name = backup_dir / f"labs_backup_{timestamp}"
+
+          shutil.copytree(source, backup_name)
+          print(f"Backup created: {backup_name}")
+          ```
+      - id: user-audit
+        title: User Account Audit
+        content: |
+          Audit system user accounts for security review.
+
+          ```python
+          # user_audit.py
+          from pathlib import Path
+
+          print("=== User Account Audit ===")
+          with open("/etc/passwd") as f:
+              for line in f:
+                  parts = line.strip().split(":")
+                  user, uid, shell = parts[0], int(parts[2]), parts[6]
+                  if uid >= 1000 and uid < 65534:
+                      has_home = Path(f"/home/{user}").exists()
+                      print(f"User: {user}, UID: {uid}, Shell: {shell}, Home: {has_home}")
+          ```
+      - id: service-monitor
+        title: Service Monitor
+        content: |
+          Monitor critical services and report their status.
+
+          ```python
+          # service_monitor.py
+          import subprocess
+
+          services = ["ssh", "cron", "systemd-resolved"]
+          for svc in services:
+              result = subprocess.run(
+                  ["systemctl", "is-active", svc],
+                  capture_output=True, text=True
+              )
+              status = result.stdout.strip()
+              icon = "OK" if status == "active" else "FAIL"
+              print(f"  [{icon}] {svc}: {status}")
+          ```
+    summary: |
+      You've built practical sysadmin automation scripts for log analysis, configuration
+      management, disk monitoring, backups, user auditing, and service monitoring.
+    tips:
+      - Use the logging module instead of print() for production scripts
+      - Add error handling for all file operations
+      - Use argparse to make scripts configurable from the command line
+      - Schedule scripts with cron for automated monitoring
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 113
+        subnet: 192.168.113.0/24
+        gateway: 192.168.113.1
+        dhcp: true
+
+  vms:
+    - name: python-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: lab-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/python-labs
+        audit_commands: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: log-parser
+      description: Create a log parser that extracts error counts by service
+      points: 20
+      hints:
+        - level: 1
+          text: "Open /var/log/syslog, search for 'error', use regex to extract service names"
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/log_parser.py
+            regex: "re\\.(search|findall)"
+
+    - id: config-editor
+      description: Build a configuration file reader/writer using configparser
+      points: 15
+      hints:
+        - level: 1
+          text: "Import configparser, use ConfigParser() to read and write .conf files"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/config_editor.py
+            contains: "configparser"
+
+    - id: disk-reporter
+      description: Create a disk usage reporter using shutil.disk_usage()
+      points: 15
+      hints:
+        - level: 1
+          text: "Use shutil.disk_usage('/') to get total, used, and free space"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/disk_report.py
+            contains: "disk_usage"
+
+    - id: backup-script
+      description: Write a backup script that copies a directory with a timestamp
+      points: 15
+      hints:
+        - level: 1
+          text: "Use shutil.copytree() and datetime.now().strftime() for timestamps"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/backup.py
+            contains: "shutil.copytree"
+
+    - id: user-audit
+      description: Create a user audit script that reads /etc/passwd
+      points: 15
+      hints:
+        - level: 1
+          text: "Read /etc/passwd, split each line by ':', filter users with UID >= 1000"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/user_audit.py
+            contains: "/etc/passwd"
+
+    - id: service-monitor
+      description: Build a service monitor that checks if critical services are running
+      points: 15
+      hints:
+        - level: 1
+          text: "Use subprocess.run(['systemctl', 'is-active', service]) and check output"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/service_monitor.py
+            contains: "systemctl"
+
+    - id: run-scripts
+      description: Execute at least one of your automation scripts
+      points: 10
+      hints:
+        - level: 1
+          text: "Run 'python3 script_name.py' to execute your script"
+          penalty: 2
+      triggers:
+        - type: command_executed
+          target: python-workstation
+          match:
+            pattern: "python3?.*(log_parser|config_editor|disk_report|backup|user_audit|service_monitor)"

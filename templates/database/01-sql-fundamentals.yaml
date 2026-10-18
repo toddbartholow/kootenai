@@ -1,0 +1,291 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: SQL Fundamentals
+  description: |
+    Master SQL from the ground up. Learn SELECT queries, filtering with WHERE, sorting,
+    aggregations, joins, and subqueries using standard SQL syntax.
+  duration: 75m
+  difficulty: beginner
+  tags:
+    - database
+    - sql
+    - queries
+    - beginner
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      SQL (Structured Query Language) is the standard language for interacting with
+      relational databases. This lab teaches essential SQL skills that work across
+      PostgreSQL, MySQL, SQLite, and other database systems.
+    learning_objectives:
+      - Write SELECT queries to retrieve data
+      - Filter results with WHERE clauses
+      - Sort and limit query results
+      - Use aggregate functions (COUNT, SUM, AVG, etc.)
+      - Join data from multiple tables
+      - Create subqueries and CTEs
+    prerequisites:
+      - Basic understanding of tables and data
+      - No prior SQL experience required
+    steps:
+      - id: select-basics
+        title: Basic SELECT Queries
+        content: |
+          Retrieve data from a single table.
+
+          ```sql
+          -- Select all columns
+          SELECT * FROM employees;
+
+          -- Select specific columns
+          SELECT first_name, last_name, salary
+          FROM employees;
+
+          -- Use column aliases
+          SELECT first_name AS "First Name",
+                 salary * 12 AS "Annual Salary"
+          FROM employees;
+          ```
+      - id: filtering
+        title: Filtering with WHERE
+        content: |
+          Filter results to match specific criteria.
+
+          ```sql
+          -- Simple condition
+          SELECT * FROM employees WHERE department = 'IT';
+
+          -- Multiple conditions
+          SELECT * FROM employees
+          WHERE department = 'IT' AND salary > 50000;
+
+          -- Pattern matching
+          SELECT * FROM employees
+          WHERE last_name LIKE 'S%';
+
+          -- NULL handling
+          SELECT * FROM employees WHERE manager_id IS NULL;
+          ```
+      - id: sorting-limiting
+        title: Sorting and Limiting Results
+        content: |
+          Order results and limit the number returned.
+
+          ```sql
+          -- Sort ascending
+          SELECT * FROM employees ORDER BY salary ASC;
+
+          -- Sort descending, limit results
+          SELECT * FROM employees
+          ORDER BY salary DESC
+          LIMIT 10;
+
+          -- Multiple sort columns
+          SELECT * FROM employees
+          ORDER BY department, salary DESC;
+          ```
+      - id: aggregates
+        title: Aggregate Functions
+        content: |
+          Calculate summaries across rows.
+
+          ```sql
+          -- Count rows
+          SELECT COUNT(*) FROM employees;
+
+          -- Group by with aggregates
+          SELECT department,
+                 COUNT(*) as employee_count,
+                 AVG(salary) as avg_salary
+          FROM employees
+          GROUP BY department
+          HAVING COUNT(*) > 5;
+          ```
+      - id: joins
+        title: Joining Tables
+        content: |
+          Combine data from multiple related tables.
+
+          ```sql
+          -- Inner join
+          SELECT e.first_name, d.department_name
+          FROM employees e
+          INNER JOIN departments d ON e.department_id = d.id;
+
+          -- Left join
+          SELECT e.first_name, m.first_name AS manager
+          FROM employees e
+          LEFT JOIN employees m ON e.manager_id = m.id;
+          ```
+      - id: subqueries
+        title: Subqueries
+        content: |
+          Use queries within queries for complex filtering.
+
+          ```sql
+          -- Subquery in WHERE
+          SELECT * FROM employees
+          WHERE salary > (SELECT AVG(salary) FROM employees);
+
+          -- Subquery in FROM (derived table)
+          SELECT dept_stats.department, dept_stats.avg_salary
+          FROM (
+              SELECT department, AVG(salary) as avg_salary
+              FROM employees
+              GROUP BY department
+          ) dept_stats
+          WHERE avg_salary > 60000;
+          ```
+    summary: |
+      You've mastered essential SQL skills including queries, filtering, aggregation, and joins.
+    tips:
+      - Always use table aliases in joins for clarity
+      - Use LIMIT during development to avoid large result sets
+      - Be explicit about JOIN type (INNER, LEFT, etc.)
+      - NULL requires special handling with IS NULL/IS NOT NULL
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 120
+        subnet: 192.168.120.0/24
+        gateway: 192.168.120.1
+        dhcp: true
+
+  vms:
+    - name: db-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: lab-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/sql-labs
+        audit_commands: true
+
+    - name: postgres-server
+      template: ubuntu-22.04-server
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: lab-network
+          ip: 192.168.120.10
+      startOnCreate: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: connect-db
+      description: Connect to the PostgreSQL database
+      points: 10
+      hints:
+        - level: 1
+          text: Use psql -h postgres-server -U student -d lab_db
+          penalty: 2
+      triggers:
+        - type: command_executed
+          target: db-workstation
+          match:
+            pattern: "psql"
+
+    - id: select-query
+      description: Write a basic SELECT query
+      points: 10
+      triggers:
+        - type: file_content
+          target: db-workstation
+          match:
+            path: /home/student/sql-labs/queries.sql
+            regex: "SELECT.*FROM"
+
+    - id: where-clause
+      description: Filter results with WHERE
+      points: 15
+      depends_on:
+        - select-query
+      triggers:
+        - type: file_content
+          target: db-workstation
+          match:
+            path: /home/student/sql-labs/queries.sql
+            contains: "WHERE"
+
+    - id: order-limit
+      description: Sort and limit query results
+      points: 10
+      triggers:
+        - type: file_content
+          target: db-workstation
+          match:
+            path: /home/student/sql-labs/queries.sql
+            regex: "ORDER BY.*LIMIT"
+
+    - id: aggregate-query
+      description: Use COUNT, SUM, or AVG functions
+      points: 15
+      hints:
+        - level: 1
+          text: Aggregate functions work on columns, e.g., COUNT(*), AVG(salary)
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: db-workstation
+          match:
+            path: /home/student/sql-labs/queries.sql
+            regex: "(COUNT|SUM|AVG|MIN|MAX)\\s*\\("
+
+    - id: group-by
+      description: Group results with GROUP BY
+      points: 15
+      depends_on:
+        - aggregate-query
+      triggers:
+        - type: file_content
+          target: db-workstation
+          match:
+            path: /home/student/sql-labs/queries.sql
+            contains: "GROUP BY"
+
+    - id: join-query
+      description: Join two or more tables
+      points: 15
+      hints:
+        - level: 1
+          text: Use JOIN ... ON to combine tables on related columns
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: db-workstation
+          match:
+            path: /home/student/sql-labs/queries.sql
+            regex: "JOIN.*ON"
+
+    - id: subquery
+      description: Write a query with a subquery
+      points: 10
+      triggers:
+        - type: file_content
+          target: db-workstation
+          match:
+            path: /home/student/sql-labs/queries.sql
+            regex: "\\(\\s*SELECT"

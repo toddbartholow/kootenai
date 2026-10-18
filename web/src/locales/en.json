@@ -1,0 +1,2927 @@
+{
+  "common": {
+    "notAvailable": "N/A",
+    "unknown": "Unknown",
+    "wizardProgress": {
+      "aria": "Wizard progress",
+      "stepAria": "Step {step}: {label} ({status})",
+      "stepStatus": {
+        "completed": "completed",
+        "current": "current",
+        "upcoming": "upcoming"
+      }
+    }
+  },
+  "notFound": {
+    "heading": "404",
+    "body": "The page you're looking for doesn't exist.",
+    "backAction": "Back to Dashboard"
+  },
+  "errorBoundary": {
+    "heading": "Something went wrong",
+    "fallbackMessage": "An unexpected error occurred",
+    "reload": "Reload Page",
+    "goHome": "Go Home"
+  },
+  "languageSwitcher": {
+    "aria": "Language"
+  },
+  "leaderboardCard": {
+    "title": "Leaderboard",
+    "youTag": "(You)",
+    "labsCompleted": "{count} labs completed",
+    "badges": "badges",
+    "points": "points"
+  },
+  "topology": {
+    "toolbar": {
+      "zoomIn": "Zoom In",
+      "zoomOut": "Zoom Out",
+      "fit": "Fit to View",
+      "export": "Export as Image",
+      "hideTraffic": "Hide Traffic Flow",
+      "showTraffic": "Show Traffic Flow"
+    },
+    "legend": {
+      "running": "Running",
+      "stopped": "Stopped",
+      "starting": "Starting",
+      "network": "Network"
+    },
+    "vm": {
+      "noIp": "No IP",
+      "ipLabel": "IP:",
+      "ipFallback": "N/A",
+      "templateLabel": "Template:",
+      "cpuLabel": "CPU:",
+      "cpuValue": "{count} cores",
+      "memoryLabel": "Memory:",
+      "memoryValue": "{gb} GB",
+      "networksLabel": "Networks:",
+      "networkTag": "{segment}",
+      "networkTagWithIp": "{segment} ({ip})",
+      "doubleClickHint": "Double-click to open console"
+    },
+    "segment": {
+      "subnetLabel": "Subnet:",
+      "vlanLabel": "VLAN:",
+      "gatewayLabel": "Gateway:",
+      "dhcpLabel": "DHCP:",
+      "dhcpEnabled": "Enabled",
+      "dhcpDisabled": "Disabled"
+    }
+  },
+  "organization": {
+    "view": {
+      "fallbackTitle": "Organization",
+      "settingsAction": "Settings",
+      "tabOverview": "Overview",
+      "tabMembers": "Members",
+      "tabTeams": "Teams",
+      "tabFeatures": "Features",
+      "cardMembers": "Members",
+      "cardTeams": "Teams",
+      "cardEdition": "Edition",
+      "editionFallback": "community",
+      "membersCap": "of {max} max",
+      "membersHeading": "Organization Members",
+      "inviteMember": "Invite Member",
+      "columnName": "Name",
+      "columnEmail": "Email",
+      "columnRole": "Role",
+      "columnJoined": "Joined",
+      "joinedPending": "Pending",
+      "teamsHeading": "Teams",
+      "createTeamAction": "Create Team",
+      "teamsEmpty": "No teams yet. Create your first team to organize members.",
+      "teamsMemberCount": "{count} members",
+      "teamNoDescription": "No description",
+      "featuresHeading": "Enabled Features",
+      "featureEnabled": "Enabled",
+      "featureDisabled": "Disabled"
+    },
+    "settings": {
+      "title": "Organization Settings",
+      "subtitle": "Manage {name} settings",
+      "generalHeading": "General Settings",
+      "nameLabel": "Organization Name",
+      "namePlaceholder": "Enter organization name",
+      "slugLabel": "Slug",
+      "slugHelp": "The slug is used in URLs and cannot be changed.",
+      "contactEmailLabel": "Contact Email",
+      "contactEmailPlaceholder": "admin@example.com",
+      "cancel": "Cancel",
+      "submit": "Save Changes",
+      "planHeading": "Plan & Limits",
+      "editionLabel": "Edition",
+      "editionFallback": "community",
+      "maxUsersLabel": "Max Users",
+      "maxUsersUnlimited": "Unlimited",
+      "maxPodsLabel": "Max Pods",
+      "maxPodsUnlimited": "Unlimited",
+      "upgradeAction": "Upgrade Plan",
+      "dangerHeading": "Danger Zone",
+      "dangerBody": "Permanently delete this organization and all its data.",
+      "deleteAction": "Delete Organization"
+    },
+    "switcher": {
+      "placeholder": "Select organization",
+      "aria": "Select organization"
+    }
+  },
+  "team": {
+    "create": {
+      "title": "Create Team",
+      "subtitle": "Create a new team in {org}",
+      "loadFailedFallback": "Failed to create team",
+      "nameLabel": "Team Name",
+      "namePlaceholder": "Enter team name",
+      "nameHint": "At least 2 characters required.",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Describe the team's purpose...",
+      "descriptionAria": "Description",
+      "cancel": "Cancel",
+      "submit": "Create Team"
+    },
+    "view": {
+      "noDescription": "No description",
+      "editAction": "Edit",
+      "statusActive": "Active",
+      "statusInactive": "Inactive",
+      "statMembers": "Members",
+      "statStatus": "Status",
+      "statCreated": "Created",
+      "membersHeading": "Team Members",
+      "addMember": "Add Member",
+      "emptyMembers": "No members in this team yet.",
+      "columnName": "Name",
+      "columnEmail": "Email",
+      "columnRole": "Role",
+      "columnJoined": "Joined",
+      "columnActions": "Actions",
+      "removeTooltip": "Remove from team",
+      "editDialog": {
+        "header": "Edit Team",
+        "nameLabel": "Team Name",
+        "descriptionLabel": "Description",
+        "descriptionAria": "Description",
+        "cancel": "Cancel",
+        "submit": "Save"
+      },
+      "deleteDialog": {
+        "header": "Delete Team",
+        "question": "Are you sure you want to delete this team?",
+        "warning": "This action cannot be undone. All team memberships will be removed.",
+        "cancel": "Cancel",
+        "submit": "Delete"
+      }
+    }
+  },
+  "reservations": {
+    "title": "Reservations",
+    "subtitle": "Schedule and manage your lab reservations",
+    "tabs": {
+      "reserve": "Reserve a VM",
+      "my": "My Reservations",
+      "templates": "Templates"
+    },
+    "reserveAction": "Reserve Selected Time Slot",
+    "my": {
+      "heading": "My Reservations",
+      "subheading": "View and manage your lab reservations",
+      "resources": "{cpu} cores · {memory} GB RAM · {storage} GB storage",
+      "launch": "Launch",
+      "cancel": "Cancel",
+      "viewDetails": "View Details",
+      "emptyTitle": "No reservations",
+      "emptyBody": "Get started by reserving a VM.",
+      "emptyAction": "Reserve a VM"
+    },
+    "templates": {
+      "heading": "Available Templates",
+      "subheading": "Browse available lab templates and their specifications",
+      "selectAria": "Select template: {name}",
+      "durationMinutes": "{count} min"
+    },
+    "statusUpcoming": "Upcoming",
+    "statusActive": "Active",
+    "statusCompleted": "Completed",
+    "confirm": {
+      "header": "Confirm Reservation",
+      "templateLabel": "Template:",
+      "dateLabel": "Date:",
+      "timeLabel": "Time:",
+      "durationLabel": "Duration:",
+      "durationHourSingular": "{count} hour",
+      "durationHourPlural": "{count} hours",
+      "resourcesLabel": "Resources:",
+      "resourcesValue": "{cpu} cores, {memory} GB RAM, {storage} GB storage",
+      "cancel": "Cancel",
+      "submit": "Confirm Reservation"
+    },
+    "calendar": {
+      "nav": {
+        "previousMonthAria": "Previous month",
+        "nextMonthAria": "Next month",
+        "previousWeek": "Previous Week",
+        "nextWeek": "Next Week"
+      },
+      "weekRange": "{start} - {end}, {year}",
+      "dayNames": {
+        "sun": "Sun",
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat"
+      },
+      "slot": {
+        "reservedTitle": "Reserved by {name}",
+        "selectTitle": "Click to select"
+      },
+      "legend": {
+        "available": "Available",
+        "reserved": "Reserved",
+        "selected": "Selected"
+      }
+    },
+    "settings": {
+      "heading": "Reservation Settings",
+      "labTemplateLabel": "Lab Template",
+      "labTemplateAria": "Lab Template",
+      "labMeta": "{difficulty} · {minutes}min estimated",
+      "durationLabel": "Duration",
+      "durationAria": "Duration",
+      "resourcesLabel": "Resources",
+      "cpuLabel": "CPU",
+      "cpuValue": "{count} Cores",
+      "cpuAria": "CPU cores",
+      "memoryLabel": "Memory",
+      "memoryValue": "{count} GB",
+      "memoryAria": "Memory (GB)",
+      "storageLabel": "Storage",
+      "storageValue": "{count} GB",
+      "storageAria": "Storage (GB)",
+      "labIncludes": "Lab Includes",
+      "platformLabel": "Platform"
+    }
+  },
+  "achievementsView": {
+    "loading": "Loading achievements...",
+    "loadingAria": "Loading achievements",
+    "errorTitle": "Failed to load achievements",
+    "loadFailedFallback": "Failed to load achievements",
+    "retryAction": "Retry",
+    "retryAria": "Retry loading achievements",
+    "title": "Achievements",
+    "subtitle": "Unlock badges by completing challenges and milestones",
+    "unlockedSummary": "Achievements unlocked",
+    "statsGroupAria": "Achievement statistics",
+    "pointsFromBadges": "Points from badges",
+    "categoryProgression": "Progression",
+    "categorySkillCard": "Skill-based",
+    "categorySkillFilter": "Skill",
+    "categorySpecial": "Special",
+    "categoryProgressionAria": "Filter by progression achievements",
+    "categorySkillAria": "Filter by skill-based achievements",
+    "categorySpecialAria": "Filter by special achievements",
+    "categoryAriaGroup": "Filter achievements",
+    "categoryAll": "All",
+    "categoryFilterAria": "Filter by category",
+    "showUnlockedOnly": "Show unlocked only",
+    "gridAria": "Achievements",
+    "emptyTitle": "No achievements found",
+    "emptyBody": "Try adjusting your filters",
+    "clearFiltersAction": "Clear Filters",
+    "clearFiltersAria": "Clear all filters"
+  },
+  "leaderboardView": {
+    "title": "Leaderboard",
+    "subtitle": "See how you rank against other learners",
+    "timeRangeAll": "All Time",
+    "timeRangeMonth": "This Month",
+    "timeRangeWeek": "This Week",
+    "tryAgain": "Try Again",
+    "loadFailed": "Failed to load leaderboard",
+    "statTotalLearners": "Total Learners",
+    "statYourRank": "Your Rank",
+    "statYourPoints": "Your Points",
+    "columnRank": "Rank",
+    "columnLearner": "Learner",
+    "columnLabs": "Labs",
+    "columnAchievements": "Achievements",
+    "columnPoints": "Points",
+    "youTag": "(You)",
+    "loadMore": "Load More",
+    "emptyTitle": "No leaderboard data yet",
+    "emptyBody": "Complete labs to earn points and appear on the leaderboard!",
+    "yourPositionHeading": "Your Position",
+    "labsCompleted": "{count} labs completed",
+    "pointsSuffix": "{points} points",
+    "avatarFallback": "?"
+  },
+  "achievementCard": {
+    "progressLabel": "Progress",
+    "pointsEarned": "+{points} pts"
+  },
+  "objectiveItem": {
+    "pointsSuffix": "{points} pts",
+    "completedAt": "Completed {when}"
+  },
+  "format": {
+    "duration": {
+      "minutes": "{count}m | {count}m",
+      "hours": "{count}h | {count}h",
+      "hoursMinutes": "{hours}h {minutes}m"
+    }
+  },
+  "difficulty": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert",
+    "allFilter": "All Difficulties"
+  },
+  "platform": {
+    "proxmox": "Proxmox",
+    "cloudstack": "CloudStack",
+    "allFilter": "All Platforms"
+  },
+  "visibility": {
+    "global": "Global (Everyone)",
+    "organization": "Organization Only",
+    "private": "Private"
+  },
+  "session": {
+    "fallbackTitle": "Lab Session",
+    "idLabel": "Session:",
+    "actions": {
+      "goBackAria": "Go back to previous page",
+      "instructions": "Instructions",
+      "instructionsAria": "Open lab instructions",
+      "submit": "Submit",
+      "end": "End"
+    },
+    "workspace": {
+      "title": "Lab Workspace",
+      "wsStatus": {
+        "live": "Live",
+        "offline": "Offline",
+        "onlineAria": "Real-time updates connected",
+        "offlineAria": "Real-time updates offline"
+      },
+      "progress": {
+        "regionLabel": "Lab progress summary",
+        "progressCell": "Progress",
+        "pointsCell": "Points",
+        "checksCell": "Checks"
+      },
+      "loadingVms": "Loading VMs...",
+      "noVms": {
+        "title": "No virtual machines found",
+        "hint": "The pod may still be provisioning"
+      },
+      "noVmSelected": {
+        "title": "Select a VM to open its console",
+        "hint": "Click on a running VM above to connect"
+      },
+      "quickActions": {
+        "fullConsole": "Full Console",
+        "fullConsoleAria": "Open full console in new window with all VMs",
+        "resetInitial": "Reset to Initial State",
+        "openInWindow": "Open in Window"
+      },
+      "nudge": {
+        "heading": "Having trouble with \"{name}\"?",
+        "body": "You've been working on this for {minutes} minutes. A hint is available.",
+        "showHint": "Show Hint",
+        "dismiss": "Dismiss"
+      }
+    },
+    "panels": {
+      "tablistAria": "Session panels",
+      "assessment": "Assessment",
+      "questions": "Questions",
+      "completion": "Submit",
+      "pod": "Pod",
+      "snapshots": "Snapshots",
+      "noPodAssociated": "No pod associated with this session"
+    },
+    "console": {
+      "connectingTo": "Connecting to {name}...",
+      "connectionFailedSummary": "Connection Failed"
+    },
+    "instructionsDialog": {
+      "fallbackHeader": "Lab Instructions"
+    },
+    "confirm": {
+      "reset": {
+        "header": "Reset Lab",
+        "message": "Reset all VMs to their initial state? This will discard any changes."
+      }
+    },
+    "notifications": {
+      "resetting": {
+        "title": "Resetting",
+        "message": "Reverting all VMs to initial state..."
+      },
+      "resetComplete": {
+        "title": "Reset Complete",
+        "message": "All VMs reverted to initial state"
+      },
+      "resetFailed": "Failed to reset VMs",
+      "loadPodFailed": "Failed to load pod details"
+    }
+  },
+  "sessionsList": {
+    "title": "Sessions",
+    "subtitle": "View and manage lab sessions",
+    "actions": {
+      "cleanupStale": "Clean Up Stale ({count})",
+      "refresh": "Refresh",
+      "view": "View",
+      "end": "End",
+      "delete": "Delete"
+    },
+    "filters": {
+      "heading": "Filters",
+      "userIdLabel": "User ID",
+      "userIdPlaceholder": "Filter by user ID...",
+      "statusLabel": "Status",
+      "clearFilters": "Clear Filters",
+      "status": {
+        "all": "All Sessions",
+        "active": "Active Only",
+        "completed": "Completed"
+      }
+    },
+    "fields": {
+      "user": "User",
+      "pod": "Pod",
+      "started": "Started",
+      "duration": "Duration",
+      "scoreProgress": "Score Progress",
+      "scoreValue": "{earned} / {total} points ({percent}%)",
+      "passed": "Passed",
+      "notPassed": "Not passed",
+      "staleTag": "stale"
+    },
+    "empty": {
+      "title": "No sessions found",
+      "hintFiltered": "Try adjusting your filters",
+      "hintEmpty": "Start a session from a pod to see it here"
+    },
+    "confirm": {
+      "end": {
+        "header": "End Session",
+        "message": "Are you sure you want to end this session? This will finalize the grade."
+      },
+      "delete": {
+        "header": "Delete Session",
+        "message": "Are you sure you want to delete this session? This action cannot be undone."
+      },
+      "cleanup": {
+        "header": "Clean Up Stale Sessions",
+        "message": "This will end {count} active session(s) that have been running for more than 24 hours. Continue?"
+      }
+    },
+    "toasts": {
+      "ended": {
+        "summary": "Session Ended",
+        "detailPassed": "Score: {points} points. Passed!",
+        "detailNotPassed": "Score: {points} points. Did not pass."
+      },
+      "deleted": {
+        "summary": "Session Deleted",
+        "detail": "The session has been permanently removed."
+      },
+      "deleteFailed": {
+        "summary": "Delete Failed",
+        "detail": "Failed to delete the session. Please try again."
+      },
+      "cleanedUp": {
+        "summary": "Stale Sessions Cleaned",
+        "detail": "{count} session(s) ended."
+      },
+      "cleanupFailed": {
+        "summary": "Cleanup Failed",
+        "detail": "Failed to clean up stale sessions. You may need admin permissions."
+      }
+    },
+    "errors": {
+      "loadFailed": "Failed to load sessions",
+      "endFailed": "Failed to end session"
+    }
+  },
+  "podDetail": {
+    "backLabel": "Back to Pods",
+    "wsStatus": {
+      "live": "Live",
+      "offline": "Offline"
+    },
+    "fields": {
+      "platform": "Platform",
+      "owner": "Owner",
+      "created": "Created",
+      "expires": "Expires"
+    },
+    "actions": {
+      "startPod": "Start Pod",
+      "stopPod": "Stop Pod",
+      "startSession": "Start Session",
+      "resetAllVms": "Reset All VMs",
+      "destroy": "Destroy"
+    },
+    "confirm": {
+      "destroy": {
+        "header": "Confirm Destroy",
+        "message": "Are you sure you want to destroy this pod? This cannot be undone.",
+        "accept": "Destroy",
+        "reject": "Cancel"
+      },
+      "stop": {
+        "header": "Confirm Stop",
+        "message": "Are you sure you want to stop this pod? VMs will be powered off but data will be preserved.",
+        "accept": "Stop",
+        "reject": "Cancel"
+      }
+    },
+    "vms": {
+      "cardTitle": "Virtual Machines",
+      "listTab": "VM List",
+      "topologyTab": "Network Topology",
+      "empty": "No VMs in this pod",
+      "topologyEmpty": "No topology data available"
+    },
+    "notFound": {
+      "title": "Pod not found",
+      "goBack": "Go back to pods"
+    },
+    "console": {
+      "loadingVnc": "Loading VNC console for {name}...",
+      "connectionFailedTitle": "Connection Failed"
+    },
+    "errors": {
+      "loadFailed": "Failed to load pod details",
+      "topologyFailed": "Failed to load network topology",
+      "startSessionFailed": "Failed to start session",
+      "resetFailed": "Failed to reset pod",
+      "destroyFailed": "Failed to destroy pod",
+      "startFailed": "Failed to start pod",
+      "stopFailed": "Failed to stop pod"
+    }
+  },
+  "dashboard": {
+    "toolbar": {
+      "welcome": "Welcome back, {name}!",
+      "subtitle": "Track your progress and continue learning",
+      "browsePathways": "Browse Pathways",
+      "startLab": "Start a Lab",
+      "lockAria": "Lock dashboard",
+      "unlockAria": "Unlock dashboard for editing"
+    },
+    "widgets": {
+      "stats": "Stats Overview",
+      "insights": "Learning Insights",
+      "enrollments": "My Learning Pathways",
+      "achievements": "Recent Achievements",
+      "sessions": "Active Lab Sessions",
+      "recommendations": "Recommended for You",
+      "quickActions": "Quick Actions"
+    },
+    "stats": {
+      "totalPoints": "Total Points",
+      "achievements": "Achievements",
+      "learningTime": "Learning Time",
+      "activeSessions": "Active Sessions",
+      "runningPods": "Running Pods",
+      "availableLabs": "Available Labs"
+    },
+    "enrollments": {
+      "empty": "You haven't enrolled in any pathways yet",
+      "exploreAction": "Explore Pathways",
+      "viewAll": "View all",
+      "modulesProgress": "{completed} of {total} modules completed",
+      "progressLabel": "Progress",
+      "startedAt": "Started {when}",
+      "unknownPathway": "Unknown Pathway"
+    },
+    "achievements": {
+      "empty": "Complete labs to earn achievements!",
+      "viewAll": "View all",
+      "defaultName": "Achievement",
+      "earnedAt": "Earned {when}"
+    },
+    "sessions": {
+      "empty": "No active lab sessions",
+      "startAction": "Start a Lab",
+      "viewAll": "View all",
+      "itemTitle": "Lab Session",
+      "startedAt": "Started {when}"
+    },
+    "recommendations": {
+      "empty": "Complete more labs to get personalized recommendations!",
+      "resumeTag": "Resume",
+      "popularTag": "Popular",
+      "featuredTitle": "Featured Pathways",
+      "featuredTag": "Featured"
+    },
+    "quickActions": {
+      "browseLabs": "Browse Labs",
+      "myPods": "My Pods",
+      "viewProgress": "View Progress",
+      "pathwayPreview": "Pathway Preview"
+    },
+    "availableWidgets": {
+      "heading": "Available Widgets",
+      "addAria": "Add {label} widget"
+    },
+    "widgetSettings": {
+      "heading": "Widget Settings",
+      "widthLabel": "Width",
+      "widthAria": "Set width to {size}",
+      "widthOptions": {
+        "small": "1/3",
+        "large": "2/3",
+        "full": "Full"
+      },
+      "itemsLabel": "Items to show"
+    },
+    "skillRadar": {
+      "empty": "Complete labs with tags to see skill proficiency"
+    }
+  },
+  "console": {
+    "status": {
+      "connected": "Connected",
+      "connecting": "Connecting...",
+      "disconnected": "Disconnected",
+      "reconnecting": "Reconnecting ({current}/{max})..."
+    },
+    "loading": "Loading console...",
+    "error": {
+      "connectionFailed": "Connection Failed",
+      "failedToConnect": "Failed to connect",
+      "connectionLost": "Connection lost unexpectedly",
+      "maxAttempts": "Connection failed after {max} attempts. Click to retry."
+    },
+    "actions": {
+      "reconnect": "Reconnect",
+      "retryConnection": "Retry Connection",
+      "disconnect": "Disconnect",
+      "close": "Close",
+      "closeConsole": "Close Console",
+      "toggleFullscreen": "Toggle Fullscreen",
+      "sendCtrlAltDel": "Send Ctrl+Alt+Del",
+      "ctrlAltDel": "Ctrl+Alt+Del",
+      "openProxmox": "Open Proxmox",
+      "connect": "Connect",
+      "settings": "Settings",
+      "expandToolbar": "Expand toolbar",
+      "collapseToolbar": "Collapse toolbar"
+    },
+    "disconnected": {
+      "title": "Console disconnected.",
+      "hint": "Click reconnect or use Proxmox console directly."
+    },
+    "labels": {
+      "type": "Type:",
+      "host": "Host:",
+      "port": "Port:",
+      "node": "Node:",
+      "vmid": "VM ID:",
+      "name": "Name:",
+      "platformId": "Platform ID:",
+      "status": "Status:",
+      "ip": "IP:",
+      "connectionDetails": "Connection Details:"
+    },
+    "vnc": {
+      "title": "VNC Console",
+      "connectDescription": "Connect to {name} via VNC console.",
+      "openNewTab": "Open Proxmox Console (New Tab)",
+      "copyProxyUrl": "Copy API Proxy URL",
+      "copyDirectUrl": "Copy Direct Proxmox URL",
+      "copiedProxy": "Proxy WebSocket URL copied to clipboard!",
+      "copiedDirect": "WebSocket URL copied to clipboard!",
+      "noLibrary": "noVNC library not available. Use external client or the Proxmox console link below.",
+      "noProxyUrl": "No VNC proxy URL available",
+      "note": "The Proxmox console link requires you to be logged into Proxmox. The API proxy URLs can be used with a noVNC client without Proxmox login."
+    },
+    "spice": {
+      "title": "SPICE Console",
+      "vmDescription": "This VM uses SPICE. Download the connection file and open it with a SPICE client (like virt-viewer).",
+      "downloadConnection": "Download SPICE Connection File",
+      "downloadVv": "Download .vv",
+      "downloadVvTitle": "Download .vv file for virt-viewer",
+      "downloadNative": "Download for Native Client",
+      "downloadNativeTitle": "Download SPICE connection file for native client",
+      "loading": "Loading SPICE console...",
+      "establishing": "Establishing SPICE connection...",
+      "connecting": "Connecting to SPICE console...",
+      "noProxy": "No SPICE proxy URL available",
+      "containerNotReady": "SPICE screen container not ready",
+      "authFailed": "SPICE authentication failed. Please try reconnecting.",
+      "connectionClosed": "SPICE connection closed unexpectedly",
+      "notSupported": "VM does not support SPICE (type: {type})",
+      "accessFailed": "Failed to get SPICE console access",
+      "disconnectedTitle": "SPICE console disconnected.",
+      "disconnectedHint": "Click reconnect, download .vv file for virt-viewer, or use Proxmox console.",
+      "connectionInfo": "Connection Info",
+      "reconnectTitle": "Reconnect to console"
+    },
+    "inline": {
+      "vmActions": "VM Actions",
+      "start": "Start",
+      "reboot": "Reboot",
+      "shutdown": "Shutdown",
+      "forceStop": "Force Stop",
+      "ctrlSticky": "Toggle Ctrl key (sticky)",
+      "altSticky": "Toggle Alt key (sticky)",
+      "sendTab": "Send Tab key",
+      "sendEscape": "Send Escape key",
+      "sendCtrlAltDel": "Send Ctrl+Alt+Delete",
+      "enterFullscreen": "Enter fullscreen",
+      "exitFullscreen": "Exit fullscreen",
+      "openFloating": "Open in floating window",
+      "connectingTo": "Connecting to {name}...",
+      "demoTitle": "Demo Mode",
+      "demoBody": "The VM console is not available in demo mode. In a production environment, you would see a live VNC console to the virtual machine here.",
+      "vmInfo": "VM Information:",
+      "httpsTitle": "HTTPS Required",
+      "httpsBody": "The VNC console requires a secure (HTTPS) connection. Please access this site using HTTPS to use the console feature.",
+      "httpsTryAnyway": "Try Anyway",
+      "notAvailable": "VM console not available - the VM may not exist or is not running",
+      "noLibrary": "noVNC library not available",
+      "demoNotAvailable": "Console not available in demo mode",
+      "failedPreload": "Failed to pre-load noVNC",
+      "toast": {
+        "ctrlAltDelSent": "Sent Ctrl+Alt+Del",
+        "actionInitiated": "{name} {action} initiated",
+        "actionInProgress": "{action} {name}...",
+        "actionFailed": "Failed to {action} {name}: {reason}",
+        "connectionLost": "Connection lost (attempt {current}/{max})",
+        "securityError": "Security error: {reason}"
+      }
+    }
+  },
+  "pods": {
+    "title": "My Pods",
+    "subtitle": "Manage your active lab environments",
+    "actions": {
+      "create": "Create Pod",
+      "refresh": "Refresh",
+      "browseLabs": "Browse Labs"
+    },
+    "empty": {
+      "title": "No Active Pods",
+      "hint": "Launch a lab to create your first pod"
+    },
+    "card": {
+      "viewAria": "View pod {name}",
+      "vmsCount": "{count} VMs",
+      "expiresLabel": "Expires: {when}"
+    },
+    "actionLabels": {
+      "start": "Start",
+      "stop": "Stop",
+      "reset": "Reset",
+      "destroy": "Destroy",
+      "remove": "Remove"
+    },
+    "confirm": {
+      "remove": {
+        "header": "Remove Pod",
+        "message": "Remove pod \"{name}\" from your list? This will clean up the record."
+      },
+      "destroy": {
+        "header": "Confirm Destroy",
+        "message": "Are you sure you want to destroy pod \"{name}\"? This cannot be undone."
+      },
+      "stop": {
+        "header": "Confirm Stop",
+        "message": "Are you sure you want to stop pod \"{name}\"? VMs will be powered off but data will be preserved."
+      }
+    },
+    "errors": {
+      "noVmsToReset": "No VMs to reset"
+    },
+    "create": {
+      "title": "Create Pod",
+      "subtitle": "Launch a new lab environment",
+      "errors": {
+        "loadFailed": "Failed to load available labs. Please try again.",
+        "createFailed": "Failed to create pod. Please try again."
+      },
+      "toast": {
+        "createdSummary": "Pod Created",
+        "createdDetail": "Pod {id} is now provisioning"
+      },
+      "form": {
+        "labLabel": "Lab Template",
+        "labPlaceholder": "Select a lab template",
+        "labFilterPlaceholder": "Search labs...",
+        "durationMinutes": "{count} min",
+        "ownerLabel": "Owner",
+        "ownerPlaceholder": "Enter owner name",
+        "ownerHint": "Pod will be created for your account"
+      },
+      "details": {
+        "heading": "Lab Details",
+        "platform": "Platform:",
+        "duration": "Duration:",
+        "difficulty": "Difficulty:",
+        "maxPoints": "Max Points:"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "submit": "Create Pod"
+      },
+      "info": {
+        "heading": "About Pods",
+        "body": "A pod is your personal lab environment containing one or more virtual machines. When you create a pod, the VMs are cloned from templates and started automatically. You can stop, reset, or destroy your pods at any time."
+      }
+    }
+  },
+  "labs": {
+    "title": "Lab Catalog",
+    "subtitle": "Browse and launch available lab environments",
+    "resultCount": "{shown} of {total} labs",
+    "search": {
+      "placeholder": "Search labs by name, description, or tags...",
+      "ariaLabel": "Search labs by name, description, or tags"
+    },
+    "filters": {
+      "difficulty": "Difficulty",
+      "platform": "Platform",
+      "clear": "Clear",
+      "clearFilters": "Clear Filters"
+    },
+    "empty": {
+      "none": {
+        "title": "No labs available",
+        "hint": "Check back later or contact your administrator."
+      },
+      "noMatches": {
+        "title": "No labs match your filters",
+        "hint": "Try adjusting your search or filter criteria."
+      }
+    },
+    "card": {
+      "viewDetailsAria": "View details for {name}",
+      "detailsAction": "Details",
+      "launchAction": "Launch",
+      "moreTags": "+{count}"
+    },
+    "errors": {
+      "loadFailed": "Failed to load lab catalog. Please try again later.",
+      "mustBeLoggedIn": "You must be logged in to launch a lab.",
+      "launchFailed": "Failed to launch {name}. Please try again."
+    }
+  },
+  "login": {
+    "title": "Kootenai Platform",
+    "subtitle": "Sign in to your account",
+    "formLabel": "Login Form",
+    "ariaForm": "Login form",
+    "oauth": {
+      "promptHeading": "Sign in with",
+      "continueWith": "Continue with {provider}",
+      "ariaSignInWith": "Sign in with {provider}",
+      "divider": "or continue with email"
+    },
+    "email": {
+      "label": "Email address",
+      "placeholder": "you{'@'}example.com",
+      "requiredHint": "(required)",
+      "missingError": "Email is required"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password",
+      "forgotLink": "Forgot password?"
+    },
+    "submit": {
+      "idle": "Sign in",
+      "pending": "Signing in...",
+      "ariaIdle": "Sign in to your account",
+      "ariaPending": "Signing in, please wait"
+    },
+    "demo": {
+      "label": "Try Demo Account",
+      "aria": "Sign in with demo account (no password required)"
+    },
+    "footerHelp": "Need help? Contact your administrator for account access.",
+    "errors": {
+      "fallback": "Login failed"
+    }
+  },
+  "app": {
+    "brand": "Kootenai",
+    "skipToContent": "Skip to main content",
+    "mainContentAria": "Main content",
+    "closeSidebarAria": "Close sidebar"
+  },
+  "topbar": {
+    "toggleSidebarAria": "Toggle sidebar menu",
+    "lightModeAria": "Switch to light mode",
+    "darkModeAria": "Switch to dark mode",
+    "lightModeTooltip": "Light mode",
+    "darkModeTooltip": "Dark mode",
+    "openUserMenuAria": "Open user menu",
+    "userMenu": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "organization": "Organization",
+      "logout": "Logout"
+    }
+  },
+  "sidebar": {
+    "navAria": "Primary navigation"
+  },
+  "menu": {
+    "sections": {
+      "home": "Home",
+      "learning": "Learning",
+      "myWork": "My Work",
+      "progress": "Progress",
+      "schedule": "Schedule",
+      "instructor": "Instructor",
+      "administration": "Administration"
+    },
+    "items": {
+      "dashboard": "Dashboard",
+      "pathways": "Pathways",
+      "labCatalog": "Lab Catalog",
+      "myPods": "My Pods",
+      "createPod": "Create Pod",
+      "sessions": "Sessions",
+      "achievements": "Achievements",
+      "leaderboard": "Leaderboard",
+      "reservations": "Reservations",
+      "classDashboard": "Class Dashboard",
+      "createPathway": "Create Pathway",
+      "createLab": "Create Lab",
+      "userManagement": "User Management",
+      "labTemplates": "Lab Templates",
+      "analytics": "Analytics",
+      "eventMonitoring": "Event Monitoring",
+      "systemHealth": "System Health",
+      "proxmoxVms": "Proxmox VMs"
+    }
+  },
+  "pod": {
+    "vmSelector": {
+      "heading": "Virtual Machines",
+      "countBadge": "{count} VMs",
+      "groupAria": "Virtual machine selection",
+      "itemAria": "Select {name} - {status}",
+      "itemAriaSelected": "Select {name} - {status} (currently selected)",
+      "statusParen": "({status})"
+    },
+    "vmListItem": {
+      "ipLabel": "IP: {address}",
+      "snapshotLabel": "Snapshot: {name}",
+      "powerControlsHeading": "Power Controls",
+      "consoleHeading": "Console",
+      "consoleButton": "Console",
+      "consoleMenu": {
+        "novnc": "noVNC Console",
+        "downloadSpice": "Download SPICE File"
+      }
+    },
+    "vmPower": {
+      "actions": {
+        "start": "Start",
+        "stop": "Stop",
+        "suspend": "Suspend",
+        "resume": "Resume"
+      },
+      "confirm": {
+        "stop": {
+          "header": "Confirm Stop",
+          "message": "Stop VM \"{name}\"? This will power off the VM.",
+          "accept": "Stop",
+          "reject": "Cancel"
+        }
+      },
+      "toasts": {
+        "started": { "summary": "VM Started", "detail": "{name} is starting" },
+        "stopped": { "summary": "VM Stopped", "detail": "{name} has been stopped" },
+        "suspended": { "summary": "VM Suspended", "detail": "{name} has been suspended" },
+        "resumed": { "summary": "VM Resumed", "detail": "{name} is resuming" }
+      },
+      "errors": {
+        "startFailed": "Failed to start VM {name}",
+        "stopFailed": "Failed to stop VM {name}",
+        "suspendFailed": "Failed to suspend VM {name}",
+        "resumeFailed": "Failed to resume VM {name}"
+      }
+    }
+  },
+  "checkpoints": {
+    "heading": "Checkpoints",
+    "itemAria": "{name}: {status}, {score} of {maxScore} points",
+    "pointsTag": "{score}/{maxScore} pts",
+    "hint": {
+      "label": "Hint {level}/{total}:",
+      "pointsDeducted": "{count} point deducted | {count} points deducted",
+      "getNext": "Get Hint {level}/{total}",
+      "allRevealed": "All hints revealed"
+    }
+  },
+  "labTemplate": {
+    "delete": {
+      "header": "Delete Lab Template",
+      "confirmQuestion": "Are you sure you want to delete this template?",
+      "confirmDetail": "{name} will be permanently deleted. This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "form": {
+      "createHeader": "Create Lab Template",
+      "editHeader": "Edit Lab Template",
+      "submitCreate": "Create",
+      "submitEdit": "Save Changes",
+      "cancel": "Cancel",
+      "specLabelCreate": "Spec (YAML) *",
+      "specLabelEdit": "Spec (YAML/JSON)",
+      "specPlaceholder": "Lab specification in YAML format",
+      "fields": {
+        "nameLabel": "Name *",
+        "namePlaceholder": "Lab name",
+        "nameAria": "Name",
+        "versionLabel": "Version *",
+        "versionPlaceholder": "1.0.0",
+        "versionAria": "Version",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Lab description",
+        "descriptionAria": "Description",
+        "platformLabel": "Platform *",
+        "platformAria": "Platform",
+        "difficultyLabel": "Difficulty",
+        "difficultyAria": "Difficulty",
+        "visibilityLabel": "Visibility",
+        "visibilityAria": "Visibility",
+        "durationLabel": "Duration (minutes)",
+        "maxPointsLabel": "Max Points",
+        "passThresholdLabel": "Pass Threshold (%)",
+        "activeLabel": "Active (visible in catalog)"
+      }
+    },
+    "spec": {
+      "header": "Spec: {name}",
+      "close": "Close"
+    },
+    "import": {
+      "header": "Import Lab Template",
+      "description": "Paste a lab template YAML definition to import it as a new template.",
+      "yamlPlaceholder": "Paste YAML here...",
+      "yamlAria": "Lab template YAML",
+      "cancel": "Cancel",
+      "import": "Import"
+    },
+    "history": {
+      "header": "Version History: {name}",
+      "empty": "No version history available. Versions are created automatically when you edit a template.",
+      "versionLabel": "Version {number}",
+      "restore": "Restore",
+      "close": "Close"
+    }
+  },
+  "assessment": {
+    "panel": {
+      "resultsHeading": "Assessment Results",
+      "pointsEarned": "Points Earned",
+      "itemsFraction": "{passed}/{total} Items",
+      "checking": "Checking...",
+      "checkMyWork": "Check My Work",
+      "lastChecked": "Last checked: {when}",
+      "componentScoresHeading": "Component Scores",
+      "componentItems": "{passed}/{total} items",
+      "errorTypes": {
+        "network": "Connection Error",
+        "server": "Server Error",
+        "generic": "Assessment Error"
+      },
+      "dismissErrorAria": "Dismiss error",
+      "errorCode": "Error {code}",
+      "tryAgain": "Try again"
+    },
+    "tree": {
+      "heading": "Assessment Items",
+      "empty": "No assessment results yet. Click \"Check My Work\" to run the assessment.",
+      "deviceTypeParen": "({type})",
+      "pointsFraction": "{earned}/{max} pts",
+      "expectedLabel": "Expected:",
+      "actualLabel": "Actual:",
+      "emptyValue": "(empty)"
+    }
+  },
+  "achievementUnlock": {
+    "header": "Achievement Unlocked",
+    "multiProgress": "{current} of {total}",
+    "pointsAwarded": "+{points} points",
+    "totalPointsHeading": "Total Points Earned",
+    "totalPointsValue": "+{points}",
+    "next": "Next",
+    "finish": "Awesome!"
+  },
+  "achievementTier": {
+    "bronze": "Bronze",
+    "silver": "Silver",
+    "gold": "Gold",
+    "platinum": "Platinum",
+    "diamond": "Diamond"
+  },
+  "snapshot": {
+    "sectionHeading": "Snapshots",
+    "actions": {
+      "revert": "Revert to Snapshot",
+      "create": "Create Snapshot",
+      "resetInitial": "Reset to Initial",
+      "inlineRevert": "Revert",
+      "inlineDelete": "Delete"
+    },
+    "emptyList": "No snapshots available",
+    "parentLabel": "(parent: {name})",
+    "create": {
+      "header": "Create Snapshot",
+      "intro": "Creating snapshot for VM: {name}",
+      "nameLabel": "Snapshot Name *",
+      "namePlaceholder": "e.g., checkpoint-1",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Optional description",
+      "includeRamLabel": "Include RAM state",
+      "cancel": "Cancel",
+      "submit": "Create Snapshot"
+    },
+    "revertModal": {
+      "header": "Revert to Snapshot",
+      "intro": "Select a snapshot to revert VM: {name}",
+      "empty": "No snapshots available for this VM",
+      "cancel": "Cancel",
+      "submit": "Revert"
+    },
+    "confirmDelete": {
+      "header": "Confirm Delete",
+      "message": "Delete snapshot \"{name}\"? This cannot be undone.",
+      "accept": "Delete",
+      "reject": "Cancel"
+    },
+    "toasts": {
+      "created": {
+        "summary": "Snapshot Created",
+        "detail": "Created \"{name}\" on {vm}"
+      }
+    },
+    "errors": {
+      "loadFailed": "Failed to load snapshots for {vm}",
+      "createFailed": "Failed to create snapshot on {vm}",
+      "deleteFailed": "Failed to delete snapshot \"{name}\"",
+      "revertFailed": "Failed to revert {vm}"
+    }
+  },
+  "snapshotPanel": {
+    "cardTitle": "Snapshots",
+    "resetAllAction": "Reset All",
+    "retry": "Retry",
+    "errorLoadFailed": "Failed to load pod",
+    "emptyNoVms": "No VMs in this pod",
+    "vmSnapshotCount": "{count} snapshots",
+    "vmCreateTooltip": "Create Snapshot",
+    "snapshotEmpty": "No snapshots available",
+    "currentTag": "Current",
+    "restoreTooltip": "Restore to this snapshot",
+    "deleteTooltip": "Delete snapshot",
+    "notifications": {
+      "nameRequired": "Snapshot name is required",
+      "creatingTitle": "Creating Snapshot",
+      "creatingMessage": "Creating {name}...",
+      "createdTitle": "Snapshot Created",
+      "createdMessage": "{name} created successfully",
+      "createFailed": "Failed to create snapshot",
+      "restoringTitle": "Restoring",
+      "restoringMessage": "Restoring {vm} to {snapshot}...",
+      "restoreFailed": "Failed to restore snapshot",
+      "deletingTitle": "Deleting",
+      "deletingMessage": "Deleting {name}...",
+      "deletedTitle": "Snapshot Deleted",
+      "deletedMessage": "{name} deleted",
+      "deleteFailed": "Failed to delete snapshot",
+      "restoringAllTitle": "Restoring All",
+      "restoringAllMessage": "Restoring all VMs to initial state...",
+      "restoredAllTitle": "Restored",
+      "restoredAllMessage": "All VMs restored to initial state",
+      "restoreAllFailed": "Failed to restore all VMs"
+    },
+    "createDialog": {
+      "header": "Create Snapshot",
+      "vmLabel": "VM",
+      "nameLabel": "Snapshot Name *",
+      "namePlaceholder": "e.g., before-config-change",
+      "descriptionLabel": "Description (optional)",
+      "descriptionPlaceholder": "Describe the state of the VM...",
+      "descriptionAria": "Description (optional)",
+      "cancel": "Cancel",
+      "submit": "Create"
+    },
+    "restoreDialog": {
+      "header": "Restore Snapshot",
+      "confirmQuestion": "Are you sure you want to restore {vm} to snapshot {snapshot}?",
+      "warning": "This will discard any unsaved changes on the VM.",
+      "cancel": "Cancel",
+      "submit": "Restore"
+    },
+    "deleteDialog": {
+      "header": "Delete Snapshot",
+      "confirmQuestion": "Are you sure you want to delete snapshot {snapshot} from {vm}?",
+      "warning": "This action cannot be undone.",
+      "cancel": "Cancel",
+      "submit": "Delete"
+    }
+  },
+  "auditLog": {
+    "title": "Audit Log",
+    "subtitle": "View administrative actions and security events",
+    "exportAction": "Export",
+    "noOrgError": "No organization selected",
+    "loadFailed": "Failed to load audit logs. Make sure you have admin access.",
+    "filters": {
+      "actorLabel": "Actor ID",
+      "actorPlaceholder": "Filter by actor...",
+      "actionLabel": "Action",
+      "actionAria": "Action",
+      "resourceLabel": "Resource Type",
+      "resourceAria": "Resource Type",
+      "dateRangeLabel": "Date Range",
+      "dateRangePlaceholder": "Select date range",
+      "clearAction": "Clear Filters"
+    },
+    "actionOptions": {
+      "all": "All Actions",
+      "orgUpdated": "Organization Updated",
+      "orgDeleted": "Organization Deleted",
+      "memberInvited": "Member Invited",
+      "memberRoleChanged": "Member Role Changed",
+      "memberRemoved": "Member Removed",
+      "loginSuccess": "Login Success",
+      "loginFailed": "Login Failed",
+      "passwordChanged": "Password Changed"
+    },
+    "resourceOptions": {
+      "all": "All Resources",
+      "organization": "Organization",
+      "membership": "Membership",
+      "user": "User",
+      "session": "Session",
+      "pod": "Pod",
+      "lab": "Lab"
+    },
+    "empty": "No audit entries found",
+    "table": {
+      "timestamp": "Timestamp",
+      "action": "Action",
+      "resource": "Resource",
+      "actor": "Actor",
+      "ipAddress": "IP Address",
+      "actions": "Actions",
+      "idTruncated": "({id}...)",
+      "actorTruncated": "{id}...",
+      "dashPlaceholder": "-"
+    },
+    "pagination": {
+      "showing": "Showing {from} - {to} of {total} entries",
+      "pageOfTotal": "Page {current} of {total}"
+    },
+    "detail": {
+      "header": "Audit Entry Details",
+      "idLabel": "ID",
+      "timestampLabel": "Timestamp",
+      "actionLabel": "Action",
+      "resourceLabel": "Resource",
+      "resourceWithId": "({id})",
+      "actorLabel": "Actor",
+      "ipLabel": "IP Address",
+      "userAgentLabel": "User Agent",
+      "detailsLabel": "Details",
+      "noDetails": "-",
+      "close": "Close"
+    },
+    "exportToast": {
+      "successSummary": "Export Complete",
+      "successDetail": "Exported {count} audit entries",
+      "failedSummary": "Export Failed",
+      "failedDetail": "Failed to export audit logs"
+    }
+  },
+  "eventsMonitoring": {
+    "title": "Event Monitoring",
+    "subtitle": "Real-time Wazuh event stream and checkpoint detection",
+    "status": {
+      "live": "Live",
+      "disconnected": "Disconnected"
+    },
+    "autoRefreshOn": "Auto-refresh ON",
+    "autoRefreshOff": "Auto-refresh OFF",
+    "refreshNow": "Refresh Now",
+    "loadFailed": "Failed to load events",
+    "stats": {
+      "eventsToday": "Events Today",
+      "checkpointsPassed": "Checkpoints Passed",
+      "thisHour": "This Hour",
+      "pending": "Pending"
+    },
+    "breakdown": {
+      "heading": "Events by Type"
+    },
+    "filters": {
+      "heading": "Filters",
+      "typeLabel": "Event Type",
+      "typeAria": "Event Type",
+      "typeAllOption": "All Types",
+      "podLabel": "Pod ID",
+      "podAria": "Pod ID",
+      "podPlaceholder": "Filter by pod...",
+      "sessionLabel": "Session ID",
+      "sessionAria": "Session ID",
+      "sessionPlaceholder": "Filter by session...",
+      "apply": "Apply",
+      "clear": "Clear"
+    },
+    "table": {
+      "heading": "Recent Events",
+      "time": "Time",
+      "type": "Type",
+      "vm": "VM",
+      "description": "Description",
+      "checkpoints": "Checkpoints",
+      "status": "Status",
+      "loading": "Loading events...",
+      "tryAgain": "Try again",
+      "dashPlaceholder": "-",
+      "podIdTruncated": "{id}...",
+      "ruleLine": "Rule: {ruleId} (Level {level})",
+      "statusProcessed": "Processed",
+      "statusPending": "Pending"
+    },
+    "empty": {
+      "title": "No events",
+      "body": "No events found matching your filters."
+    },
+    "detail": {
+      "header": "Event #{id}",
+      "timestampLabel": "Timestamp",
+      "descriptionLabel": "Description",
+      "ruleIdLabel": "Rule ID",
+      "ruleLevelLabel": "Rule Level",
+      "vmNameLabel": "VM Name",
+      "podIdLabel": "Pod ID",
+      "sessionIdLabel": "Session ID",
+      "statusLabel": "Status",
+      "statusProcessed": "Processed",
+      "statusPending": "Pending",
+      "matchedCheckpointsLabel": "Matched Checkpoints",
+      "close": "Close"
+    }
+  },
+  "instructorDashboard": {
+    "title": "Instructor Dashboard",
+    "subtitle": "Monitor student progress, identify struggling students, and analyze lab performance",
+    "exportAction": "Export Report",
+    "loadFailed": "Failed to load dashboard data",
+    "overview": {
+      "totalStudents": "Total Students",
+      "avgCompletion": "Avg Completion",
+      "atRiskStudents": "At-Risk Students",
+      "averageScore": "Average Score"
+    },
+    "tabs": {
+      "students": "Students",
+      "struggling": "Struggling Students",
+      "labAnalytics": "Lab Analytics",
+      "activity": "Activity"
+    },
+    "statusLabels": {
+      "excelling": "Excelling",
+      "active": "Active",
+      "atRisk": "At Risk",
+      "inactive": "Inactive"
+    },
+    "filters": {
+      "all": "All"
+    },
+    "students": {
+      "cardTitle": "All Students",
+      "columnName": "Name",
+      "columnStatus": "Status",
+      "columnLabs": "Labs",
+      "columnAvgScore": "Avg Score",
+      "columnStreak": "Streak",
+      "columnLastActive": "Last Active",
+      "columnPoints": "Points",
+      "streakDays": "{count} days",
+      "dashPlaceholder": "-"
+    },
+    "struggling": {
+      "heading": "Students Needing Attention",
+      "emptyMessage": "All students are on track! No students currently at risk.",
+      "labsCompleted": "Labs Completed",
+      "averageScore": "Average Score",
+      "currentStreak": "Current Streak",
+      "lastActive": "Last Active",
+      "streakDays": "{count} days",
+      "inactiveHeadline": "Inactive for {count} days.",
+      "inactiveAdvice": "Consider reaching out to check on their progress.",
+      "lowScoreHeadline": "Low average score ({score}%).",
+      "lowScoreAdvice": "May need additional support or tutoring.",
+      "fallingBehindHeadline": "Falling behind on lab completions.",
+      "fallingBehindAdvice": "Consider checking if they're facing technical difficulties."
+    },
+    "labs": {
+      "lowPassRateHeading": "Labs with Low Pass Rates",
+      "allPassingMessage": "All labs have good pass rates!",
+      "passRateTag": "{rate}% pass rate",
+      "completionLine": "{completed} / {total} completed • Avg {minutes} min",
+      "failurePointsHeading": "Common Failure Points:",
+      "failureRate": "{rate}% fail",
+      "statsHeading": "Lab Completion Statistics",
+      "attempts": "{count} attempts",
+      "detailLine": "Avg score: {score}% • Avg time: {minutes} min"
+    },
+    "activity": {
+      "heatmapHeading": "Activity Heatmap (Last 14 Days)",
+      "heatmapTooltip": "{date}: {count} activities",
+      "less": "Less",
+      "more": "More",
+      "recentHeading": "Recent Student Progress"
+    },
+    "formatDate": {
+      "never": "Never",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "daysAgo": "{count} days ago"
+    },
+    "export": {
+      "header": "Export Progress Report",
+      "formatLabel": "Export Format",
+      "formatAria": "Export Format",
+      "description": "Export will include all student progress data including labs completed, scores, and activity status.",
+      "cancel": "Cancel",
+      "submit": "Export",
+      "formatCsv": "CSV (Spreadsheet)",
+      "formatJson": "JSON (Data)"
+    },
+    "exportToast": {
+      "successSummary": "Export Complete",
+      "successDetail": "Report downloaded successfully",
+      "failedSummary": "Export Failed",
+      "failedDetail": "Failed to export report. Please try again."
+    }
+  },
+  "users": {
+    "accessDenied": "Access Denied: Only administrators can manage users.",
+    "title": "User Management",
+    "subtitle": "Create, edit, and manage platform users",
+    "addUser": "Add User",
+    "loadFailed": "Failed to load users. Make sure you have admin access.",
+    "filters": {
+      "heading": "Filters",
+      "searchLabel": "Search",
+      "searchPlaceholder": "Search by username, email, or name...",
+      "roleLabel": "Role",
+      "roleAria": "Filter by role",
+      "statusLabel": "Status",
+      "statusAria": "Filter by status",
+      "clear": "Clear"
+    },
+    "roleOptions": {
+      "all": "All Roles",
+      "students": "Students",
+      "instructors": "Instructors",
+      "admins": "Admins"
+    },
+    "statusOptions": {
+      "all": "All Users",
+      "active": "Active Only",
+      "inactive": "Inactive"
+    },
+    "table": {
+      "heading": "Users ({count})",
+      "user": "User",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "created": "Created",
+      "actions": "Actions",
+      "usernameHandle": "@{username}",
+      "emailPlaceholder": "-",
+      "statusActive": "Active",
+      "statusInactive": "Inactive",
+      "editTooltip": "Edit",
+      "resetPasswordTooltip": "Reset Password",
+      "activateTooltip": "Activate",
+      "deactivateTooltip": "Deactivate",
+      "deleteTooltip": "Delete"
+    },
+    "empty": {
+      "title": "No Users Found",
+      "adjustFilters": "Try adjusting your filters",
+      "getStarted": "Get started by creating your first user"
+    },
+    "create": {
+      "header": "Create User",
+      "usernameLabel": "Username",
+      "usernamePlaceholder": "Enter username",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter email address",
+      "displayNameLabel": "Display Name",
+      "displayNamePlaceholder": "Enter display name",
+      "roleLabel": "Role",
+      "roleAria": "Role",
+      "cancel": "Cancel",
+      "submit": "Create"
+    },
+    "edit": {
+      "header": "Edit User",
+      "usernameLabel": "Username",
+      "usernameDisabledNote": "Username cannot be changed",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter email address",
+      "displayNameLabel": "Display Name",
+      "displayNamePlaceholder": "Enter display name",
+      "roleLabel": "Role",
+      "roleAria": "Role",
+      "cancel": "Cancel",
+      "submit": "Save Changes"
+    },
+    "passwordReset": {
+      "header": "Reset Password: {username}",
+      "successBanner": "Password has been reset. Share this temporary password with the user.",
+      "temporaryPasswordLabel": "Temporary Password",
+      "copyTooltip": "Copy to clipboard",
+      "changeOnLoginInfo": "The user will be required to change this password on their next login.",
+      "generateCheckboxLabel": "Generate random password",
+      "manualPasswordLabel": "Manual Password",
+      "manualPasswordPlaceholder": "Enter password",
+      "manualPasswordHint": "Password must be at least 8 characters with uppercase, lowercase, and a digit.",
+      "mustChangeWarning": "The user will be required to change their password on next login.",
+      "done": "Done",
+      "cancel": "Cancel",
+      "submit": "Reset Password"
+    },
+    "toast": {
+      "errorSummary": "Error",
+      "validationErrorSummary": "Validation Error",
+      "validationUsernameRequired": "Username is required",
+      "validationPasswordRequired": "Please enter a password or choose to generate one",
+      "createSuccessSummary": "User Created",
+      "createSuccessDetail": "User {username} has been created",
+      "createFailedFallback": "Failed to create user",
+      "updateSuccessSummary": "User Updated",
+      "updateSuccessDetail": "User {username} has been updated",
+      "updateFailedFallback": "Failed to update user",
+      "deleteSuccessSummary": "User Deleted",
+      "deleteSuccessDetail": "User {username} has been deleted",
+      "deleteFailedFallback": "Failed to delete user",
+      "statusUpdateSuccessSummary": "Status Updated",
+      "statusActivatedDetail": "User {username} has been activated",
+      "statusDeactivatedDetail": "User {username} has been deactivated",
+      "statusFailedFallback": "Failed to update user status",
+      "passwordResetSuccessSummary": "Password Reset",
+      "passwordResetGeneratedDetail": "Temporary password has been generated. Copy it before closing this dialog.",
+      "passwordResetManualDetail": "Password has been reset for {username}",
+      "passwordFailedFallback": "Failed to reset password",
+      "copiedSummary": "Copied",
+      "copiedDetail": "Password copied to clipboard"
+    },
+    "confirm": {
+      "activateHeader": "Activate User",
+      "deactivateHeader": "Deactivate User",
+      "activateMessage": "Are you sure you want to activate user \"{username}\"?",
+      "deactivateMessage": "Are you sure you want to deactivate user \"{username}\"?",
+      "deleteHeader": "Delete User",
+      "deleteMessage": "Are you sure you want to delete user \"{username}\"? This action cannot be undone."
+    }
+  },
+  "analytics": {
+    "title": "Analytics & Reporting",
+    "subtitle": "Platform usage statistics and leaderboards",
+    "loadFailed": "Failed to load dashboard data",
+    "stats": {
+      "totalUsers": "Total Users",
+      "labsCompleted": "Labs Completed",
+      "achievementsEarned": "Achievements Earned",
+      "totalSessions": "Total Sessions"
+    },
+    "leaderboard": {
+      "heading": "Leaderboard",
+      "youTag": "You",
+      "userStats": "{labs} labs • {achievements} achievements",
+      "pointsSuffix": "points",
+      "totalUsers": "{count} total users",
+      "empty": "No leaderboard data available"
+    },
+    "activity": {
+      "heading": "Recent Activity",
+      "empty": "No recent activity"
+    }
+  },
+  "systemHealth": {
+    "title": "System Health",
+    "subtitle": "Monitor system components and service status",
+    "adminNotice": "Some metrics may be limited. Sign in as an administrator for full access.",
+    "lastUpdated": "Last updated: {when}",
+    "autoRefresh": "Auto-refresh",
+    "loadFailed": "Failed to connect to API server",
+    "overall": {
+      "healthy": "All Systems Operational",
+      "degraded": "Some Services Degraded",
+      "unhealthy": "System Issues Detected",
+      "unknown": "Status Unknown",
+      "servicesMonitored": "{count} services monitored"
+    },
+    "metrics": {
+      "activeSessions": "Active Sessions",
+      "activePods": "Active Pods",
+      "labTemplates": "Lab Templates",
+      "totalUsers": "Total Users"
+    },
+    "service": {
+      "versionPrefix": "v{version}",
+      "latencyLabel": "Latency",
+      "latencyPlaceholder": "-",
+      "latencySub1ms": "<1ms",
+      "latencyMs": "{ms}ms",
+      "stateLabel": "State",
+      "connectionsLabel": "Connections",
+      "connectionsValue": "{count} / {max}"
+    },
+    "empty": {
+      "title": "No Health Data Available",
+      "body": "Unable to retrieve system health information",
+      "retry": "Retry"
+    }
+  },
+  "courseProgress": {
+    "breadcrumbProgress": "Progress",
+    "labsCount": "{count} Labs",
+    "stats": {
+      "labsCompleteValue": "{completed}/{total}",
+      "labsCompleteLabel": "Labs Complete",
+      "pointsEarnedLabel": "Points Earned",
+      "timeSpentLabel": "Time Spent",
+      "totalDurationValue": "~{hours}h",
+      "totalDurationLabel": "Total Duration"
+    },
+    "progressComplete": "Complete",
+    "labCompletionLabel": "Lab Completion",
+    "pointsProgressLabel": "Points Progress",
+    "pointsProgressValue": "{earned}/{total}",
+    "labsHeading": "Course Labs",
+    "labObjectives": "{completed}/{total} objectives",
+    "labPoints": "{earned}/{total} pts"
+  },
+  "proxmoxVms": {
+    "title": "Proxmox VMs",
+    "subtitle": "Direct access to running VMs on Proxmox",
+    "runningHeading": "Running VMs",
+    "vmIdentity": "VMID: {vmid} | Node: {node}",
+    "consoleButton": "Console",
+    "menuNoVnc": "noVNC Console",
+    "menuDownloadSpice": "Download SPICE File",
+    "loadingConsole": "Loading {type} console for {name}...",
+    "connectionFailedTitle": "Connection Failed",
+    "connectionFailedFallback": "Failed to get console access",
+    "retry": "Retry"
+  },
+  "certificates": {
+    "title": "My Certificates",
+    "subtitle": "View and verify your pathway completion certificates",
+    "loadFailed": "Failed to load certificates. Please try again.",
+    "tryAgain": "Try Again",
+    "empty": {
+      "title": "No Certificates Yet",
+      "body": "Complete a learning pathway to earn your first certificate. Certificates are awarded when you finish all modules in a pathway.",
+      "browseAction": "Browse Pathways"
+    },
+    "cardAria": "View certificate for {pathway}",
+    "scoreLabel": "Score",
+    "pointsLabel": "Points",
+    "completedAt": "Completed {when}"
+  },
+  "verifyCertificate": {
+    "title": "Certificate Verification",
+    "subtitle": "Verify the authenticity of a Kootenai certificate",
+    "tryAgain": "Try Again",
+    "errors": {
+      "noCode": "No verification code provided",
+      "loadFailed": "Failed to verify certificate. Please try again."
+    },
+    "notFound": {
+      "title": "Certificate Not Found",
+      "body": "The verification code {code} is invalid or has expired."
+    },
+    "verifiedBadge": "Verified Certificate",
+    "certifies": "This certifies that",
+    "hasCompleted": "has successfully completed the pathway",
+    "pointsEarnedLabel": "Points Earned",
+    "scoreLabel": "Score",
+    "completedOn": "Completed on {when}",
+    "verificationCodeLabel": "Verification Code",
+    "issuedOn": "Issued on {when}",
+    "footerIssuedBy": "This certificate was issued by Kootenai Platform"
+  },
+  "resetPassword": {
+    "subtitle": "Create a new password",
+    "success": {
+      "heading": "Password reset successful",
+      "body": "Your password has been updated. You can now log in with your new password.",
+      "goToLogin": "Go to login"
+    },
+    "invalid": {
+      "heading": "Invalid reset link",
+      "body": "This password reset link is invalid or has expired. Please request a new one.",
+      "requestNew": "Request new reset link"
+    },
+    "srForm": "Password Reset Form",
+    "formAria": "Reset password form",
+    "newPasswordLabel": "New password",
+    "newPasswordPlaceholder": "Enter new password",
+    "requiredMarker": "*",
+    "requiredHint": "(required)",
+    "showPasswordAria": "Show password",
+    "hidePasswordAria": "Hide password",
+    "strength": {
+      "weak": "Weak",
+      "fair": "Fair",
+      "strong": "Strong",
+      "aria": "Password strength: {label}",
+      "ariaUnevaluated": "Not evaluated",
+      "srAnnounce": "Password strength: {label}"
+    },
+    "requirements": {
+      "aria": "Password requirements",
+      "met": "(met)",
+      "notMet": "(not met)",
+      "number": "One number"
+    },
+    "confirmLabel": "Confirm new password",
+    "confirmPlaceholder": "Confirm your password",
+    "mismatchError": "Passwords do not match",
+    "resetting": "Resetting...",
+    "submit": "Reset password",
+    "resettingAria": "Resetting password, please wait",
+    "submitAria": "Reset password",
+    "submitSrAnnounce": "Resetting password, please wait",
+    "backToLogin": "Back to login",
+    "validation": {
+      "fillFields": "Please fill in all fields correctly",
+      "mismatchField": "Passwords do not match"
+    },
+    "errors": {
+      "expired": "Failed to reset password. The link may have expired.",
+      "generic": "Failed to reset password. Please try again."
+    }
+  },
+  "passwordRequirements": {
+    "minLength": "At least 8 characters",
+    "hasUppercase": "One uppercase letter",
+    "hasLowercase": "One lowercase letter",
+    "hasDigit": "One digit"
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "mustChangeNotice": "You must change your password before continuing",
+    "subtitle": "Update your account password",
+    "successMessage": "Password changed successfully!",
+    "genericError": "Failed to change password",
+    "fields": {
+      "currentLabel": "Current Password",
+      "currentPlaceholder": "Enter current password",
+      "newLabel": "New Password",
+      "newPlaceholder": "Enter new password",
+      "confirmLabel": "Confirm New Password",
+      "confirmPlaceholder": "Confirm new password",
+      "mismatchError": "Passwords do not match"
+    },
+    "submit": "Change Password",
+    "cancel": "Cancel"
+  },
+  "forgotPassword": {
+    "subtitle": "Reset your password",
+    "emailRequired": "Please enter your email address",
+    "success": {
+      "heading": "Check your email",
+      "body": "If an account exists for {email}, we've sent instructions to reset your password.",
+      "spamHint": "Didn't receive the email? Check your spam folder or try again.",
+      "tryAnother": "Try another email",
+      "backToLogin": "Back to login"
+    },
+    "form": {
+      "intro": "Enter the email address associated with your account and we'll send you a link to reset your password.",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you@example.com",
+      "sending": "Sending...",
+      "submit": "Send reset link",
+      "backToLogin": "Back to login"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "savedMessage": "Settings saved successfully!",
+    "saveFailed": "Failed to save settings. Please try again.",
+    "accountHeading": "Account",
+    "displayNameLabel": "Display Name",
+    "displayNamePlaceholder": "Your display name",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "your@email.com",
+    "emailHint": "Contact an administrator to change your email",
+    "changePasswordAction": "Change Password",
+    "appearanceHeading": "Appearance",
+    "themeLabel": "Theme",
+    "themeAria": "Theme",
+    "themeOptions": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "lightAria": "Light theme",
+    "darkAria": "Dark theme",
+    "notificationsHeading": "Notifications",
+    "notifications": {
+      "emailTitle": "Email Notifications",
+      "emailDescription": "Receive updates about your account via email",
+      "achievementTitle": "Achievement Alerts",
+      "achievementDescription": "Get notified when you earn new achievements",
+      "progressTitle": "Progress Reminders",
+      "progressDescription": "Receive reminders to continue your learning"
+    },
+    "organizationHeading": "Organization",
+    "orgRoleLabel": "Role: {role}",
+    "orgMemberFallback": "Member",
+    "orgSettingsAction": "Organization Settings",
+    "saveAction": "Save Settings"
+  },
+  "profile": {
+    "title": "My Profile",
+    "fallbackName": "User",
+    "memberSinceLabel": "Member since",
+    "organizationLabel": "Organization",
+    "changePasswordAction": "Change Password",
+    "progressHeading": "Learning Progress",
+    "stats": {
+      "totalPoints": "Total Points",
+      "achievements": "Achievements",
+      "enrollments": "Enrollments",
+      "completed": "Completed"
+    },
+    "enrollments": {
+      "heading": "Active Enrollments",
+      "empty": "No active enrollments. Start a learning pathway!",
+      "browseAction": "Browse Pathways",
+      "unknownPathway": "Unknown Pathway",
+      "completedTag": "Completed",
+      "inProgressTag": "In Progress",
+      "percentLabel": "{percent}% complete",
+      "pointsLabel": "{points} points"
+    },
+    "achievements": {
+      "heading": "Recent Achievements",
+      "empty": "No achievements yet. Complete labs to earn badges!",
+      "pointsSuffix": "{points} pts",
+      "viewAllAction": "View All Achievements"
+    },
+    "roles": {
+      "admin": "Admin",
+      "instructor": "Instructor",
+      "student": "Student"
+    }
+  },
+  "editLab": {
+    "title": "Edit Lab",
+    "subtitle": "Modify lab template configuration",
+    "loadingAria": "Loading lab data",
+    "loadFailed": "Failed to load lab. Please try again.",
+    "saveFailed": "Failed to update lab. Please try again.",
+    "accessDenied": {
+      "summary": "Access Denied",
+      "detail": "You do not have permission to edit this lab"
+    },
+    "toast": {
+      "updatedSummary": "Lab Updated",
+      "updatedDetail": "\"{name}\" has been updated successfully"
+    },
+    "isActiveLabel": "Lab is active",
+    "reviewHeading": "Review & Save",
+    "save": "Save Changes"
+  },
+  "createLab": {
+    "title": "Create Lab",
+    "subtitle": "Build a lab template with VMs and graded objectives",
+    "steps": {
+      "basicInfo": "Basic Info",
+      "vms": "VMs",
+      "objectives": "Objectives",
+      "questions": "Questions",
+      "review": "Review"
+    },
+    "accessDenied": {
+      "summary": "Access Denied",
+      "detail": "You must be an instructor or admin to create labs"
+    },
+    "basic": {
+      "heading": "Basic Information",
+      "nameLabel": "Lab Name",
+      "namePlaceholder": "e.g., Linux Basics",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "What students will learn in this lab",
+      "difficultyLabel": "Difficulty",
+      "durationLabel": "Duration (minutes)",
+      "platformLabel": "Platform",
+      "versionLabel": "Version",
+      "versionPlaceholder": "1.0.0",
+      "thresholdLabel": "Pass Threshold (%)",
+      "visibilityLabel": "Visibility",
+      "tagsLabel": "Tags",
+      "tagsPlaceholder": "Add a tag",
+      "addTagAria": "Add tag",
+      "publishLabel": "Publish lab immediately"
+    },
+    "vmsStep": {
+      "heading": "Virtual Machines",
+      "intro": "Add the VMs that students will use in this lab.",
+      "addHeading": "Add VM",
+      "addAction": "Add VM",
+      "nameLabel": "VM Name *",
+      "namePlaceholder": "e.g., student-vm",
+      "templateLabel": "Template",
+      "removeAria": "Remove VM {name}",
+      "cpuLabel": "CPU Cores",
+      "memoryLabel": "Memory (MB)",
+      "diskLabel": "Disk (GB)",
+      "wazuhLabel": "Enable Wazuh agent for objective monitoring",
+      "snapshotsLabel": "Snapshots",
+      "addSnapshot": "Add Snapshot",
+      "snapshotNamePlaceholder": "Snapshot name",
+      "snapshotNameAria": "Snapshot {index} name",
+      "snapshotDescriptionPlaceholder": "Description",
+      "snapshotDescriptionAria": "Snapshot {index} description",
+      "snapshotDefaultTitle": "Set as default",
+      "snapshotDefaultAria": "Default snapshot",
+      "snapshotSetDefaultAria": "Set as default snapshot",
+      "snapshotRemoveAria": "Remove snapshot",
+      "empty": "No VMs added yet. Add at least one VM to continue."
+    },
+    "objectivesStep": {
+      "heading": "Objectives & Grading",
+      "intro": "Define the objectives students must complete. Each objective has triggers that detect completion.",
+      "addHeading": "Add Objective",
+      "addAction": "Add Objective",
+      "descriptionLabel": "Description *",
+      "descriptionPlaceholder": "e.g., Create a directory called 'mywork'",
+      "pointsLabel": "Points",
+      "requiresVmHint": "Add at least one VM first to create objectives.",
+      "pointsTag": "{points} pts",
+      "hintLabel": "Hint (shown to students)",
+      "hintPlaceholder": "Optional hint",
+      "moveUpAria": "Move objective up",
+      "moveDownAria": "Move objective down",
+      "removeAria": "Remove objective",
+      "triggersLabel": "Triggers",
+      "addTrigger": "Add Trigger",
+      "triggerTypePlaceholder": "Trigger type",
+      "triggerTypeAria": "Trigger {index} type",
+      "targetPlaceholder": "Target VM",
+      "targetAria": "Trigger {index} target VM",
+      "removeTriggerAria": "Remove trigger",
+      "filePathPlaceholder": "File path (e.g., /home/student/mywork)",
+      "filePathAria": "File path",
+      "fileContainsPlaceholder": "File must contain this text",
+      "fileContainsAria": "File content to match",
+      "commandPlaceholder": "Command pattern (e.g., ls.*mywork)",
+      "servicePlaceholder": "Service name (e.g., nginx)",
+      "patternAria": "Pattern to match",
+      "empty": "No objectives added yet. Add at least one objective to continue.",
+      "summary": "Objective Points:"
+    },
+    "questionsStep": {
+      "heading": "Questions (Optional)",
+      "intro": "Add questions that students must answer based on their VM exploration. Questions are optional but provide additional assessment beyond automated checkpoints.",
+      "addHeading": "Add Question",
+      "addAction": "Add Question",
+      "descriptionLabel": "Question *",
+      "descriptionPlaceholder": "e.g., What user owns /etc/passwd?",
+      "typeLabel": "Type",
+      "pointsLabel": "Points",
+      "pointsTag": "{points} pts",
+      "typeText": "Text",
+      "typeMc": "Multiple Choice",
+      "typeMcShort": "MC",
+      "typeRowLabel": "Type:",
+      "typeRowAria": "Question {index} type",
+      "moveUpAria": "Move question up",
+      "moveDownAria": "Move question down",
+      "duplicateTitle": "Duplicate",
+      "duplicateAria": "Duplicate question",
+      "removeAria": "Remove question",
+      "hintLabel": "Hint (shown to students on request)",
+      "hintPlaceholder": "Optional hint",
+      "validationLabel": "Validation:",
+      "validationAria": "Question {index} validation type",
+      "caseSensitiveLabel": "Case sensitive",
+      "expectedAnswerLabel": "Expected Answer *",
+      "regexPatternLabel": "Regex Pattern *",
+      "expectedAnswerPlaceholder": "The correct answer",
+      "regexPlaceholder": "e.g., ^root$",
+      "multiLabel": "Allow multiple answers",
+      "addOption": "Add Option",
+      "optionPlaceholder": "Option {id}",
+      "optionAria": "Option {id} text",
+      "removeOptionAria": "Remove option",
+      "correctHint": "Check the boxes to mark correct answer(s). At least one option must be marked correct.",
+      "dependenciesLabel": "Dependencies (question unlocks after these are completed)",
+      "dependenciesPlaceholder": "No dependencies",
+      "dependenciesAria": "Question {index} dependencies",
+      "empty": "No questions added yet. Questions are optional - you can proceed without adding any.",
+      "pointsSummary": "Question Points:",
+      "totalSummary": "Total:"
+    },
+    "review": {
+      "heading": "Review & Create",
+      "stats": {
+        "vms": "VMs",
+        "objectives": "Objectives",
+        "questions": "Questions",
+        "totalPoints": "Total Points",
+        "duration": "Duration",
+        "durationValue": "{count}m"
+      },
+      "versionFormat": "v{version}",
+      "passTag": "{value}% to pass",
+      "vmsHeading": "Virtual Machines",
+      "vmSpecs": "{cpu} CPU, {memory}MB RAM, {disk}GB disk",
+      "vmSnapshotSuffix": "{count} snapshots",
+      "objectivesHeading": "Objectives ({points} pts)",
+      "questionsHeading": "Questions ({points} pts)",
+      "statusNotice": {
+        "asActive": "The lab will be created as active.",
+        "asDraft": "The lab will be created as a draft.",
+        "orgVisible": "It will be visible to your organization.",
+        "privateVisible": "It will be private to you."
+      }
+    },
+    "nav": {
+      "back": "Back",
+      "cancel": "Cancel",
+      "next": "Next",
+      "createLab": "Create Lab"
+    },
+    "toasts": {
+      "createdSummary": "Lab Created",
+      "createdDetail": "\"{name}\" has been created successfully"
+    },
+    "errors": {
+      "createFailed": "Failed to create lab. Please try again."
+    },
+    "required": "*"
+  },
+  "labTemplateMgmt": {
+    "accessDenied": "Access denied. Administrator privileges required.",
+    "title": "Lab Template Management",
+    "subtitle": "Create, edit, and manage lab templates",
+    "actions": {
+      "importLab": "Import Lab",
+      "newTemplate": "New Template",
+      "createTemplate": "Create Template"
+    },
+    "loadFailed": "Failed to load lab templates",
+    "cardTags": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "versionFormat": "v{version}",
+      "noDescription": "No description"
+    },
+    "cardStats": {
+      "pointsValue": "{count} pts",
+      "durationValue": "{count}m",
+      "thresholdValue": "{value}%"
+    },
+    "cardTooltips": {
+      "history": "Version History",
+      "export": "Export YAML",
+      "viewSpec": "View Spec",
+      "edit": "Edit",
+      "deactivate": "Deactivate",
+      "activate": "Activate",
+      "delete": "Delete"
+    },
+    "cardFooter": {
+      "updatedAt": "Updated: {when}"
+    },
+    "empty": {
+      "title": "No Lab Templates",
+      "hint": "Get started by creating your first lab template"
+    },
+    "spec": {
+      "loading": "Loading...",
+      "empty": "No spec available",
+      "loadFailed": "Failed to load spec"
+    },
+    "toasts": {
+      "successSummary": "Success",
+      "errorSummary": "Error",
+      "createdDetail": "Lab template created successfully",
+      "createFailedDetail": "Failed to create template",
+      "updatedDetail": "Lab template updated successfully",
+      "updateFailedDetail": "Failed to update template",
+      "deletedDetail": "Lab template deleted successfully",
+      "deleteFailedDetail": "Failed to delete template",
+      "statusChangedActive": "Lab template activated",
+      "statusChangedInactive": "Lab template deactivated",
+      "statusFailed": "Failed to update template status",
+      "exportedSummary": "Exported",
+      "exportedDetail": "YAML downloaded",
+      "exportFailedDetail": "Failed to export template",
+      "importedSummary": "Imported",
+      "importedDetail": "Lab template imported successfully",
+      "importFailedDetail": "Failed to import",
+      "restoredSummary": "Restored",
+      "restoredDetail": "Restored to version {number}",
+      "restoreFailedDetail": "Failed to restore version"
+    },
+    "changeSummaryTemplate": "Restored to version {number}"
+  },
+  "labVersionHistory": {
+    "title": "Version History",
+    "loadFailed": "Failed to load version history",
+    "empty": {
+      "title": "No Version History",
+      "hint": "Versions are created automatically when you edit a template."
+    },
+    "versionsHeading": "Versions",
+    "fields": {
+      "version": "Version:",
+      "platform": "Platform:",
+      "difficulty": "Difficulty:",
+      "duration": "Duration:",
+      "durationValue": "{count}m",
+      "maxPoints": "Max Points:",
+      "passThreshold": "Pass Threshold:",
+      "specHeading": "Spec (JSON)"
+    },
+    "restoreAction": "Restore This Version",
+    "selectHint": "Select a version to view details",
+    "restoreDialog": {
+      "header": "Restore Version",
+      "question": "Restore to version {number}?",
+      "notice": "The current state will be saved as a new version before restoring.",
+      "cancel": "Cancel",
+      "submit": "Restore"
+    },
+    "toasts": {
+      "detailFailedSummary": "Error",
+      "detailFailedDetail": "Failed to load version details",
+      "restoredSummary": "Restored",
+      "restoredDetail": "Restored to version {number}",
+      "restoreFailedSummary": "Error",
+      "restoreFailedDetail": "Failed to restore version"
+    },
+    "changeSummaryTemplate": "Restored to version {number}"
+  },
+  "labProgress": {
+    "breadcrumbProgress": "Progress",
+    "estimatedMinutes": "Est. {count} min",
+    "timeSpentMinutes": "{count} min spent",
+    "progressComplete": "Complete",
+    "pointsEarned": "Points earned",
+    "objectivesHeading": "Objectives",
+    "objectivesCompleted": "{completed} of {total} completed",
+    "hint": {
+      "heading": "Need help with the current objective?",
+      "workingOn": "You're working on:",
+      "showHint": "Show Hint (-50 pts)"
+    },
+    "actions": {
+      "backToCourse": "Back to Course",
+      "continueLab": "Continue Lab"
+    }
+  },
+  "labDetail": {
+    "backLabel": "Back to Labs",
+    "versionSubtitle": "Version {version}",
+    "edit": "Edit",
+    "descriptionHeading": "Description",
+    "topicsHeading": "Topics",
+    "objectivesHeading": "Learning Objectives",
+    "objectives": {
+      "core": "Understand core concepts and configuration",
+      "security": "Apply security best practices",
+      "handsOn": "Complete hands-on exercises with real-world scenarios",
+      "assessments": "Validate knowledge through automated assessments"
+    },
+    "quickInfo": {
+      "heading": "Lab Details",
+      "duration": "Duration",
+      "platform": "Platform",
+      "maxPoints": "Max Points",
+      "passThreshold": "Pass Threshold"
+    },
+    "launch": "Launch Lab",
+    "resources": {
+      "heading": "Resource Requirements",
+      "cpu": "CPU",
+      "memory": "Memory",
+      "storage": "Storage",
+      "cpuValue": "{count} vCPUs",
+      "memoryValue": "{count} GB",
+      "storageValue": "{count} GB",
+      "hint": "Resources are allocated automatically when you launch the lab."
+    },
+    "notFound": {
+      "title": "Lab not found",
+      "browseAction": "Browse Labs"
+    },
+    "errors": {
+      "loadFailed": "Failed to load lab details",
+      "mustBeLoggedIn": "You must be logged in to launch a lab.",
+      "launchFailed": "Failed to launch {name}. Please try again."
+    }
+  },
+  "podControl": {
+    "cardTitle": "Pod Control",
+    "retry": "Retry",
+    "errorLoadFailed": "Failed to load pod",
+    "actions": {
+      "startAll": "Start All",
+      "stopAll": "Stop All",
+      "resetAll": "Reset All"
+    },
+    "vmList": {
+      "heading": "Virtual Machines ({count})",
+      "empty": "No VMs in this pod",
+      "ipLine": "IP: {address}",
+      "snapshotLine": "Snapshot: {name}"
+    },
+    "vmActions": {
+      "startTooltip": "Start VM",
+      "stopTooltip": "Stop VM",
+      "suspendTooltip": "Suspend VM",
+      "resumeTooltip": "Resume VM",
+      "consoleButton": "Console",
+      "revertButton": "Revert"
+    },
+    "confirm": {
+      "stopPod": {
+        "header": "Stop Pod",
+        "message": "Are you sure you want to stop the pod? VMs will be powered off."
+      },
+      "resetAll": {
+        "header": "Reset All VMs",
+        "message": "Reset all VMs to initial state? This will discard any changes."
+      },
+      "stopVm": {
+        "header": "Stop VM",
+        "message": "Stop VM \"{name}\"? This will power off the VM."
+      }
+    },
+    "notifications": {
+      "startingPodTitle": "Starting Pod",
+      "startingPodMessage": "Starting all VMs...",
+      "startedPodTitle": "Pod Started",
+      "startedPodMessage": "All VMs are now running",
+      "stoppingPodTitle": "Stopping Pod",
+      "stoppingPodMessage": "Stopping all VMs...",
+      "stoppedPodTitle": "Pod Stopped",
+      "stoppedPodMessage": "All VMs have been stopped",
+      "resettingAllTitle": "Resetting VMs",
+      "resettingAllMessage": "Reverting all VMs to initial state...",
+      "resetAllTitle": "VMs Reset",
+      "resetAllMessage": "All VMs reverted to initial state",
+      "suspendingTitle": "Suspending",
+      "suspendingMessage": "Suspending {name}...",
+      "suspendedTitle": "VM Suspended",
+      "suspendedMessage": "{name} is now suspended",
+      "resumingTitle": "Resuming",
+      "resumingMessage": "Resuming {name}...",
+      "resumedTitle": "VM Resumed",
+      "resumedMessage": "{name} is now running",
+      "revertingTitle": "Reverting",
+      "revertingMessage": "Reverting {vm} to {snapshot}..."
+    },
+    "errors": {
+      "startPodFailed": "Failed to start pod",
+      "stopPodFailed": "Failed to stop pod",
+      "resetAllFailed": "Failed to reset VMs",
+      "startVmFailed": "Failed to start VM {name}",
+      "startVmShort": "Failed to start {name}",
+      "stopVmFailed": "Failed to stop VM {name}",
+      "stopVmShort": "Failed to stop {name}",
+      "suspendVmFailed": "Failed to suspend VM {name}",
+      "suspendVmShort": "Failed to suspend {name}",
+      "resumeVmFailed": "Failed to resume VM {name}",
+      "resumeVmShort": "Failed to resume {name}",
+      "revertFailed": "Failed to revert VM",
+      "revertShort": "Failed to revert {name}"
+    },
+    "revertDialog": {
+      "header": "Revert to Snapshot",
+      "intro": "Select a snapshot to revert {name} to:",
+      "empty": "No snapshots available",
+      "cancel": "Cancel",
+      "submit": "Revert"
+    }
+  },
+  "labCompletion": {
+    "cardTitle": "Lab Completion",
+    "progressGauge": {
+      "label": "Progress"
+    },
+    "stats": {
+      "points": "Points",
+      "checkpoints": "Checkpoints"
+    },
+    "checkpoints": {
+      "heading": "Checkpoint Progress",
+      "empty": "No checkpoint data available yet"
+    },
+    "passThreshold": {
+      "pre": "Pass threshold: 70% required to pass",
+      "label": "Pass Threshold"
+    },
+    "submit": {
+      "button": "Submit Lab for Grading",
+      "disclaimer": "Submitting will finalize your score and cannot be undone."
+    },
+    "results": {
+      "congrats": "Congratulations!",
+      "notQuite": "Not Quite There",
+      "pointsSummary": "{earned} / {max} points",
+      "passed": "PASSED",
+      "failed": "FAILED",
+      "checkpointsHeading": "Checkpoint Results",
+      "checkpointsCount": "({passed}/{total} passed)"
+    },
+    "module": {
+      "heading": "Module Completed!",
+      "partOf": "Part of {pathway}",
+      "unlocked": "{name} is now unlocked!",
+      "pathwayCompleted": "Pathway Completed!"
+    },
+    "achievementsHeading": "Achievements Unlocked!",
+    "submittedAt": "Submitted {when}",
+    "actions": {
+      "viewPod": "View Pod",
+      "done": "Done"
+    },
+    "errorHeader": "Submission Failed"
+  },
+  "questions": {
+    "cardTitle": "Questions",
+    "answeredCount": "{answered}/{total} answered",
+    "empty": "No questions for this lab",
+    "pointsSummary": "{earned}/{total} points",
+    "answerPlaceholder": "Enter your answer",
+    "submit": "Submit Answer",
+    "attempts": "Attempts: {count}",
+    "hint": {
+      "label": "Hint {level} of {total}",
+      "pointsDeducted": "{count} point deducted from hints | {count} points deducted from hints",
+      "getNext": "Get Hint {level}/{total}",
+      "allRevealed": "All hints revealed"
+    }
+  },
+  "instructions": {
+    "headerTitle": "Lab Instructions",
+    "fallbackSubtitle": "Step-by-step guide",
+    "loading": "Loading instructions...",
+    "tryAgain": "Try Again",
+    "loadFailed": "Failed to load lab instructions",
+    "progressLabel": "Progress",
+    "stepOfTotal": "Step {current} of {total}",
+    "stepCounter": "{current} / {total}",
+    "sections": {
+      "overview": "Lab Overview",
+      "learningObjectives": "Learning Objectives",
+      "prerequisites": "Prerequisites",
+      "summary": "Summary & Next Steps",
+      "tips": "Pro Tips",
+      "resources": "Additional Resources"
+    },
+    "completedTag": "Completed",
+    "empty": {
+      "title": "No instructions available for this lab",
+      "hint": "Check the lab description for guidance"
+    },
+    "nav": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "classroomSimulation": {
+    "header": {
+      "title": "AI Classroom Simulation",
+      "subtitle": "Simulate an entire class of AI students with distinct personalities",
+      "newAction": "New Simulation"
+    },
+    "setup": {
+      "heading": "Create Simulation",
+      "nameLabel": "Simulation Name",
+      "nameAria": "Simulation Name",
+      "namePlaceholder": "e.g., Fall 2026 - Intro to Cybersecurity",
+      "pathwayLabel": "Pathway ID (optional)",
+      "pathwayAria": "Pathway ID (optional)",
+      "pathwayPlaceholder": "UUID of the learning pathway",
+      "personalityMixLabel": "Student Personality Mix ({total} total)",
+      "highPerformersLabel": "High Performers",
+      "highPerformersAria": "High Performers count",
+      "strugglingLabel": "Struggling",
+      "strugglingAria": "Struggling students count",
+      "industryProLabel": "Industry Professionals",
+      "industryProAria": "Industry Professionals count",
+      "enableCanvas": "Enable Canvas Integration",
+      "enableVmLabs": "Enable VM Labs",
+      "speedLabel": "Speed Multiplier: {speed}x",
+      "speedAria": "Speed multiplier",
+      "cancel": "Cancel",
+      "submit": "Create Simulation",
+      "creating": "Creating..."
+    },
+    "list": {
+      "heading": "Simulations",
+      "empty": "No simulations yet. Create one to get started."
+    },
+    "detail": {
+      "placeholder": "Select a simulation to view details"
+    },
+    "actions": {
+      "start": "Start",
+      "pause": "Pause",
+      "stop": "Stop",
+      "delete": "Delete"
+    },
+    "tabs": {
+      "students": "Students",
+      "feedback": "Feedback"
+    },
+    "students": {
+      "heading": "AI Students ({count})"
+    },
+    "feedback": {
+      "summary": {
+        "overallRating": "Overall Rating",
+        "totalFeedback": "Total Feedback",
+        "infraIssues": "Infra Issues",
+        "labsReviewed": "Labs Reviewed"
+      },
+      "ratingOutOf": "{rating}/5",
+      "ratingDenominator": "/5",
+      "byCategory": "By Category",
+      "byLab": "By Lab",
+      "entriesCount": "{count} entries",
+      "reviewsCount": "{count} reviews",
+      "filterAria": "Filter feedback by type",
+      "filterAll": "All Types",
+      "empty": "No feedback yet. Run a simulation with a pathway to generate feedback.",
+      "checkpoints": "{passed}/{total} checkpoints",
+      "labRef": "Lab: {id}",
+      "durationMs": "{ms}ms"
+    },
+    "personality": {
+      "highPerformer": "High Performer",
+      "struggling": "Struggling",
+      "industryPro": "Industry Pro"
+    },
+    "feedbackType": {
+      "labQuality": "Lab Quality",
+      "pathway": "Pathway",
+      "infrastructure": "Infrastructure",
+      "contentSuggestion": "Content Suggestion"
+    },
+    "status": {
+      "pending": "Pending",
+      "running": "Running",
+      "paused": "Paused",
+      "completed": "Completed",
+      "failed": "Failed"
+    }
+  },
+  "progressDashboard": {
+    "title": "My Progress",
+    "subtitle": "Track your learning journey across all courses and labs",
+    "stats": {
+      "rankOf": "of {total}",
+      "totalPoints": "Total Points",
+      "badgesOf": "of {total} badges",
+      "coursesOf": "of {total} courses",
+      "labsOf": "of {total} labs",
+      "labsCompletedLabel": "labs completed",
+      "dayStreak": "Day Streak"
+    },
+    "overall": {
+      "heading": "Overall Platform Progress",
+      "pointsEarned": "{earned} / {max} points earned",
+      "pointsEarnedUnknown": "{earned} points earned",
+      "unavailable": "N/A"
+    },
+    "timeAnalytics": {
+      "heading": "Time Analytics",
+      "periodAria": "Time period",
+      "periods": {
+        "week": "Last 7 Days",
+        "month": "Last 30 Days",
+        "all": "All Time"
+      },
+      "summary": {
+        "hours": "{hours}h",
+        "minutesShort": "{minutes}m",
+        "totalTime": "Total Time",
+        "sessions": "Sessions",
+        "avgSession": "Avg Session",
+        "longest": "Longest",
+        "pointsPerMinute": "Pts/Min",
+        "mostActive": "Most Active"
+      }
+    },
+    "charts": {
+      "dailyActivity": "Daily Activity",
+      "topLabs": "Top Labs by Time",
+      "weeklyTrend": "Weekly Trend",
+      "empty": {
+        "daily": "No activity data available",
+        "lab": "No lab data available",
+        "weekly": "No weekly data available"
+      },
+      "dataset": {
+        "minutesSpent": "Minutes Spent",
+        "timeSpentMin": "Time Spent (min)",
+        "timeMin": "Time (min)",
+        "sessions": "Sessions"
+      },
+      "axis": {
+        "minutes": "Minutes",
+        "sessions": "Sessions"
+      },
+      "weekOf": "Week of {date}"
+    },
+    "courses": {
+      "heading": "Course Progress",
+      "viewAll": "View All",
+      "empty": "No courses enrolled yet. Start a learning pathway to track your progress!",
+      "browsePathways": "Browse Pathways",
+      "labsProgress": "{completed}/{total} labs",
+      "pointsShort": "{points} pts"
+    },
+    "achievements": {
+      "heading": "Achievements",
+      "viewAllCount": "View All ({unlocked}/{total})",
+      "empty": "Complete labs and courses to unlock achievements!",
+      "recentlyUnlocked": "Recently Unlocked",
+      "almostThere": "Almost There"
+    },
+    "leaderboardTitle": "Top Performers",
+    "platformStats": {
+      "heading": "Platform Stats",
+      "totalUsers": "Total Users",
+      "activeLabs": "Active Labs",
+      "labCompletions": "Lab Completions",
+      "avgScore": "Avg. Score",
+      "percent": "{value}%"
+    }
+  },
+  "pathway": {
+    "prerequisites": {
+      "heading": "Prerequisites"
+    },
+    "header": {
+      "featuredTag": "Featured"
+    },
+    "wizard": {
+      "steps": {
+        "basicInfo": "Basic Info",
+        "modules": "Modules",
+        "labs": "Labs",
+        "review": "Review"
+      },
+      "basicInfo": {
+        "heading": "Basic Information",
+        "nameLabel": "Pathway Name",
+        "namePlaceholder": "e.g., Linux Fundamentals",
+        "shortDescriptionLabel": "Short Description",
+        "shortDescriptionPlaceholder": "Brief summary (displayed in cards)",
+        "descriptionLabel": "Full Description",
+        "descriptionPlaceholder": "Detailed description of what learners will achieve",
+        "descriptionAria": "Full Description",
+        "difficultyLabel": "Difficulty",
+        "difficultyAria": "Difficulty",
+        "estimatedHoursLabel": "Estimated Hours",
+        "estimatedHoursPlaceholder": "e.g., 10",
+        "visibilityLabel": "Visibility",
+        "visibilityAria": "Visibility",
+        "tagsLabel": "Tags",
+        "tagInputPlaceholder": "Add a tag"
+      },
+      "modules": {
+        "heading": "Modules",
+        "description": "Organize your pathway into modules. Each module contains labs that learners complete together.",
+        "addHeading": "Add Module",
+        "nameLabel": "Module Name *",
+        "namePlaceholder": "e.g., Getting Started",
+        "unlockTypeLabel": "Unlock Type",
+        "unlockTypeAria": "Unlock Type",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Brief description of this module",
+        "addAction": "Add Module",
+        "labsCount": "{count} lab(s)",
+        "emptyMessage": "No modules added yet. Add at least one module to continue."
+      },
+      "labs": {
+        "heading": "Assign Labs to Modules",
+        "description": "Add labs to each module. Learners will complete labs in the order shown.",
+        "moduleLabsCount": "{count} lab(s)",
+        "durationMinutes": "{count} min",
+        "pointsSuffix": "{count} pts",
+        "requiredCheckbox": "Required",
+        "selectPlaceholder": "Select a lab to add",
+        "selectAria": "Select a lab to add",
+        "emptyWarning": "Add at least one lab to any module to continue."
+      },
+      "review": {
+        "heading": "Review & Create",
+        "statsModules": "Modules",
+        "statsLabs": "Labs",
+        "statsPoints": "Total Points",
+        "statsDuration": "Duration",
+        "durationFormat": "{hours}h",
+        "estimatedHoursTag": "{hours}h estimated",
+        "modulesAndLabsHeading": "Modules & Labs",
+        "requiredTag": "Required",
+        "noLabsNote": "No labs assigned",
+        "draftMessage": "The pathway will be created as a {draft}. You can publish it after reviewing.",
+        "draftWord": "draft"
+      }
+    },
+    "learningRoadmap": {
+      "heading": "Learning Roadmap",
+      "legendCompleted": "Completed",
+      "legendInProgress": "In Progress",
+      "legendUnlocked": "Unlocked",
+      "legendLocked": "Locked",
+      "listAria": "Learning modules",
+      "completeHeading": "Pathway Complete!",
+      "completeBody": "Congratulations! You've completed all modules in this learning pathway."
+    },
+    "progressCard": {
+      "yourProgress": "Your Progress",
+      "completedState": "Completed!",
+      "moduleCountProgress": "{completed} of {total} modules completed",
+      "progressAria": "Progress: {percent}%",
+      "statsModules": "Modules",
+      "statsLabs": "Labs",
+      "statsDuration": "Duration",
+      "statsPoints": "Points",
+      "viewCertificate": "View Certificate",
+      "continueLearning": "Continue Learning",
+      "enrollNow": "Enroll Now",
+      "unenroll": "Unenroll from pathway"
+    },
+    "certificateModal": {
+      "headerTitle": "Certificate of Completion",
+      "certifies": "This certifies that",
+      "achievement": "has successfully completed the pathway",
+      "pointsEarnedLabel": "Points Earned",
+      "scoreLabel": "Score",
+      "completedOn": "Completed on {when}",
+      "verificationCode": "Verification Code",
+      "copyAria": "Copy verification URL",
+      "issuedOn": "Issued on {when}",
+      "close": "Close",
+      "print": "Print Certificate"
+    },
+    "card": {
+      "featured": "Featured",
+      "draft": "Draft",
+      "modulesLabel": "{count} modules",
+      "moreTags": "+{count}",
+      "progressLabel": "Progress",
+      "naDuration": "N/A",
+      "continueAction": "Continue",
+      "enrollAction": "Enroll",
+      "viewProgress": "View Progress",
+      "details": "Details"
+    },
+    "roadmap": {
+      "legendCompleted": "Completed",
+      "legendInProgress": "In Progress",
+      "legendUnlocked": "Unlocked",
+      "legendLocked": "Locked",
+      "badgeCompleted": "Completed",
+      "badgeInProgress": "In Progress",
+      "badgeStart": "Start",
+      "badgeLocked": "Locked",
+      "moduleHeader": "Module {number}: {name}",
+      "labsCount": "{count} Labs",
+      "pointsSuffix": "{count} pts"
+    },
+    "moduleCard": {
+      "badgeCompleted": "Completed",
+      "badgeInProgress": "In Progress",
+      "badgeStart": "Start",
+      "badgeLocked": "Locked",
+      "moduleHeader": "Module {number}: {name}",
+      "moduleAriaNumber": "Module {number}",
+      "labSingular": "{count} Lab",
+      "labPlural": "{count} Labs",
+      "pointsSuffix": "{count} pts",
+      "cardAria": "{name}. {status}. {labs}, {duration}, {points} points.",
+      "lockSequential": "Complete the previous module to unlock",
+      "lockAllPrevious": "Complete all previous modules to unlock",
+      "lockManual": "Requires instructor approval",
+      "lockDefault": "Complete prerequisites to unlock",
+      "labFallbackName": "Lab",
+      "labDurationMin": "{count}min"
+    },
+    "edit": {
+      "title": "Edit Pathway",
+      "subtitleLoading": "Loading...",
+      "statusDraft": "Draft",
+      "statusPublished": "Published",
+      "accessDeniedSummary": "Access Denied",
+      "accessDeniedDetail": "You must be an instructor or admin to edit pathways",
+      "loadFailed": "Failed to load pathway. Please try again.",
+      "saveSuccessSummary": "Pathway Updated",
+      "saveSuccessDetail": "Your changes have been saved",
+      "saveFailedFallback": "Failed to save changes. Please try again.",
+      "newTag": "New",
+      "emptyModules": "No modules yet. Add at least one module above.",
+      "cancel": "Cancel",
+      "submit": "Save Changes",
+      "cancelDialog": {
+        "header": "Discard Changes",
+        "message": "Are you sure you want to discard your changes?"
+      }
+    },
+    "create": {
+      "title": "Create Pathway",
+      "subtitle": "Build a structured learning track with modules and labs",
+      "accessDeniedSummary": "Access Denied",
+      "accessDeniedDetail": "You must be an instructor or admin to create pathways",
+      "labsLoadFailed": "Failed to load available labs",
+      "createSuccessSummary": "Pathway Created",
+      "createSuccessDetail": "\"{name}\" has been created successfully",
+      "createFailedFallback": "Failed to create pathway. Please try again.",
+      "unlockTypes": {
+        "sequential": "Sequential",
+        "sequentialDescription": "Previous module must be completed",
+        "allPrevious": "All Previous",
+        "allPreviousDescription": "All previous modules must be completed",
+        "manual": "Manual",
+        "manualDescription": "Requires instructor approval",
+        "always": "Always Available",
+        "alwaysDescription": "Module is always unlocked"
+      },
+      "back": "Back",
+      "cancel": "Cancel",
+      "next": "Next",
+      "submit": "Create Pathway"
+    },
+    "interactive": {
+      "backAction": "Back to Pathways",
+      "breadcrumbList": "Learning Pathways",
+      "loadFailed": "Failed to load pathway details. Please try again later.",
+      "enrollFailed": "Failed to enroll in this pathway. Please try again.",
+      "moduleLocked": "\"{name}\" is locked. Complete previous modules first.",
+      "labLocked": "This lab is locked. Complete previous modules first.",
+      "launchFailed": "Failed to launch \"{name}\". Please try again.",
+      "prerequisitesHeading": "Prerequisites",
+      "roadmapHeading": "Learning Roadmap",
+      "progressComplete": "Complete",
+      "progressModuleRatio": "{completed} of {total} modules",
+      "statModules": "Modules",
+      "statLabs": "Labs",
+      "enrollNow": "Enroll Now",
+      "completedTag": "Completed!",
+      "difficultyNotSpecified": "Not specified",
+      "labDialog": {
+        "fallbackTitle": "Lab Details",
+        "pointsSuffix": "{count} points",
+        "yourProgress": "Your Progress",
+        "passed": "Passed",
+        "notPassed": "Not Passed",
+        "bestScoreLine": "Best Score: ",
+        "bestScoreValue": "{score}/{total}",
+        "attemptsLine": "Attempts: ",
+        "attemptsValue": "{count}",
+        "notAttempted": "You haven't attempted this lab yet.",
+        "requiredNote": "Required to complete this module",
+        "viewDetails": "View Details",
+        "tryAgain": "Try Again",
+        "startLab": "Start Lab",
+        "enrollToStart": "Enroll to Start"
+      }
+    },
+    "enrollment": {
+      "backAction": "Back to Pathways",
+      "breadcrumbList": "Learning Pathways",
+      "fallbackPathwayName": "Learning Pathway",
+      "loadFailed": "Failed to load enrollment details. Please try again later.",
+      "launchFailed": "Failed to launch {name}. Please try again.",
+      "statusCompleted": "Completed",
+      "statusInProgress": "In Progress",
+      "statusEnrolled": "Enrolled",
+      "statusLocked": "Locked",
+      "statusUnlocked": "Unlocked",
+      "overallProgress": "Overall Progress",
+      "moduleProgressStat": "{completed}/{total} modules",
+      "pointsStat": "{earned}/{total} points",
+      "enrolledSince": "Enrolled {when}",
+      "timeRemaining": "~{duration} remaining",
+      "continueLearning": "Continue Learning",
+      "nextLabFallback": "Next Lab",
+      "pointsSuffix": "{count} pts",
+      "startLab": "Start Lab",
+      "completedHeading": "Pathway Completed!",
+      "completedBody": "Congratulations on completing all modules.",
+      "pointsEarnedLine": "{points} points earned",
+      "modulesHeading": "Modules",
+      "moduleFallbackName": "Module {index}",
+      "moduleLabsCount": "{completed}/{total} labs",
+      "modulePointsCount": "{earned}/{total} pts",
+      "labFallbackName": "Lab",
+      "attemptsSingular": "{count} attempt",
+      "attemptsPlural": "{count} attempts",
+      "labScore": "{score}/{total}",
+      "labScoreLabel": "points",
+      "viewDetails": "View Details",
+      "retryLab": "Retry Lab",
+      "startLabTooltip": "Start Lab",
+      "emptyModuleLabs": "No labs in this module yet."
+    },
+    "detail": {
+      "backAction": "Back to Pathways",
+      "breadcrumbList": "Learning Pathways",
+      "draftTag": "Draft",
+      "publishAction": "Publish",
+      "editAction": "Edit",
+      "publishedToast": {
+        "summary": "Pathway Published",
+        "detail": "\"{name}\" is now visible to all users"
+      },
+      "publishFailedToast": {
+        "summary": "Publish Failed",
+        "fallback": "Failed to publish pathway"
+      },
+      "emptyModules": "No modules available yet.",
+      "unenrollDialog": {
+        "header": "Unenroll from Pathway",
+        "message": "Are you sure you want to unenroll? Your progress will be saved and you can re-enroll later.",
+        "accept": "Unenroll",
+        "reject": "Cancel"
+      },
+      "certificateIssuedToast": {
+        "summary": "Certificate Issued",
+        "detail": "Your completion certificate has been generated!"
+      },
+      "certificateErrorToast": {
+        "summary": "Certificate Error",
+        "fallback": "Failed to load certificate"
+      }
+    },
+    "list": {
+      "title": "Learning Pathways",
+      "subtitle": "Structured learning tracks to master new skills",
+      "countSummary": "{filtered} of {total} pathways",
+      "createAction": "Create Pathway",
+      "continueHeading": "Continue Learning",
+      "featuredHeading": "Featured Pathways",
+      "unknownPathway": "Unknown Pathway",
+      "moduleProgress": "{completed}/{total} modules",
+      "searchPlaceholder": "Search pathways by name, description, or tags...",
+      "searchAria": "Search pathways by name, description, or tags",
+      "difficultyAllPlaceholder": "All Difficulties",
+      "difficultyAria": "Filter by difficulty",
+      "myEnrollmentsAction": "My Enrollments",
+      "clearAction": "Clear",
+      "clearFiltersAction": "Clear Filters",
+      "allPathwaysHeading": "All Pathways",
+      "yourEnrollmentsHeading": "Your Enrollments",
+      "statusCompleted": "Completed",
+      "statusInProgress": "In Progress",
+      "statusEnrolled": "Enrolled",
+      "statusAbandoned": "Paused",
+      "errors": {
+        "loadFailed": "Failed to load learning pathways. Please try again later.",
+        "enrollFailed": "Failed to enroll in {name}. Please try again."
+      },
+      "empty": {
+        "title": "No learning pathways available",
+        "body": "Check back later or contact your administrator."
+      },
+      "noMatch": {
+        "title": "No pathways match your filters",
+        "body": "Try adjusting your search or filter criteria."
+      }
+    }
+  }
+}

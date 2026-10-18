@@ -1,0 +1,16 @@
+[Unit]
+Description=Kootenai API Server
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=labadmin
+Group=labadmin
+ExecStart=/home/labadmin/kootenai/api/bin/labctl serve
+WorkingDirectory=/home/labadmin/kootenai/api
+EnvironmentFile=/etc/kootenai/env
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

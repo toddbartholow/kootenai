@@ -1,0 +1,2151 @@
+# English message catalog (source of truth).
+# Every message key the codebase uses MUST exist here; other locales fall back
+# to en when keys are missing.
+
+[error.internal]
+other = "an internal error occurred"
+
+[error.database]
+other = "failed to process request"
+
+[error.notFound]
+other = "resource not found"
+
+[error.unauthorized]
+other = "authentication required"
+
+[error.forbidden]
+other = "access denied"
+
+[error.badRequest]
+other = "invalid request"
+
+[error.conflict]
+other = "resource already exists"
+
+[error.validationFailed]
+other = "validation failed"
+
+[error.notImplemented]
+other = "this operation is not yet supported"
+
+# --- Auth ---
+
+[auth.errors.notConfigured]
+other = "authentication not configured"
+
+[auth.errors.invalidCredentials]
+other = "invalid credentials"
+
+[auth.errors.invalidToken]
+other = "invalid token"
+
+[auth.errors.tokenRevoked]
+other = "token has been revoked"
+
+[auth.errors.invalidAuthorizationHeader]
+other = "invalid authorization header"
+
+[auth.errors.generateTokenFailed]
+other = "failed to generate token"
+
+# --- LDAP Auth ---
+
+[auth.ldap.errors.connectionFailed]
+other = "unable to connect to authentication server"
+
+[auth.ldap.errors.tlsRequired]
+other = "secure connection to authentication server is required"
+
+[auth.ldap.errors.searchFailed]
+other = "authentication lookup failed"
+
+[auth.ldap.errors.userNotFound]
+other = "invalid credentials"
+
+[auth.ldap.errors.bindFailed]
+other = "invalid credentials"
+
+[auth.ldap.errors.provisionFailed]
+other = "failed to create user account"
+
+[auth.ldap.errors.notConfigured]
+other = "LDAP authentication is not configured"
+
+[auth.ldap.errors.featureDisabled]
+other = "LDAP authentication requires an enterprise license"
+
+[auth.errors.refreshTokenFailed]
+other = "failed to refresh token"
+
+[auth.errors.passwordRequired]
+other = "password is required"
+
+[auth.errors.userDatabaseUnavailable]
+other = "user database not available"
+
+[auth.errors.loginFailed]
+other = "login failed"
+
+[auth.errors.notAuthenticated]
+other = "not authenticated"
+
+[auth.errors.logoutFailed]
+other = "failed to logout"
+
+[auth.errors.invalidRequestBody]
+other = "invalid request body"
+
+[auth.errors.tokenRequired]
+other = "token is required"
+
+[auth.errors.serviceUnavailable]
+other = "authentication service temporarily unavailable"
+
+[auth.logoutSuccess]
+other = "successfully logged out"
+
+# --- Validation ---
+
+[validation.required]
+other = "{{.Field}} is required"
+
+[validation.email]
+other = "{{.Field}} must be a valid email address"
+
+[validation.min]
+other = "{{.Field}} must be at least {{.Param}} characters"
+
+[validation.max]
+other = "{{.Field}} must be at most {{.Param}} characters"
+
+[validation.uuid]
+other = "{{.Field}} must be a valid UUID"
+
+[validation.oneof]
+other = "{{.Field}} must be one of: {{.Param}}"
+
+[validation.gte]
+other = "{{.Field}} must be greater than or equal to {{.Param}}"
+
+[validation.lte]
+other = "{{.Field}} must be less than or equal to {{.Param}}"
+
+[validation.url]
+other = "{{.Field}} must be a valid URL"
+
+[validation.generic]
+other = "{{.Field}} failed validation: {{.Tag}}"
+
+[validation.bodyInvalidJSON]
+other = "invalid JSON"
+
+# --- Common request/body errors ---
+
+[error.invalidRequestBody]
+other = "invalid request body"
+
+# --- Pod lifecycle ---
+
+[pod.errors.notFound]
+other = "pod not found"
+
+[pod.errors.accessDenied]
+other = "access denied"
+
+[pod.errors.accessDeniedToPod]
+other = "access denied to this pod"
+
+[pod.errors.deletePermissionDenied]
+other = "you don't have permission to delete this pod"
+
+[pod.errors.startPermissionDenied]
+other = "you don't have permission to start this pod"
+
+[pod.errors.stopPermissionDenied]
+other = "you don't have permission to stop this pod"
+
+[pod.errors.snapshotNameRequired]
+other = "snapshot name is required"
+
+[pod.errors.labTemplateRepoNotConfigured]
+other = "lab template repository not configured"
+
+[pod.errors.userRepoNotConfigured]
+other = "user repository not configured"
+
+[pod.errors.asyncProvisioningNotConfigured]
+other = "async provisioning not configured"
+
+[pod.errors.loadTemplateFailed]
+other = "failed to load template"
+
+[pod.errors.parseTemplateFailed]
+other = "failed to parse template"
+
+[pod.errors.labTemplateNotFound]
+other = "lab template not found"
+
+[pod.errors.labTemplateInactive]
+other = "lab template is not active"
+
+# --- Session lifecycle ---
+
+[session.errors.notFound]
+other = "session not found"
+
+[session.errors.accessDenied]
+other = "access denied"
+
+[session.errors.repositoryUnavailable]
+other = "session repository not available"
+
+[session.errors.labTemplateRequired]
+other = "labTemplate is required"
+
+[session.errors.podIdRequired]
+other = "podId is required"
+
+[session.errors.userIdRequired]
+other = "userId is required"
+
+[session.errors.activeExistsForPod]
+other = "an active session already exists for this pod"
+
+[session.errors.alreadySubmitted]
+other = "session already submitted"
+
+[session.errors.checkExistingFailed]
+other = "failed to check existing sessions"
+
+[session.errors.cleanupStaleFailed]
+other = "failed to clean up stale sessions"
+
+[session.errors.createFailed]
+other = "failed to create session"
+
+[session.errors.deleteFailed]
+other = "failed to delete session"
+
+[session.errors.getFailed]
+other = "failed to get session"
+
+[session.errors.listFailed]
+other = "failed to list sessions"
+
+[session.errors.submitFailed]
+other = "failed to submit session"
+
+[session.errors.progressUnavailable]
+other = "progress data unavailable"
+
+[session.errors.enrollmentAndModuleRequired]
+other = "both enrollmentId and moduleId must be provided together"
+
+[session.errors.enrollmentNotFound]
+other = "enrollment not found"
+
+[session.errors.enrollmentNotOwned]
+other = "enrollment does not belong to user"
+
+[session.errors.enrollmentVerifyFailed]
+other = "failed to verify enrollment"
+
+[session.errors.moduleNotFound]
+other = "module not found"
+
+[session.errors.moduleVerifyFailed]
+other = "failed to verify module"
+
+[session.errors.moduleNotInPathway]
+other = "module does not belong to enrollment's pathway"
+
+[session.errors.maxAgeInvalid]
+other = "invalid maxAge duration (e.g. 24h, 12h, 48h)"
+
+[session.errors.maxAgeTooSmall]
+other = "maxAge must be at least 1h"
+
+# --- Lab templates ---
+
+[labTemplate.errors.notFound]
+other = "lab template not found"
+
+[labTemplate.errors.accessDenied]
+other = "access denied"
+
+[labTemplate.errors.accessDeniedToTemplate]
+other = "access denied to this lab template"
+
+[labTemplate.errors.repoNotConfigured]
+other = "lab template repository not configured"
+
+[labTemplate.errors.permissionDenied]
+other = "permission denied"
+
+[labTemplate.errors.deletePermissionDenied]
+other = "you don't have permission to delete this lab template"
+
+[labTemplate.errors.modifyPermissionDenied]
+other = "you don't have permission to modify this lab template"
+
+[labTemplate.errors.onlyAdminsCanCreateGlobal]
+other = "only admins can create global lab templates"
+
+[labTemplate.errors.onlyAdminsCanSetGlobal]
+other = "only admins can set visibility to global"
+
+[labTemplate.errors.nameRequired]
+other = "name is required"
+
+[labTemplate.errors.platformRequired]
+other = "platform is required"
+
+[labTemplate.errors.specRequired]
+other = "spec is required"
+
+[labTemplate.errors.yamlRequired]
+other = "yaml is required"
+
+[labTemplate.errors.versionRequired]
+other = "version is required"
+
+[labTemplate.errors.invalidSpec]
+other = "invalid lab specification"
+
+[labTemplate.errors.invalidVersionNumber]
+other = "invalid version number"
+
+[labTemplate.errors.versionNotFound]
+other = "version not found"
+
+[labTemplate.errors.createFailed]
+other = "failed to create lab template"
+
+[labTemplate.errors.updateFailed]
+other = "failed to update lab template"
+
+[labTemplate.errors.deleteFailed]
+other = "failed to delete lab template"
+
+[labTemplate.errors.getFailed]
+other = "failed to get lab template"
+
+[labTemplate.errors.listFailed]
+other = "failed to list lab templates"
+
+[labTemplate.errors.exportFailed]
+other = "failed to export lab template"
+
+[labTemplate.errors.parseFailed]
+other = "failed to parse lab template"
+
+[labTemplate.errors.getVersionFailed]
+other = "failed to get version"
+
+[labTemplate.errors.listVersionsFailed]
+other = "failed to list versions"
+
+[labTemplate.errors.restoreVersionFailed]
+other = "failed to restore version"
+
+[labTemplate.errors.orgContextRequired]
+other = "organization context is required for this operation"
+
+# --- Pathways ---
+
+[pathway.errors.notFound]
+other = "pathway not found"
+
+[pathway.errors.repoNotAvailable]
+other = "pathway repository not available"
+
+[pathway.errors.nameRequired]
+other = "name is required"
+
+[pathway.errors.slugConflict]
+other = "pathway with this slug already exists"
+
+[pathway.errors.createFailed]
+other = "failed to create pathway"
+
+[pathway.errors.updateFailed]
+other = "failed to update pathway"
+
+[pathway.errors.deleteFailed]
+other = "failed to delete pathway"
+
+[pathway.errors.archiveFailed]
+other = "failed to archive pathway"
+
+[pathway.errors.publishFailed]
+other = "failed to publish pathway"
+
+[pathway.errors.getFailed]
+other = "failed to get pathway"
+
+[pathway.errors.listFailed]
+other = "failed to list pathways"
+
+[pathway.errors.statsFailed]
+other = "failed to get pathway stats"
+
+[pathway.errors.moduleNotFound]
+other = "module not found"
+
+[pathway.errors.moduleCreateFailed]
+other = "failed to create module"
+
+[pathway.errors.moduleUpdateFailed]
+other = "failed to update module"
+
+[pathway.errors.moduleDeleteFailed]
+other = "failed to delete module"
+
+[pathway.errors.moduleGetFailed]
+other = "failed to get module"
+
+[pathway.errors.moduleListFailed]
+other = "failed to list modules"
+
+[pathway.errors.moduleLabAddFailed]
+other = "failed to add lab to module"
+
+[pathway.errors.moduleLabRemoveFailed]
+other = "failed to remove lab from module"
+
+[pathway.errors.labTemplateIdRequired]
+other = "labTemplateId is required"
+
+[pathway.errors.enrollmentNotFound]
+other = "enrollment not found"
+
+[pathway.errors.enrollmentRepoNotAvailable]
+other = "enrollment repository not available"
+
+[pathway.errors.enrollmentGetFailed]
+other = "failed to get enrollment"
+
+[pathway.errors.enrollmentProgressFailed]
+other = "failed to get enrollment progress"
+
+[pathway.errors.enrollmentListFailed]
+other = "failed to list enrollments"
+
+[pathway.errors.adminOrInstructorRequired]
+other = "admin or instructor role required"
+
+[pathway.errors.authRequired]
+other = "authentication required"
+
+# --- Shared auth guards ---
+
+[authz.authRequired]
+other = "authentication required"
+
+[authz.adminRequired]
+other = "admin access required"
+
+[authz.accessDenied]
+other = "access denied"
+
+# --- Security / Wazuh ---
+
+[security.errors.wazuhNotConfigured]
+other = "Wazuh health monitoring not configured"
+
+# --- Events ---
+
+[event.errors.readBodyFailed]
+other = "failed to read request body"
+
+[event.errors.webhookValidationFailed]
+other = "webhook validation failed"
+
+[event.errors.invalidAlertFormat]
+other = "invalid alert format"
+
+[event.errors.processAlertFailed]
+other = "failed to process alert"
+
+[event.errors.timestampOutOfRange]
+other = "event timestamp out of range"
+
+# --- Recommendations ---
+
+[recommendation.errors.getFailed]
+other = "failed to get recommendations"
+
+[recommendation.errors.serviceUnavailable]
+other = "recommendation service not available"
+
+[recommendation.errors.nextLabFailed]
+other = "failed to get next lab"
+
+[recommendation.errors.noNextLab]
+other = "no next lab found or pathway completed"
+
+# --- Assessment ---
+
+[assessment.errors.notFound]
+other = "assessment not found"
+
+[assessment.errors.runtimeNotConfigured]
+other = "assessment runtime not configured"
+
+[assessment.errors.sessionNotFound]
+other = "session not found"
+
+[assessment.errors.podNotFound]
+other = "pod not found"
+
+[assessment.errors.deviceNotFound]
+other = "device not found"
+
+# --- Dashboard ---
+
+[dashboard.errors.getDashboardFailed]
+other = "failed to get dashboard"
+
+[dashboard.errors.getActivityFailed]
+other = "failed to get activity"
+
+[dashboard.errors.getLeaderboardFailed]
+other = "failed to get leaderboard"
+
+[dashboard.errors.getInsightsFailed]
+other = "failed to get insights"
+
+# --- WebSocket ---
+
+[websocket.errors.invalidPod]
+other = "invalid pod"
+
+[websocket.errors.invalidSession]
+other = "invalid session"
+
+# --- Achievements ---
+
+[achievement.errors.notFound]
+other = "achievement not found"
+
+[achievement.errors.repoNotAvailable]
+other = "achievement repository not available"
+
+[achievement.errors.serviceNotAvailable]
+other = "achievement service not available"
+
+[achievement.errors.getFailed]
+other = "failed to get achievement"
+
+[achievement.errors.summaryFailed]
+other = "failed to get achievement summary"
+
+[achievement.errors.recentFailed]
+other = "failed to get recent achievements"
+
+[achievement.errors.userFailed]
+other = "failed to get user achievements"
+
+[achievement.errors.listFailed]
+other = "failed to list achievements"
+
+# --- Console (Proxmox SPICE/VNC) ---
+
+[console.errors.adminRequired]
+other = "admin access required for direct VM operations"
+
+[console.errors.invalidVmid]
+other = "invalid vmid: {{.Vmid}}"
+
+[console.errors.proxmoxNotConfigured]
+other = "Proxmox host not configured"
+
+[console.errors.spiceNotSupported]
+other = "VM does not support SPICE console"
+
+# --- Certificates ---
+
+[certificate.errors.notFoundOrInvalidCode]
+other = "certificate not found or invalid verification code"
+
+[certificate.errors.serviceNotAvailable]
+other = "certificate service not available"
+
+[certificate.errors.enrollmentNotFound]
+other = "enrollment not found"
+
+[certificate.errors.listFailed]
+other = "failed to list certificates"
+
+[certificate.errors.verifyFailed]
+other = "failed to verify certificate"
+
+[certificate.errors.verifyEnrollmentFailed]
+other = "failed to verify enrollment"
+
+# --- LTI launch / OIDC ---
+
+[lti.errors.notConfigured]
+other = "LTI not configured"
+
+[lti.errors.parseFormFailed]
+other = "failed to parse form"
+
+[lti.errors.missingIdToken]
+other = "missing id_token"
+
+[lti.errors.invalidLaunch]
+other = "invalid LTI launch"
+
+[lti.errors.missingOidcParams]
+other = "missing required OIDC parameters"
+
+[lti.errors.initiateLoginFailed]
+other = "failed to initiate login"
+
+[lti.errors.authorizationError]
+other = "authorization error: {{.Code}} - {{.Description}}"
+
+[lti.errors.invalidState]
+other = "invalid state parameter"
+
+[lti.errors.invalidLaunchType]
+other = "invalid launch request type"
+
+[lti.errors.tokenEndpointNotImplemented]
+other = "token endpoint not implemented"
+
+# --- LTI deep linking ---
+
+[ltiDeeplink.errors.notConfigured]
+other = "deep linking not configured"
+
+[ltiDeeplink.errors.repoNotConfigured]
+other = "LTI repository not configured"
+
+[ltiDeeplink.errors.parseTokenFailed]
+other = "failed to parse token"
+
+[ltiDeeplink.errors.invalidTokenClaims]
+other = "invalid token claims"
+
+[ltiDeeplink.errors.missingDeeplinkSettings]
+other = "missing deep linking settings"
+
+[ltiDeeplink.errors.courseIdRequired]
+other = "courseId is required"
+
+[ltiDeeplink.errors.returnUrlRequired]
+other = "returnUrl is required"
+
+[ltiDeeplink.errors.templateIdRequired]
+other = "templateId is required"
+
+[ltiDeeplink.errors.templateNotFound]
+other = "template not found"
+
+[ltiDeeplink.errors.getTemplatesFailed]
+other = "failed to get templates"
+
+[ltiDeeplink.errors.listTemplatesFailed]
+other = "failed to list templates"
+
+[ltiDeeplink.errors.saveAssignmentFailed]
+other = "failed to save assignment"
+
+[ltiDeeplink.errors.buildResponseFailed]
+other = "failed to build response"
+
+[ltiDeeplink.errors.instructorRequired]
+other = "only instructors can create assignments"
+
+# --- Reservations ---
+
+[reservation.errors.notFound]
+other = "reservation not found"
+
+[reservation.errors.labTemplateIdRequired]
+other = "labTemplateId is required"
+
+[reservation.errors.startTimeRequired]
+other = "startTime is required"
+
+[reservation.errors.startTimeInvalid]
+other = "invalid startTime format, use ISO 8601"
+
+[reservation.errors.startTimeMustBeFuture]
+other = "startTime must be in the future"
+
+[reservation.errors.startDateInvalid]
+other = "invalid startDate format, use YYYY-MM-DD"
+
+[reservation.errors.endDateInvalid]
+other = "invalid endDate format, use YYYY-MM-DD"
+
+[reservation.errors.durationMustBePositive]
+other = "durationMinutes must be positive"
+
+[reservation.errors.noCapacity]
+other = "no capacity available for the selected time slot"
+
+[reservation.errors.cancelNotAuthorized]
+other = "not authorized to cancel this reservation"
+
+[reservation.errors.viewNotAuthorized]
+other = "not authorized to view this reservation"
+
+[reservation.errors.cannotCancel]
+other = "reservation cannot be cancelled"
+
+[reservation.errors.createFailed]
+other = "failed to create reservation"
+
+[reservation.errors.cancelFailed]
+other = "failed to cancel reservation"
+
+[reservation.errors.checkAvailabilityFailed]
+other = "failed to check availability"
+
+[reservation.errors.getFailed]
+other = "failed to get reservation"
+
+[reservation.errors.listFailed]
+other = "failed to list reservations"
+
+# --- Simulation (test students) ---
+
+[simulation.errors.serviceNotConfigured]
+other = "simulation service not configured"
+
+[simulation.errors.nameRequired]
+other = "name is required"
+
+[simulation.errors.emailRequired]
+other = "email is required"
+
+[simulation.errors.userIdRequired]
+other = "userId is required"
+
+[simulation.errors.userIDRequired]
+other = "userID is required"
+
+[simulation.errors.pathwayIdRequired]
+other = "pathwayId is required"
+
+[simulation.errors.createTestStudentFailed]
+other = "failed to create test student"
+
+[simulation.errors.listTestStudentsFailed]
+other = "failed to list test students"
+
+[simulation.errors.getStudentProgressFailed]
+other = "failed to get student progress"
+
+[simulation.errors.resetStudentProgressFailed]
+other = "failed to reset student progress"
+
+# --- Classroom simulations ---
+
+[classroom.errors.runnerNotConfigured]
+other = "classroom runner not configured"
+
+[classroom.errors.serviceNotConfigured]
+other = "classroom simulation service not configured"
+
+[classroom.errors.nameRequired]
+other = "name is required"
+
+[classroom.errors.simulationNotFound]
+other = "simulation not found"
+
+[classroom.errors.studentNotFound]
+other = "student not found"
+
+[classroom.errors.createFailed]
+other = "failed to create classroom simulation"
+
+[classroom.errors.deleteFailed]
+other = "failed to delete simulation"
+
+[classroom.errors.getFailed]
+other = "failed to get simulation"
+
+[classroom.errors.listFailed]
+other = "failed to list simulations"
+
+[classroom.errors.startFailed]
+other = "failed to start simulation"
+
+[classroom.errors.stopFailed]
+other = "failed to stop simulation"
+
+[classroom.errors.pauseFailed]
+other = "failed to pause simulation"
+
+[classroom.errors.getStudentFailed]
+other = "failed to get student"
+
+[classroom.errors.listActivitiesFailed]
+other = "failed to list activities"
+
+[classroom.errors.listFeedbackFailed]
+other = "failed to list feedback"
+
+[classroom.errors.feedbackSummaryFailed]
+other = "failed to get feedback summary"
+
+# --- Licenses ---
+
+[license.errors.serviceNotConfigured]
+other = "license service not configured"
+
+[license.errors.adminRequired]
+other = "admin access required"
+
+[license.errors.ownerRequired]
+other = "owner access required"
+
+[license.errors.orgContextRequired]
+other = "organization context required"
+
+[license.errors.keyRequired]
+other = "license key is required"
+
+[license.errors.invalidKey]
+other = "invalid license key"
+
+[license.errors.keyInUse]
+other = "license key is already in use"
+
+[license.errors.noActiveLicense]
+other = "no active license found"
+
+[license.errors.activateFailed]
+other = "failed to activate license"
+
+[license.errors.deactivateFailed]
+other = "failed to deactivate license"
+
+[license.errors.getFailed]
+other = "failed to get license"
+
+[license.errors.validateFailed]
+other = "failed to validate license"
+
+# --- Questions / hints ---
+
+[question.errors.notFound]
+other = "question not found"
+
+[question.errors.checkpointNotFound]
+other = "checkpoint not found"
+
+[question.errors.checkpointHintNotAvailable]
+other = "checkpoint hint tracking not available"
+
+[question.errors.hintNotFound]
+other = "hint not found"
+
+[question.errors.noHintsAvailable]
+other = "no hints available"
+
+[question.errors.noMoreHints]
+other = "no more hints available"
+
+[question.errors.prerequisitesNotMet]
+other = "prerequisites not met"
+
+[question.errors.sessionNotFound]
+other = "session not found"
+
+[question.errors.sessionEnded]
+other = "session has ended"
+
+[question.errors.accessDenied]
+other = "access denied"
+
+[question.errors.labTemplateNotFound]
+other = "lab template not found"
+
+[question.errors.parseTemplateFailed]
+other = "failed to parse template"
+
+[question.errors.saveResponseFailed]
+other = "failed to save response"
+
+# --- Password reset / change / set ---
+
+[password.errors.userNotFound]
+other = "user not found"
+
+[password.errors.userIdRequired]
+other = "user ID is required"
+
+[password.errors.tokenRequired]
+other = "token is required"
+
+[password.errors.passwordRequired]
+other = "password is required"
+
+[password.errors.newPasswordRequired]
+other = "new password is required"
+
+[password.errors.currentPasswordRequired]
+other = "current password is required"
+
+[password.errors.currentPasswordIncorrect]
+other = "current password is incorrect"
+
+[password.errors.eitherPasswordOrGenerate]
+other = "either password or generatePassword is required"
+
+[password.errors.emailRequired]
+other = "email is required"
+
+[password.errors.invalidOrExpiredToken]
+other = "invalid or expired reset token"
+
+[password.errors.tokenAlreadyUsed]
+other = "this reset token has already been used"
+
+[password.errors.tokenExpired]
+other = "this reset token has expired"
+
+[password.errors.verifyTokenFailed]
+other = "failed to verify token"
+
+[password.errors.changeFailed]
+other = "failed to change password"
+
+[password.errors.resetFailed]
+other = "failed to reset password"
+
+[password.errors.setFailed]
+other = "failed to set password"
+
+[password.errors.updateFailed]
+other = "failed to update password"
+
+[password.errors.generateFailed]
+other = "failed to generate password"
+
+[organization.errors.ownerAccessRequired]
+other = "owner access required"
+
+[organization.errors.contextRequired]
+other = "organization context required"
+
+[organization.errors.repositoryNotConfigured]
+other = "organization repository not configured"
+
+[organization.errors.nameRequired]
+other = "name is required"
+
+[organization.errors.userIdOrEmailRequired]
+other = "userId or email is required"
+
+[organization.errors.slugAlreadyExists]
+other = "organization slug already exists"
+
+[organization.errors.userAlreadyMember]
+other = "user is already a member"
+
+[organization.errors.userNotFound]
+other = "user not found"
+
+[organization.errors.memberNotFound]
+other = "member not found"
+
+[organization.errors.invalidOrExpiredInvitation]
+other = "invalid or expired invitation"
+
+[organization.errors.cannotDeleteSystemOrg]
+other = "cannot delete system organization"
+
+[organization.errors.cannotDemoteLastOwner]
+other = "cannot demote last owner"
+
+[organization.errors.cannotRemoveLastOwner]
+other = "cannot remove last owner"
+
+[organization.errors.cannotRemoveOtherMembers]
+other = "cannot remove other members"
+
+[organization.errors.onlyOwnerCanAssignAdminRoles]
+other = "only owner can assign admin roles"
+
+[organization.errors.onlyOwnerCanDeactivate]
+other = "only owner can deactivate organization"
+
+[organization.errors.onlyOwnerCanInviteAdmins]
+other = "only owner can invite admins"
+
+[organization.errors.onlyOwnerCanRemoveAdmins]
+other = "only owner can remove admins"
+
+[organization.errors.createFailed]
+other = "failed to create organization"
+
+[organization.errors.updateFailed]
+other = "failed to update organization"
+
+[organization.errors.deleteFailed]
+other = "failed to delete organization"
+
+[organization.errors.getFailed]
+other = "failed to get organization"
+
+[organization.errors.listFailed]
+other = "failed to list organizations"
+
+[organization.errors.inviteMemberFailed]
+other = "failed to invite member"
+
+[organization.errors.listMembersFailed]
+other = "failed to list members"
+
+[organization.errors.removeMemberFailed]
+other = "failed to remove member"
+
+[organization.errors.updateMemberFailed]
+other = "failed to update member"
+
+[user.errors.serviceUnavailable]
+other = "user service unavailable"
+
+[user.errors.notFound]
+other = "user not found"
+
+[user.errors.idRequired]
+other = "user ID required"
+
+[user.errors.usernameRequired]
+other = "username is required"
+
+[user.errors.usernameAlreadyExists]
+other = "username already exists"
+
+[user.errors.emailAlreadyExists]
+other = "email already exists"
+
+[user.errors.invalidRole]
+other = "invalid role"
+
+[user.errors.invalidRoleDetail]
+other = "invalid role: must be student, instructor, or admin"
+
+[user.errors.cannotChangeOwnStatus]
+other = "cannot change your own status"
+
+[user.errors.cannotDeleteOwnAccount]
+other = "cannot delete your own account"
+
+[user.errors.createFailed]
+other = "failed to create user"
+
+[user.errors.updateFailed]
+other = "failed to update user"
+
+[user.errors.updateRoleFailed]
+other = "failed to update role"
+
+[user.errors.updateStatusFailed]
+other = "failed to update status"
+
+[user.errors.deleteFailed]
+other = "failed to delete user"
+
+[user.errors.getFailed]
+other = "failed to get user"
+
+[user.errors.listFailed]
+other = "failed to list users"
+
+[rbac.errors.notConfigured]
+other = "RBAC not configured"
+
+[rbac.errors.contextRequired]
+other = "organization context required"
+
+[rbac.errors.roleIdRequired]
+other = "roleId is required"
+
+[rbac.errors.nameAndSlugRequired]
+other = "name and slug are required"
+
+[rbac.errors.roleNotFound]
+other = "role not found"
+
+[rbac.errors.sourceRoleNotFound]
+other = "source role not found"
+
+[rbac.errors.systemRolesCannotBeDeleted]
+other = "system roles cannot be deleted"
+
+[rbac.errors.systemRolesCannotBeModified]
+other = "system roles cannot be modified"
+
+[rbac.errors.cannotAssignHigherRole]
+other = "cannot assign a role with equal or higher priority than your own"
+
+[rbac.errors.cannotElevateOwnRole]
+other = "cannot elevate your own role"
+
+[rbac.errors.createFailed]
+other = "failed to create role"
+
+[rbac.errors.updateFailed]
+other = "failed to update role"
+
+[rbac.errors.deleteFailed]
+other = "failed to delete role"
+
+[rbac.errors.getFailed]
+other = "failed to get role"
+
+[rbac.errors.cloneFailed]
+other = "failed to clone role"
+
+[rbac.errors.assignFailed]
+other = "failed to assign role"
+
+[rbac.errors.revokeFailed]
+other = "failed to revoke role"
+
+[rbac.errors.listRolesFailed]
+other = "failed to list roles"
+
+[rbac.errors.getUserRolesFailed]
+other = "failed to get user roles"
+
+[rbac.errors.listPermissionsFailed]
+other = "failed to list permissions"
+
+[rbac.errors.verifyPermissionsFailed]
+other = "failed to verify permissions"
+
+[rbac.errors.setRolePermissionsFailed]
+other = "failed to set role permissions"
+
+[rbac.errors.setRolePermissionSetsFailed]
+other = "failed to set role permission sets"
+
+[rbac.errors.updateRolePermissionsFailed]
+other = "failed to update role permissions"
+
+[rbac.errors.updateRolePermissionSetsFailed]
+other = "failed to update role permission sets"
+
+[rbac.errors.copyPermissionsFailed]
+other = "failed to copy permissions"
+
+[rbac.errors.copyPermissionSetsFailed]
+other = "failed to copy permission sets"
+
+[team.errors.repositoryNotConfigured]
+other = "team repository not configured"
+
+[team.errors.editionRequired]
+other = "teams feature requires Professional or Enterprise edition"
+
+[team.errors.nameRequired]
+other = "name is required"
+
+[team.errors.userIdRequired]
+other = "userId is required"
+
+[team.errors.notFound]
+other = "team not found"
+
+[team.errors.memberNotFound]
+other = "team member not found"
+
+[team.errors.slugAlreadyExists]
+other = "team slug already exists"
+
+[team.errors.userAlreadyMember]
+other = "user is already a team member"
+
+[team.errors.userNotOrgMember]
+other = "user is not an active member of this organization"
+
+[team.errors.cannotDemoteLastLead]
+other = "cannot demote last team lead"
+
+[team.errors.cannotRemoveLastLead]
+other = "cannot remove last team lead"
+
+[team.errors.instructorRequired]
+other = "instructor access required"
+
+[team.errors.leadOrAdminRequired]
+other = "team lead or admin access required"
+
+[team.errors.leadOrInstructorRequired]
+other = "team lead or instructor access required"
+
+[team.errors.createFailed]
+other = "failed to create team"
+
+[team.errors.updateFailed]
+other = "failed to update team"
+
+[team.errors.deleteFailed]
+other = "failed to delete team"
+
+[team.errors.getFailed]
+other = "failed to get team"
+
+[team.errors.listFailed]
+other = "failed to list teams"
+
+[team.errors.addMemberFailed]
+other = "failed to add team member"
+
+[team.errors.removeMemberFailed]
+other = "failed to remove team member"
+
+[team.errors.updateMemberFailed]
+other = "failed to update team member"
+
+[team.errors.listMembersFailed]
+other = "failed to list team members"
+
+[validation.empty]
+other = "{{.Field}} cannot be empty"
+
+[validation.maxLength]
+other = "{{.Field}} exceeds maximum length of {{.Max}} characters"
+
+[validation.invalidPath]
+other = "{{.Field}} contains invalid path sequences"
+
+[validation.invalidIDFormat]
+other = "{{.Field}} must be a valid UUID or alphanumeric name (letters, numbers, underscores, hyphens, dots)"
+
+[validation.invalidNameFormat]
+other = "{{.Field}} must start with a letter or number and contain only letters, numbers, underscores, hyphens, or dots"
+
+[validation.invalidVMID]
+other = "{{.Field}} must be a positive integer"
+
+# --- Auth password strength ---
+
+[auth.password.tooShort]
+other = "password must be at least {{.Min}} characters"
+
+[auth.password.noUppercase]
+other = "password must contain at least one uppercase letter"
+
+[auth.password.noLowercase]
+other = "password must contain at least one lowercase letter"
+
+[auth.password.noDigit]
+other = "password must contain at least one digit"
+
+[auth.password.required]
+other = "password is required"
+
+[rbac.errors.permissionBlocked]
+other = "permission \"{{.Permission}}\" cannot be assigned to custom roles"
+
+[rbac.errors.checkRoleLimitsFailed]
+other = "failed to check role limits"
+
+[rbac.errors.customRoleLimitReached]
+other = "custom role limit reached for your edition"
+
+# --- LTI console browser errors (plaintext) ---
+
+[lti.console.errors.toolIssuerNotConfigured]
+other = "LTI ToolIssuer not configured (set LTI_TOOL_ISSUER)"
+
+[lti.console.errors.missingPodOrVmid]
+other = "Missing podId or vmid parameter"
+
+[lti.console.errors.invalidToken]
+other = "Invalid or expired console token"
+
+[lti.console.errors.podRepoNotConfigured]
+other = "Pod repository not configured"
+
+[lti.console.errors.loadPodFailed]
+other = "Failed to load pod"
+
+[lti.console.errors.podNotFoundOrEmpty]
+other = "Pod not found or has no VMs"
+
+[lti.console.errors.internal]
+other = "Internal error"
+
+[lti.console.errors.missingHostHeader]
+other = "Missing Host header"
+
+[lti.console.errors.vncAccessFailed]
+other = "Failed to get VNC access"
+
+# --- OAuth2 browser errors (plaintext) ---
+
+[oauth2.errors.providerIdRequired]
+other = "Provider ID required"
+
+[oauth2.errors.initiateLoginFailed]
+other = "Failed to initiate login"
+
+[oauth2.errors.missingCodeOrState]
+other = "Missing code or state"
+
+[oauth2.errors.invalidRequestBody]
+other = "Invalid request body"
+
+[oauth2.errors.providerAndRefreshRequired]
+other = "Provider and refresh token required"
+
+[oauth2.errors.refreshTokenFailed]
+other = "Failed to refresh token"
+
+[auth.errors.unsupportedLocale]
+other = "unsupported locale"
+
+# --- labctl CLI (operator tool) ---
+# Opt-in localization for the labctl CLI. Default output is English; users
+# pick a locale via `--locale` or LANG. See issue #119 and ADR-0001 for the
+# "operator tools stay English by default" policy.
+
+[labctl.usage.heading]
+other = "labctl - Kootenai Platform CLI"
+
+[labctl.usage.usageLabel]
+other = "Usage:"
+
+[labctl.usage.pattern]
+other = "labctl <command> [arguments]"
+
+[labctl.usage.commandsLabel]
+other = "Commands:"
+
+[labctl.usage.cmdServe]
+other = "Start the API server"
+
+[labctl.usage.cmdMigrate]
+other = "Run database migrations"
+
+[labctl.usage.cmdVersion]
+other = "Print version information"
+
+[labctl.usage.cmdLab]
+other = "Manage lab templates"
+
+[labctl.usage.cmdPod]
+other = "Manage lab pods (instances)"
+
+[labctl.usage.cmdSnapshot]
+other = "Manage VM snapshots"
+
+[labctl.usage.cmdSession]
+other = "Manage lab sessions"
+
+[labctl.usage.helpHint]
+other = "Use \"labctl <command> --help\" for more information about a command."
+
+[labctl.version.line]
+other = "labctl version {{.Version}}"
+
+[labctl.version.commit]
+other = "Commit:     {{.Commit}}"
+
+[labctl.version.built]
+other = "Built:      {{.BuildTime}}"
+
+[labctl.version.goVersion]
+other = "Go version: {{.GoVersion}}"
+
+[labctl.version.osArch]
+other = "OS/Arch:    {{.OS}}/{{.Arch}}"
+
+[labctl.errors.prefix]
+other = "Error:"
+
+[labctl.errors.unknownCommand]
+other = "Unknown {{.Group}} command: {{.Command}}"
+
+[labctl.errors.requiresSubcommand]
+other = "Usage: labctl {{.Group}} <command>"
+
+[labctl.lab.list.empty]
+other = "No templates found in {{.Dir}}"
+
+[labctl.lab.list.colName]
+other = "NAME"
+
+[labctl.lab.list.colPlatform]
+other = "PLATFORM"
+
+[labctl.lab.list.colDifficulty]
+other = "DIFFICULTY"
+
+[labctl.lab.list.colCheckpoints]
+other = "CHECKPOINTS"
+
+[labctl.lab.list.colPoints]
+other = "POINTS"
+
+[labctl.lab.list.colDescription]
+other = "DESCRIPTION"
+
+# --- labctl subcommand help + inline hints ---
+# The Usage blocks are multi-line prose kept as single keys so translators
+# receive the full help text as one unit; the embedded command/flag tokens
+# are NOT translated (they're the literal strings the operator types).
+
+[labctl.lab.usage]
+other = """Lab template management commands
+
+Usage:
+  labctl lab <command> [options]
+
+Commands:
+  list        List available lab templates
+  show        Show detailed template information
+  validate    Validate a lab template file
+
+Examples:
+  labctl lab list
+  labctl lab show security-onion-basics
+  labctl lab validate templates/new-lab.yaml"""
+
+[labctl.lab.hints.show]
+other = "Usage: labctl lab show <template-name>"
+
+[labctl.lab.hints.validate]
+other = "Usage: labctl lab validate <template-file>"
+
+[labctl.pod.usage]
+other = """Pod management commands
+
+Usage:
+  labctl pod <command> [options]
+
+Commands:
+  list        List all pods
+  create      Create a new pod from template
+  status      Show detailed pod status
+  destroy     Destroy a pod
+  reset       Reset pod to snapshot
+  reset-vm    Reset a specific VM in a pod
+
+Examples:
+  labctl pod list
+  labctl pod list --owner=student@example.com
+  labctl pod create --template=security-onion-basics --owner=student@example.com
+  labctl pod status abc123
+  labctl pod destroy abc123
+  labctl pod reset abc123 --snapshot=initial"""
+
+[labctl.pod.hints.create]
+other = "Usage: labctl pod create --template=<name> --owner=<owner> [--duration=4h]"
+
+[labctl.pod.hints.status]
+other = "Usage: labctl pod status <pod-id>"
+
+[labctl.pod.hints.destroy]
+other = "Usage: labctl pod destroy <pod-id> [--force]"
+
+[labctl.pod.hints.reset]
+other = "Usage: labctl pod reset <pod-id> [--snapshot=<name>]"
+
+[labctl.pod.hints.resetVm]
+other = "Usage: labctl pod reset-vm <pod-id> <vm-name> [--snapshot=<name>]"
+
+[labctl.snapshot.usage]
+other = """Snapshot management commands
+
+Usage:
+  labctl snapshot <command> [options]
+
+Commands:
+  list        List all snapshots for a VM
+  create      Create a new snapshot
+  revert      Revert VM to a snapshot
+  delete      Delete a snapshot
+
+Options (for all commands):
+  --pod       Pod ID (required)
+  --vm        VM name (required)
+
+Options (for create):
+  --name      Snapshot name (required)
+  --desc      Snapshot description
+  --ram       Include RAM state in snapshot
+
+Options (for revert/delete):
+  --name      Snapshot name (required)
+
+Examples:
+  labctl snapshot list --pod pod-123 --vm ubuntu-desktop
+  labctl snapshot create --pod pod-123 --vm ubuntu-desktop --name checkpoint1 --desc "Initial state"
+  labctl snapshot revert --pod pod-123 --vm ubuntu-desktop --name checkpoint1
+  labctl snapshot delete --pod pod-123 --vm ubuntu-desktop --name checkpoint1"""
+
+[labctl.snapshot.errors.podVmRequired]
+other = "Error: --pod and --vm are required"
+
+[labctl.snapshot.errors.podVmNameRequired]
+other = "Error: --pod, --vm, and --name are required"
+
+[labctl.session.usage]
+other = """Lab session management commands
+
+Usage:
+  labctl session <command> [options]
+
+Commands:
+  list        List all sessions
+  start       Start a new session
+  status      Show detailed session status
+  progress    Show progress bar and summary
+  checkpoints List checkpoint details
+  end         End a session
+
+Examples:
+  labctl session list
+  labctl session list --active
+  labctl session start --pod=abc123 --user=student@example.com --template=security-onion-basics
+  labctl session status abc123
+  labctl session progress abc123
+  labctl session checkpoints abc123
+  labctl session end abc123"""
+
+[labctl.session.hints.start]
+other = "Usage: labctl session start --pod=<id> --user=<id> --template=<name>"
+
+[labctl.session.hints.status]
+other = "Usage: labctl session status <session-id>"
+
+[labctl.session.hints.progress]
+other = "Usage: labctl session progress <session-id>"
+
+[labctl.session.hints.checkpoints]
+other = "Usage: labctl session checkpoints <session-id>"
+
+[labctl.session.hints.end]
+other = "Usage: labctl session end <session-id>"
+
+[labctl.config.loaded]
+other = "Loaded config from {{.Path}}"
+
+[labctl.config.parseWarning]
+other = "Warning: failed to parse {{.Path}}: {{.Err}}"
+
+[labctl.errors.setupLoggerFailed]
+other = "Failed to setup logger: {{.Err}}"
+
+# --- labctl lab show output (detailed template view) ---
+
+[labctl.lab.show.templateHeading]
+other = "Lab Template: {{.Name}}"
+
+[labctl.lab.show.fieldDescription]
+other = "Description: {{.Value}}"
+
+[labctl.lab.show.fieldPlatform]
+other = "Platform:    {{.Value}}"
+
+[labctl.lab.show.fieldDifficulty]
+other = "Difficulty:  {{.Value}}"
+
+[labctl.lab.show.fieldDuration]
+other = "Duration:    {{.Value}}"
+
+[labctl.lab.show.fieldVersion]
+other = "Version:     {{.Value}}"
+
+[labctl.lab.show.fieldAuthor]
+other = "Author:      {{.Value}}"
+
+[labctl.lab.show.fieldTags]
+other = "Tags:        {{.Value}}"
+
+[labctl.lab.show.networkHeading]
+other = "Network Topology:"
+
+[labctl.lab.show.networkLine]
+other = "  • {{.Name}} - VLAN {{.Vlan}}, {{.Subnet}}{{.Dhcp}}"
+
+[labctl.lab.show.networkDhcpSuffix]
+other = " (DHCP)"
+
+[labctl.lab.show.vmsHeading]
+other = "Virtual Machines:"
+
+[labctl.lab.show.vmName]
+other = "  • {{.Name}}"
+
+[labctl.lab.show.vmTemplate]
+other = "    Template: {{.Template}}{{.Wazuh}}"
+
+[labctl.lab.show.vmWazuhSuffix]
+other = " [Wazuh]"
+
+[labctl.lab.show.vmResources]
+other = "    Resources: {{.Cpu}} CPU, {{.Memory}} MB RAM"
+
+[labctl.lab.show.vmResourcesDiskSuffix]
+other = ", {{.Disk}} GB disk"
+
+[labctl.lab.show.vmNetwork]
+other = "    Network: {{.Segment}} ({{.Ip}})"
+
+[labctl.lab.show.vmNetworkDhcp]
+other = "DHCP"
+
+[labctl.lab.show.vmSnapshotsPrefix]
+other = "    Snapshots: "
+
+[labctl.lab.show.checkpointsHeading]
+other = "Checkpoints ({{.Count}} total, {{.Max}} max points):"
+
+[labctl.lab.show.passThreshold]
+other = "  Pass Threshold: {{.Pct}}%"
+
+[labctl.lab.show.hintsEnabled]
+other = "  Hints: Enabled"
+
+[labctl.lab.show.objectiveLine]
+other = "  {{.Number}}. [{{.Points}} pts] {{.Description}}{{.Required}}{{.Requires}}"
+
+[labctl.lab.show.requiredSuffix]
+other = " [REQUIRED]"
+
+[labctl.lab.show.requiresSuffix]
+other = " (requires: {{.Deps}})"
+
+[labctl.lab.show.triggerLine]
+other = "      → {{.Type}} on {{.Target}}"
+
+# --- labctl lab validate output ---
+
+[labctl.lab.validate.errorHeading]
+other = "Template has {{.Count}} validation error(s):"
+
+[labctl.lab.validate.errorLine]
+other = "  • {{.Err}}"
+
+[labctl.lab.validate.validOk]
+other = "Template '{{.Name}}' is valid"
+
+[labctl.lab.validate.okPlatform]
+other = "  Platform:    {{.Value}}"
+
+[labctl.lab.validate.okVms]
+other = "  VMs:         {{.Count}}"
+
+[labctl.lab.validate.okNetworks]
+other = "  Networks:    {{.Count}}"
+
+[labctl.lab.validate.okCheckpoints]
+other = "  Checkpoints: {{.Count}} ({{.Max}} max points)"
+
+# --- labctl lab template validation errors (structured diagnostic messages) ---
+
+[labctl.lab.validationErrors.metadataNameRequired]
+other = "metadata.name is required"
+
+[labctl.lab.validationErrors.atLeastOneVm]
+other = "at least one VM is required"
+
+[labctl.lab.validationErrors.vmNameRequired]
+other = "spec.vms[{{.Idx}}].name is required"
+
+[labctl.lab.validationErrors.duplicateVmName]
+other = "duplicate VM name: {{.Name}}"
+
+[labctl.lab.validationErrors.vmTemplateRequired]
+other = "spec.vms[{{.Idx}}].template is required"
+
+[labctl.lab.validationErrors.cpuPositive]
+other = "spec.vms[{{.Idx}}].resources.cpu must be positive"
+
+[labctl.lab.validationErrors.memoryPositive]
+other = "spec.vms[{{.Idx}}].resources.memory must be positive"
+
+[labctl.lab.validationErrors.segmentNameRequired]
+other = "network segment name is required"
+
+[labctl.lab.validationErrors.duplicateSegment]
+other = "duplicate network segment: {{.Name}}"
+
+[labctl.lab.validationErrors.unknownSegment]
+other = "VM {{.Vm}} references unknown network segment: {{.Segment}}"
+
+[labctl.lab.validationErrors.objectiveIdRequired]
+other = "objectives[{{.Idx}}].id is required"
+
+[labctl.lab.validationErrors.duplicateCheckpoint]
+other = "duplicate checkpoint ID: {{.Id}}"
+
+[labctl.lab.validationErrors.pointsNegative]
+other = "objectives[{{.Idx}}].points cannot be negative"
+
+[labctl.lab.validationErrors.unknownDep]
+other = "checkpoint {{.Id}} depends on unknown checkpoint: {{.Dep}}"
+
+[labctl.lab.validationErrors.triggerTypeRequired]
+other = "objectives[{{.Idx}}].triggers[{{.T}}].type is required"
+
+[labctl.lab.validationErrors.triggerTargetRequired]
+other = "objectives[{{.Idx}}].triggers[{{.T}}].target is required"
+
+[labctl.lab.validationErrors.triggerUnknownVm]
+other = "objectives[{{.Idx}}].triggers[{{.T}}] references unknown VM: {{.Vm}}"
+
+# --- labctl pod list/status/destroy/reset output ---
+
+[labctl.pod.list.empty]
+other = "No pods found"
+
+[labctl.pod.list.colId]
+other = "ID"
+
+[labctl.pod.list.colTemplate]
+other = "TEMPLATE"
+
+[labctl.pod.list.colOwner]
+other = "OWNER"
+
+[labctl.pod.list.colStatus]
+other = "STATUS"
+
+[labctl.pod.list.colPlatform]
+other = "PLATFORM"
+
+[labctl.pod.list.colVms]
+other = "VMs"
+
+[labctl.pod.list.colCreated]
+other = "CREATED"
+
+[labctl.pod.list.colExpires]
+other = "EXPIRES"
+
+[labctl.pod.list.expiresNever]
+other = "never"
+
+[labctl.pod.create.success]
+other = "Pod created successfully"
+
+[labctl.pod.create.idLine]
+other = "  ID:     {{.Id}}"
+
+[labctl.pod.create.statusLine]
+other = "  Status: {{.Status}}"
+
+[labctl.pod.status.heading]
+other = "Pod: {{.Id}}"
+
+[labctl.pod.status.fieldTemplate]
+other = "Template:  {{.Value}}"
+
+[labctl.pod.status.fieldOwner]
+other = "Owner:     {{.Value}}"
+
+[labctl.pod.status.fieldPlatform]
+other = "Platform:  {{.Value}}"
+
+[labctl.pod.status.fieldStatus]
+other = "Status:    {{.Value}}"
+
+[labctl.pod.status.fieldCreated]
+other = "Created:   {{.Value}}"
+
+[labctl.pod.status.expiresIn]
+other = "Expires:   {{.When}} (in {{.Remaining}})"
+
+[labctl.pod.status.expired]
+other = "Expires:   {{.When}} (EXPIRED)"
+
+[labctl.pod.status.vmsHeading]
+other = "Virtual Machines:"
+
+[labctl.pod.status.vmColName]
+other = "  NAME"
+
+[labctl.pod.status.vmColStatus]
+other = "STATUS"
+
+[labctl.pod.status.vmColIp]
+other = "IP ADDRESS"
+
+[labctl.pod.status.vmColPlatformId]
+other = "PLATFORM ID"
+
+[labctl.pod.status.vmColSnapshot]
+other = "SNAPSHOT"
+
+[labctl.pod.status.emptyPlaceholder]
+other = "-"
+
+[labctl.pod.status.networksHeading]
+other = "Networks:"
+
+[labctl.pod.status.networkLine]
+other = "  • {{.Name}} - VLAN {{.Vlan}}, {{.Subnet}}"
+
+[labctl.pod.destroy.initiated]
+other = "Pod {{.Id}} destruction initiated"
+
+[labctl.pod.destroy.status]
+other = "Status: {{.Status}}"
+
+[labctl.pod.reset.initiated]
+other = "Pod {{.Id}} reset initiated"
+
+[labctl.pod.reset.snapshotLine]
+other = "Snapshot: {{.Name}}"
+
+[labctl.pod.reset.status]
+other = "Status: {{.Status}}"
+
+[labctl.pod.resetVm.initiated]
+other = "VM {{.Name}} reset initiated"
+
+[labctl.pod.resetVm.status]
+other = "Status: {{.Status}}"
+
+# --- labctl session output (list/start/status/progress/checkpoints/end) ---
+
+[labctl.session.list.empty]
+other = "No sessions found"
+
+[labctl.session.list.colId]
+other = "ID"
+
+[labctl.session.list.colUser]
+other = "USER"
+
+[labctl.session.list.colTemplate]
+other = "TEMPLATE"
+
+[labctl.session.list.colProgress]
+other = "PROGRESS"
+
+[labctl.session.list.colStatus]
+other = "STATUS"
+
+[labctl.session.list.colStarted]
+other = "STARTED"
+
+[labctl.session.list.colDuration]
+other = "DURATION"
+
+[labctl.session.list.statusActive]
+other = "active"
+
+[labctl.session.list.statusEnded]
+other = "ended"
+
+[labctl.session.list.statusPassed]
+other = "passed"
+
+[labctl.session.list.progressFormat]
+other = "{{.Earned}}/{{.Max}} ({{.Pct}}%)"
+
+[labctl.session.start.success]
+other = "Session started successfully"
+
+[labctl.session.start.idLine]
+other = "  Session ID: {{.Id}}"
+
+[labctl.session.start.statusLine]
+other = "  Status:     {{.Status}}"
+
+[labctl.session.status.heading]
+other = "Session: {{.Id}}"
+
+[labctl.session.status.progressLine]
+other = "Progress: [{{.Bar}}] {{.Pct}}%"
+
+[labctl.session.status.pointsLine]
+other = "Points:   {{.Earned}} / {{.Max}}"
+
+[labctl.session.status.checkpointsHeading]
+other = "Checkpoints:"
+
+[labctl.session.status.checkpointLine]
+other = "  {{.Icon}} [{{.Points}}] {{.Id}}{{.Timestamp}}"
+
+[labctl.session.status.completedAt]
+other = " (completed {{.When}})"
+
+[labctl.session.progress.barLine]
+other = "[{{.Bar}}] {{.Pct}}% ({{.Earned}}/{{.Max}} pts){{.Passed}}"
+
+[labctl.session.progress.passedSuffix]
+other = " PASSED"
+
+[labctl.session.progress.summary]
+other = "Checkpoints: {{.Completed}} completed, {{.Pending}} pending"
+
+[labctl.session.progress.failedSuffix]
+other = ", {{.Count}} failed"
+
+[labctl.session.end.ended]
+other = "Session {{.Id}} ended"
+
+[labctl.session.end.status]
+other = "Status: {{.Status}}"
+
+[labctl.session.checkpoints.empty]
+other = "No checkpoints defined for this session"
+
+[labctl.session.checkpoints.colStatus]
+other = "STATUS"
+
+[labctl.session.checkpoints.colId]
+other = "ID"
+
+[labctl.session.checkpoints.colPoints]
+other = "POINTS"
+
+[labctl.session.checkpoints.colAttempts]
+other = "ATTEMPTS"
+
+[labctl.session.checkpoints.colCompleted]
+other = "COMPLETED"
+
+[labctl.session.checkpoints.emptyPlaceholder]
+other = "-"
+
+# --- labctl snapshot output (list/create/revert/delete) ---
+
+[labctl.snapshot.list.empty]
+other = "No snapshots found for VM {{.Vm}} in pod {{.Pod}}"
+
+[labctl.snapshot.list.heading]
+other = "Snapshots for VM {{.Vm}} in pod {{.Pod}}:"
+
+[labctl.snapshot.list.colName]
+other = "NAME"
+
+[labctl.snapshot.list.colDescription]
+other = "DESCRIPTION"
+
+[labctl.snapshot.list.colParent]
+other = "PARENT"
+
+[labctl.snapshot.list.emptyPlaceholder]
+other = "-"
+
+[labctl.snapshot.list.totalLine]
+other = "Total: {{.Count}} snapshot(s)"
+
+[labctl.snapshot.create.success]
+other = "Snapshot created successfully"
+
+[labctl.snapshot.create.vmLine]
+other = "  VM:       {{.Vm}}"
+
+[labctl.snapshot.create.snapshotLine]
+other = "  Snapshot: {{.Name}}"
+
+[labctl.snapshot.create.statusLine]
+other = "  Status:   {{.Status}}"
+
+[labctl.snapshot.revert.success]
+other = "VM reverted to snapshot successfully"
+
+[labctl.snapshot.revert.vmLine]
+other = "  VM:       {{.Vm}}"
+
+[labctl.snapshot.revert.snapshotLine]
+other = "  Snapshot: {{.Name}}"
+
+[labctl.snapshot.revert.statusLine]
+other = "  Status:   {{.Status}}"
+
+[labctl.snapshot.delete.success]
+other = "Snapshot deleted successfully"
+
+[labctl.snapshot.delete.vmLine]
+other = "  VM:       {{.Vm}}"
+
+[labctl.snapshot.delete.snapshotLine]
+other = "  Snapshot: {{.Name}}"
+
+[labctl.snapshot.delete.statusLine]
+other = "  Status:   {{.Status}}"
+
+# --- Email templates ---
+
+[email.passwordReset.subject]
+other = "[{{.AppName}}] Password Reset Request"
+
+[email.passwordReset.heading]
+other = "Password Reset Request"
+
+[email.passwordReset.greeting]
+other = "Hi {{.UserName}},"
+
+[email.passwordReset.greetingAnonymous]
+other = "Hi,"
+
+[email.passwordReset.body]
+other = "We received a request to reset your password. Click the button below to create a new password:"
+
+[email.passwordReset.buttonLabel]
+other = "Reset Password"
+
+[email.passwordReset.expiresIn]
+other = "This link will expire in {{.ExpiresIn}}."
+
+[email.passwordReset.ignoreNotice]
+other = "If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged."
+
+[email.passwordReset.linkFallback]
+other = "If the button doesn't work, copy and paste this link into your browser:"
+
+[email.passwordReset.supportContact]
+other = "Need help? Contact us at {{.SupportEmail}}"
+
+[email.passwordReset.plain.body]
+other = "We received a request to reset your password for your {{.AppName}} account."
+
+[email.passwordReset.plain.linkPrompt]
+other = "To reset your password, visit the following link:"
+
+# --- Certificate rendering ---
+
+[certificate.render.completionDate]
+other = "{{.Month}} {{.Day}}, {{.Year}}"
+
+[certificate.render.issuedDate]
+other = "{{.Month}} {{.Day}}, {{.Year}}"
+
+# --- Admin / Metrics endpoints ---
+
+[admin.errors.bearerTokenRequired]
+other = "metrics endpoint requires bearer token"
+
+[admin.errors.adminAccessRequired]
+other = "admin access required"
+
+# --- Event monitoring endpoints ---
+
+[events.errors.notConfigured]
+other = "event repository not configured"
+
+[events.errors.queryFailed]
+other = "failed to query events"
+
+[events.errors.sessionEventsFailed]
+other = "failed to get session events"
+
+[events.errors.podEventsFailed]
+other = "failed to get pod events"
+
+# --- Audit log endpoints ---
+
+[audit.errors.orgRequired]
+other = "organization context required"
+
+[audit.errors.notConfigured]
+other = "audit logging not configured"
+
+[audit.errors.invalidStartTime]
+other = "invalid start_time format, use RFC3339"
+
+[audit.errors.invalidEndTime]
+other = "invalid end_time format, use RFC3339"
+
+[audit.errors.invalidLimit]
+other = "invalid limit parameter"
+
+[audit.errors.invalidOffset]
+other = "invalid offset parameter"
+
+[audit.errors.queryFailed]
+other = "failed to query audit logs"
+
+[audit.errors.getFailed]
+other = "failed to get audit entry"
+
+[audit.errors.entryNotFound]
+other = "audit entry not found"
+
+[audit.errors.invalidRequestBody]
+other = "invalid request body"
+
+[audit.errors.exportFailed]
+other = "failed to export audit logs"
+
+# --- Feature flag endpoints ---
+
+[features.errors.notConfigured]
+other = "feature repository not configured"
+
+[features.errors.listFailed]
+other = "failed to list features"
+
+[features.errors.orgRequired]
+other = "organization context required"
+
+[features.errors.idRequired]
+other = "feature ID required"
+
+[features.errors.getFailed]
+other = "failed to get feature"
+
+[features.errors.notFound]
+other = "feature not found"
+
+[features.errors.invalidRequestBody]
+other = "invalid request body"
+
+[features.errors.setFailed]
+other = "failed to set feature"
+
+[features.errors.removeFailed]
+other = "failed to remove feature override"
+
+# --- Session creation extras ---
+
+[sessions.errors.invalidLabTemplate]
+other = "invalid lab template"
+
+# --- Certificate handler extras ---
+
+[certificate.errors.issueFailed]
+other = "failed to issue certificate"
+
+[certificate.errors.notCompleted]
+other = "pathway must be completed before issuing certificate"
+
+[certificate.errors.alreadyIssued]
+other = "certificate has already been issued"
+
+[certificate.errors.getFailed]
+other = "failed to get certificate"
+
+[certificate.errors.notFound]
+other = "certificate not found"
+
+# --- Pathway handler extras ---
+
+[pathway.errors.enrollFailed]
+other = "failed to enroll in pathway"
+
+[pathway.errors.unenrollFailed]
+other = "failed to unenroll"
+
+[pathway.errors.notEnrolled]
+other = "not enrolled in this pathway"
+
+[pathway.errors.moduleUnlockFailed]
+other = "failed to unlock module"
+
+[pathway.errors.moduleNotInPathway]
+other = "module does not belong to this pathway"
+
+[pathway.errors.unlockRequirementsFailed]
+other = "failed to get unlock requirements"

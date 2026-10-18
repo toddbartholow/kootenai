@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: pfsense-firewall-fundamentals
+  description: "Learn pfSense firewall configuration including NAT, firewall rules, and VLANs."
+  duration: 90m
+  difficulty: beginner
+  tags:
+    - networking
+    - firewall
+    - pfsense
+  version: "1.0.0"
+
+spec:
+  platform: proxmox
+  
+  network:
+    segments:
+      - name: wan
+        vlan: 200
+        subnet: 10.99.99.0/24
+        gateway: 10.99.99.1
+      
+      - name: lan
+        vlan: 201
+        subnet: 192.168.10.0/24
+        gateway: 192.168.10.1
+        dhcp: true
+      
+      - name: dmz
+        vlan: 202
+        subnet: 192.168.20.0/24
+        gateway: 192.168.20.1
+  
+  vms:
+    - name: pfsense
+      template: pfsense-ce-2.7
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: wan
+          ip: 10.99.99.2
+        - segment: lan
+          ip: 192.168.10.1
+        - segment: dmz
+          ip: 192.168.20.1
+      snapshots:
+        - name: basic-config
+          description: "WAN/LAN configured"
+          default: true
+      startOnCreate: true
+    
+    - name: lan-client
+      template: rocky9-desktop-minimal
+      resources:
+        cpu: 1
+        memory: 2048
+      networks:
+        - segment: lan
+          ip: 192.168.10.10
+      snapshots:
+        - name: clean
+          default: true
+      startOnCreate: true
+    
+    - name: web-server
+      template: ubuntu22-server-nginx
+      resources:
+        cpu: 1
+        memory: 1024
+      networks:
+        - segment: dmz
+          ip: 192.168.20.10
+      snapshots:
+        - name: clean
+          default: true
+      startOnCreate: true

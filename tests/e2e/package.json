@@ -1,0 +1,16 @@
+{
+  "name": "kootenai-e2e",
+  "version": "1.0.0",
+  "description": "End-to-end tests for Kootenai platform",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "PWDEBUG=1 playwright test",
+    "test:pseudo": "playwright test --config=playwright.pseudo.config.ts",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0"
+  }
+}

@@ -1,0 +1,360 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Process & User Management
+  description: |
+    Learn to manage Linux processes and user accounts. Cover process monitoring
+    with ps, top, and htop, process control with kill and nice, and user/group
+    administration with useradd, usermod, and group management.
+  duration: 75m
+  difficulty: intermediate
+  tags:
+    - linux
+    - intermediate
+    - processes
+    - users
+    - groups
+    - ps
+    - top
+    - kill
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Every running program in Linux is a process, and every person using the system
+      is a user account. In this lab, you'll learn to monitor and control processes,
+      manage background jobs, and administer user accounts and groups.
+    learning_objectives:
+      - Monitor processes with ps, top, and pgrep
+      - Control processes with kill, background, and foreground
+      - Create and manage user accounts
+      - Create groups and manage group membership
+      - Understand UIDs, GIDs, and the /etc/passwd file
+    prerequisites:
+      - Shell Essentials (sudo, pipes)
+      - Text Processing basics (grep, cut)
+    steps:
+      - id: process-monitoring
+        title: Monitoring Processes
+        content: |
+          View running processes and their resource usage.
+
+          ```bash
+          # List all processes with details
+          ps aux
+
+          # Show process tree
+          ps auxf     # or: pstree
+
+          # Filter by user
+          ps -u root
+
+          # Interactive monitor
+          top         # press 'q' to quit
+          ```
+      - id: finding-processes
+        title: Finding Specific Processes
+        content: |
+          Locate processes by name or PID.
+
+          ```bash
+          # Find PID of a service
+          pgrep sshd
+          pgrep -a sshd    # Show full command line
+          ```
+      - id: background-jobs
+        title: Background Jobs
+        content: |
+          Run and manage background processes.
+
+          ```bash
+          # Start a background process
+          sleep 300 &
+
+          # List background jobs
+          jobs
+
+          # Kill by job number or command
+          kill %1
+          # or: pkill sleep
+          ```
+      - id: user-management
+        title: User Account Management
+        content: |
+          Create and manage user accounts.
+
+          ```bash
+          # View current user info
+          whoami
+          id
+
+          # View all users
+          cut -d: -f1 /etc/passwd
+
+          # Create a new user with home directory
+          sudo useradd -m labuser
+
+          # Set the password
+          sudo passwd labuser
+          ```
+      - id: group-management
+        title: Group Management
+        content: |
+          Organize users into groups for shared access control.
+
+          ```bash
+          # View all groups
+          cat /etc/group
+
+          # Create a new group
+          sudo groupadd developers
+
+          # Add user to group (-a = append, -G = supplementary group)
+          sudo usermod -aG developers labuser
+
+          # Verify membership
+          groups labuser
+          id labuser
+          ```
+    summary: |
+      You've learned to monitor processes, manage background jobs, and administer
+      users and groups on a Linux system.
+    tips:
+      - Use `htop` for a more user-friendly process monitor (if installed)
+      - Always use `usermod -aG` (append) to avoid removing existing group memberships
+      - The `id` command is the quickest way to check a user's UID, GID, and groups
+      - Kill processes gracefully with SIGTERM before using SIGKILL (-9)
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 100
+        subnet: 10.10.100.0/24
+        gateway: 10.10.100.1
+        dhcp: false
+
+  vms:
+    - name: linux-vm
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home
+          - /etc/passwd
+          - /etc/group
+          - /etc/shadow
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: lab-network
+          ip: 10.10.100.10
+      snapshots:
+        - name: initial
+          description: Fresh Ubuntu installation
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Process monitoring
+    - id: ps-basic
+      description: View all running processes for all users
+      points: 10
+      hint: "Use 'ps aux' to see all processes with details"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ps aux"
+
+    - id: ps-tree
+      description: View processes in a tree/hierarchy format
+      points: 10
+      hint: "Use 'ps auxf' or 'pstree' to see process hierarchy"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "(ps.*f|pstree)"
+
+    - id: ps-user
+      description: List all processes owned by root
+      points: 10
+      hint: "Use 'ps -u root' to filter by user"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ps.*-u.*root"
+
+    - id: top-command
+      description: Open the top process monitor (then press 'q' to exit)
+      points: 10
+      hint: "Run 'top' to see real-time process information, 'q' to quit"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "^top$"
+
+    - id: find-pid
+      description: Find the PID of the sshd process using pgrep
+      points: 10
+      hint: "Use 'pgrep sshd' or 'pgrep -a sshd'"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "pgrep.*sshd"
+
+    # Background processes
+    - id: start-background
+      description: Start a background process using 'sleep 300 &'
+      points: 10
+      hint: "Run 'sleep 300 &' to start a background process"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sleep.*&"
+
+    - id: list-jobs
+      description: List your background jobs using 'jobs'
+      points: 10
+      hint: "Use 'jobs' to see background jobs in current shell"
+      depends_on:
+        - start-background
+      order: 7
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "^jobs$"
+
+    - id: kill-process
+      description: Kill the sleep process you started
+      points: 10
+      hint: "Use 'kill %1' or 'pkill sleep' to terminate the process"
+      depends_on:
+        - start-background
+      order: 8
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "(kill %|pkill sleep|kill.*sleep)"
+
+    # User Management
+    - id: view-users
+      description: View the list of all users on the system
+      points: 10
+      hint: "Check /etc/passwd with 'cat /etc/passwd' or 'cut -d: -f1 /etc/passwd'"
+      order: 9
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "(cat /etc/passwd|cut.*/etc/passwd)"
+
+    - id: who-am-i
+      description: Display your current username and user ID
+      points: 10
+      hint: "Use 'id' or 'whoami' commands"
+      order: 10
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "^(id|whoami)$"
+
+    - id: create-user
+      description: Create a new user called 'labuser' using useradd
+      points: 15
+      hint: "Use 'sudo useradd -m labuser' (-m creates home directory)"
+      order: 11
+      triggers:
+        - type: user_created
+          target: linux-vm
+          match:
+            username: labuser
+
+    - id: set-password
+      description: Set a password for the labuser account
+      points: 10
+      hint: "Use 'sudo passwd labuser' and enter a password"
+      depends_on:
+        - create-user
+      order: 12
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo passwd labuser"
+
+    # Group Management
+    - id: view-groups
+      description: View all groups on the system
+      points: 10
+      hint: "Check /etc/group with 'cat /etc/group' or 'cut -d: -f1 /etc/group'"
+      order: 13
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "(cat /etc/group|cut.*/etc/group)"
+
+    - id: create-group
+      description: Create a new group called 'developers'
+      points: 10
+      hint: "Use 'sudo groupadd developers'"
+      order: 14
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo groupadd developers"
+
+    - id: add-to-group
+      description: Add labuser to the developers group
+      points: 15
+      hint: "Use 'sudo usermod -aG developers labuser'"
+      depends_on:
+        - create-user
+        - create-group
+      order: 15
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo usermod.*-aG.*developers.*labuser"
+
+    - id: verify-group
+      description: Verify labuser is in the developers group
+      points: 10
+      hint: "Use 'groups labuser' or 'id labuser'"
+      depends_on:
+        - add-to-group
+      order: 16
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "(groups labuser|id labuser)"

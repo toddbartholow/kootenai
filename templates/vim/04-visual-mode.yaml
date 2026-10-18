@@ -1,0 +1,193 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: "Visual Mode & Selection"
+  description: |
+    Master Vim's Visual modes for selecting and operating on text. Learn character-wise,
+    line-wise, and block-wise selection. Visual Block mode is especially powerful for
+    editing columns of text - a feature unique to Vim-style editors.
+  duration: 35m
+  difficulty: intermediate
+  tags: [vim, editor, linux, text-editing, intermediate, visual-mode]
+  version: "1.0.0"
+  author: Kootenai Team
+  category: vim
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: vim-lab-net
+        vlan: 200
+        subnet: 10.20.200.0/24
+        gateway: 10.20.200.1
+        dhcp: false
+
+  vms:
+    - name: vim-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /tmp/vim-exercises
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: vim-lab-net
+          ip: 10.20.200.10
+      snapshots:
+        - name: initial
+          description: Ubuntu with visual mode exercise files
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Character-wise Visual Mode
+    - id: visual-char
+      description: "Enter Visual mode with v and select characters"
+      points: 10
+      hint: "Press 'v' to start Visual mode, then move to expand selection"
+      order: 1
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/visual.txt
+            contains: "VISUAL_CHAR_COMPLETE"
+
+    - id: visual-delete
+      description: "Delete selected text in Visual mode"
+      points: 10
+      hint: "Select text with v, then press d to delete"
+      order: 2
+      required: true
+      depends_on: [visual-char]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/visual-delete.txt
+            contains: "VISUAL_DELETE_COMPLETE"
+
+    - id: visual-yank
+      description: "Yank (copy) selected text in Visual mode"
+      points: 10
+      hint: "Select text with v, then press y to yank"
+      order: 3
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/visual-yank.txt
+            contains: "VISUAL_YANK_COMPLETE"
+
+    # Line-wise Visual Mode
+    - id: visual-line
+      description: "Enter Visual Line mode with V and select lines"
+      points: 15
+      hint: "Press 'V' (capital) to select entire lines at once"
+      order: 4
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/visual-line.txt
+            contains: "VISUAL_LINE_COMPLETE"
+
+    - id: visual-line-move
+      description: "Move selected lines using :m command"
+      points: 10
+      hint: "Select lines with V, then :m <line> to move them"
+      order: 5
+      required: true
+      depends_on: [visual-line]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/visual-move.txt
+            contains: "VISUAL_MOVE_COMPLETE"
+
+    # Visual Block Mode
+    - id: visual-block
+      description: "Enter Visual Block mode with Ctrl-v"
+      points: 15
+      hint: "Press Ctrl-v to start block selection (column selection)"
+      order: 6
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/visual-block.txt
+            contains: "VISUAL_BLOCK_COMPLETE"
+
+    - id: block-insert
+      description: "Insert text on multiple lines using Visual Block"
+      points: 15
+      hint: "Ctrl-v to select column, then I to insert at start of each line"
+      order: 7
+      required: true
+      depends_on: [visual-block]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/block-insert.txt
+            contains: "BLOCK_INSERT_COMPLETE"
+
+    - id: block-append
+      description: "Append text on multiple lines using Visual Block"
+      points: 10
+      hint: "Ctrl-v to select, then A to append at end of each line"
+      order: 8
+      required: true
+      depends_on: [visual-block]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/block-append.txt
+            contains: "BLOCK_APPEND_COMPLETE"
+
+    # Advanced Selection
+    - id: select-inner-word
+      description: "Select inner word using viw"
+      points: 5
+      hint: "viw selects the word under cursor (inside word)"
+      order: 9
+      required: false
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/text-objects.txt
+            contains: "VIW_COMPLETE"
+
+    - id: select-around-quotes
+      description: "Select around quotes using va\" or va'"
+      points: 5
+      hint: "va\" selects text including the quotes"
+      order: 10
+      required: false
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/text-objects.txt
+            contains: "VAQ_COMPLETE"

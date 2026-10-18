@@ -1,0 +1,149 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: AWS VPC and Networking
+  description: |
+    Design and implement AWS Virtual Private Cloud networking. Learn to create
+    VPCs, subnets, route tables, internet gateways, NAT gateways, security
+    groups, and network ACLs for secure cloud architectures.
+  duration: 120m
+  difficulty: intermediate
+  tags:
+    - aws
+    - cloud
+    - vpc
+    - networking
+    - security-groups
+    - subnets
+  version: "1.0.0"
+  author: Kootenai Team
+  category: aws
+
+spec:
+  platform: cloudstack
+
+  network:
+    segments:
+      - name: vpc-lab-network
+        vlan: 401
+        subnet: 10.41.0.0/24
+        gateway: 10.41.0.1
+        dhcp: true
+
+  vms:
+    - name: aws-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: vpc-lab-network
+          ip: 10.41.0.10
+      snapshots:
+        - name: initial
+          description: Workstation with AWS CLI configured
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: create-vpc
+      description: Create a VPC with CIDR block 10.0.0.0/16
+      points: 10
+      hint: "Use 'aws ec2 create-vpc --cidr-block 10.0.0.0/16'"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws ec2 create-vpc"
+
+    - id: create-subnets
+      description: Create public and private subnets in different AZs
+      points: 15
+      hint: "Create at least 2 public and 2 private subnets"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws ec2 create-subnet"
+
+    - id: create-igw
+      description: Create and attach an Internet Gateway to the VPC
+      points: 10
+      hint: "Use create-internet-gateway and attach-internet-gateway"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws ec2 create-internet-gateway"
+
+    - id: configure-routes
+      description: Configure route tables for public and private subnets
+      points: 15
+      hint: "Public subnets need route to IGW; private subnets to NAT"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws ec2 create-route"
+
+    - id: create-nat
+      description: Create a NAT Gateway for private subnet internet access
+      points: 15
+      hint: "NAT Gateway requires an Elastic IP in a public subnet"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws ec2 create-nat-gateway"
+
+    - id: security-groups
+      description: Create security groups for web and database tiers
+      points: 15
+      hint: "Web SG allows HTTP/HTTPS; DB SG allows MySQL from web tier only"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws ec2 create-security-group"
+
+    - id: network-acl
+      description: Configure network ACLs for additional subnet protection
+      points: 10
+      hint: "NACLs are stateless - configure both inbound and outbound rules"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: aws-workstation
+          match:
+            pattern: "aws ec2 create-network-acl"
+
+    - id: test-connectivity
+      description: Launch instances and verify network connectivity
+      points: 10
+      hint: "Launch instances in public/private subnets and test connectivity"
+      order: 8
+      triggers:
+        - type: file_exists
+          target: aws-workstation
+          match:
+            path: /home/student/lab/connectivity_test.txt

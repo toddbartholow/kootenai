@@ -1,0 +1,181 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: "Vim Fundamentals"
+  description: |
+    Master the core concepts of Vim - the legendary text editor. Learn about Vim's modal
+    editing paradigm, basic navigation, and essential commands for entering and exiting
+    the editor. By the end of this lab, you'll understand why Vim users never want to
+    go back to traditional editors.
+  duration: 30m
+  difficulty: beginner
+  tags: [vim, editor, linux, text-editing, beginner]
+  version: "1.0.0"
+  author: Kootenai Team
+  category: vim
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: vim-lab-net
+        vlan: 200
+        subnet: 10.20.200.0/24
+        gateway: 10.20.200.1
+        dhcp: false
+
+  vms:
+    - name: vim-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /tmp/vim-exercises
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: vim-lab-net
+          ip: 10.20.200.10
+      snapshots:
+        - name: initial
+          description: Fresh Ubuntu with Vim installed
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Mode Understanding
+    - id: understand-normal-mode
+      description: "Open a file in Vim and verify you're in Normal mode"
+      points: 10
+      hint: "Run 'vim filename' to open a file. Normal mode is the default mode."
+      order: 1
+      required: true
+      triggers:
+        - type: command_executed
+          target: vim-workstation
+          match:
+            pattern: "vim\\s+\\S+"
+
+    - id: enter-insert-mode
+      description: "Enter Insert mode using the 'i' key and add some text"
+      points: 10
+      hint: "Press 'i' in Normal mode to enter Insert mode. You'll see '-- INSERT --' at the bottom."
+      order: 2
+      required: true
+      depends_on: [understand-normal-mode]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /home/student/exercises/first-edit.txt
+            contains: "Hello Vim"
+
+    - id: return-to-normal
+      description: "Return to Normal mode using Escape"
+      points: 10
+      hint: "Press Escape (or Ctrl-[) to return to Normal mode from any other mode."
+      order: 3
+      required: true
+      depends_on: [enter-insert-mode]
+      triggers:
+        - type: active_check
+          target: vim-workstation
+          match:
+            state: success
+          script: |
+            #!/bin/bash
+            # Check if student has practiced mode switching
+            ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 "${VM_IP}" \
+              'grep -q "mode-switch-complete" /tmp/vim-exercises/.progress 2>/dev/null'
+
+    # Basic Navigation
+    - id: navigate-hjkl
+      description: "Navigate through a file using h, j, k, l keys"
+      points: 15
+      hint: "h=left, j=down, k=up, l=right. Practice in the navigation exercise file."
+      order: 4
+      required: true
+      triggers:
+        - type: file_exists
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/navigation-complete
+
+    - id: word-navigation
+      description: "Use w, b, and e to move by words"
+      points: 15
+      hint: "w=next word start, b=previous word start, e=end of word"
+      order: 5
+      required: true
+      depends_on: [navigate-hjkl]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/word-nav.txt
+            contains: "WORD_NAV_COMPLETE"
+
+    - id: line-navigation
+      description: "Navigate to start and end of line using 0 and $"
+      points: 10
+      hint: "0 jumps to first character, $ jumps to last character of the line"
+      order: 6
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/line-nav.txt
+            contains: "LINE_NAV_COMPLETE"
+
+    # Saving and Quitting
+    - id: save-file
+      description: "Save a file using :w"
+      points: 10
+      hint: "In Normal mode, type :w and press Enter to save (write) the file"
+      order: 7
+      required: true
+      triggers:
+        - type: file_exists
+          target: vim-workstation
+          match:
+            path: /home/student/exercises/saved-file.txt
+
+    - id: quit-vim
+      description: "Exit Vim using :q"
+      points: 10
+      hint: "Type :q to quit. Use :q! to quit without saving, or :wq to save and quit"
+      order: 8
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/.progress
+            contains: "quit-complete"
+
+    # Bonus
+    - id: save-and-quit
+      description: "Save and quit in one command using :wq or ZZ"
+      points: 10
+      hint: ":wq saves and quits. ZZ (capital Z twice) does the same in Normal mode."
+      order: 9
+      required: false
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/.progress
+            contains: "savequit-complete"

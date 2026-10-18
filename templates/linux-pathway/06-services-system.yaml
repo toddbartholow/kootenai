@@ -1,0 +1,357 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Services & System Management
+  description: |
+    Master systemd service management, journalctl log analysis, and system
+    monitoring. Learn to start, stop, enable services, analyze logs, and
+    understand system boot and targets.
+  duration: 60m
+  difficulty: intermediate
+  tags:
+    - linux
+    - intermediate
+    - systemd
+    - services
+    - journalctl
+    - logs
+    - boot
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Modern Linux systems use systemd to manage services, boot targets, and system logging.
+      In this lab, you'll learn to control services with systemctl, analyze logs with
+      journalctl, and understand system boot and targets.
+    learning_objectives:
+      - List, start, stop, restart, enable, and disable services
+      - Query and filter system logs with journalctl
+      - Understand systemd targets (runlevels)
+      - Monitor system uptime and information
+    prerequisites:
+      - Process & User Management (process concepts, sudo)
+      - Basic command line proficiency
+    steps:
+      - id: service-basics
+        title: Managing Services
+        content: |
+          systemctl is the primary tool for managing systemd services.
+
+          ```bash
+          # List all active services
+          systemctl list-units --type=service --state=active
+
+          # Check a specific service
+          systemctl status ssh
+
+          # Stop, start, restart
+          sudo systemctl stop cron
+          sudo systemctl start cron
+          sudo systemctl restart ssh
+          ```
+      - id: enable-disable
+        title: Boot Persistence
+        content: |
+          Control whether services start automatically at boot.
+
+          ```bash
+          # Enable a service at boot
+          sudo systemctl enable cron
+
+          # Disable a service at boot
+          sudo systemctl disable cron
+
+          # Check if enabled
+          systemctl is-enabled cron
+          ```
+      - id: journalctl-basics
+        title: System Logs with journalctl
+        content: |
+          journalctl provides unified access to all system logs.
+
+          ```bash
+          # View all logs
+          journalctl
+
+          # Logs for a specific service
+          journalctl -u ssh
+
+          # Logs from the last hour
+          journalctl --since "1 hour ago"
+
+          # Follow logs in real-time
+          journalctl -f
+          ```
+      - id: log-filtering
+        title: Advanced Log Filtering
+        content: |
+          Filter logs by boot, priority, and more.
+
+          ```bash
+          # Current boot only
+          journalctl -b
+
+          # Only errors and above
+          journalctl -p err
+
+          # Combine filters
+          journalctl -u ssh -p err --since today
+          ```
+      - id: system-targets
+        title: System Targets and Info
+        content: |
+          Targets define the system state (like runlevels).
+
+          ```bash
+          # View current default target
+          systemctl get-default
+
+          # List all targets
+          systemctl list-units --type=target
+
+          # System info
+          uptime
+          hostnamectl
+          ```
+    summary: |
+      You can now manage services, analyze logs, and understand system state using
+      systemd tools.
+    tips:
+      - Use `systemctl status` as your first diagnostic step for any service issue
+      - journalctl -xe shows the last few log entries with explanations
+      - The multi-user.target is equivalent to the old runlevel 3 (text mode)
+      - Use `systemctl cat service-name` to view a service's unit file
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 100
+        subnet: 10.10.100.0/24
+        gateway: 10.10.100.1
+        dhcp: false
+
+  vms:
+    - name: linux-vm
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /etc/systemd
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: lab-network
+          ip: 10.10.100.10
+      snapshots:
+        - name: initial
+          description: Fresh Ubuntu installation with SSH service
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Service basics
+    - id: list-services
+      description: List all active services on the system
+      points: 10
+      hint: "Use 'systemctl list-units --type=service --state=active'"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "systemctl list-units.*service"
+
+    - id: service-status
+      description: Check the status of the SSH service
+      points: 10
+      hint: "Use 'systemctl status sshd' or 'systemctl status ssh'"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "systemctl status ssh"
+
+    - id: stop-service
+      description: Stop the cron service
+      points: 10
+      hint: "Use 'sudo systemctl stop cron'"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo systemctl stop cron"
+
+    - id: start-service
+      description: Start the cron service again
+      points: 10
+      hint: "Use 'sudo systemctl start cron'"
+      depends_on:
+        - stop-service
+      order: 4
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo systemctl start cron"
+
+    - id: restart-service
+      description: Restart the SSH service
+      points: 10
+      hint: "Use 'sudo systemctl restart ssh'"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo systemctl restart ssh"
+
+    - id: enable-service
+      description: Enable a service to start at boot (use cron as example)
+      points: 10
+      hint: "Use 'sudo systemctl enable cron'"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo systemctl enable"
+
+    - id: disable-service
+      description: Disable a service from starting at boot
+      points: 10
+      hint: "Use 'sudo systemctl disable cron'"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo systemctl disable"
+
+    # Journalctl logs
+    - id: view-all-logs
+      description: View all system logs using journalctl
+      points: 10
+      hint: "Use 'journalctl' or 'sudo journalctl'"
+      order: 8
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "journalctl"
+
+    - id: service-logs
+      description: View logs for the SSH service only
+      points: 15
+      hint: "Use 'journalctl -u ssh' or 'journalctl -u sshd'"
+      order: 9
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "journalctl -u ssh"
+
+    - id: recent-logs
+      description: View logs from the last hour
+      points: 10
+      hint: "Use 'journalctl --since \"1 hour ago\"'"
+      order: 10
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "journalctl --since"
+
+    - id: follow-logs
+      description: Follow logs in real-time (then Ctrl+C to exit)
+      points: 10
+      hint: "Use 'journalctl -f' to follow logs live"
+      order: 11
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "journalctl -f"
+
+    - id: boot-logs
+      description: View logs from the current boot only
+      points: 10
+      hint: "Use 'journalctl -b' for current boot"
+      order: 12
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "journalctl -b"
+
+    - id: priority-logs
+      description: View only error and critical logs
+      points: 10
+      hint: "Use 'journalctl -p err' for errors and above"
+      order: 13
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "journalctl -p (err|error|crit)"
+
+    # System targets
+    - id: current-target
+      description: View the current system target (runlevel)
+      points: 10
+      hint: "Use 'systemctl get-default'"
+      order: 14
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "systemctl get-default"
+
+    - id: list-targets
+      description: List all available system targets
+      points: 10
+      hint: "Use 'systemctl list-units --type=target'"
+      order: 15
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "systemctl list-units.*target"
+
+    # System info
+    - id: uptime
+      description: Check how long the system has been running
+      points: 5
+      hint: "Use 'uptime' command"
+      order: 16
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "^uptime$"
+
+    - id: system-info
+      description: Display system information using hostnamectl
+      points: 10
+      hint: "Use 'hostnamectl' to see system info"
+      order: 17
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "hostnamectl"

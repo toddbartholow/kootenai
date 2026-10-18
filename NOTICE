@@ -1,0 +1,57 @@
+Kootenai Platform
+Copyright 2024-present Todd Bartholow
+
+This software is licensed under the Apache License, Version 2.0.
+See LICENSE file for details.
+
+---
+
+THIRD-PARTY SOFTWARE
+
+This project depends on the following third-party software. Licenses were read
+from each package at the versions pinned in api/go.mod and web/package.json when
+this file was last revised; the authoritative text always ships inside the package
+itself.
+
+Go dependencies (direct; see api/go.mod for the full list, api/go.sum for versions):
+- github.com/go-chi/chi/v5 - MIT License
+- github.com/go-chi/cors - MIT License
+- github.com/lib/pq - MIT License
+- github.com/gorilla/websocket - BSD-2-Clause License
+- github.com/golang-jwt/jwt/v5 - MIT License
+- github.com/go-ldap/ldap/v3 - MIT License
+- github.com/go-playground/validator/v10 - MIT License
+- github.com/google/uuid - BSD-3-Clause License
+- github.com/joho/godotenv - MIT License
+- github.com/nats-io/nats.go, github.com/nats-io/nats-server/v2 - Apache 2.0 License
+- github.com/nicksnyder/go-i18n/v2 - MIT License
+- github.com/prometheus/client_golang - Apache 2.0 License
+- github.com/redis/go-redis/v9 - BSD-2-Clause License
+- github.com/swaggo/swag, github.com/swaggo/http-swagger - MIT License
+- go.opentelemetry.io/otel - Apache 2.0 License
+- golang.org/x/crypto, golang.org/x/text - BSD-3-Clause License
+- gopkg.in/yaml.v3 - Apache 2.0 License
+
+JavaScript dependencies (web/; see web/package.json for the full list):
+- Vue.js, vue-router, vue-i18n - MIT License
+- Pinia, pinia-plugin-persistedstate - MIT License
+- Vite - MIT License
+- Tailwind CSS, tailwind-merge - MIT License
+- axios - MIT License
+- Chart.js - MIT License
+- vis-network, vis-data - Apache 2.0 OR MIT License (dual)
+- DOMPurify - MPL 2.0 OR Apache 2.0 License (dual)
+- @novnc/novnc - MPL 2.0 License
+- @spice-project/spice-html5 - LGPL 3.0-or-later
+- PrimeVue, primeicons - license declared as "SEE LICENSE IN LICENSE.md"; read that
+  file in the installed package before redistributing
+
+Note for redistributors: @spice-project/spice-html5 is LGPL-3.0-or-later and
+@novnc/novnc is MPL-2.0. Both carry obligations that Apache 2.0 does not, and both
+are bundled into the web frontend. Check them against your own distribution plans.
+
+Documentation:
+- Docusaurus - MIT License
+
+For complete dependency information, see the respective package manager lock files
+(api/go.sum, web/package-lock.json, docusaurus/package-lock.json).

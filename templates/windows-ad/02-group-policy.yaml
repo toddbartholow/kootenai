@@ -1,0 +1,177 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Group Policy Management
+  description: |
+    Master Windows Group Policy for centralized management. Learn to create,
+    link, and troubleshoot GPOs for security settings, software deployment,
+    desktop configuration, and compliance enforcement.
+  duration: 120m
+  difficulty: intermediate
+  tags:
+    - windows
+    - active-directory
+    - group-policy
+    - gpo
+    - security
+  version: "1.0.0"
+  author: Kootenai Team
+  category: windows-ad
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: gpo-network
+        vlan: 301
+        subnet: 10.31.0.0/24
+        gateway: 10.31.0.1
+        dhcp: false
+
+  vms:
+    - name: dc01
+      template: windows-server-2022-ad
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - C:\Windows\System32\winevt\Logs
+          - C:\Windows\SYSVOL
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 4
+        memory: 8192
+        disk: 80
+      networks:
+        - segment: gpo-network
+          ip: 10.31.0.10
+      snapshots:
+        - name: ad-configured
+          description: AD DS configured with OUs and users
+          default: true
+
+    - name: workstation01
+      template: windows-10-enterprise
+      wazuhAgent: true
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 60
+      networks:
+        - segment: gpo-network
+          ip: 10.31.0.100
+      snapshots:
+        - name: domain-joined
+          description: Windows 10 joined to domain
+          default: true
+
+    - name: workstation02
+      template: windows-10-enterprise
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 60
+      networks:
+        - segment: gpo-network
+          ip: 10.31.0.101
+      snapshots:
+        - name: domain-joined
+          description: Second Windows 10 for testing GPO scope
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: create-gpo
+      description: Create a new Group Policy Object for desktop settings
+      points: 10
+      hint: "Open Group Policy Management and right-click to create new GPO"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "New-GPO|gpmc.msc"
+
+    - id: password-policy
+      description: Configure password policy requiring complexity and minimum length
+      points: 15
+      hint: "Edit Default Domain Policy > Account Policies > Password Policy"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Set-ADDefaultDomainPasswordPolicy|secedit"
+
+    - id: lockout-policy
+      description: Configure account lockout after 5 failed attempts
+      points: 15
+      hint: "Account Policies > Account Lockout Policy"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Account Lockout|lockout"
+
+    - id: restrict-control-panel
+      description: Create GPO to restrict Control Panel access for standard users
+      points: 15
+      hint: "User Configuration > Administrative Templates > Control Panel"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Set-GPRegistryValue|Control Panel"
+
+    - id: map-network-drive
+      description: Configure GPO to map a network drive at logon
+      points: 15
+      hint: "User Configuration > Preferences > Drive Maps"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "Drive Map|New-GPO.*drive"
+
+    - id: link-gpo
+      description: Link GPOs to appropriate OUs
+      points: 10
+      hint: "Right-click OU and select 'Link an Existing GPO'"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: dc01
+          match:
+            pattern: "New-GPLink|Link.*GPO"
+
+    - id: gpupdate
+      description: Force policy update and verify GPO application
+      points: 10
+      hint: "Run gpupdate /force and gpresult /r to verify"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: workstation01
+          match:
+            pattern: "gpupdate|gpresult"
+
+    - id: troubleshoot-gpo
+      description: Use gpresult to troubleshoot GPO application issues
+      points: 10
+      hint: "gpresult /h report.html creates a detailed HTML report"
+      order: 8
+      triggers:
+        - type: file_exists
+          target: workstation01
+          match:
+            path: C:\Users\*\gpresult.html

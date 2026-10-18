@@ -1,0 +1,322 @@
+apiVersion: v1
+kind: LabTemplate
+
+metadata:
+  name: Python Data Analysis and Reporting
+  description: |
+    Use Python for data analysis and report generation. Learn pandas for data
+    manipulation, matplotlib for visualization, and build automated reporting
+    pipelines that transform raw data into actionable insights.
+  duration: 75m
+  difficulty: intermediate
+  tags:
+    - python
+    - pandas
+    - data-analysis
+    - matplotlib
+    - reporting
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Data analysis is a critical IT skill for understanding system performance, security
+      events, and business metrics. In this lab, you'll use pandas to load and manipulate
+      data, matplotlib to create visualizations, and build automated reports.
+    learning_objectives:
+      - Load and explore data with pandas DataFrames
+      - Filter, sort, and aggregate data
+      - Calculate summary statistics
+      - Create charts with matplotlib
+      - Generate HTML reports
+      - Build automated reporting scripts
+    prerequisites:
+      - Python Fundamentals (variables, functions, data structures)
+      - File & System Operations (CSV/JSON handling)
+    steps:
+      - id: load-data
+        title: Loading Data with pandas
+        content: |
+          Load CSV data into a pandas DataFrame.
+
+          ```python
+          # load_data.py
+          import pandas as pd
+
+          # Create sample data
+          data = {
+              "timestamp": pd.date_range("2024-01-01", periods=100, freq="h"),
+              "server": ["web01", "web02", "db01"] * 33 + ["web01"],
+              "cpu_pct": [45 + i % 30 for i in range(100)],
+              "memory_mb": [2048 + i * 10 for i in range(100)],
+              "status": ["ok"] * 90 + ["warning"] * 7 + ["critical"] * 3,
+          }
+          df = pd.DataFrame(data)
+          df.to_csv("server_metrics.csv", index=False)
+
+          # Load and explore
+          df = pd.read_csv("server_metrics.csv")
+          print(df.head())
+          print(df.info())
+          print(df.describe())
+          ```
+      - id: filter-sort
+        title: Filtering and Sorting
+        content: |
+          Select and order data based on conditions.
+
+          ```python
+          # filter_sort.py
+          import pandas as pd
+
+          df = pd.read_csv("server_metrics.csv")
+
+          # Filter rows
+          high_cpu = df[df["cpu_pct"] > 70]
+          print(f"High CPU events: {len(high_cpu)}")
+
+          # Sort by column
+          sorted_df = df.sort_values("cpu_pct", ascending=False)
+          print(sorted_df.head(10))
+
+          # Multiple conditions
+          critical = df[(df["status"] == "critical") & (df["cpu_pct"] > 60)]
+          print(f"Critical high-CPU events: {len(critical)}")
+          ```
+      - id: aggregate
+        title: Aggregating Statistics
+        content: |
+          Calculate summary statistics grouped by categories.
+
+          ```python
+          # aggregate.py
+          import pandas as pd
+
+          df = pd.read_csv("server_metrics.csv")
+
+          # Group by server
+          stats = df.groupby("server")["cpu_pct"].agg(["mean", "max", "min"])
+          print(stats)
+
+          # Count statuses per server
+          status_counts = df.groupby(["server", "status"]).size().unstack(fill_value=0)
+          print(status_counts)
+          ```
+      - id: visualization
+        title: Creating Charts
+        content: |
+          Visualize data with matplotlib.
+
+          ```python
+          # visualize.py
+          import pandas as pd
+          import matplotlib
+          matplotlib.use("Agg")
+          import matplotlib.pyplot as plt
+
+          df = pd.read_csv("server_metrics.csv")
+
+          # Bar chart of average CPU by server
+          avg_cpu = df.groupby("server")["cpu_pct"].mean()
+          avg_cpu.plot(kind="bar", title="Average CPU by Server")
+          plt.ylabel("CPU %")
+          plt.tight_layout()
+          plt.savefig("cpu_chart.png")
+          plt.close()
+          print("Chart saved to cpu_chart.png")
+          ```
+      - id: html-report
+        title: Generate HTML Report
+        content: |
+          Create a formatted HTML report from your analysis.
+
+          ```python
+          # html_report.py
+          import pandas as pd
+
+          df = pd.read_csv("server_metrics.csv")
+          stats = df.groupby("server")["cpu_pct"].describe()
+
+          html = f"""<html>
+          <head><title>Server Report</title></head>
+          <body>
+          <h1>Server Metrics Report</h1>
+          <h2>CPU Statistics by Server</h2>
+          {stats.to_html()}
+          <p>Total records: {len(df)}</p>
+          </body></html>"""
+
+          with open("report.html", "w") as f:
+              f.write(html)
+          print("Report saved to report.html")
+          ```
+      - id: automated-report
+        title: Automated Report Script
+        content: |
+          Combine everything into a single automated pipeline.
+
+          ```python
+          # auto_report.py
+          import pandas as pd
+          import json
+          import matplotlib
+          matplotlib.use("Agg")
+          import matplotlib.pyplot as plt
+
+          df = pd.read_csv("server_metrics.csv")
+
+          # Analysis
+          summary = {
+              "total_records": len(df),
+              "servers": df["server"].nunique(),
+              "avg_cpu": round(df["cpu_pct"].mean(), 1),
+              "critical_count": len(df[df["status"] == "critical"]),
+          }
+
+          # Export to JSON
+          with open("summary.json", "w") as f:
+              json.dump(summary, f, indent=2)
+
+          print("Automated report complete!")
+          print(json.dumps(summary, indent=2))
+          ```
+    summary: |
+      You've learned to analyze data with pandas, create visualizations with matplotlib,
+      and build automated reporting pipelines.
+    tips:
+      - Use df.info() and df.describe() to quickly understand your data
+      - Chain pandas operations for readable data pipelines
+      - Use Agg backend for matplotlib when no display is available
+      - Export reports in multiple formats (HTML, JSON, CSV) for different audiences
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 115
+        subnet: 192.168.115.0/24
+        gateway: 192.168.115.1
+        dhcp: true
+
+  vms:
+    - name: python-workstation
+      template: ubuntu-22.04-desktop
+      resources:
+        cpu: 2
+        memory: 4096
+        disk: 40
+      networks:
+        - segment: lab-network
+          ip: dhcp
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/python-labs
+        audit_commands: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    - id: load-csv
+      description: Load a CSV file into a pandas DataFrame and explore it
+      points: 15
+      hints:
+        - level: 1
+          text: "Use pd.read_csv('filename.csv') and print df.head(), df.describe()"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/load_data.py
+            contains: "pd.read_csv"
+
+    - id: filter-data
+      description: Filter and sort a DataFrame based on conditions
+      points: 15
+      hints:
+        - level: 1
+          text: "Use df[df['column'] > value] to filter, df.sort_values() to sort"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/filter_sort.py
+            contains: "sort_values"
+
+    - id: aggregate-stats
+      description: Calculate aggregate statistics using groupby
+      points: 15
+      hints:
+        - level: 1
+          text: "Use df.groupby('column')['metric'].agg(['mean', 'max', 'min'])"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/aggregate.py
+            contains: "groupby"
+
+    - id: create-chart
+      description: Create a matplotlib chart and save it as a PNG file
+      points: 20
+      hints:
+        - level: 1
+          text: "Use .plot(kind='bar') and plt.savefig('chart.png')"
+          penalty: 4
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/visualize.py
+            contains: "savefig"
+
+    - id: html-report
+      description: Generate an HTML report from analyzed data
+      points: 15
+      hints:
+        - level: 1
+          text: "Use DataFrame.to_html() inside an HTML template string"
+          penalty: 3
+      triggers:
+        - type: file_content
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/html_report.py
+            contains: "to_html"
+
+    - id: export-json
+      description: Export analysis results to a JSON file
+      points: 10
+      hints:
+        - level: 1
+          text: "Use json.dump() to write a dictionary of results to a JSON file"
+          penalty: 2
+      triggers:
+        - type: file_exists
+          target: python-workstation
+          match:
+            path: /home/student/python-labs/summary.json
+
+    - id: run-report
+      description: Execute the automated report script
+      points: 10
+      hints:
+        - level: 1
+          text: "Run 'python3 auto_report.py' to generate the full report"
+          penalty: 2
+      triggers:
+        - type: command_executed
+          target: python-workstation
+          match:
+            pattern: "python3?.*auto_report"

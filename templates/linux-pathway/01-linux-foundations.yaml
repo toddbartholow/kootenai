@@ -1,0 +1,478 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Linux Foundations
+  description: |
+    Learn the fundamentals of Linux navigation and file editing. This lab covers
+    essential commands like pwd, ls, cd, and introduces both vim and nano editors.
+    Perfect for beginners starting their Linux journey.
+  duration: 45m
+  difficulty: beginner
+  tags:
+    - linux
+    - beginner
+    - navigation
+    - vim
+    - nano
+    - filesystem
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Welcome to Linux Foundations! This lab will teach you the essential commands every
+      Linux user needs to know. You'll learn to navigate the filesystem, understand directory
+      structures, create files and folders, and get introduced to two powerful text editors:
+      nano and vim.
+
+      Linux powers most of the internet's servers, cloud infrastructure, and countless devices.
+      Understanding the command line is a fundamental skill that opens doors to system
+      administration, DevOps, cybersecurity, and software development.
+    learning_objectives:
+      - Understand the Linux filesystem hierarchy and how directories are organized
+      - Navigate the filesystem using cd, pwd, and understand absolute vs relative paths
+      - List directory contents with ls and interpret file permissions, sizes, and timestamps
+      - Create directories including nested directory structures with mkdir
+      - Create and edit files using both nano (beginner-friendly) and vim (powerful)
+    prerequisites:
+      - Basic computer literacy (keyboard, mouse, typing)
+      - Access to a terminal (provided in this lab)
+      - No prior Linux experience required - this is a beginner lab!
+    steps:
+      - id: step-1
+        title: Understanding Your Location with pwd
+        content: |
+          ## Where Am I?
+
+          When you first open a terminal, you're placed somewhere in the filesystem. But where?
+          The `pwd` command (Print Working Directory) tells you exactly where you are.
+
+          ### The Linux Filesystem
+
+          Unlike Windows with its drive letters (C:, D:), Linux has a single tree structure
+          starting from the **root** directory, represented by `/`. Everything branches from there:
+
+          ```
+          /                    <- Root (top of everything)
+          ├── home/            <- User home directories
+          │   └── student/     <- Your home directory
+          ├── etc/             <- System configuration files
+          ├── var/             <- Variable data (logs, databases)
+          ├── usr/             <- User programs and utilities
+          └── tmp/             <- Temporary files
+          ```
+
+          ### Your Task
+
+          Run the `pwd` command to see your current location:
+
+          ```bash
+          pwd
+          ```
+
+          You should see something like `/home/student` - this is your home directory.
+      - id: step-2
+        title: Listing Directory Contents with ls
+        content: |
+          ## What's Here?
+
+          Now that you know where you are, let's see what's in the current directory.
+          The `ls` command (list) shows the contents of a directory.
+
+          ```bash
+          ls          # List current directory
+          ls ~        # List home directory
+          ls /etc     # List a specific directory
+          ```
+
+          ### Your Task
+
+          List your home directory contents:
+
+          ```bash
+          ls
+          ```
+      - id: step-3
+        title: Detailed File Listings with ls -l
+        content: |
+          ## Getting More Information
+
+          The `-l` flag (long format) reveals crucial information about each file:
+
+          ```
+          -rw-r--r-- 1 student student  1234 Dec 30 10:00 example.txt
+          ```
+
+          This shows: file type, permissions, owner, group, size, date, and filename.
+
+          ### Permissions Explained
+
+          The permission string `rw-r--r--` breaks into three groups:
+          - **Owner** (rw-): can read and write
+          - **Group** (r--): can only read
+          - **Others** (r--): can only read
+
+          ### Your Task
+
+          ```bash
+          ls -l
+          ```
+
+          **Pro tip:** `ls -lh` adds human-readable file sizes (KB, MB instead of bytes).
+      - id: step-4
+        title: Finding Hidden Files with ls -a
+        content: |
+          ## The Hidden World
+
+          In Linux, files starting with a dot (`.`) are hidden by default. These are typically
+          configuration files like `.bashrc`, `.profile`, and `.ssh/`.
+
+          You'll also see:
+          - `.` (single dot) - Current directory
+          - `..` (double dot) - Parent directory
+
+          ### Your Task
+
+          Show all files including hidden ones:
+
+          ```bash
+          ls -a
+          ```
+
+          **Pro tip:** Combine with long format: `ls -la` shows hidden files with full details.
+      - id: step-5
+        title: Navigating to System Directories
+        content: |
+          ## Moving Around
+
+          The `cd` command (change directory) moves you to a different location.
+
+          **Absolute paths** start from root (`/`):
+          ```bash
+          cd /etc              # Go to /etc from anywhere
+          ```
+
+          **Relative paths** are relative to where you are:
+          ```bash
+          cd projects          # Go to projects/ in current directory
+          cd ../               # Go up one level
+          ```
+
+          The `/etc` directory contains system-wide configuration files like `/etc/passwd`,
+          `/etc/hosts`, and `/etc/ssh/sshd_config`.
+
+          ### Your Task
+
+          ```bash
+          cd /etc
+          ```
+
+          Use `pwd` to confirm, then `ls` to explore.
+      - id: step-6
+        title: Returning Home
+        content: |
+          ## Going Home
+
+          No matter where you are, you can always get back home:
+
+          ```bash
+          cd ~         # Tilde expands to your home directory
+          cd           # cd with no arguments goes home
+          cd $HOME     # $HOME environment variable
+          ```
+
+          The tilde is also useful in paths: `cd ~/projects`, `ls ~/.ssh`
+
+          ### Your Task
+
+          ```bash
+          cd ~
+          ```
+
+          Use `pwd` to confirm you're back at `/home/student`.
+      - id: step-7
+        title: Creating Directories with mkdir
+        content: |
+          ## Building Your Workspace
+
+          The `mkdir` command creates new directories.
+
+          ```bash
+          mkdir directory_name
+          mkdir ~/projects
+          ```
+
+          ### Best Practices
+
+          - Use lowercase letters
+          - Use hyphens or underscores instead of spaces
+          - Be descriptive but concise
+
+          ### Your Task
+
+          ```bash
+          mkdir ~/projects
+          ```
+
+          Verify with `ls ~`.
+      - id: step-8
+        title: Creating Nested Directories
+        content: |
+          ## Creating Directory Trees
+
+          The `-p` flag creates parent directories as needed:
+
+          ```bash
+          mkdir -p ~/projects/lab1/data
+          ```
+
+          This creates `lab1/` and `data/` in one command. Without `-p`, the command
+          would fail if `lab1/` doesn't exist.
+
+          ### Your Task
+
+          ```bash
+          mkdir -p ~/projects/lab1/data
+          ```
+
+          Verify: `ls ~/projects` and `ls ~/projects/lab1`
+      - id: step-9
+        title: Creating Files with nano
+        content: |
+          ## The Nano Editor
+
+          Nano is a beginner-friendly text editor with shortcuts shown at the bottom.
+
+          | Shortcut | Action |
+          |----------|--------|
+          | `Ctrl+O` | Save file |
+          | `Ctrl+X` | Exit nano |
+          | `Ctrl+K` | Cut line |
+          | `Ctrl+W` | Search |
+
+          ### Your Task
+
+          ```bash
+          nano ~/projects/readme.txt
+          ```
+
+          1. Type something like: `This is my projects directory`
+          2. Press `Ctrl+O` then `Enter` to save
+          3. Press `Ctrl+X` to exit
+
+          Verify: `cat ~/projects/readme.txt`
+      - id: step-10
+        title: "Bonus: Creating Files with vim"
+        content: |
+          ## The Vim Editor
+
+          Vim is a powerful, modal text editor. It has different modes:
+
+          | Mode | Purpose | Enter With |
+          |------|---------|-----------|
+          | Normal | Navigation | `Esc` |
+          | Insert | Typing text | `i` |
+          | Command | Save, quit | `:` |
+
+          ### Essential Workflow
+
+          1. Open: `vim filename.txt`
+          2. Insert mode: Press `i`
+          3. Type content
+          4. Normal mode: Press `Esc`
+          5. Save and quit: Type `:wq` and Enter
+
+          ### Your Task
+
+          ```bash
+          vim ~/notes.txt
+          ```
+
+          1. Press `i` to enter Insert mode
+          2. Type: `My first vim file!`
+          3. Press `Esc`
+          4. Type `:wq` and press Enter
+
+          **Stuck?** Press `Esc` several times, then `:q!` to force quit.
+    summary: |
+      You've completed the Linux Foundations lab! Commands mastered: pwd, ls, ls -l, ls -a,
+      cd, mkdir, mkdir -p, nano, and vim. Key concepts: root directory (/), home directory (~),
+      hidden files (.), absolute vs relative paths.
+    tips:
+      - Use Tab for auto-completion - it saves time and prevents typos
+      - Use the up arrow to recall previous commands
+      - Use Ctrl+C to cancel a running command or get out of trouble
+      - Use Ctrl+L or 'clear' to clean up your terminal screen
+      - "Use 'man command' to read the manual for any command (e.g., 'man ls')"
+    resources:
+      - title: Linux Command Line Basics - Ubuntu Tutorial
+        url: https://ubuntu.com/tutorials/command-line-for-beginners
+      - title: Vim Adventures - Learn Vim While Playing a Game
+        url: https://vim-adventures.com/
+      - title: Linux Journey - Free Linux Learning Resource
+        url: https://linuxjourney.com/
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 100
+        subnet: 10.10.100.0/24
+        gateway: 10.10.100.1
+        dhcp: false
+
+  vms:
+    - name: linux-vm
+      template: ubuntu-22.04-server
+      startOnCreate: true
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/labadmin
+          - /etc
+          - /var/log
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: lab-network
+          ip: 10.10.100.10
+      snapshots:
+        - name: initial
+          description: Fresh Ubuntu installation with lab user
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Navigation basics
+    - id: pwd-command
+      description: Display your current working directory using pwd
+      points: 10
+      hint: "Type 'pwd' and press Enter"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "^pwd$"
+
+    - id: list-home
+      description: List the contents of your home directory
+      points: 10
+      hint: "Use 'ls' or 'ls ~' to list your home directory"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "^ls( ~| /home/labadmin)?$"
+
+    - id: list-detailed
+      description: List files with detailed information (permissions, size, date)
+      points: 10
+      hint: "Use 'ls -l' for a long listing format"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ls.*-l"
+
+    - id: list-hidden
+      description: List all files including hidden files
+      points: 10
+      hint: "Use 'ls -a' to show hidden files (those starting with a dot)"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ls.*-a"
+
+    # Directory navigation
+    - id: navigate-etc
+      description: Navigate to the /etc directory
+      points: 10
+      hint: "Use 'cd /etc' to change to the /etc directory"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "cd /etc"
+
+    - id: navigate-home
+      description: Return to your home directory using the tilde shortcut
+      points: 10
+      hint: "Use 'cd ~' or just 'cd' to return home"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "cd( ~)?$"
+
+    # Creating directories
+    - id: create-projects
+      description: Create a directory called 'projects' in your home directory
+      points: 10
+      hint: "Use 'mkdir ~/projects' to create the directory"
+      order: 7
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/labadmin/projects
+
+    - id: create-nested
+      description: Create nested directories 'projects/lab1/data' in one command
+      points: 15
+      hint: "Use 'mkdir -p' to create parent directories as needed"
+      depends_on:
+        - create-projects
+      order: 8
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/labadmin/projects/lab1/data
+
+    # File editing with nano
+    - id: create-with-nano
+      description: Create a file called 'readme.txt' using nano
+      points: 15
+      hint: "Run 'nano ~/projects/readme.txt', type content, then Ctrl+O to save, Ctrl+X to exit"
+      depends_on:
+        - create-projects
+      order: 9
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/labadmin/projects/readme.txt
+
+    # Vim introduction (bonus)
+    - id: vim-file
+      description: "Bonus: Create a file called 'notes.txt' using vim"
+      points: 20
+      hint: "Run 'vim notes.txt', press 'i' to insert, type text, press Esc, then ':wq' to save and quit"
+      order: 10
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/labadmin/notes.txt
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "vim.*notes"

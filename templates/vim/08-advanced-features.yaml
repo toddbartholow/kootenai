@@ -1,0 +1,219 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: "Advanced Vim Features"
+  description: |
+    Master Vim's most powerful features: macros for automating repetitive edits,
+    registers for flexible text storage, advanced text objects for precise selection,
+    and folding for managing large files. These skills separate Vim experts from casual users.
+  duration: 50m
+  difficulty: advanced
+  tags: [vim, editor, linux, text-editing, advanced, macros, productivity]
+  version: "1.0.0"
+  author: Kootenai Team
+  category: vim
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: vim-lab-net
+        vlan: 200
+        subnet: 10.20.200.0/24
+        gateway: 10.20.200.1
+        dhcp: false
+
+  vms:
+    - name: vim-workstation
+      template: ubuntu-22.04-desktop
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /home/student
+          - /home/student/.vimrc
+          - /tmp/vim-exercises
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: vim-lab-net
+          ip: 10.20.200.10
+      snapshots:
+        - name: initial
+          description: Ubuntu with advanced Vim exercise files
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Macros
+    - id: record-macro
+      description: "Record a macro using q<register>"
+      points: 15
+      hint: "qa starts recording to register 'a', q stops recording"
+      order: 1
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/macros.txt
+            contains: "MACRO_RECORD_COMPLETE"
+
+    - id: play-macro
+      description: "Play a macro using @<register>"
+      points: 10
+      hint: "@a plays macro from register 'a', @@ replays last macro"
+      order: 2
+      required: true
+      depends_on: [record-macro]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/macros.txt
+            contains: "MACRO_PLAY_COMPLETE"
+
+    - id: macro-repeat
+      description: "Repeat a macro multiple times using <count>@<register>"
+      points: 10
+      hint: "10@a runs macro 'a' ten times"
+      order: 3
+      required: true
+      depends_on: [play-macro]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/macros.txt
+            contains: "MACRO_REPEAT_COMPLETE"
+
+    # Registers
+    - id: named-registers
+      description: "Use named registers (a-z) for yanking and pasting"
+      points: 10
+      hint: "\"ay yanks to register 'a', \"ap pastes from register 'a'"
+      order: 4
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/registers.txt
+            contains: "NAMED_REGISTER_COMPLETE"
+
+    - id: view-registers
+      description: "View register contents using :registers or :reg"
+      points: 10
+      hint: ":reg shows all registers, :reg a shows register 'a'"
+      order: 5
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/registers.txt
+            contains: "VIEW_REGISTERS_COMPLETE"
+
+    - id: special-registers
+      description: "Use special registers: \"+ (clipboard), \"0 (last yank)"
+      points: 10
+      hint: "\"+p pastes from system clipboard, \"0p pastes last yanked text"
+      order: 6
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/registers.txt
+            contains: "SPECIAL_REGISTER_COMPLETE"
+
+    # Text Objects
+    - id: inner-text-objects
+      description: "Use inner text objects: iw, is, ip, i\", i(, i{"
+      points: 15
+      hint: "diw = delete inner word, ci\" = change inside quotes"
+      order: 7
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/textobjects.txt
+            contains: "INNER_OBJECTS_COMPLETE"
+
+    - id: around-text-objects
+      description: "Use around text objects: aw, as, ap, a\", a(, a{"
+      points: 10
+      hint: "daw = delete around word (including space), da\" = delete with quotes"
+      order: 8
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/textobjects.txt
+            contains: "AROUND_OBJECTS_COMPLETE"
+
+    - id: tag-text-objects
+      description: "Use HTML/XML tag text objects: it, at"
+      points: 5
+      hint: "cit changes content inside tags, dat deletes entire tag"
+      order: 9
+      required: false
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/textobjects.txt
+            contains: "TAG_OBJECTS_COMPLETE"
+
+    # Folding
+    - id: create-fold
+      description: "Create a fold using zf with motion or visual selection"
+      points: 10
+      hint: "zf} folds paragraph, V then zf folds selection"
+      order: 10
+      required: true
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/folding.txt
+            contains: "FOLD_CREATE_COMPLETE"
+
+    - id: toggle-folds
+      description: "Open/close folds using zo, zc, za"
+      points: 10
+      hint: "zo = open fold, zc = close fold, za = toggle"
+      order: 11
+      required: true
+      depends_on: [create-fold]
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/folding.txt
+            contains: "FOLD_TOGGLE_COMPLETE"
+
+    - id: fold-all
+      description: "Open/close all folds using zR, zM"
+      points: 5
+      hint: "zR = open all folds, zM = close all folds"
+      order: 12
+      required: false
+      triggers:
+        - type: file_content
+          target: vim-workstation
+          match:
+            path: /tmp/vim-exercises/folding.txt
+            contains: "FOLD_ALL_COMPLETE"

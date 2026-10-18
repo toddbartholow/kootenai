@@ -1,0 +1,417 @@
+apiVersion: v1
+kind: LabTemplate
+metadata:
+  name: Networking & Troubleshooting
+  description: |
+    Master Linux networking configuration and troubleshooting. Learn IP addressing,
+    SSH configuration, firewall management with ufw/iptables, and network
+    diagnostics with tcpdump, netstat, and ss.
+  duration: 90m
+  difficulty: advanced
+  tags:
+    - linux
+    - advanced
+    - networking
+    - ssh
+    - firewall
+    - ufw
+    - tcpdump
+    - troubleshooting
+  version: "1.0.0"
+  author: Kootenai Team
+  instructions:
+    overview: |
+      Networking is fundamental to modern Linux administration. In this lab, you'll learn
+      to configure and inspect network interfaces, test connectivity, manage the UFW
+      firewall, capture packets with tcpdump, and perform DNS lookups.
+    learning_objectives:
+      - Inspect network interfaces, routes, and DNS with ip commands
+      - Test connectivity with ping and traceroute
+      - Monitor ports and connections with ss and netstat
+      - Configure SSH keys for secure authentication
+      - Manage firewall rules with UFW
+      - Capture and analyze network traffic with tcpdump
+      - Perform DNS lookups with nslookup and dig
+    prerequisites:
+      - Services & System Management (systemctl for SSH)
+      - Shell Essentials (sudo, pipes, redirection)
+    steps:
+      - id: network-info
+        title: Network Interface Information
+        content: |
+          Inspect your system's network configuration.
+
+          ```bash
+          # Show IP addresses
+          ip addr        # or: ip a
+
+          # Show routing table
+          ip route       # or: ip r
+
+          # Show link status
+          ip link        # or: ip l
+
+          # View DNS configuration
+          cat /etc/resolv.conf
+          ```
+      - id: connectivity
+        title: Testing Connectivity
+        content: |
+          Verify network paths and reachability.
+
+          ```bash
+          # Ping the gateway
+          ping -c 4 10.10.100.1
+
+          # Ping an external address
+          ping -c 4 8.8.8.8
+
+          # Trace the route
+          traceroute 8.8.8.8
+          ```
+      - id: ports-connections
+        title: Monitoring Ports and Connections
+        content: |
+          See what's listening and who's connected.
+
+          ```bash
+          # Show listening TCP ports
+          ss -tlnp
+
+          # Show established connections
+          ss -tn state established
+
+          # Show all connections and listening ports
+          ss -tulpn
+          ```
+      - id: ssh-keys
+        title: SSH Configuration
+        content: |
+          View SSH config and generate key pairs.
+
+          ```bash
+          # View SSH server config
+          cat /etc/ssh/sshd_config
+
+          # Generate an SSH key pair
+          ssh-keygen -t ed25519
+          # Press Enter for defaults
+          ```
+      - id: firewall
+        title: Firewall with UFW
+        content: |
+          Manage firewall rules with Uncomplicated Firewall.
+
+          ```bash
+          # Check firewall status
+          sudo ufw status verbose
+
+          # Enable the firewall
+          sudo ufw enable
+
+          # Allow SSH and HTTP
+          sudo ufw allow ssh
+          sudo ufw allow 80
+          ```
+      - id: packet-capture
+        title: Packet Capture with tcpdump
+        content: |
+          Capture and inspect network traffic.
+
+          ```bash
+          # Capture 5 packets on the main interface
+          sudo tcpdump -i eth0 -c 5
+
+          # Capture only SSH traffic
+          sudo tcpdump -i any port 22 -c 5
+          ```
+      - id: dns
+        title: DNS Lookups
+        content: |
+          Resolve domain names to IP addresses.
+
+          ```bash
+          # DNS lookup
+          nslookup google.com
+          dig google.com
+
+          # Show hostname
+          hostname
+          ```
+    summary: |
+      You've completed the Linux networking and troubleshooting module covering
+      interfaces, connectivity, firewalls, packet capture, and DNS.
+    tips:
+      - Use `ip` commands instead of deprecated `ifconfig`
+      - ss is the modern replacement for netstat
+      - Always allow SSH before enabling UFW to avoid locking yourself out
+      - tcpdump with -w flag saves captures to a file for later analysis with Wireshark
+
+spec:
+  platform: proxmox
+
+  network:
+    segments:
+      - name: lab-network
+        vlan: 100
+        subnet: 10.10.100.0/24
+        gateway: 10.10.100.1
+        dhcp: false
+
+  vms:
+    - name: linux-vm
+      template: ubuntu-22.04-server
+      wazuhAgent: true
+      agentConfig:
+        monitor_paths:
+          - /etc/ssh
+          - /etc/netplan
+          - /home/student/.ssh
+        audit_commands: true
+        realtime: true
+      resources:
+        cpu: 2
+        memory: 2048
+        disk: 20
+      networks:
+        - segment: lab-network
+          ip: 10.10.100.10
+      snapshots:
+        - name: initial
+          description: Fresh Ubuntu with networking tools
+          default: true
+
+  checkpoints:
+    enabled: true
+    pass_threshold: 70
+    allow_retry: true
+    show_hints: true
+    realtime_update: true
+
+  objectives:
+    # Network information
+    - id: ip-address
+      description: Display network interface IP addresses
+      points: 10
+      hint: "Use 'ip addr' or 'ip a' to show IP addresses"
+      order: 1
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ip (addr|a)"
+
+    - id: ip-route
+      description: Display the routing table
+      points: 10
+      hint: "Use 'ip route' or 'ip r' to show routes"
+      order: 2
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ip (route|r)"
+
+    - id: ip-link
+      description: Display network interface link status
+      points: 10
+      hint: "Use 'ip link' or 'ip l' to show link state"
+      order: 3
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ip (link|l)"
+
+    - id: dns-config
+      description: View DNS resolver configuration
+      points: 10
+      hint: "Use 'cat /etc/resolv.conf' or 'resolvectl status'"
+      order: 4
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "(cat /etc/resolv.conf|resolvectl)"
+
+    # Connectivity testing
+    - id: ping-gateway
+      description: Ping the default gateway
+      points: 10
+      hint: "Use 'ping -c 4 10.10.100.1' (the gateway address)"
+      order: 5
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ping.*10.10.100.1"
+
+    - id: ping-external
+      description: Ping an external address (8.8.8.8)
+      points: 10
+      hint: "Use 'ping -c 4 8.8.8.8'"
+      order: 6
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ping.*8.8.8.8"
+
+    - id: traceroute
+      description: Trace the route to an external host
+      points: 10
+      hint: "Use 'traceroute 8.8.8.8' or 'tracepath 8.8.8.8'"
+      order: 7
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "(traceroute|tracepath)"
+
+    # Port and connection monitoring
+    - id: ss-listening
+      description: Show all listening TCP ports
+      points: 10
+      hint: "Use 'ss -tlnp' (TCP, listening, numeric, processes)"
+      order: 8
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ss.*-.*l.*-.*t|ss.*-.*t.*-.*l"
+
+    - id: ss-connections
+      description: Show all established connections
+      points: 10
+      hint: "Use 'ss -tn state established'"
+      order: 9
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "ss.*(established|ESTAB)"
+
+    - id: netstat-all
+      description: Show all network connections and listening ports
+      points: 10
+      hint: "Use 'netstat -tulpn' or 'ss -tulpn'"
+      order: 10
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "(netstat|ss).*-.*[tu].*l.*p"
+
+    # SSH
+    - id: ssh-config
+      description: View the SSH server configuration
+      points: 10
+      hint: "Use 'cat /etc/ssh/sshd_config'"
+      order: 11
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "cat /etc/ssh/sshd_config"
+
+    - id: generate-key
+      description: Generate an SSH key pair
+      points: 15
+      hint: "Use 'ssh-keygen -t ed25519' and press Enter for defaults"
+      order: 12
+      triggers:
+        - type: file_exists
+          target: linux-vm
+          match:
+            path: /home/student/.ssh/id_ed25519
+
+    # Firewall (ufw)
+    - id: ufw-status
+      description: Check the status of the UFW firewall
+      points: 10
+      hint: "Use 'sudo ufw status verbose'"
+      order: 13
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo ufw status"
+
+    - id: ufw-enable
+      description: Enable the UFW firewall
+      points: 15
+      hint: "Use 'sudo ufw enable' (answer 'y' when prompted)"
+      order: 14
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo ufw enable"
+
+    - id: ufw-allow-ssh
+      description: Allow SSH through the firewall
+      points: 10
+      hint: "Use 'sudo ufw allow ssh' or 'sudo ufw allow 22'"
+      order: 15
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo ufw allow (ssh|22)"
+
+    - id: ufw-allow-http
+      description: Allow HTTP traffic (port 80)
+      points: 10
+      hint: "Use 'sudo ufw allow 80' or 'sudo ufw allow http'"
+      order: 16
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo ufw allow (80|http)"
+
+    # Network capture
+    - id: tcpdump-interface
+      description: Capture packets on the main interface (5 packets)
+      points: 15
+      hint: "Use 'sudo tcpdump -i eth0 -c 5' (adjust interface name)"
+      order: 17
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo tcpdump.*-c"
+
+    - id: tcpdump-port
+      description: Capture only SSH traffic (port 22)
+      points: 15
+      hint: "Use 'sudo tcpdump -i any port 22 -c 5'"
+      order: 18
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "sudo tcpdump.*port 22"
+
+    # DNS
+    - id: dns-lookup
+      description: Perform a DNS lookup for google.com
+      points: 10
+      hint: "Use 'nslookup google.com' or 'dig google.com'"
+      order: 19
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "(nslookup|dig|host) google.com"
+
+    - id: hostname-show
+      description: Display the system hostname
+      points: 5
+      hint: "Use 'hostname' or 'hostnamectl'"
+      order: 20
+      triggers:
+        - type: command_executed
+          target: linux-vm
+          match:
+            pattern: "^hostname"

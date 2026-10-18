@@ -1,0 +1,153 @@
+---
+# Full deployment playbook for Kootenai Platform
+# Deploys all services using Docker Compose
+#
+# Usage: ansible-playbook -i inventory.yml deploy.yml --ask-become-pass
+#
+# Tags:
+#   all     - Deploy everything (default)
+#   sync    - Sync files only
+#   build   - Build images only
+#   api     - Deploy API only
+#   web     - Deploy web only
+#   status  - Check all service status
+
+- name: Deploy Kootenai Platform
+  hosts: infra
+
+  vars:
+    labctl_repo: /home/labadmin/kootenai
+    deploy_dir: "{{ labctl_repo }}/deploy"
+    local_repo: "{{ playbook_dir }}/.."
+
+  tasks:
+    # Sync all necessary directories
+    - name: Sync api directory
+      ansible.posix.synchronize:
+        src: "{{ local_repo }}/api/"
+        dest: "{{ labctl_repo }}/api/"
+        delete: no
+        use_ssh_args: yes
+        rsync_opts:
+          - "--exclude=bin"
+          - "--exclude=.git"
+          - "--exclude=coverage.out"
+      become: false
+      delegate_to: localhost
+      tags: [sync, api, deploy]
+
+    - name: Sync web directory
+      ansible.posix.synchronize:
+        src: "{{ local_repo }}/web/"
+        dest: "{{ labctl_repo }}/web/"
+        delete: no
+        use_ssh_args: yes
+        rsync_opts:
+          - "--exclude=node_modules"
+          - "--exclude=dist"
+          - "--exclude=.git"
+      become: false
+      delegate_to: localhost
+      tags: [sync, web, deploy]
+
+    - name: Sync deploy directory
+      ansible.posix.synchronize:
+        src: "{{ local_repo }}/deploy/"
+        dest: "{{ deploy_dir }}/"
+        delete: no
+        use_ssh_args: yes
+        rsync_opts:
+          - "--exclude=.env"
+          - "--exclude=.git"
+      become: false
+      delegate_to: localhost
+      tags: [sync, deploy]
+
+    - name: Sync templates directory
+      ansible.posix.synchronize:
+        src: "{{ local_repo }}/templates/"
+        dest: "{{ labctl_repo }}/templates/"
+        delete: no
+        use_ssh_args: yes
+        rsync_opts:
+          - "--exclude=.git"
+      become: false
+      delegate_to: localhost
+      tags: [sync, deploy]
+
+    # Build and deploy using Docker Compose
+    - name: Build API image
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        services:
+          - api
+        build: always
+        state: present
+      become: true
+      tags: [build, api, deploy]
+
+    - name: Build web image
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        services:
+          - web
+        build: always
+        state: present
+      become: true
+      environment:
+        COMPOSE_DOCKER_CLI_BUILD: "1"
+        DOCKER_BUILDKIT: "1"
+      tags: [build, web, deploy]
+
+    - name: Start all services
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        state: present
+      become: true
+      tags: [deploy]
+
+    - name: Restart API container
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        services:
+          - api
+        state: restarted
+      become: true
+      tags: [api, deploy]
+
+    - name: Restart web container
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        services:
+          - web
+        state: restarted
+      become: true
+      tags: [web, deploy]
+
+    # Status checks
+    - name: Get Docker Compose status
+      command: docker compose ps
+      args:
+        chdir: "{{ deploy_dir }}"
+      become: true
+      register: compose_status
+      changed_when: false
+      tags: [status]
+
+    - name: Display service status
+      debug:
+        msg: "{{ compose_status.stdout_lines }}"
+      tags: [status]
+
+    - name: Test API health
+      uri:
+        url: http://localhost:8080/health
+        return_content: yes
+      register: api_health
+      failed_when: false
+      tags: [status]
+
+    - name: Display API health
+      debug:
+        msg: "API Health: {{ api_health.json | default('unreachable') }}"
+      tags: [status]
